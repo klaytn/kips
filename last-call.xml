@@ -1,0 +1,35 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Klaytn KIPs Last Call Review</title>
+    <description>All KIPs which are in the two-week "last call" status, please help review these and provide your feedback!</description>
+    <link>{{ site.url }}</link>
+    <atom:link href="{{ site.url }}/last-call.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>{{ site.time }}</lastBuildDate>
+    {% assign kips = site.pages | sort: 'kip' %}
+    {% for kip in kips %}
+      {% if kip.status == "Last Call" %}
+      {% capture description %}
+        <p><strong>KIP #{{ kip.kip }} - {{kip.title }}</strong> is in Last Call status. It is authored by {{ kip.author }} and was originally created {{ kip.created }}. It is in the {{ kip.category }} category of type {{ kip.type }}. Please review and note any changes that should block acceptance.</p>
+        {% if kip.discussions-to %}
+          <p>The author has requested that discussions happen at the following URL: {{ kip.discussions-to }}</p>
+        {% else %}
+          <p>Please visit the [klaytn/KIPs issues to comment](https://github.com/klaytn/KIPs/issues/{{kip.kip}}).</p>
+        {% endif %}
+        <hr />
+        {{ kip.content }}        
+      {% endcapture %}
+      <item>
+        <title>{{ kip.title | xml_escape }}</title>
+        <description>{{ description | xml_escape }}</description>
+        <pubDate>{{ kip.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+        <link>{{ site.url }}/{{ kip.url }}</link>
+        <guid isPermaLink="true">{{ site.url }}/{{ kip.url }}</guid>
+      </item>
+      {% endif %}
+    {% endfor %}
+  </channel>
+</rss>

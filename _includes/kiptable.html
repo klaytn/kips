@@ -1,0 +1,28 @@
+<style type="text/css">
+  .kiptable .title {
+    width: 67%;
+  }
+
+  .kiptable .author {
+    width: 33%;
+  }
+</style>
+{% for status in site.data.statuses %}
+  {% assign kips = include.kips|where:"status",status|sort:"kip" %}
+  {% assign count = kips|size %}
+  {% if count > 0 %}
+    <h2 id="{{status|slugify}}">{{status}}</h2>
+    <table class="kiptable">
+      <thead>
+        <tr><th class="kipnum">Number</th><th class="title">Title</th><th class="author">Author</th></tr>
+      </thead>
+      {% for page in kips %}
+        <tr>
+          <td class="kipnum"><a href="{{page.url|relative_url}}">{{page.kip|xml_escape}}</a></td>
+          <td class="title">{{page.title|xml_escape}}</td>
+          <td class="author">{% include authorlist.html authors=page.author %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+{% endfor %}

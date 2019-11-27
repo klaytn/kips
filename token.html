@@ -1,0 +1,7 @@
+---
+layout: page
+title: Token
+---
+
+{% assign kips=site.pages|where:"type","Standards Track"|where:"category","Token" %}
+{% include kiptable.html kips=kips %}

@@ -1,0 +1,7 @@
+---
+layout: page
+title: Interface
+---
+
+{% assign kips=site.pages|where:"type","Standards Track"|where:"category","Interface" %}
+{% include kiptable.html kips=kips %}

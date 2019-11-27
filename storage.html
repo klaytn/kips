@@ -1,0 +1,7 @@
+---
+layout: page
+title: Storage
+---
+
+{% assign kips=site.pages|where:"type","Standards Track"|where:"category","Storage" %}
+{% include kiptable.html kips=kips %}

@@ -1,0 +1,7 @@
+---
+layout: page
+title: Core
+---
+
+{% assign kips=site.pages|where:"type","Standards Track"|where:"category","Core" %}
+{% include kiptable.html kips=kips %}

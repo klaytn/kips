@@ -1,0 +1,7 @@
+---
+layout: page
+title: Networking
+---
+
+{% assign kips=site.pages|where:"type","Standards Track"|where:"category","Networking" %}
+{% include kiptable.html kips=kips %}

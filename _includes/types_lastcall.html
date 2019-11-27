@@ -1,0 +1,55 @@
+<style type="text/css">
+  .kiptable .title {
+    width: 67%;
+  }
+
+  .kiptable .author {
+    width: 33%;
+  }
+
+  h4 {
+    margin-left:20px;
+  }
+</style>
+
+<h2>KIP Types</h2>
+
+<p>KIPs are separated into a number of types, and each has its own list of KIPs.</p>
+
+<h3>Standards Track ({{site.pages|where:"type","Standards Track"|size}})</h3>
+<h4><a href="{{"core"|relative_url}}">Core</a> ({{site.pages|where:"type","Standards Track"|where:"category","Core"|size}})
+| <a href="{{"networking"|relative_url}}">Networking</a> ({{site.pages|where:"type","Standards Track"|where:"category","Networking"|size}})
+| <a href="{{"storage"|relative_url}}">Storage</a> ({{site.pages|where:"type","Standards Track"|where:"category","Storage"|size}})
+| <a href="{{"interface"|relative_url}}">Interface</a> ({{site.pages|where:"type","Standards Track"|where:"category","Interface"|size}})
+| <a href="{{"token"|relative_url}}">Token</a> ({{site.pages|where:"type","Standards Track"|where:"category","Token"|size}})
+| <a href="{{"sdk"|relative_url}}">SDK</a> ({{site.pages|where:"type","Standards Track"|where:"category","SDK"|size}})
+| <a href="{{"application"|relative_url}}">Application</a> ({{site.pages|where:"type","Standards Track"|where:"category","Application"|size}})</h4>
+
+<h3><a href="{{"meta"|relative_url}}">Meta</a> ({{site.pages|where:"type","Meta"|size}})</h3>
+
+<h3><a href="{{"informational"|relative_url}}">Informational</a> ({{site.pages|where:"type","Informational"|size}})</h3>
+
+<h2>Klaytn KIPs Last Call Review</h2>
+<p>All KIPs which are in the two-week "last call" status, please help review these and provide your feedback!</p>
+
+{% assign kips = site.pages|where:"status","Last Call"|sort:"kip" %}
+{% assign count = kips|size %}
+{% if count > 0 %}
+<h2 id="{{status|slugify}}">{{status}}</h2>
+<table class="kiptable">
+<thead>
+<tr><th class="kipnum">Number</th><th class="title">Title</th><th class="title">Type</th><th class="author">Author</th></tr>
+</thead>
+{% for page in kips %}
+<tr>
+  <td class="kipnum"><a href="{{page.url|relative_url}}">{{page.kip|xml_escape}}</a></td>
+  <td class="title">{{page.title|xml_escape}}</td>
+  <td class="Category">{{page.type}} {{page.category|xml_escape}}</td>
+  <td class="author">{% include authorlist.html authors=page.author %}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+{% if count == 0 %}
+<p>N/A</p>
+{% endif %}
