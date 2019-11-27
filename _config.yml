@@ -18,9 +18,9 @@ description: >-
   Klaytn Improvement Proposals (KIPs) describe standards for the Klaytn
   platform, including core protocol specifications, client APIs, and contract
   standards.
-url: "https://ground-x.github.io/KIPs/"
+url: "https://klaytn.github.io/KIPs/"
 twitter_username: klaytn_official
-github_username: ground-x
+github_username: klaytn
 facebook_username: klaytn.official
 medium_username: klaytn
 header_pages:
