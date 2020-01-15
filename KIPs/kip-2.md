@@ -59,7 +59,7 @@ This format can express various Klaytn account key types such as a single key, m
 
 <kdfparams-scrypt> :=
 {
-  "dklen": <an integer>,
+  "dklen": <an integer equal or bigger than 32>,
   "salt": <a 256-bit hexstring>,
   "n": <an integer>,
   "r": <an integer>,
