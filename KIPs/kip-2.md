@@ -129,20 +129,20 @@ Examples are as following:
                 "mac": "3355abc00f3fb1ae06821ece9c13359a0da1bd284cf29ffc26a534a40d210f28"
             },
             {
-               "ciphertext": '5e2f95f61d7af3bebf4ff9f5d5813690c80b0b5aaebd6e8b22d0f928ff06776a',
+               "ciphertext": "5e2f95f61d7af3bebf4ff9f5d5813690c80b0b5aaebd6e8b22d0f928ff06776a",
                "cipherparams": {
                    "iv": "92a89f3011e020f6a70bb34fddb006c5"
                },
-               "cipher": 'aes-128-ctr',
-               "kdf": 'scrypt',
+               "cipher": "aes-128-ctr",
+               "kdf": "scrypt",
                "kdfparams": {
                    "dklen": 32,
-                   "salt": 'e7c4605ad8200e0d93cd67f9d82fb9971e1a2763b22362017c2927231c2a733a',
+                   "salt": "e7c4605ad8200e0d93cd67f9d82fb9971e1a2763b22362017c2927231c2a733a",
                    "n": 4096,
                    "r": 8,
                    "p": 1,
                },
-               "mac": 'fb86255428e24ba701201d5815f2f2114214cbd34fe4bc7a24b948a8ceac9f9b',
+               "mac": "fb86255428e24ba701201d5815f2f2114214cbd34fe4bc7a24b948a8ceac9f9b",
             },
         ]
     }
@@ -173,36 +173,36 @@ Examples are as following:
             [],
             [
                 {
-                   "ciphertext": '5e2f95f61d7af3bebf4ff9f5d5813690c80b0b5aaebd6e8b22d0f928ff06776a',
+                   "ciphertext": "5e2f95f61d7af3bebf4ff9f5d5813690c80b0b5aaebd6e8b22d0f928ff06776a",
                    "cipherparams": {
                        "iv": "92a89f3011e020f6a70bb34fddb006c5"
                    },
-                   "cipher": 'aes-128-ctr',
-                   "kdf": 'scrypt',
+                   "cipher": "aes-128-ctr",
+                   "kdf": "scrypt",
                    "kdfparams": {
                        "dklen": 32,
-                       "salt": 'e7c4605ad8200e0d93cd67f9d82fb9971e1a2763b22362017c2927231c2a733a',
+                       "salt": "e7c4605ad8200e0d93cd67f9d82fb9971e1a2763b22362017c2927231c2a733a",
                        "n": 4096,
                        "r": 8,
                        "p": 1,
                    },
-                   "mac": 'fb86255428e24ba701201d5815f2f2114214cbd34fe4bc7a24b948a8ceac9f9b',
+                   "mac": "fb86255428e24ba701201d5815f2f2114214cbd34fe4bc7a24b948a8ceac9f9b",
                 },
                {
-                   "ciphertext": '5a17fe2af445e63ed2cdda6834d030a9391998000941c79318ab49bff092b9e7',
+                   "ciphertext": "5a17fe2af445e63ed2cdda6834d030a9391998000941c79318ab49bff092b9e7",
                    "cipherparams": { 
-                     "iv": '38aa896fc128075425e512f01e4b206c' 
+                     "iv": "38aa896fc128075425e512f01e4b206c" 
                    },
-                   "cipher": 'aes-128-ctr',
-                   "kdf": 'scrypt',
+                   "cipher": "aes-128-ctr",
+                   "kdf": "scrypt",
                    "kdfparams": {
                        "dklen": 32,
-                       "salt": 'e7c4605ad8200e0d93cd67f9d82fb9971e1a2763b22362017c2927231c2a733a',
+                       "salt": "e7c4605ad8200e0d93cd67f9d82fb9971e1a2763b22362017c2927231c2a733a",
                        "n": 4096,
                        "r": 8,
                        "p": 1,
                    },
-                   "mac": '633f91994f33541fbf1c3c3e973e539c12f1dd98f2757f64e3b63de986f367e0',
+                   "mac": "633f91994f33541fbf1c3c3e973e539c12f1dd98f2757f64e3b63de986f367e0",
                },
             ]
         ]
@@ -229,22 +229,24 @@ This means v4 is not compatible with v3, hence keystore v3 should also be suppor
 2. The keystore v3 should also be supported. One example is shown below:
 ```
 {
-    version: 3,
-    id: '7a0a8557-22a5-4c90-b554-d6f3b13783ea',
-    address: '0x86bce8c859f5f304aa30adb89f2f7b6ee5a0d6e2',
-    crypto: {
-        ciphertext: '696d0e8e8bd21ff1f82f7c87b6964f0f17f8bfbd52141069b59f084555f277b7',
-        cipherparams: { iv: '1fd13e0524fa1095c5f80627f1d24cbd' },
-        cipher: 'aes-128-ctr',
-        kdf: 'scrypt',
-        kdfparams: {
-            dklen: 32,
-            salt: '7ee980925cef6a60553cda3e91cb8e3c62733f64579f633d0f86ce050c151e26',
-            n: 4096,
-            r: 8,
-            p: 1,
+    "version": 3,
+    "id": "7a0a8557-22a5-4c90-b554-d6f3b13783ea",
+    "address": "0x86bce8c859f5f304aa30adb89f2f7b6ee5a0d6e2",
+    "crypto": {
+        "ciphertext": "696d0e8e8bd21ff1f82f7c87b6964f0f17f8bfbd52141069b59f084555f277b7",
+        "cipherparams": {
+          "iv": "1fd13e0524fa1095c5f80627f1d24cbd" 
         },
-        mac: '8684d8dc4bf17318cd46c85dbd9a9ec5d9b290e04d78d4f6b5be9c413ff30ea4',
+        "cipher": "aes-128-ctr",
+        "kdf": "scrypt",
+        "kdfparams": {
+            "dklen": 32,
+            "salt": "7ee980925cef6a60553cda3e91cb8e3c62733f64579f633d0f86ce050c151e26",
+            "n": 4096,
+            "r": 8,
+            "p": 1,
+        },
+        "mac": "8684d8dc4bf17318cd46c85dbd9a9ec5d9b290e04d78d4f6b5be9c413ff30ea4",
     },
 }
 ``` 
