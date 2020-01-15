@@ -214,7 +214,8 @@ In this specification, an array is chosen because of the following reasons:
 
 ## Backwards Compatibility
 <!-- All KIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The KIP must explain how the author proposes to deal with these incompatibilities. KIP submissions without a sufficient backwards compatibility treatise may be rejected outright. The authors should answer the question: "Does this KIP require a hard fork?" -->
-Keystore v3 should also be supported along with the Klaytn keystore format.
+Klaytn keystore format v4 has a field `keyring` while keystore v3 has a field `crypto` to securely store private keys.
+This means v4 is not compatible with v3, hence keystore v3 should also be supported along with the Klaytn keystore format.
 
 ## Test Cases
 <!--Test cases for an implementation are mandatory for KIPs that are affecting consensus changes. Other KIPs can choose to include links to test cases if applicable.-->
