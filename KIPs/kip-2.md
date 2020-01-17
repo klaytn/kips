@@ -123,8 +123,8 @@ Examples are as following:
                    "dklen": 32,
                    "salt": "aa38c864f4f6f538dc3bb4961c9d5d5772b163d2243aa8472cc4f83338e67cd3",
                    "n": 4096,
-                    "r": 8,
-                    "p": 1
+                   "r": 8,
+                   "p": 1
                  },
                 "mac": "3355abc00f3fb1ae06821ece9c13359a0da1bd284cf29ffc26a534a40d210f28"
             },
@@ -154,7 +154,8 @@ Examples are as following:
         "id": "b6c6bd8f-e3ba-43c1-af4b-1b7dfe13e5f9",
         "address": "0xa8677855999712d23692a4cad77bb9396a1174cd",
         "keyring": [
-            [{
+            [
+                {
                 "ciphertext": "5cbd3cf235d02718f1cfac84157786d8e36fcf651e15f0c9a4303a2338697126",
                 "cipherparams": {
                     "iv": "92a89f3011e020f6a70bb34fddb006c5"
