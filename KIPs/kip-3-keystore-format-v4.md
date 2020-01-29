@@ -1,8 +1,8 @@
 ---
-kip: <to be assigned>
-title: Klaytn Keystore Format
+kip: 3
+title: Klaytn Keystore Format v4
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>
-discussions-to: <URL>
+discussions-to: https://github.com/klaytn/klaytn/issues/438
 status: Draft
 type: Standards Track
 category (*only required for Standard Track): Application
