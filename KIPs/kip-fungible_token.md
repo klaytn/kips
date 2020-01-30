@@ -13,7 +13,7 @@ created: 2020-01-16
 
 ## Simple Summary
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the KIP.-->
-A very first fungible token standard for Klaytn.
+A fungible token standard for Klaytn.
 
 ## Abstract
 <!--A short (~200 word) description of the technical issue being addressed.-->
@@ -26,12 +26,12 @@ A standard interface allows any tokens on Klaytn to be re-used by other applicat
 
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
-This document derived heavily from Ethereum's [ERC-20 token standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) written by Fabian Vogelsteller and Vitalik Buterin.
+This document derived heavily from Ethereum's [ERC-20 token standard](https://eips.ethereum.org/EIPS/eip-20) written by Fabian Vogelsteller and Vitalik Buterin.
 
 ### Summary of Methods and Events
 The table below is a summary of methods.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
-If the optional field is empty, the function must be implemented.
+If the optional field is not marked, the function must be implemented.
 
 |Name|Optional|Prototype|
 |---|---|---|
@@ -44,6 +44,7 @@ If the optional field is empty, the function must be implemented.
 
 The table below is a summary of events.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
+All the following events must be implemented.
 
 |Name|Prototype|
 |---|---|
@@ -55,7 +56,7 @@ The prototype uses the syntax from Solidity `0.4.24` (or above).
 
 Returns the total token supply.
 
-``` js
+```solidity
 function totalSupply() public view returns (uint256)
 ```
 
@@ -65,7 +66,7 @@ function totalSupply() public view returns (uint256)
 
 Returns the balance of the account specified by the address `_owner`.
 
-``` js
+```solidity
 function balanceOf(address _owner) public view returns (uint256 balance)
 ```
 
@@ -78,7 +79,7 @@ The function SHOULD `throw` if the message caller's balance does not have enough
 
 *Note* Transfers of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
 
-``` js
+```solidity
 function transfer(address _to, uint256 _value) public returns (bool success)
 ```
 
@@ -91,7 +92,7 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 
-``` js
+```solidity
 function name() public view returns (string)
 ```
 
@@ -102,7 +103,7 @@ Returns the symbol of the token. E.g. "KLAY".
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
-``` js
+```solidity
 function symbol() public view returns (string)
 ```
 
@@ -115,7 +116,7 @@ Returns the number of decimals the token uses - e.g. `8`, means to divide the to
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
-``` js
+```solidity
 function decimals() public view returns (uint8)
 ```
 
@@ -126,7 +127,7 @@ MUST trigger when tokens are transferred including zero value transfers.
 
 A token contract which creates new tokens SHOULD trigger a Transfer event with the `_from` address set to `0x0` when tokens are created.
 
-``` js
+```solidity
 event Transfer(address indexed _from, address indexed _to, uint256 _value)
 ```
 
@@ -146,10 +147,10 @@ Not available.
 
 ## Implementation
 <!--The implementations must be completed before any KIP is given status "Final", but it need not be completed before the KIP is accepted. While there is merit to the approach of reaching consensus on the specification and rationale before writing code, the principle of "rough consensus and running code" is still useful when it comes to resolving many discussions of API details.-->
-The implementation is not necessary for token standards. The implementation of this will be attached in this section.
+The implementation is not necessary for token standards. The implementation of this will be attached in this section later.
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 
 ## References
-https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
+https://eips.ethereum.org/EIPS/eip-20
