@@ -86,7 +86,7 @@ function transfer(address _to, uint256 _value) public returns (bool success)
 
 #### name
 
-Returns the name of the token - e.g. `"Klaytn"`.
+Returns the name of the token - e.g. `"MyToken"`.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -98,7 +98,7 @@ function name() public view returns (string)
 
 #### symbol
 
-Returns the symbol of the token. E.g. "KLAY".
+Returns the symbol of the token. E.g. `"MT"`.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
