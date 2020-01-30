@@ -20,7 +20,7 @@ A fungible token standard with approval.
 
 ## Abstract
 <!--A short (~200 word) description of the technical issue being addressed.-->
-Based on the basic fungible token standard, this token standard additionally provides approval.
+Based on the basic fungible token standard, this token standard additionally provides a functionality of approval.
 The token owner can approve tokens to be transferred by another third party.
 
 ## Motivation
@@ -34,7 +34,7 @@ This document derived heavily from Ethereum's [ERC-20 token standard](https://ei
 ### Summary of Methods and Events
 The table below is a summary of methods.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
-If the optional field is empty, the function must be implemented.
+If the optional field is not marked, the function must be implemented.
 
 |Name|Prototype|
 |---|---|
@@ -44,6 +44,7 @@ If the optional field is empty, the function must be implemented.
 
 The table below is a summary of events.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
+All the following events must be implemented.
 
 |Name|Prototype|
 |---|---|
@@ -51,6 +52,7 @@ The prototype uses the syntax from Solidity `0.4.24` (or above).
 
 
 ### Methods
+
 #### transferFrom
 
 Transfers `_value` amount of tokens from address `_from` to address `_to`, and MUST fire the `Transfer` event.
@@ -61,7 +63,7 @@ The function SHOULD `throw` unless the `_from` account has deliberately authoriz
 
 *Note* Transfers of 0 values MUST be treated as normal transfers and fire the `Transfer` event.
 
-``` js
+```solidity
 function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)
 ```
 
@@ -69,13 +71,13 @@ function transferFrom(address _from, address _to, uint256 _value) public returns
 
 #### approve
 
-Allows `_spender` to withdraw from your account multiple times, up to the `_value` amount. If this function is called again it overwrites the current allowance with `_value`.
+Allows `_spender` to withdraw from your account multiple times, up to the `_value` amount. If this function is called again, it overwrites the current allowance with `_value`.
 
 **NOTE**: To prevent attack vectors like the one [described here](https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/) and discussed [here](https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729),
 clients SHOULD make sure to create user interfaces in such a way that they set the allowance first to `0` before setting it to another value for the same spender.
 THOUGH The contract itself shouldn't enforce it, to allow backwards compatibility with contracts deployed before.
 
-``` js
+```solidity
 function approve(address _spender, uint256 _value) public returns (bool success)
 ```
 
@@ -84,7 +86,7 @@ function approve(address _spender, uint256 _value) public returns (bool success)
 
 Returns the amount which `_spender` is still allowed to withdraw from `_owner`.
 
-``` js
+```solidity
 function allowance(address _owner, address _spender) public view returns (uint256 remaining)
 ```
 
@@ -95,7 +97,7 @@ function allowance(address _owner, address _spender) public view returns (uint25
 
 MUST trigger on any successful call to `approve(address _spender, uint256 _value)`.
 
-``` js
+```solidity
 event Approval(address indexed _owner, address indexed _spender, uint256 _value)
 ```
 
@@ -106,7 +108,7 @@ This token standard is ERC-20 compliant. If you want to use ERC-20 for Klaytn, y
 
 ## Backwards Compatibility
 <!-- All KIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The KIP must explain how the author proposes to deal with these incompatibilities. KIP submissions without a sufficient backwards compatibility treatise may be rejected outright. The authors should answer the question: "Does this KIP require a hard fork?" -->
-No issues for backward compatibility
+There is no compatibility problem.
 
 ## Test Cases
 <!--Test cases for an implementation are mandatory for KIPs that are affecting consensus changes. Other KIPs can choose to include links to test cases if applicable.-->
