@@ -254,6 +254,11 @@ This means v4 is not compatible with v3, hence keystore v3 should also be suppor
 
 ## Implementation
 <!--The implementations must be completed before any KIP is given status "Final", but it need not be completed before the KIP is accepted. While there is merit to the approach of reaching consensus on the specification and rationale before writing code, the principle of "rough consensus and running code" is still useful when it comes to resolving many discussions of API details.-->
+- klaytn
+    - https://github.com/klaytn/klaytn/pull/439
+    - https://github.com/klaytn/klaytn/pull/440
+    - https://github.com/klaytn/klaytn/pull/441
+    - https://github.com/klaytn/klaytn/pull/442
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
