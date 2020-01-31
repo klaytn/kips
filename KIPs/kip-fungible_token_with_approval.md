@@ -5,7 +5,7 @@ author: Junghyun Colin Kim <colin.kim@groundx.xyz>
 discussions-to: <URL>
 status: Draft
 type: Standards Track
-category (*only required for Standard Track): Token
+category: Token
 created: 2020-01-29
 requires : 4
 replaces (*optional): <KIP number(s)>
