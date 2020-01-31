@@ -1,5 +1,5 @@
 ---
-kip: <to be assigned>
+kip: 5
 title: Fungible Token Standard With Approval
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>
 discussions-to: <URL>
