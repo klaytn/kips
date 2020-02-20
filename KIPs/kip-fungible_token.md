@@ -47,7 +47,7 @@ If the optional field is not marked, the function must be implemented.
 |[allowance](#allowance)| |function allowance(address _owner, address _spender) public view returns (uint256 remaining)|
 |[mint](#mint)| O |function mint(address from, uint256 amount) public returns (bool) |
 |[burn](#burn)| O |function burn(uint256 amount) public |
-|[burnFrom](#burnFrom)| O |function burnFrom(address from, uint256 amount) public |
+|[burnFrom](#burnfrom)| O |function burnFrom(address from, uint256 amount) public |
 
 The table below is a summary of events.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
