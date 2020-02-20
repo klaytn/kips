@@ -22,7 +22,7 @@ This standard provides basic functionality to transfer tokens.
 
 ## Motivation
 <!--The motivation is critical for KIPs that want to change the Klaytn protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the KIP solves. KIP submissions without sufficient motivation may be rejected outright.-->
-A standard interface allows any tokens on Klaytn to be re-used by other applications: from wallets to decentralized exchanges.
+A standard interface allows any token on Klaytn to be re-used by other applications: from wallets to decentralized exchanges.
 
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
@@ -35,7 +35,7 @@ The prototype uses the syntax from Solidity `0.4.24` (or above).
 If the optional field is not marked, the function must be implemented.
 
 |Name|Optional|Prototype|
-|---|---|---|
+|---|:---:|---|
 |[name](#name)|O|function name() public view returns (string)|
 |[symbol](#symbol)|O|function symbol() public view returns (string)|
 |[decimals](#decimals)|O|function decimals() public view returns (uint8)|
@@ -73,7 +73,7 @@ function name() public view returns (string)
 
 #### symbol
 
-Returns the symbol of the token. E.g. `"MT"`.
+Returns the symbol of the token. - e.g. `"MT"`.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -93,7 +93,6 @@ but interfaces and other contracts MUST NOT expect these values to be present.
 ```solidity
 function decimals() public view returns (uint8)
 ```
-Transfers `_value` amount of tokens from address `_from` to address `_to`, and MUST fire the `Transfer` event.
 
 
 #### totalSupply
