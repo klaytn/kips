@@ -165,10 +165,8 @@ function allowance(address _owner, address _spender) public view returns (uint25
 Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1).
 The function SHOULD `throw` if the message caller's balance does not have enough tokens to spend.
 
-*Note* Function Modifiers can be used for `mint` function on their own purpose.
-
 ```solidity
-function mint(address account, uint256 amount) public onlyMinter returns (bool) {
+function mint(address account, uint256 amount) public returns (bool) {
 ```
 
 #### burn
