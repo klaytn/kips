@@ -27,7 +27,7 @@ A standard interface allows any token on Klaytn to be re-used by other applicati
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
 This document derived heavily from Ethereum's [ERC-20 token standard](https://eips.ethereum.org/EIPS/eip-20) written by Fabian Vogelsteller and Vitalik Buterin.
-Comparing with ERC-20 token standard, this token standard enforces the triggering of transfer events when minting / burning tokens. 
+Comparing with ERC-20 token standard, this token standard includes mint/burn functions and enforces the triggering of transfer events when minting / burning tokens. 
 
 ### Summary of Methods and Events
 The table below is a summary of methods.
@@ -45,6 +45,9 @@ If the optional field is not marked, the function must be implemented.
 |[transferFrom](#transferfrom)| |function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)|
 |[approve](#approve)| |function approve(address _spender, uint256 _value) public returns (bool success)|
 |[allowance](#allowance)| |function allowance(address _owner, address _spender) public view returns (uint256 remaining)|
+|[mint](#mint)| O |function mint(address from, uint256 amount) public returns (bool) |
+|[burn](#burn)| O |function burn(uint256 amount) public |
+|[burnFrom](#burnFrom)| O |function burnFrom(address from, uint256 amount) public |
 
 The table below is a summary of events.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
@@ -156,6 +159,43 @@ Returns the amount which `_spender` is still allowed to withdraw from `_owner`.
 ```solidity
 function allowance(address _owner, address _spender) public view returns (uint256 remaining)
 ```
+
+#### mint
+
+Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1).
+The function SHOULD `throw` if the message caller's balance does not have enough tokens to spend.
+
+*Note* Function Modifiers can be used for `mint` function on their own purpose.
+
+```solidity
+function mint(address account, uint256 amount) public onlyMinter returns (bool) {
+```
+
+#### burn
+
+Burns `_value` amount of tokens and MUST fire the [Transfer event](#transfer-1).
+The function SHOULD `throw` if the `_to` is `0x0`.
+
+*Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
+
+```solidity
+function burn(uint256 amount) public
+```
+
+#### burnFrom
+
+The `burnFrom` method is used for a withdraw / burn workflow, allowing contracts to burn tokens on your behalf.
+This can be used for example to allow a contract to burn tokens on your behalf.
+The function SHOULD `throw` unless the `_from` account has deliberately authorized the sender of the message via some mechanism.
+The function SHOULD `throw` if the `_to` is `0x0`.
+The function SHOULD `throw` if the sender is `0x0`.
+
+*Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
+
+```solidity
+function burnFrom(address _from, uint256 amount) public 
+```
+
 
 ### Events
 #### Transfer
