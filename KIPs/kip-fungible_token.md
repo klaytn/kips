@@ -27,7 +27,9 @@ A standard interface allows any token on Klaytn to be re-used by other applicati
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
 This document derived heavily from Ethereum's [ERC-20 token standard](https://eips.ethereum.org/EIPS/eip-20) written by Fabian Vogelsteller and Vitalik Buterin.
-Comparing with ERC-20 token standard, this token standard includes mint/burn functions and enforces the triggering of transfer events when minting / burning tokens. 
+Comparing with ERC-20 token standard, this token standard has two differences:
+- includes three more optional functions (mint, burn, and burnFrom)
+- MUST trigger transfer events when minting and burning tokens
 
 ### Summary of Methods and Events
 The table below is a summary of methods.
@@ -163,7 +165,6 @@ function allowance(address _owner, address _spender) public view returns (uint25
 #### mint
 
 Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1).
-The function SHOULD `throw` if the message caller's balance does not have enough tokens to spend.
 
 ```solidity
 function mint(address account, uint256 amount) public returns (bool) {
@@ -172,7 +173,7 @@ function mint(address account, uint256 amount) public returns (bool) {
 #### burn
 
 Burns `_value` amount of tokens and MUST fire the [Transfer event](#transfer-1).
-The function SHOULD `throw` if the `_to` is `0x0`.
+The function SHOULD `throw` if the message caller's balance does not have enough tokens to burn.
 
 *Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
 
@@ -185,7 +186,6 @@ function burn(uint256 amount) public
 The `burnFrom` method is used for a withdraw / burn workflow, allowing contracts to burn tokens on your behalf.
 This can be used for example to allow a contract to burn tokens on your behalf.
 The function SHOULD `throw` unless the `_from` account has deliberately authorized the sender of the message via some mechanism.
-The function SHOULD `throw` if the `_to` is `0x0`.
 The function SHOULD `throw` if the sender is `0x0`.
 
 *Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
