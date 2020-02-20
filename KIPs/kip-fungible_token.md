@@ -163,8 +163,8 @@ function allowance(address _owner, address _spender) public view returns (uint25
 
 MUST trigger when tokens are transferred including zero value transfers.
 
-A token contract which mints new tokens Must trigger a Transfer event with the `_from` address set to `0x0` when tokens are created.
-A token contract which burns tokens Must trigger a Transfer event with the `_to` address set to `0x0` when tokens are burned.
+A token contract which mints new tokens MUST trigger a Transfer event with the `_from` address set to `0x0` when tokens are created.
+A token contract which burns tokens MUST trigger a Transfer event with the `_to` address set to `0x0` when tokens are burned.
 
 ```solidity
 event Transfer(address indexed _from, address indexed _to, uint256 _value)
