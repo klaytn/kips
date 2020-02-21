@@ -63,43 +63,6 @@ All the following events must be implemented.
 
 ### Methods
 
-#### name
-
-Returns the name of the token - e.g. `"MyToken"`.
-
-OPTIONAL - This method can be used to improve usability,
-but interfaces and other contracts MUST NOT expect these values to be present.
-
-
-```solidity
-function name() public view returns (string)
-```
-
-
-#### symbol
-
-Returns the symbol of the token. - e.g. `"MT"`.
-
-OPTIONAL - This method can be used to improve usability,
-but interfaces and other contracts MUST NOT expect these values to be present.
-
-```solidity
-function symbol() public view returns (string)
-```
-
-
-#### decimals
-
-Returns the number of decimals the token uses - e.g. `8`, means to divide the token amount by `100000000` (10^8) to get its user representation.
-
-OPTIONAL - This method can be used to improve usability,
-but interfaces and other contracts MUST NOT expect these values to be present.
-
-```solidity
-function decimals() public view returns (uint8)
-```
-
-
 #### totalSupply
 
 Returns the total token supply.
@@ -162,10 +125,49 @@ Returns the amount which `_spender` is still allowed to withdraw from `_owner`.
 function allowance(address _owner, address _spender) public view returns (uint256 remaining)
 ```
 
+#### name
+
+Returns the name of the token - e.g. `"MyToken"`.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+
+```solidity
+function name() public view returns (string)
+```
+
+
+#### symbol
+
+Returns the symbol of the token. - e.g. `"MT"`.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function symbol() public view returns (string)
+```
+
+
+#### decimals
+
+Returns the number of decimals the token uses - e.g. `8`, means to divide the token amount by `100000000` (10^8) to get its user representation.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function decimals() public view returns (uint8)
+```
+
 #### mint
 
 Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1). The value of `_from` MUST be set to `0x0` in the transfer event.
 The function SHOULD `throw` if the `_to` is `0x0`.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
 function mint(address _to, uint256 _value) public returns (bool) {
@@ -177,6 +179,9 @@ Burns `_value` amount of tokens and MUST fire the [Transfer event](#transfer-1).
 The function SHOULD `throw` if the message caller's balance does not have enough tokens to burn.
 
 *Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
 function burn(uint256 _value) public
@@ -191,6 +196,9 @@ The function SHOULD `throw` unless the `_from` account has deliberately authoriz
 The function SHOULD `throw` if the sender is `0x0`.
 
 *Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
 function burnFrom(address _from, uint256 _value) public 
