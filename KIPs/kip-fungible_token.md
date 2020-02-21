@@ -38,15 +38,15 @@ If the optional field is not marked, the function must be implemented.
 
 |Name|Optional|Prototype|
 |---|:---:|---|
-|[name](#name)|O|function name() public view returns (string)|
-|[symbol](#symbol)|O|function symbol() public view returns (string)|
-|[decimals](#decimals)|O|function decimals() public view returns (uint8)|
 |[totalSupply](#totalsupply)| |function totalSupply() public view returns (uint256)|
 |[balanceOf](#balanceof)| |function balanceOf(address _owner) public view returns (uint256 balance)|
 |[transfer](#transfer)| |function transfer(address _to, uint256 _value) public returns (bool success)|
 |[transferFrom](#transferfrom)| |function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)|
 |[approve](#approve)| |function approve(address _spender, uint256 _value) public returns (bool success)|
 |[allowance](#allowance)| |function allowance(address _owner, address _spender) public view returns (uint256 remaining)|
+|[name](#name)|O|function name() public view returns (string)|
+|[symbol](#symbol)|O|function symbol() public view returns (string)|
+|[decimals](#decimals)|O|function decimals() public view returns (uint8)|
 |[mint](#mint)| O |function mint(address _to, uint256 _value) public returns (bool) |
 |[burn](#burn)| O |function burn(uint256 __value) public |
 |[burnFrom](#burnfrom)| O |function burnFrom(address _from, uint256 _value) public |
