@@ -164,7 +164,7 @@ function allowance(address _owner, address _spender) public view returns (uint25
 
 #### mint
 
-Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1).
+Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1). The value of `_from` MUST be set to `0x0` in the transfer event.
 The function SHOULD `throw` if the `_to` is `0x0`.
 
 ```solidity
@@ -173,7 +173,7 @@ function mint(address _to, uint256 _value) public returns (bool) {
 
 #### burn
 
-Burns `_value` amount of tokens and MUST fire the [Transfer event](#transfer-1).
+Burns `_value` amount of tokens and MUST fire the [Transfer event](#transfer-1). The value of `_from` MUST be set to the token owner's address and the value of `_to` MUST be set to `0x0` in the transfer event.
 The function SHOULD `throw` if the message caller's balance does not have enough tokens to burn.
 
 *Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
@@ -186,6 +186,7 @@ function burn(uint256 _value) public
 
 The `burnFrom` method is used for a withdraw / burn workflow, allowing contracts to burn tokens on your behalf.
 This can be used for example to allow a contract to burn tokens on your behalf.
+The function MUST fire the [Transfer event](#transfer-1). The value of `_from` MUST be set to the token owner's address and the value of `_to` MUST be set to `0x0` in the transfer event.
 The function SHOULD `throw` unless the `_from` account has deliberately authorized the sender of the message via some mechanism.
 The function SHOULD `throw` if the sender is `0x0`.
 
