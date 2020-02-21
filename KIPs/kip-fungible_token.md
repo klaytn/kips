@@ -47,9 +47,9 @@ If the optional field is not marked, the function must be implemented.
 |[transferFrom](#transferfrom)| |function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)|
 |[approve](#approve)| |function approve(address _spender, uint256 _value) public returns (bool success)|
 |[allowance](#allowance)| |function allowance(address _owner, address _spender) public view returns (uint256 remaining)|
-|[mint](#mint)| O |function mint(address from, uint256 amount) public returns (bool) |
-|[burn](#burn)| O |function burn(uint256 amount) public |
-|[burnFrom](#burnfrom)| O |function burnFrom(address from, uint256 amount) public |
+|[mint](#mint)| O |function mint(address _to, uint256 _value) public returns (bool) |
+|[burn](#burn)| O |function burn(uint256 __value) public |
+|[burnFrom](#burnfrom)| O |function burnFrom(address _from, uint256 _value) public |
 
 The table below is a summary of events.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
@@ -165,9 +165,10 @@ function allowance(address _owner, address _spender) public view returns (uint25
 #### mint
 
 Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1).
+The function SHOULD `throw` if the `_to` is `0x0`.
 
 ```solidity
-function mint(address account, uint256 amount) public returns (bool) {
+function mint(address _to, uint256 _value) public returns (bool) {
 ```
 
 #### burn
@@ -178,7 +179,7 @@ The function SHOULD `throw` if the message caller's balance does not have enough
 *Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
 
 ```solidity
-function burn(uint256 amount) public
+function burn(uint256 _value) public
 ```
 
 #### burnFrom
@@ -191,7 +192,7 @@ The function SHOULD `throw` if the sender is `0x0`.
 *Note* Burns of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
 
 ```solidity
-function burnFrom(address _from, uint256 amount) public 
+function burnFrom(address _from, uint256 _value) public 
 ```
 
 
