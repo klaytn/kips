@@ -2,7 +2,7 @@
 kip: 7
 title: Fungible Token Standard
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>, Kyungup Kim <ethan.kim@groundx.xyz>
-discussions-to: <URL>
+discussions-to: https://github.com/klaytn/kips/issues/9
 status: Draft
 type: Standards Track
 category: Token
