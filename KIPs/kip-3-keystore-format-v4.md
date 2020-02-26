@@ -3,7 +3,7 @@ kip: 3
 title: Klaytn Keystore Format v4
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>
 discussions-to: https://github.com/klaytn/klaytn/issues/438
-status: Accepted
+status: Final
 type: Standards Track
 category: Application
 created: 2020-01-03
