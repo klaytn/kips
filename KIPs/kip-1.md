@@ -213,9 +213,9 @@ If you are interested in assuming ownership of a KIP, send a message asking to t
 
 The current KIP editors are
 
-` * Junghyun Colin Kim (@kjhman21)`
+` * Kyungup Kim (@KimKyungup)`
 
-` * Tina Kim (@tinaklay)`
+` * Junghyun Colin Kim (@kjhman21)`
 
 ` * Sangmin Seo (@smseo)`
 
