@@ -2,7 +2,7 @@
 kip: 13
 title: Interface Query Standard
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>
-discussions-to: <URL>
+discussions-to: https://github.com/klaytn/kips/issues/14
 status: Draft
 type: Standards Track
 category: Interface
