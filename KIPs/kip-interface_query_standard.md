@@ -1,5 +1,5 @@
 ---
-kip: <to be assigned>
+kip: 13
 title: Interface Query Standard
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>
 discussions-to: <URL>
@@ -20,7 +20,7 @@ This KIP defines a method to query whether a contract implements a certain inter
 This proposal defines:
 1. [How interface identifiers are defined](#how-interface-identifiers-are-defined)
 2. [How a contract publishes the interfaces it implements](#how-a-contract-publishes-the-interfaces-it-implements)
-3. [How to query if a contract implements KIP-X](#how-to-query-if-a-contract-implements-kip-x)
+3. [How to query if a contract implements KIP-13](#how-to-query-if-a-contract-implements-kip-13)
 4. [How to query if a contract implements any given interface](#how-to-query-if-a-contract-implements-any-given-interface)
 
 ## Motivation
@@ -60,15 +60,15 @@ Note: interfaces do not permit optional functions, therefore, the interface iden
 
 ### How a Contract Publishes the Interfaces it Implements
 
-A contract that is compliant with KIP-X shall implement the following interface (referred as `InterfaceIdentifier.sol`):
+A contract that is compliant with KIP-13 shall implement the following interface (referred as `InterfaceIdentifier.sol`):
 
 ```solidity
 pragma solidity ^0.4.24;
 
 interface InterfaceIdentifier {
     /// @notice Query if a contract implements an interface
-    /// @param interfaceID The interface identifier, as defined in KIP-X.
-    /// @dev Interface identifier is defined in KIP-X. This function
+    /// @param interfaceID The interface identifier, as defined in KIP-13.
+    /// @dev Interface identifier is defined in KIP-13. This function
     ///  uses less than 30,000 gas.
     /// @return `true` if the contract implements `interfaceID` and
     ///  `interfaceID` is not 0xffffffff, `false` otherwise.
@@ -90,20 +90,20 @@ This function must return a bool and use at most 30,000 gas.
 
 Implementation note: there are several logical ways to implement this function. Please see the example implementations and the discussion on gas usage.
 
-### How to Query if a Contract Implements KIP-X
+### How to Query if a Contract Implements KIP-13
 
 1. The source contract makes a `STATICCALL` to the destination address with input data: `0x01ffc9a701ffc9a700000000000000000000000000000000000000000000000000000000` and gas 30,000. This corresponds to `contract.supportsInterface(0x01ffc9a7)`.
-2. If the call fails or return false, the destination contract does not implement KIP-X.
+2. If the call fails or return false, the destination contract does not implement KIP-13.
 3. If the call returns true, a second call is made with input data `0x01ffc9a7ffffffff00000000000000000000000000000000000000000000000000000000`.
   This corresponds to `contract.supportsInterface(0xffffffff)`.
-4. If the second call fails or returns true, the destination contract does not implement KIP-X.
-5. Otherwise it implements KIP-X.
+4. If the second call fails or returns true, the destination contract does not implement KIP-13.
+5. Otherwise it implements KIP-13.
 
 ### How to Query if a Contract Implements any Given Interface
 
-1. If you are not sure if the contract implements KIP-X, use the above procedure to confirm.
-2. If it does not implement KIP-X, then you will have to see what methods it uses in other way.
-3. If it implements KIP-X then just call `supportsInterface(interfaceID)` to determine if it implements an interface you can use.
+1. If you are not sure if the contract implements KIP-13, use the above procedure to confirm.
+2. If it does not implement KIP-13, then you will have to see what methods it uses in other way.
+3. If it implements KIP-13 then just call `supportsInterface(interfaceID)` to determine if it implements an interface you can use.
 
 ## Rationale
 
@@ -111,7 +111,7 @@ We tried to keep this specification as simple as possible. This implementation i
 
 ## Backwards Compatibility
 
-The mechanism described above (with `0xffffffff`) should work with most of the contracts previous to this standard to determine that they do not implement KIP-X.
+The mechanism described above (with `0xffffffff`) should work with most of the contracts previous to this standard to determine that they do not implement KIP-13.
 
 ## Test Cases
 
@@ -229,7 +229,7 @@ contract Homer is InterfaceIdentifer, Simpson {
 }
 ```
 
-With three or more supported interfaces (including KIP-X itself as a required supported interface), the mapping approach (in every case) costs less gas than the pure approach (at worst case).
+With three or more supported interfaces (including KIP-13 itself as a required supported interface), the mapping approach (in every case) costs less gas than the pure approach (at worst case).
 
 ## References
 - https://eips.ethereum.org/EIPS/eip-165
