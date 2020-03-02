@@ -340,7 +340,6 @@ function addPauser(address _account) public
 #### renouncePauser
 
 Removes `_account` from pauser, and MUST fire the [PauserRemoved event](#pauserremoved). The value of `_account` MUST be set with same account of `renouncePauser` method in the `PauserRemoved` event.
-The function SHOULD `throw` if the `_account` is not a minter.
 The function SHOULD `throw` if the message sender is not a pauser.
 
 OPTIONAL - This method can be used to improve usability,
