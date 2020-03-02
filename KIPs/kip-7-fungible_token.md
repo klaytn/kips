@@ -227,6 +227,7 @@ function isMinter(address _account) public view returns (bool)
 
 Adds `_account` as a minter, and MUST fire the [MinterAdded event](#minteradded). The value of `_account` MUST be set with same account of `addMinter` method in the `MinterAdded` event.
 The function SHOULD `throw` if the `_account` is already a minter.
+The function SHOULD `throw` if the message sender is not a minter.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -239,6 +240,7 @@ function addMinter(address _account) public
 
 Removes `_account` from minters, and MUST fire the [MinterRemoved event](#minterremoved). The value of `_account` MUST be set with same account of `renounceMinter` method in the `MinterRemoved` event.
 The function SHOULD `throw` if the `_account` is not a minter.
+The function SHOULD `throw` if the message sender is not a minter.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -306,6 +308,7 @@ function pause() public
 
 Unpauses all methods related with token transfer such as transfer, transferFrom and approve methods of the contract. 
 The function MUST fire the [Unpaused event](#unpaused). The value of `_account` MUST be set to be the message caller of the method.
+The function SHOULD `throw` if the message sender is not a pauser.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -326,6 +329,7 @@ function isPauser(address _account) public view returns (bool)
 
 Adds `_account` as a pauser, and MUST fire the [PauserAdded event](#pauseradded). The value of `_account` MUST be set with same account of `addPauser` method in the `PauserAdded` event.
 The function SHOULD `throw` if the `_account` is already a pauser.
+The function SHOULD `throw` if the message sender is not a pauser.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -338,6 +342,7 @@ function addPauser(address _account) public
 
 Removes `_account` from pauser, and MUST fire the [PauserRemoved event](#pauserremoved). The value of `_account` MUST be set with same account of `renouncePauser` method in the `PauserRemoved` event.
 The function SHOULD `throw` if the `_account` is not a minter.
+The function SHOULD `throw` if the message sender is not a pauser.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
