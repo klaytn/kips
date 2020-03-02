@@ -125,6 +125,7 @@ function balanceOf(address _owner) public view returns (uint256 balance)
 
 Transfers `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1).
 The function SHOULD `throw` if the message caller's balance does not have enough tokens to spend.
+The function SHOULD `throw`, if the contract is pausable and paused.
 
 *Note* Transfers of 0 values MUST be treated as normal transfers and fire the [Transfer event](#transfer-1).
 
@@ -137,6 +138,7 @@ function transfer(address _to, uint256 _value) public returns (bool success)
 The `transferFrom` method is used for a withdraw workflow, allowing contracts to transfer tokens on your behalf.
 This can be used for example to allow a contract to transfer tokens on your behalf and/or to charge fees in sub-currencies.
 The function SHOULD `throw` unless the `_from` account has deliberately authorized the sender of the message via some mechanism.
+The function SHOULD `throw`, if the contract is pausable and paused.
 
 *Note* Transfers of 0 values MUST be treated as normal transfers and fire the `Transfer` event.
 
@@ -148,6 +150,7 @@ function transferFrom(address _from, address _to, uint256 _value) public returns
 #### approve
 
 Allows `_spender` to withdraw from your account multiple times, up to the `_value` amount. If this function is called again, it overwrites the current allowance with `_value`.
+The function SHOULD `throw`, if the contract is pausable and paused.
 
 **NOTE**: To prevent attack vectors like the one [described here](https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/) and discussed [here](https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729),
 clients SHOULD make sure to create user interfaces in such a way that they set the allowance first to `0` before setting it to another value for the same spender.
