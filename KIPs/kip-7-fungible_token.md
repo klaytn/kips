@@ -36,6 +36,8 @@ The table below is a summary of methods.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
 If the optional field is not marked, the function must be implemented.
 
+#### Common Methods 
+
 |Name|Optional|Prototype|
 |---|:---:|---|
 |[totalSupply](#totalsupply)| |function totalSupply() public view returns (uint256)|
@@ -47,16 +49,38 @@ If the optional field is not marked, the function must be implemented.
 |[name](#name)|O|function name() public view returns (string)|
 |[symbol](#symbol)|O|function symbol() public view returns (string)|
 |[decimals](#decimals)|O|function decimals() public view returns (uint8)|
-|[mint](#mint)| O |function mint(address _to, uint256 _value) public onlyMinter returns (bool) |
-|[isMinter](#isminter)| O |function isMinter(address _account) public view returns (bool) |
-|[addMinter](#addminter)| O |function addMinter(address _account) public onlyMinter |
-|[renounceMinter](#renounceminter)| O |function renounceMinter() public |
-|[burn](#burn)| O |function burn(uint256 _value) public |
-|[burnFrom](#burnfrom)| O |function burnFrom(address _from, uint256 _value) public |
-|[paused](#paused)| O |function paused() public view returns (bool) |
-|[pause](#pause)| O |function pause() public onlyPauser whenNotPaused |
-|[unpause](#burnfrom)| O |function unpause() public onlyPauser whenPaused |
 
+#### Mint Methods (Optional)
+The table below is a summary of methods related with Mint function.
+These methods are optional.
+
+|Name|Prototype|
+|---|---|
+|[mint](#mint)|function mint(address _to, uint256 _value) public onlyMinter returns (bool) |
+|[isMinter](#isminter)|function isMinter(address _account) public view returns (bool) |
+|[addMinter](#addminter)|function addMinter(address _account) public onlyMinter |
+|[renounceMinter](#renounceminter)|function renounceMinter() public |
+
+#### Burn Methods (Optional)
+The table below is a summary of methods related with Burn function.
+These methods are optional.
+
+|Name|Prototype|
+|---|---|
+|[burn](#burn)|function burn(uint256 _value) public |
+|[burnFrom](#burnfrom)|function burnFrom(address _from, uint256 _value) public |
+
+#### Pause Methods (Optional)
+The table below is a summary of methods related with Pause function.
+These methods are optional.
+
+|Name|Prototype|
+|---|---|
+|[paused](#paused)|function paused() public view returns (bool) |
+|[pause](#pause)|function pause() public onlyPauser whenNotPaused |
+|[unpause](#burnfrom)|function unpause() public onlyPauser whenPaused |
+
+#### Events
 
 The table below is a summary of events.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
