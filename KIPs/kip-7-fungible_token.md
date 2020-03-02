@@ -296,7 +296,7 @@ function paused() public view returns (bool)
 #### pause
 
 Pauses all methods related with token transfer such as transfer, transferFrom and approve methods of the contract. 
-The function MUST fire the [Paused event](#paused). The value of `_account` MUST be set to be the message caller of the method.
+The function MUST fire the [Paused event](#paused). The value of `_account` in the event MUST be set to be the message caller of the method.
 The function SHOULD `throw` if the message sender is not a pauser.
 
 OPTIONAL - This method can be used to improve usability,
@@ -309,7 +309,7 @@ function pause() public
 #### unpause
 
 Unpauses all methods related with token transfer such as transfer, transferFrom and approve methods of the contract. 
-The function MUST fire the [Unpaused event](#unpaused). The value of `_account` MUST be set to be the message caller of the method.
+The function MUST fire the [Unpaused event](#unpaused). The value of `_account` in the event MUST be set to be the message caller of the method.
 The function SHOULD `throw` if the message sender is not a pauser.
 
 OPTIONAL - This method can be used to improve usability,
