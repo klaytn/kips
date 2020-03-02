@@ -79,6 +79,10 @@ These methods are optional.
 |[paused](#paused)|function paused() public view returns (bool) |
 |[pause](#pause)|function pause() public onlyPauser whenNotPaused |
 |[unpause](#burnfrom)|function unpause() public onlyPauser whenPaused |
+|[isPauser](#isminter)|function isPauser(address _account) public view returns (bool) |
+|[addPauser](#addminter)|function addPauser(address _account) public onlyPauser |
+|[renouncePauser](#renounceminter)|function renouncePauser() public |
+
 
 #### Events
 
@@ -94,6 +98,8 @@ All the following events must be implemented.
 |[MinterRemoved](#minterremoved)|event MinterRemoved(address indexed _account)|
 |[Paused](#paused)|event Paused(address _account)|
 |[Unpaused](#unpaused)|event Unpaused(address _account)|
+|[PauserAdded](#pauseradded)|event PauserAdded(address indexed _account)|
+|[PauserRemoved](#pauserremoved)|event PauserRemoved(address indexed _account)|
      
 
 ### Methods
@@ -306,6 +312,38 @@ but interfaces and other contracts MUST NOT expect these values to be present.
 function unpause() public onlyPauser whenPausedc 
 ```
 
+#### isPauser
+
+Returns `true` if `_account` is a pauser or `false` if `_account` is not a pauser. 
+
+```solidity
+function isPauser(address _account) public view returns (bool)
+```
+
+#### addPauser
+
+Adds `_account` as a pauser, and Must fire the [PauserAdded event](#pauseradded). The value of `_account` MUST be set with same account of `addPauser` method in the `PauserAdded` event.
+The function SHOULD `throw` if the `_account` is already a pauser.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function addPauser(address _account) public onlyPauser
+```
+
+#### renouncePauser
+
+remove `_account` from pauser, and Must fire the [PauserRemoved event](#pauserremoved). The value of `_account` MUST be set with same account of `renouncePauser` method in the `PauserRemoved` event.
+The function SHOULD `throw` if the `_account` is not a minter.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function renounceMinter() public
+```
+
 
 ### Events
 #### Transfer
@@ -357,6 +395,22 @@ MUST trigger on any successful call to `unpause()`.
 
 ```solidity
 event Unpaused(address _account)
+```
+
+#### PauserAdded
+
+MUST trigger on any successful call to `addPauser(address _account)`.
+
+```solidity
+event PauserAdded(address indexed _account)
+```
+
+#### PauserRemoved
+
+MUST trigger on any successful call to `renouncePauser()`.
+
+```solidity
+event PauserRemoved(address indexed _account)
 ```
 
 ## Rationale
