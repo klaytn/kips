@@ -51,7 +51,7 @@ If the optional field is not marked, the function must be implemented.
 |[decimals](#decimals)|O|function decimals() public view returns (uint8)|
 
 #### Mint Methods (Optional)
-The table below is a summary of methods related with Mint function.
+The table below is a summary of methods related to generating new tokens.
 These methods are optional.
 
 |Name|Prototype|
@@ -62,7 +62,7 @@ These methods are optional.
 |[renounceMinter](#renounceminter)|function renounceMinter() public |
 
 #### Burn Methods (Optional)
-The table below is a summary of methods related with Burn function.
+The table below is a summary of methods related to destroying tokens.
 These methods are optional.
 
 |Name|Prototype|
@@ -71,7 +71,7 @@ These methods are optional.
 |[burnFrom](#burnfrom)|function burnFrom(address _from, uint256 _value) public |
 
 #### Pause Methods (Optional)
-The table below is a summary of methods related with Pause function.
+The table below is a summary of methods related to suspending a token contract.
 These methods are optional.
 
 |Name|Prototype|
