@@ -206,6 +206,7 @@ function decimals() public view returns (uint8)
 
 Mints `_value` amount of tokens to address `_to`, and MUST fire the [Transfer event](#transfer-1). The value of `_from` MUST be set to `0x0` in the transfer event.
 The function SHOULD `throw` if the `_to` is `0x0`.
+The function SHOULD `throw` if the message sender is not a minter.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -292,6 +293,7 @@ function paused() public view returns (bool)
 
 Pauses all methods related with token transfer such as transfer, transferFrom and approve methods of the contract. 
 The function MUST fire the [Paused event](#paused). The value of `_account` MUST be set to be the message caller of the method.
+The function SHOULD `throw` if the message sender is not a pauser.
 
 OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
@@ -334,7 +336,7 @@ function addPauser(address _account) public
 
 #### renouncePauser
 
-remove `_account` from pauser, and Must fire the [PauserRemoved event](#pauserremoved). The value of `_account` MUST be set with same account of `renouncePauser` method in the `PauserRemoved` event.
+Removes `_account` from pauser, and Must fire the [PauserRemoved event](#pauserremoved). The value of `_account` MUST be set with same account of `renouncePauser` method in the `PauserRemoved` event.
 The function SHOULD `throw` if the `_account` is not a minter.
 
 OPTIONAL - This method can be used to improve usability,
