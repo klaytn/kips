@@ -241,7 +241,7 @@ function addMinter(address _account) public
 
 #### renounceMinter
 
-Removes `_account` from minters, and MUST fire the [MinterRemoved event](#minterremoved). The value of `_account` MUST be set with the message sender `renounceMinter` method in the `MinterRemoved` event.
+Removes the message sender from minters, and MUST fire the [MinterRemoved event](#minterremoved). The value of `_account` MUST be set with the message sender of `renounceMinter` method in the `MinterRemoved` event.
 The function SHOULD `throw` if the message sender is not a minter.
 
 OPTIONAL - This method can be used to improve usability,
