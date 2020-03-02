@@ -56,9 +56,9 @@ These methods are optional.
 
 |Name|Prototype|
 |---|---|
-|[mint](#mint)|function mint(address _to, uint256 _value) public onlyMinter returns (bool) |
+|[mint](#mint)|function mint(address _to, uint256 _value) public returns (bool) |
 |[isMinter](#isminter)|function isMinter(address _account) public view returns (bool) |
-|[addMinter](#addminter)|function addMinter(address _account) public onlyMinter |
+|[addMinter](#addminter)|function addMinter(address _account) public |
 |[renounceMinter](#renounceminter)|function renounceMinter() public |
 
 #### Burn Methods (Optional)
@@ -77,10 +77,10 @@ These methods are optional.
 |Name|Prototype|
 |---|---|
 |[paused](#paused)|function paused() public view returns (bool) |
-|[pause](#pause)|function pause() public onlyPauser whenNotPaused |
-|[unpause](#burnfrom)|function unpause() public onlyPauser whenPaused |
+|[pause](#pause)|function pause() public whenNotPaused |
+|[unpause](#burnfrom)|function unpause() public whenPaused |
 |[isPauser](#isminter)|function isPauser(address _account) public view returns (bool) |
-|[addPauser](#addminter)|function addPauser(address _account) public onlyPauser |
+|[addPauser](#addminter)|function addPauser(address _account) public |
 |[renouncePauser](#renounceminter)|function renouncePauser() public |
 
 
@@ -211,7 +211,7 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
-function mint(address _to, uint256 _value) public onlyMinter returns (bool)
+function mint(address _to, uint256 _value) public returns (bool)
 ```
 
 #### isMinter
@@ -231,7 +231,7 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
-function addMinter(address _account) public onlyMinter
+function addMinter(address _account) public 
 ```
 
 #### renounceMinter
@@ -297,7 +297,7 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
-function pause() public onlyPauser whenNotPaused
+function pause() public whenNotPaused
 ```
 
 #### unpause
@@ -309,7 +309,7 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
-function unpause() public onlyPauser whenPausedc 
+function unpause() public whenPausedc 
 ```
 
 #### isPauser
@@ -329,7 +329,7 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
-function addPauser(address _account) public onlyPauser
+function addPauser(address _account) public 
 ```
 
 #### renouncePauser
