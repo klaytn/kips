@@ -77,8 +77,8 @@ These methods are optional.
 |Name|Prototype|
 |---|---|
 |[paused](#paused)|function paused() public view returns (bool) |
-|[pause](#pause)|function pause() public whenNotPaused |
-|[unpause](#burnfrom)|function unpause() public whenPaused |
+|[pause](#pause)|function pause() public |
+|[unpause](#burnfrom)|function unpause() public |
 |[isPauser](#isminter)|function isPauser(address _account) public view returns (bool) |
 |[addPauser](#addminter)|function addPauser(address _account) public |
 |[renouncePauser](#renounceminter)|function renouncePauser() public |
