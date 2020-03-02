@@ -47,9 +47,16 @@ If the optional field is not marked, the function must be implemented.
 |[name](#name)|O|function name() public view returns (string)|
 |[symbol](#symbol)|O|function symbol() public view returns (string)|
 |[decimals](#decimals)|O|function decimals() public view returns (uint8)|
-|[mint](#mint)| O |function mint(address _to, uint256 _value) public returns (bool) |
-|[burn](#burn)| O |function burn(uint256 __value) public |
+|[mint](#mint)| O |function mint(address _to, uint256 _value) public onlyMinter returns (bool) |
+|[isMinter](#isminter)| O |function isMinter(address _account) public view returns (bool) |
+|[addMinter](#addminter)| O |function addMinter(address _account) public onlyMinter |
+|[renounceMinter](#renounceminter)| O |function renounceMinter() public |
+|[burn](#burn)| O |function burn(uint256 _value) public |
 |[burnFrom](#burnfrom)| O |function burnFrom(address _from, uint256 _value) public |
+|[paused](#paused)| O |function paused() public view returns (bool) |
+|[pause](#pause)| O |function pause() public onlyPauser whenNotPaused |
+|[unpause](#burnfrom)| O |function unpause() public onlyPauser whenPaused |
+
 
 The table below is a summary of events.
 The prototype uses the syntax from Solidity `0.4.24` (or above).
@@ -59,7 +66,11 @@ All the following events must be implemented.
 |---|---|
 |[Transfer](#transfer-1)|event Transfer(address indexed _from, address indexed _to, uint256 _value)|
 |[Approval](#approval)|event Approval(address indexed _owner, address indexed _spender, uint256 _value)|
-
+|[MinterAdded](#minteradded)|event MinterAdded(address indexed _account)|
+|[MinterRemoved](#minterremoved)|event MinterRemoved(address indexed _account)|
+|[Paused](#paused)|event Paused(address _account)|
+|[Unpaused](#unpaused)|event Unpaused(address _account)|
+     
 
 ### Methods
 
@@ -170,7 +181,39 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
-function mint(address _to, uint256 _value) public returns (bool) {
+function mint(address _to, uint256 _value) public onlyMinter returns (bool) {
+```
+
+#### isMinter
+
+Returns `true` if `_account` is a minter or `false` if `_account` is not a minter. 
+
+```solidity
+function isMinter(address _account) public view returns (bool)
+```
+
+#### addMinter
+
+Adds `_account` as a minter, and Must fire the [MinterAdded event](#minteradded). The value of `_account` MUST be set with same account of `addMinter` method in the `MinterAdded` event.
+The function SHOULD `throw` if the `_account` is already a minter.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function addMinter(address _account) public onlyMinter
+```
+
+#### renounceMinter
+
+remove `_account` from minters, and Must fire the [MinterRemoved event](#minterremoved). The value of `_account` MUST be set with same account of `renounceMinter` method in the `MinterRemoved` event.
+The function SHOULD `throw` if the `_account` is not a minter.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function renounceMinter() public
 ```
 
 #### burn
@@ -204,6 +247,41 @@ but interfaces and other contracts MUST NOT expect these values to be present.
 function burnFrom(address _from, uint256 _value) public 
 ```
 
+#### paused
+
+Returns `true` if the contract is paused or `false` if the contract is not paused.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function paused() public view returns (bool) 
+```
+
+#### pause
+
+Pauses all methods related with token transfer such as transfer, transferFrom, approve, increaseAllowance and decreaseAllowance methods of the contract. 
+The function MUST fire the [Paused event](#paused). The value of `_account` MUST be set to be the message caller of the method.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function pause() public onlyPauser whenNotPaused
+```
+
+#### unpause
+
+Unpauses all methods related with token transfer such as transfer, transferFrom, approve, increaseAllowance and decreaseAllowance methods of the contract. 
+The function MUST fire the [Unpaused event](#unpaused). The value of `_account` MUST be set to be the message caller of the method.
+
+OPTIONAL - This method can be used to improve usability,
+but interfaces and other contracts MUST NOT expect these values to be present.
+
+```solidity
+function unpause() public onlyPauser whenPausedc 
+```
+
 
 ### Events
 #### Transfer
@@ -225,7 +303,37 @@ MUST trigger on any successful call to `approve(address _spender, uint256 _value
 event Approval(address indexed _owner, address indexed _spender, uint256 _value)
 ```
 
+#### MinterAdded
 
+MUST trigger on any successful call to `addMinter(address _account)`.
+
+```solidity
+event MinterAdded(address indexed _account)
+```
+
+#### MinterRemoved
+
+MUST trigger on any successful call to `renounceMinter()`.
+
+```solidity
+event MinterRemoved(address indexed _account)
+```
+
+#### Paused
+
+MUST trigger on any successful call to `pause()`.
+
+```solidity
+event Paused(address _account)
+```
+
+#### Unpaused
+
+MUST trigger on any successful call to `unpause()`.
+
+```solidity
+event Unpaused(address _account)
+```
 
 ## Rationale
 <!--The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->
