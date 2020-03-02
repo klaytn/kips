@@ -309,7 +309,7 @@ OPTIONAL - This method can be used to improve usability,
 but interfaces and other contracts MUST NOT expect these values to be present.
 
 ```solidity
-function unpause() public whenPausedc 
+function unpause() public 
 ```
 
 #### isPauser
