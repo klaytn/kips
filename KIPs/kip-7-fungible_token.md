@@ -324,7 +324,7 @@ function isPauser(address _account) public view returns (bool)
 
 #### addPauser
 
-Adds `_account` as a pauser, and Must fire the [PauserAdded event](#pauseradded). The value of `_account` MUST be set with same account of `addPauser` method in the `PauserAdded` event.
+Adds `_account` as a pauser, and MUST fire the [PauserAdded event](#pauseradded). The value of `_account` MUST be set with same account of `addPauser` method in the `PauserAdded` event.
 The function SHOULD `throw` if the `_account` is already a pauser.
 
 OPTIONAL - This method can be used to improve usability,
@@ -336,7 +336,7 @@ function addPauser(address _account) public
 
 #### renouncePauser
 
-Removes `_account` from pauser, and Must fire the [PauserRemoved event](#pauserremoved). The value of `_account` MUST be set with same account of `renouncePauser` method in the `PauserRemoved` event.
+Removes `_account` from pauser, and MUST fire the [PauserRemoved event](#pauserremoved). The value of `_account` MUST be set with same account of `renouncePauser` method in the `PauserRemoved` event.
 The function SHOULD `throw` if the `_account` is not a minter.
 
 OPTIONAL - This method can be used to improve usability,
