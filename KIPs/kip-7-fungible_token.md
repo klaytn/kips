@@ -225,7 +225,7 @@ function isMinter(address _account) public view returns (bool)
 
 #### addMinter
 
-Adds `_account` as a minter, and Must fire the [MinterAdded event](#minteradded). The value of `_account` MUST be set with same account of `addMinter` method in the `MinterAdded` event.
+Adds `_account` as a minter, and MUST fire the [MinterAdded event](#minteradded). The value of `_account` MUST be set with same account of `addMinter` method in the `MinterAdded` event.
 The function SHOULD `throw` if the `_account` is already a minter.
 
 OPTIONAL - This method can be used to improve usability,
@@ -237,7 +237,7 @@ function addMinter(address _account) public
 
 #### renounceMinter
 
-remove `_account` from minters, and Must fire the [MinterRemoved event](#minterremoved). The value of `_account` MUST be set with same account of `renounceMinter` method in the `MinterRemoved` event.
+Removes `_account` from minters, and MUST fire the [MinterRemoved event](#minterremoved). The value of `_account` MUST be set with same account of `renounceMinter` method in the `MinterRemoved` event.
 The function SHOULD `throw` if the `_account` is not a minter.
 
 OPTIONAL - This method can be used to improve usability,
