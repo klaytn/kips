@@ -30,6 +30,9 @@ This document derived heavily from Ethereum's [ERC-20 token standard](https://ei
 Comparing with ERC-20 token standard, this token standard has two differences:
 - includes three more optional functions (mint, burn, and burnFrom)
 - MUST trigger transfer events when minting and burning tokens
+- MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) interface for each method group.
+
+Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract must implement the KIP-7 and [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) interfaces.
 
 ### Summary of Methods and Events
 The table below is a summary of methods.
@@ -46,9 +49,46 @@ If the optional field is not marked, the function must be implemented.
 |[transferFrom](#transferfrom)| |function transferFrom(address _from, address _to, uint256 _value) public returns (bool success)|
 |[approve](#approve)| |function approve(address _spender, uint256 _value) public returns (bool success)|
 |[allowance](#allowance)| |function allowance(address _owner, address _spender) public view returns (uint256 remaining)|
-|[name](#name)|O|function name() public view returns (string)|
-|[symbol](#symbol)|O|function symbol() public view returns (string)|
-|[decimals](#decimals)|O|function decimals() public view returns (uint8)|
+
+Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for common methods.
+```solidity
+/// @title KIP-7 Fungible Token Standard
+///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+interface IKIP7 {
+    function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
+
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address recipient, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+}
+```
+
+#### Detailed Methods (Optional)
+|Name|Optional|Prototype|
+|---|---|
+|[name](#name)|function name() public view returns (string)|
+|[symbol](#symbol)|function symbol() public view returns (string)|
+|[decimals](#decimals)|function decimals() public view returns (uint8)|
+
+
+Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with detailed methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for detailed methods.
+```solidity
+/// @title KIP-721 Non-Fungible Token Standard, optional detailed extension
+///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+interface IKIP7Detailed {
+    function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
+
+    function name() public view returns (string memory);
+    function symbol() public view returns (string memory);
+    function decimals() public view returns (uint8);
+}
+```
 
 #### Mint Methods (Optional)
 The table below is a summary of methods related to generating new tokens.
@@ -61,6 +101,20 @@ These methods are optional.
 |[addMinter](#addminter)|function addMinter(address _account) public |
 |[renounceMinter](#renounceminter)|function renounceMinter() public |
 
+Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with mint methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for mint methods.
+```solidity
+/// @title KIP-721 Non-Fungible Token Standard, optional mint extension
+///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+interface IKIP7Mint {
+    function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
+
+    function mint(address account, uint256 amount) public onlyMinter returns (bool);
+    function isMinter(address account) public view returns (bool); 
+    function addMinter(address account) public;
+    function renounceMinter() public;
+}
+```
+
 #### Burn Methods (Optional)
 The table below is a summary of methods related to destroying tokens.
 These methods are optional.
@@ -69,6 +123,19 @@ These methods are optional.
 |---|---|
 |[burn](#burn)|function burn(uint256 _value) public |
 |[burnFrom](#burnfrom)|function burnFrom(address _from, uint256 _value) public |
+
+
+Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with burn methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for burn methods.
+```solidity
+/// @title KIP-721 Non-Fungible Token Standard, optional burn extension
+///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+interface IKIP7Burn {
+    function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
+
+    function burn(uint256 amount) public;
+    function burnFrom(address account, uint256 amount) public;
+}
+```
 
 #### Pause Methods (Optional)
 The table below is a summary of methods related to suspending a token contract.
@@ -83,6 +150,18 @@ These methods are optional.
 |[addPauser](#addminter)|function addPauser(address _account) public |
 |[renouncePauser](#renounceminter)|function renouncePauser() public |
 
+Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with Pause methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for Pause methods.
+```solidity
+/// @title KIP-721 Non-Fungible Token Standard, optional pause extension
+///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+interface IKIP7Pause {
+    function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
+
+    function transfer(address to, uint256 value) public whenNotPaused returns (bool);
+    function transferFrom(address from, address to, uint256 value) public whenNotPaused returns (bool);
+    function approve(address spender, uint256 value) public whenNotPaused returns (bool);
+}
+```
 
 #### Events
 
