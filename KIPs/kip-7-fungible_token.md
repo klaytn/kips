@@ -70,7 +70,7 @@ interface IKIP7 {
 ```
 
 #### Detailed Methods (Optional)
-|Name|Optional|Prototype|
+|Name|Prototype|
 |---|---|
 |[name](#name)|function name() public view returns (string)|
 |[symbol](#symbol)|function symbol() public view returns (string)|
