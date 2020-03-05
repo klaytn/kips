@@ -27,8 +27,8 @@ A standard interface allows any token on Klaytn to be re-used by other applicati
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
 This document derived heavily from Ethereum's [ERC-20 token standard](https://eips.ethereum.org/EIPS/eip-20) written by Fabian Vogelsteller and Vitalik Buterin.
-Comparing with ERC-20 token standard, this token standard has two differences:
-- includes three more optional functions (mint, burn, and burnFrom)
+Comparing with ERC-20 token standard, this token standard has some differences:
+- can include optional functions (e.g. mint, burn, pausable methods)
 - MUST trigger transfer events when minting and burning tokens
 - MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) interface for each method group.
 
