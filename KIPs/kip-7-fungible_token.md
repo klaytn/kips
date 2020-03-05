@@ -69,24 +69,31 @@ interface IKIP7 {
     function totalSupply() external view returns (uint256);
 
     /// @dev Returns the amount of tokens owned by `account`.
+    /// @param account An address for whom to query the balance
     function balanceOf(address account) external view returns (uint256);
 
     /// @dev Moves `amount` tokens from the caller's account to `recipient`.
-    ///
+    /// Throws if the message caller's balance does not have enough tokens to spend.
+    /// Throws if the contract is pausable and paused.	
     /// Returns a boolean value indicating whether the operation succeeded.
     ///
     /// Emits a {Transfer} event.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
     function transfer(address recipient, uint256 amount) external returns (bool);
 
     /// @dev Returns the remaining number of tokens that `spender` will be
     /// allowed to spend on behalf of `owner` through {transferFrom}. This is
     /// zero by default.
+    /// Throws if the contract is pausable and paused.	
     ///
     /// This value changes when {approve} or {transferFrom} are called.
+    /// @param owner The account allowed `spender` to withdraw the tokens from the account.
+    /// @param spender The address is approved to withdraw the tokens.
     function allowance(address owner, address spender) external view returns (uint256);
 
     /// @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
-    ///
+    /// Throws if the contract is pausable and paused.
     /// Returns a boolean value indicating whether the operation succeeded.
     ///
     /// IMPORTANT: Beware that changing an allowance with this method brings the risk
@@ -97,15 +104,23 @@ interface IKIP7 {
     /// https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
     ///
     /// Emits an {Approval} event.
+    /// @param spender The address is approved to withdraw the tokens.
+    /// @param amount The token amount will be approved.
     function approve(address spender, uint256 amount) external returns (bool);
 
     /// @dev Moves `amount` tokens from `sender` to `recipient` using the
     /// allowance mechanism. `amount` is then deducted from the caller's
     /// allowance.
-    ///
+    /// Throw unless the `sender` account has deliberately authorized the sender of the message via some mechanism.
+    /// Throw if `sender` or `recipient` is the zero address.
+    /// Throws if the contract is pausable and paused.	
     /// Returns a boolean value indicating whether the operation succeeded.
     ///
     /// Emits a {Transfer} event.
+    /// Emits an `Approval` event indicating the updated allowance.
+    /// @param sender The current owner of the tokens.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 }
 ```
