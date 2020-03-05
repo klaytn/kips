@@ -156,10 +156,10 @@ Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant
 ///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
 interface IKIP7Pause {
     function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
-
-    function transfer(address to, uint256 value) public whenNotPaused returns (bool);
-    function transferFrom(address from, address to, uint256 value) public whenNotPaused returns (bool);
-    function approve(address spender, uint256 value) public whenNotPaused returns (bool);
+    
+    function paused() public view returns (bool)
+    function pause() public;
+    function unpause() public;
 }
 ```
 
