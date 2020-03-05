@@ -285,6 +285,7 @@ interface KIP17Enumerable {
 
 ### Minting Extension
 The **minting extension** is OPTIONAL for KIP-17 smart contracts. This allows your contract to mint a new token.
+Note: `KIP17MetadataMintable` is mutually exclusive with `KIP17Mintable`. If you want to use tokenURI, use `KIP17MetadataMintable`.
 
 ```solidity
 pragma solidity 0.4.24;
@@ -317,6 +318,7 @@ interface KIP17Mintable {
 
 ### Minting with URI Extension
 The **minting with URI extension** is OPTIONAL for KIP-17 smart contracts. This allows your contract to mint a new token with URI.
+Note: `KIP17MetadataMintable` is mutually exclusive with `KIP17Mintable`. If you want to use tokenURI, use `KIP17MetadataMintable`.
 
 ```solidity
 pragma solidity 0.4.24;
@@ -331,6 +333,20 @@ interface KIP17MetadataMintable {
     /// @param _tokenURI the token URI of the newly minted token
     /// @return True if the minting operation is succeeded, false otherwise
     function mintWithTokenURI(address _to, uint256 _tokenId, string memory _tokenURI) public returns (bool);
+
+    /// @notice Check the minting permission
+    /// @param _account The account to check the minting permission
+    /// @return True if the account has the minting permission, false otherwise
+    function isMinter(address _account) public view returns (bool);
+
+    /// @notice Give the minting permission to `_account`
+    /// @dev Throws if `msg.sender` is not allowed to mint
+    /// @param _account The account to be given the minting permission
+    function addMinter(address _account) public;
+
+    /// @notice Renounce the minter permission of `msg.sender`
+    /// @dev Throws if `msg.sender` is not allowed to mint
+    function renounceMinter() public;
 }
 ```
 
