@@ -37,6 +37,7 @@ This section describes the differences between KIP-17 and ERC-721.
 
 - Every token transfer/mint/burn MUST be tracked by event logs. This means that a Transfer event MUST be emitted for any action related to transfer/mint/burn.
 - KIP-17 also supports the wallet interface of ERC-721 (`ERC721TokenReceiver`) to be compliant with ERC-721.
+- More optional extensions are defined (minting extension, minting with URI extension, burning extension, and pausing extension).
 
 ### KIP-13 Identifiers
 The below table shows KIP-13 identifiers for interfaces defined in this proposal.
@@ -49,6 +50,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 |KIP17Metadata|0x5b5e139f|
 |KIP17Enumerable|0x780e9d63|
 |KIP17Mintable|0xeab83e20|
+|KIP17MetadataMintable|0x50bb4e7f|
 |KIP17Burnable|0x42966c68|
 |KIP17Pausable|0x4d5507ff|
 
@@ -310,6 +312,25 @@ interface KIP17Mintable {
     /// @notice Renounce the minter permission of `msg.sender`
     /// @dev Throws if `msg.sender` is not allowed to mint
     function renounceMinter() public;
+}
+```
+
+### Minting with URI Extension
+The **minting with URI extension** is OPTIONAL for KIP-17 smart contracts. This allows your contract to mint a new token with URI.
+
+```solidity
+pragma solidity 0.4.24;
+
+/// @title KIP-17 Non-Fungible Token Standard, optional minting with URI extension
+///  Note: the KIP-13 identifier for this interface is 0x50bb4e7f.
+interface KIP17MetadataMintable {
+    /// @notice Create a new token with the specified URI
+    /// @dev Throws if `msg.sender` is not allowed to mint
+    /// @param _to The account that will receive the minted token
+    /// @param _tokenId The token ID to mint
+    /// @param _tokenURI the token URI of the newly minted token
+    /// @return True if the minting operation is succeeded, false otherwise
+    function mintWithTokenURI(address _to, uint256 _tokenId, string memory _tokenURI) public returns (bool);
 }
 ```
 
