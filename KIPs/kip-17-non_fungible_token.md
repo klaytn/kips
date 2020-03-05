@@ -44,15 +44,15 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 
 |Interface|KIP-13 Identifier|
 |---|---|
-|KIP17|0x80ac58cd|
-|KIP17TokenReceiver|0x6745782b|
-|ERC721TokenReceiver|0x150b7a02|
-|KIP17Metadata|0x5b5e139f|
-|KIP17Enumerable|0x780e9d63|
-|KIP17Mintable|0xeab83e20|
-|KIP17MetadataMintable|0x50bb4e7f|
-|KIP17Burnable|0x42966c68|
-|KIP17Pausable|0x4d5507ff|
+|[KIP17](#kip17-interface)|0x80ac58cd|
+|[KIP17TokenReceiver](#wallet-interface-kip17tokenreceiver)|0x6745782b|
+|[ERC721TokenReceiver](#wallet-interface-kip17tokenreceiver)|0x150b7a02|
+|[KIP17Metadata](#metadata-extension)|0x5b5e139f|
+|[KIP17Enumerable](#enumeration-extension)|0x780e9d63|
+|[KIP17Mintable](#minting-extension)|0xeab83e20|
+|[KIP17MetadataMintable](#minting-with-uri-extension)|0x50bb4e7f|
+|[KIP17Burnable](#burning-extension)|0x42966c68|
+|[KIP17Pausable](#pausing-extension)|0x4d5507ff|
 
 ### KIP17 Interface
 ```solidity
