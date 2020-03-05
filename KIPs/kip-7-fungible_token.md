@@ -28,7 +28,7 @@ A standard interface allows any token on Klaytn to be re-used by other applicati
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
 This document derived heavily from Ethereum's [ERC-20 token standard](https://eips.ethereum.org/EIPS/eip-20) written by Fabian Vogelsteller and Vitalik Buterin.
 Comparing with ERC-20 token standard, this token standard has some differences:
-- can include optional functions (e.g. mint, burn, pausable methods)
+- can include optional functions (e.g. mintable, burnable and pausable methods)
 - MUST trigger transfer events when minting and burning tokens
 - MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) interface for each method group.
 
@@ -79,7 +79,7 @@ interface IKIP7 {
 
 Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with detailed methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for detailed methods.
 ```solidity
-/// @title KIP-721 Non-Fungible Token Standard, optional detailed extension
+/// @title KIP-7 Fungible Token Standard, optional detailed extension
 ///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
 interface IKIP7Detailed {
     function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
@@ -103,7 +103,7 @@ These methods are optional.
 
 Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with mint methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for mint methods.
 ```solidity
-/// @title KIP-721 Non-Fungible Token Standard, optional mint extension
+/// @title KIP-7 Fungible Token Standard, optional mint extension
 ///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
 interface IKIP7Mint {
     function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
@@ -127,7 +127,7 @@ These methods are optional.
 
 Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with burn methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for burn methods.
 ```solidity
-/// @title KIP-721 Non-Fungible Token Standard, optional burn extension
+/// @title KIP-7 Fungible Token Standard, optional burn extension
 ///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
 interface IKIP7Burn {
     function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
@@ -152,7 +152,7 @@ These methods are optional.
 
 Every [KIP-7](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token) compliant contract with Pause methods MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) `supportsInterface` with the identifier `0xXXXXXXXX` for Pause methods.
 ```solidity
-/// @title KIP-721 Non-Fungible Token Standard, optional pause extension
+/// @title KIP-7 Fungible Token Standard, optional pause extension
 ///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
 interface IKIP7Pause {
     function supportsInterface(bytes4 interfaceID) external view returns (bool);    // KIP-13 interface
