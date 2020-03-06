@@ -1,0 +1,15 @@
+version: 2.1
+jobs:
+  check_link:
+    docker:
+      - image: kjhman21/liche
+    working_directory: ~/kips
+    steps:
+      - checkout
+      - run: /liche -r ~/kips/KIPs --document-root ~/kips/KIPs
+
+workflows:
+  version: 2
+  check_docs:
+    jobs:
+      - check_link
