@@ -28,16 +28,18 @@ A standard interface allows any token on Klaytn to be re-used by other applicati
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
 This document is heavily derived from [ERC-20](https://eips.ethereum.org/EIPS/eip-20) written by Fabian Vogelsteller and Vitalik Buterin.
 
-### Comparing with ERC-20
-Comparing with ERC-20 token standard, this token standard has some differences:
-- can include optional functions (e.g. mintable, burnable and pausable methods)
-- Every token transfer/mint/burn MUST be tracked by event logs. This means that a Transfer event MUST be emitted for any action related to transfer/mint/burn.
-- MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) interface for each method group.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-### KIP-7 Identifiers
+### Differences with ERC-20
+This section describes the differences between KIP-7 and ERC-20. 
+- KIP-7 can include optional functions (e.g. mint, burn and pause extentions)
+- Every token transfer/mint/burn MUST be tracked by event logs. This means that a Transfer event MUST be emitted for any action related to transfer/mint/burn.
+- KIP-7 MUST implement [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) interface for each method group.
+
+### KIP-13 Identifiers
 The below table shows KIP-13 identifiers for interfaces defined in this proposal.
 
-|Interface|KIP-7 Identifier|
+|Interface|KIP-13 Identifier|
 |---|---|
 |[IKIP7](#kip7-interface)|0x36372b07|
 |[IKIP7Metadata](#metadata-extension)|0xa219a025|
