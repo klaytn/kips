@@ -39,10 +39,10 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 
 |Interface|KIP-7 Identifier|
 |---|---|
-|[IKIP7](#kip7-interface)|0xXXXXXXXX (TBD)|
-|[IKIP7Metadata](#metadata-extension)|0xXXXXXXXX (TBD)|
+|[IKIP7](#kip7-interface)|0x36372b07|
+|[IKIP7Metadata](#metadata-extension)|0xa219a025|
 |[IKIP7Mint](#mint-extension)|0xeab83e20|
-|[IKIP7Burn](#burn-extension)|0xXXXXXXXX (TBD)|
+|[IKIP7Burn](#burn-extension)|0x3b5a0bf8|
 |[IKIP7Pause](#pause-extension)|0x4d5507ff|
 
 ### Summary of Methods and Events
@@ -53,7 +53,7 @@ If the optional field is not marked, the function must be implemented.
 #### KIP7 Interface
 ```solidity
 /// @title KIP-7 Fungible Token Standard
-///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+///  Note: the KIP-13 identifier for this interface is 0x36372b07.
 interface IKIP7 {
     /// @dev Emitted when `value` tokens are moved from one account (`from`) to
     /// another (`to`) and created (`from` == 0) and destroyed(`to` == 0).
@@ -127,12 +127,12 @@ interface IKIP7 {
 
 #### Metadata Extension
  
-The detailed extension is OPTIONAL for KIP-7 smart contracts. 
+The **metadata extension** is OPTIONAL for KIP-7 smart contracts. 
 This allows your smart contract to be interrogated for its name and for details about the assets which your token represent.
 
 ```solidity
 /// @title KIP-7 Fungible Token Standard, optional metadata extension
-///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+///  Note: the KIP-13 identifier for this interface is 0xa219a025.
 interface IKIP7Metadata {
     /// @dev Returns the name of the token.
     function name() public view returns (string memory);
@@ -155,7 +155,7 @@ interface IKIP7Metadata {
 
 #### Minting Extension
 
-The minting extension is OPTIONAL for KIP-7 smart contracts. This allows your contract to mint tokens.
+The **minting extension** is OPTIONAL for KIP-7 smart contracts. This allows your contract to mint tokens.
 
 ```solidity
 /// @title KIP-7 Fungible Token Standard, optional minting extension
@@ -187,11 +187,11 @@ interface IKIP7Mint {
 
 #### Burning Extension
 
-The burning extension is OPTIONAL for KIP-7 smart contracts. This allows your contract to burn tokens.
+The **burning extension** is OPTIONAL for KIP-7 smart contracts. This allows your contract to burn tokens.
 
 ```solidity
 /// @title KIP-7 Fungible Token Standard, optional burning extension
-///  Note: the KIP-13 identifier for this interface is 0xXXXXXXXX.
+///  Note: the KIP-13 identifier for this interface is 0x3b5a0bf8.
 interface IKIP7Burn {
     /// @notice Destroy the specified token
     /// @dev Throws if the message caller's balance does not have enough 
@@ -212,7 +212,7 @@ interface IKIP7Burn {
 
 #### Pausing Extension
 
-The pausing extension is OPTIONAL for KIP-7 smart contracts. This allows your contract to be suspended from transferring.
+The **pausing extension** is OPTIONAL for KIP-7 smart contracts. This allows your contract to be suspended from transferring.
 
 ```solidity
 /// @title KIP-7 Fungible Token Standard, optional pausing extension
