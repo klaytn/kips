@@ -36,7 +36,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 This section describes the differences between KIP-17 and ERC-721. 
 
 - Every token transfer/mint/burn MUST be tracked by event logs. This means that a Transfer event MUST be emitted for any action related to transfer/mint/burn.
-- KIP-17 also supports the wallet interface of ERC-721 (`ERC721TokenReceiver`) to be compliant with ERC-721.
+- KIP-17 also supports the wallet interface of ERC-721 (`IERC721TokenReceiver`) to be compliant with ERC-721.
 - More optional extensions are defined (minting extension, minting with URI extension, burning extension, and pausing extension).
 
 ### KIP-13 Identifiers
@@ -44,15 +44,15 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 
 |Interface|KIP-13 Identifier|
 |---|---|
-|[KIP17](#kip17-interface)|0x80ac58cd|
-|[KIP17TokenReceiver](#wallet-interface-kip17tokenreceiver)|0x6745782b|
-|[ERC721TokenReceiver](#wallet-interface-kip17tokenreceiver)|0x150b7a02|
-|[KIP17Metadata](#metadata-extension)|0x5b5e139f|
-|[KIP17Enumerable](#enumeration-extension)|0x780e9d63|
-|[KIP17Mintable](#minting-extension)|0xeab83e20|
-|[KIP17MetadataMintable](#minting-with-uri-extension)|0xfac27f46|
-|[KIP17Burnable](#burning-extension)|0x42966c68|
-|[KIP17Pausable](#pausing-extension)|0x4d5507ff|
+|[IKIP17](#kip17-interface)|0x80ac58cd|
+|[IKIP17TokenReceiver](#wallet-interface)|0x6745782b|
+|[IERC721TokenReceiver](#wallet-interface)|0x150b7a02|
+|[IKIP17Metadata](#metadata-extension)|0x5b5e139f|
+|[IKIP17Enumerable](#enumeration-extension)|0x780e9d63|
+|[IKIP17Mintable](#minting-extension)|0xeab83e20|
+|[IKIP17MetadataMintable](#minting-with-uri-extension)|0xfac27f46|
+|[IKIP17Burnable](#burning-extension)|0x42966c68|
+|[IKIP17Pausable](#pausing-extension)|0x4d5507ff|
 
 ### KIP17 Interface
 ```solidity
@@ -60,7 +60,7 @@ pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard
 ///  Note: the KIP-13 identifier for this interface is 0x80ac58cd.
-interface KIP17 {
+interface IKIP17 {
     /// @dev This emits when ownership of any NFT changes by any mechanism.
     ///  This event emits when NFTs are created (`from` == 0) and destroyed
     ///  (`to` == 0). At the time of any transfer, the approved address for 
@@ -156,7 +156,7 @@ interface KIP17 {
 }
 ```
 
-### Wallet Interface (KIP17TokenReceiver)
+### Wallet Interface
 A wallet/broker/auction application MUST implement the **wallet interface** if it will accept safe transfers.
 
 ```solidity
@@ -164,7 +164,7 @@ pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional wallet interface
 /// @dev Note: the KIP-13 identifier for this interface is 0x6745782b.
-interface KIP17TokenReceiver {
+interface IKIP17TokenReceiver {
     /// @notice Handle the receipt of an NFT
     /// @dev The KIP-17 smart contract calls this function on the recipient
     ///  after a `transfer`. This function MAY throw to revert and reject the
@@ -181,14 +181,14 @@ interface KIP17TokenReceiver {
 }
 ```
 
-To be compliant with ERC-721, KIP-17 also supports ERC721TokenReceiver. This makes the current ERC-721 implementation on Ethereum
+To be compliant with ERC-721, KIP-17 also supports IERC721TokenReceiver. This makes the current ERC-721 implementation on Ethereum
 can be easily migrated on to Klaytn without any modification.
 ```solidity
 pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional ERC-721 wallet interface
 /// @dev Note: the KIP-13 identifier for this interface is 0x150b7a02.
-interface ERC721TokenReceiver {
+interface IERC721TokenReceiver {
     /// @notice Handle the receipt of an NFT
     /// @dev The ERC721 smart contract calls this function on the recipient
     ///  after a `transfer`. This function MAY throw to revert and reject the
@@ -213,7 +213,7 @@ pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional metadata extension.
 ///  Note: the KIP-13 identifier for this interface is 0x5b5e139f.
-interface KIP17Metadata {
+interface IKIP17Metadata {
     /// @notice A descriptive name for a collection of NFTs in this contract
     function name() external view returns (string _name);
 
@@ -259,7 +259,7 @@ pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional enumeration extension
 ///  Note: the KIP-13 identifier for this interface is 0x780e9d63.
-interface KIP17Enumerable {
+interface IKIP17Enumerable {
     /// @notice Count NFTs tracked by this contract
     /// @return A count of valid NFTs tracked by this contract, where each one of
     ///  them has an assigned and queryable owner not equal to the zero address
@@ -285,14 +285,14 @@ interface KIP17Enumerable {
 
 ### Minting Extension
 The **minting extension** is OPTIONAL for KIP-17 smart contracts. This allows your contract to mint a new token.
-Note: `KIP17MetadataMintable` is mutually exclusive with `KIP17Mintable`. If you want to use tokenURI, use `KIP17MetadataMintable`.
+Note: `IKIP17MetadataMintable` is mutually exclusive with `IKIP17Mintable`. If you want to use tokenURI, use `IKIP17MetadataMintable`.
 
 ```solidity
 pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional minting extension
 ///  Note: the KIP-13 identifier for this interface is 0xeab83e20.
-interface KIP17Mintable {
+interface IKIP17Mintable {
     /// @notice Create a new token
     /// @dev Throws if `msg.sender` is not allowed to mint
     /// @param _to The account that will receive the minted token
@@ -318,14 +318,14 @@ interface KIP17Mintable {
 
 ### Minting with URI Extension
 The **minting with URI extension** is OPTIONAL for KIP-17 smart contracts. This allows your contract to mint a new token with URI.
-Note: `KIP17MetadataMintable` is mutually exclusive with `KIP17Mintable`. If you want to use tokenURI, use `KIP17MetadataMintable`.
+Note: `IKIP17MetadataMintable` is mutually exclusive with `IKIP17Mintable`. If you want to use tokenURI, use `IKIP17MetadataMintable`.
 
 ```solidity
 pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional minting with URI extension
 ///  Note: the KIP-13 identifier for this interface is 0xfac27f46.
-interface KIP17MetadataMintable {
+interface IKIP17MetadataMintable {
     /// @notice Create a new token with the specified URI
     /// @dev Throws if `msg.sender` is not allowed to mint
     /// @param _to The account that will receive the minted token
@@ -358,7 +358,7 @@ pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional burning extension
 ///  Note: KIP-13 identifier for this interface is 0x42966c68.
-interface KIP17Burnable {
+interface IKIP17Burnable {
     /// @notice Destroy the specified token
     /// @dev Throws unless `msg.sender` is the current owner, an authorized
     ///  operator, or the approved address for this NFT. Throws  `_tokenId`
@@ -377,7 +377,7 @@ pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional pausing extension
 ///  Note: KIP-13 identifier for this interface is 0x4d5507ff.
-interface KIP17Pausable {
+interface IKIP17Pausable {
     /// @dev This emits when the contract is paused
     event Paused(address _account);
 
@@ -419,7 +419,7 @@ interface KIP17Pausable {
 The 0.4.20 Solidity interface grammar is not expressive enough to document the KIP-17 standard. A contract which complies with KIP-17 MUST also abide by the following:
 
 - Solidity issue #3412: The above interfaces include explicit mutability guarantees for each function. Mutability guarantees are, in order weak to strong: `payable`, implicit nonpayable, `view`, and `pure`. Your implementation MUST meet the mutability guarantee in this interface and you MAY meet a stronger guarantee. For example, a `payable` function in this interface may be implemented as nonpayble (no state mutability specified) in your contract. We expect a later Solidity release will allow your stricter contract to inherit from this interface, but a workaround for version 0.4.20 is that you can edit this interface to add stricter mutability before inheriting from your contract.
-- Solidity issue #3419: A contract that implements `KIP17Metadata` or `KIP17Enumerable` SHALL also implement `KIP17`. KIP-17 implements the requirements of interface KIP-13.
+- Solidity issue #3419: A contract that implements `IKIP17Metadata` or `IKIP17Enumerable` SHALL also implement `IKIP17`. KIP-17 implements the requirements of interface KIP-13.
 - Solidity issue #2330: If a function is shown in this specification as `external` then a contract will be compliant if it uses `public` visibility. As a workaround for version 0.4.20, you can edit this interface to switch to `public` before inheriting from your contract.
 - Solidity issues #3494, #3544: Use of `this.*.selector` is marked as a warning by Solidity, a future version of Solidity will not mark this as an error.
 
@@ -487,7 +487,7 @@ This is why the operator and the previous token owner are both significant to th
 We chose Interface Query Standard (KIP-13) to expose the interfaces that a KIP-17 smart contract supports.
 
 A future KIP may create a global registry of interfaces for contracts.
-We strongly support such an KIP and it would allow your KIP-17 implementation to implement `KIP17Enumerable`, `KIP17Metadata`, or other interfaces by delegating to a separate contract.
+We strongly support such an KIP and it would allow your KIP-17 implementation to implement `IKIP17Enumerable`, `IKIP17Metadata`, or other interfaces by delegating to a separate contract.
 
 **Gas and Complexity** (regarding the enumeration extension)
 
