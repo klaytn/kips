@@ -43,9 +43,9 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 |---|---|
 |[IKIP7](#kip7-interface)|0x36372b07|
 |[IKIP7Metadata](#metadata-extension)|0xa219a025|
-|[IKIP7Mint](#minting-extension)|0xeab83e20|
-|[IKIP7Burn](#burning-extension)|0x3b5a0bf8|
-|[IKIP7Pause](#pausing-extension)|0x4d5507ff|
+|[IKIP7Mintable](#minting-extension)|0xeab83e20|
+|[IKIP7Burnable](#burning-extension)|0x3b5a0bf8|
+|[IKIP7Pausable](#pausing-extension)|0x4d5507ff|
 
 ### KIP7 Interface
 ```solidity
@@ -157,7 +157,7 @@ The **minting extension** is OPTIONAL for KIP-7 smart contracts. This allows you
 ```solidity
 /// @title KIP-7 Fungible Token Standard, optional minting extension
 ///  Note: the KIP-13 identifier for this interface is 0xeab83e20.
-interface IKIP7Mint {
+interface IKIP7Mintable {
     /// @notice Creates `amount` tokens and assigns them to `account`, 
     /// increasing the total supply.
     /// @dev Throws if `msg.sender` is not allowed to mint
@@ -189,7 +189,7 @@ The **burning extension** is OPTIONAL for KIP-7 smart contracts. This allows you
 ```solidity
 /// @title KIP-7 Fungible Token Standard, optional burning extension
 ///  Note: the KIP-13 identifier for this interface is 0x3b5a0bf8.
-interface IKIP7Burn {
+interface IKIP7Burnable {
     /// @notice Destroy the specified token
     /// @dev Throws if the message caller's balance does not have enough 
     /// tokens to burn. 
@@ -214,7 +214,7 @@ The **pausing extension** is OPTIONAL for KIP-7 smart contracts. This allows you
 ```solidity
 /// @title KIP-7 Fungible Token Standard, optional pausing extension
 ///  Note: the KIP-13 identifier for this interface is 0x4d5507ff.
-interface IKIP7Pause {
+interface IKIP7Pausable {
     /// @dev This emits when the contract is paused
     event Paused(address _account);
 
