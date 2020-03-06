@@ -132,11 +132,11 @@ This allows your smart contract to be interrogated for its name and for details 
 ///  Note: the KIP-13 identifier for this interface is 0xa219a025.
 interface IKIP7Metadata {
     /// @dev Returns the name of the token.
-    function name() public view returns (string memory);
+    function name() external view returns (string memory);
 
     /// @dev Returns the symbol of the token, usually a shorter version of the
     /// name.
-    function symbol() public view returns (string memory);
+    function symbol() external view returns (string memory);
 
     /// @dev Returns the number of decimals used to get its user representation.
     /// For example, if `decimals` equals `2`, a balance of `505` tokens should
@@ -146,7 +146,7 @@ interface IKIP7Metadata {
     /// NOTE: This information is only used for _display_ purposes: it in
     /// no way affects any of the arithmetic of the contract, including
     /// {IKIP-7-balanceOf} and {IKIP-7-transfer}.
-    function decimals() public view returns (uint8);
+    function decimals() external view returns (uint8);
 }
 ```
 
@@ -164,21 +164,21 @@ interface IKIP7Mint {
     /// @param _to The account that will receive the minted token
     /// @param _amount The token amount to mint
     /// @return True if the minting operation is successful, false otherwise
-    function mint(address _to, uint256 _amount) public returns (bool);
+    function mint(address _to, uint256 _amount) external returns (bool);
 
     /// @notice Check the minting permission
     /// @param _account The account to check the minting permission
     /// @return True if the account has the minting permission, false otherwise
-    function isMinter(address _account) public view returns (bool);
+    function isMinter(address _account) external view returns (bool);
 
     /// @notice Give the minting permission to `_account`
     /// @dev Throws if `msg.sender` is not allowed to mint
     /// @param _account The account to be given the minting permission
-    function addMinter(address _account) public;
+    function addMinter(address _account) external;
 
     /// @notice Renounce the minter permission of `msg.sender`
     /// @dev Throws if `msg.sender` is not allowed to mint
-    function renounceMinter() public;
+    function renounceMinter() external;
 }
 ```
 
@@ -194,7 +194,7 @@ interface IKIP7Burn {
     /// @dev Throws if the message caller's balance does not have enough 
     /// tokens to burn. 
     /// @param _amount The token amount to be burned
-    function burn(uint256 _amount) public;
+    function burn(uint256 _amount) external;
 
     /// @notice Destroy the specified token from `sender` using allowance 
     /// mechanism. `_amount` is then deducted from the caller's allowance.
@@ -203,7 +203,7 @@ interface IKIP7Burn {
     /// the sender of the message via allowance mechanism.
     /// @param _account The account will be deducted is the The token amount to be burned 
     /// @param _amount The token amount to be burned
-    function burnFrom(address _account, uint256 _amount) public;
+    function burnFrom(address _account, uint256 _amount) external;
 }
 ```
 
@@ -223,31 +223,31 @@ interface IKIP7Pause {
 
     /// @notice Check whether the contract is paused
     /// @return True if the contract is paused, false otherwise    
-    function paused() public view returns (bool);
+    function paused() external view returns (bool);
 
     /// @notice Pause actions related to transfer and approve
     /// @dev Throws if `msg.sender` is not allowed to pause.
     ///   Throws if the contract is paused. 
-    function pause() public;
+    function pause() external;
 
     /// @notice Resume from the paused state of the contract
     /// @dev Throws if `msg.sender` is not allowed to unpause.
     ///   Throws if the contract is not paused. 
-    function unpause() public;
+    function unpause() external;
 
     /// @notice Check the pausing permission
     /// @param _account The account to check the pausing permission
     /// @return True if the account has pausing permission, false otherwise
-    function isPauser(address _account) public view returns (bool);
+    function isPauser(address _account) external view returns (bool);
 
     /// @notice Give pausing permission to `_account`
     /// @dev Throws if `msg.sender` is not allowed to pause
     /// @param _account The account to be given the pausing permission
-    function addPauser(address _account) public;
+    function addPauser(address _account) external;
 
     /// @notice Renounce the pausing permission of `msg.sender`    
     /// @dev Throws if `msg.sender` is not allowed to pause
-    function renouncePauser() public;
+    function renouncePauser() external;
 }
 ```
 
