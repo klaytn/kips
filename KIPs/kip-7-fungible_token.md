@@ -39,11 +39,11 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 
 |Interface|KIP-7 Identifier|
 |---|---|
-|IKIP7|0xXXXXXXXX (TBD)|
-|IKIP7Metadata|0xXXXXXXXX (TBD)|
-|IKIP7Mint|0xeab83e20|
-|IKIP7Burn|0xXXXXXXXX (TBD)|
-|IKIP7Pause|0x4d5507ff|
+|[IKIP7](#kip7-interface)|0xXXXXXXXX (TBD)|
+|[IKIP7Metadata](#metadata-extension)|0xXXXXXXXX (TBD)|
+|[IKIP7Mint](#mint-extension)|0xeab83e20|
+|[IKIP7Burn](#burn-extension)|0xXXXXXXXX (TBD)|
+|[IKIP7Pause](#pause-extension)|0x4d5507ff|
 
 ### Summary of Methods and Events
 The table below is a summary of methods.
