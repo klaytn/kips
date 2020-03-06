@@ -45,7 +45,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 |Interface|KIP-13 Identifier|
 |---|---|
 |[IKIP17](#kip17-interface)|0x80ac58cd|
-|[IKIP17TokenReceiver](#wallet-interface)|0x6745782b|
+|[IKIP17TokenReceiver](#wallet-interfac)|0x6745782b|
 |[IERC721TokenReceiver](#wallet-interface)|0x150b7a02|
 |[IKIP17Metadata](#metadata-extension)|0x5b5e139f|
 |[IKIP17Enumerable](#enumeration-extension)|0x780e9d63|

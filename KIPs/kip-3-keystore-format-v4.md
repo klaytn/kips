@@ -23,7 +23,7 @@ Since a Klaytn account can have one or more private keys, the format can provide
 ## Motivation
 <!--The motivation is critical for KIPs that want to change the Klaytn protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the KIP solves. KIP submissions without sufficient motivation may be rejected outright.-->
 Klaytn improves usability by decoupling addresses and key pairs as well as providing various account key types such as multi-signature and role-based keys.
-Due to this change, [keystore v3](https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition) is insufficient for Klaytn.
+Due to this change, [keystore v3](https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definitio) is insufficient for Klaytn.
 Klaytn keystore format v4 is suitable for Klaytn by storing multiple private keys while it is based on keystore v3.
 
 ## Specification
