@@ -43,9 +43,9 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 |---|---|
 |[IKIP7](#kip7-interface)|0x36372b07|
 |[IKIP7Metadata](#metadata-extension)|0xa219a025|
-|[IKIP7Mint](#mint-extension)|0xeab83e20|
-|[IKIP7Burn](#burn-extension)|0x3b5a0bf8|
-|[IKIP7Pause](#pause-extension)|0x4d5507ff|
+|[IKIP7Mint](#minting-extension)|0xeab83e20|
+|[IKIP7Burn](#burning-extension)|0x3b5a0bf8|
+|[IKIP7Pause](#pausing-extension)|0x4d5507ff|
 
 ### KIP7 Interface
 ```solidity
