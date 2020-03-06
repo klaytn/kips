@@ -208,6 +208,8 @@ interface IERC721TokenReceiver {
 ### Metadata Extension
 The **metadata extension** is OPTIONAL for KIP-17 smart contracts (see "caveats", below). This allows your smart contract to be interrogated for its name and for details about the assets which your NFTs represent.
 
+Note: The function `tokenURI` is useful only when `IKIP17MetadataMintable` is implemented.
+
 ```solidity
 pragma solidity 0.4.24;
 
@@ -285,6 +287,7 @@ interface IKIP17Enumerable {
 
 ### Minting Extension
 The **minting extension** is OPTIONAL for KIP-17 smart contracts. This allows your contract to mint a new token.
+
 Note: `IKIP17MetadataMintable` is mutually exclusive with `IKIP17Mintable`. If you want to use tokenURI, use `IKIP17MetadataMintable`.
 
 ```solidity
@@ -318,7 +321,9 @@ interface IKIP17Mintable {
 
 ### Minting with URI Extension
 The **minting with URI extension** is OPTIONAL for KIP-17 smart contracts. This allows your contract to mint a new token with URI.
+
 Note: `IKIP17MetadataMintable` is mutually exclusive with `IKIP17Mintable`. If you want to use tokenURI, use `IKIP17MetadataMintable`.
+To query tokenURIs, it is required to implement `IKIP17MetadataMintable` with `IKIP17Metadata`.
 
 ```solidity
 pragma solidity 0.4.24;
