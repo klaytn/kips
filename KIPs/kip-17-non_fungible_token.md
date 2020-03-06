@@ -543,7 +543,7 @@ This section will be added later if implementation of this proposal appears.
 ## References
 - [https://eips.ethereum.org/EIPS/eip-721](https://eips.ethereum.org/EIPS/eip-721)
 - [https://klaytn.github.io/kips/KIPs/kip-7-fungible_token](https://klaytn.github.io/kips/KIPs/kip-7-fungible_token)
-- [https://klaytn.github.io/kips/KIPs/kip-interface_query_standard](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard)
+- [https://klaytn.github.io/kips/KIPs/kip-13-interface_query_standard](https://klaytn.github.io/kips/KIPs/kip-13-interface_query_standard)
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
