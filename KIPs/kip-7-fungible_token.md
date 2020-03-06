@@ -47,12 +47,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 |[IKIP7Burn](#burn-extension)|0x3b5a0bf8|
 |[IKIP7Pause](#pause-extension)|0x4d5507ff|
 
-### Summary of Methods and Events
-The table below is a summary of methods.
-The prototype uses the syntax from Solidity `0.4.24` (or above).
-If the optional field is not marked, the function must be implemented.
-
-#### KIP7 Interface
+### KIP7 Interface
 ```solidity
 /// @title KIP-7 Fungible Token Standard
 ///  Note: the KIP-13 identifier for this interface is 0x36372b07.
@@ -127,7 +122,7 @@ interface IKIP7 {
 }
 ```
 
-#### Metadata Extension
+### Metadata Extension
  
 The **metadata extension** is OPTIONAL for KIP-7 smart contracts. 
 This allows your smart contract to be interrogated for its name and for details about the assets which your token represent.
@@ -155,7 +150,7 @@ interface IKIP7Metadata {
 }
 ```
 
-#### Minting Extension
+### Minting Extension
 
 The **minting extension** is OPTIONAL for KIP-7 smart contracts. This allows your contract to mint tokens.
 
@@ -187,7 +182,7 @@ interface IKIP7Mint {
 }
 ```
 
-#### Burning Extension
+### Burning Extension
 
 The **burning extension** is OPTIONAL for KIP-7 smart contracts. This allows your contract to burn tokens.
 
@@ -212,7 +207,7 @@ interface IKIP7Burn {
 }
 ```
 
-#### Pausing Extension
+### Pausing Extension
 
 The **pausing extension** is OPTIONAL for KIP-7 smart contracts. This allows your contract to be suspended from transferring.
 
