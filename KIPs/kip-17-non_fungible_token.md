@@ -50,7 +50,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 |[KIP17Metadata](#metadata-extension)|0x5b5e139f|
 |[KIP17Enumerable](#enumeration-extension)|0x780e9d63|
 |[KIP17Mintable](#minting-extension)|0xeab83e20|
-|[KIP17MetadataMintable](#minting-with-uri-extension)|0x50bb4e7f|
+|[KIP17MetadataMintable](#minting-with-uri-extension)|0xfac27f46|
 |[KIP17Burnable](#burning-extension)|0x42966c68|
 |[KIP17Pausable](#pausing-extension)|0x4d5507ff|
 
@@ -324,7 +324,7 @@ Note: `KIP17MetadataMintable` is mutually exclusive with `KIP17Mintable`. If you
 pragma solidity 0.4.24;
 
 /// @title KIP-17 Non-Fungible Token Standard, optional minting with URI extension
-///  Note: the KIP-13 identifier for this interface is 0x50bb4e7f.
+///  Note: the KIP-13 identifier for this interface is 0xfac27f46.
 interface KIP17MetadataMintable {
     /// @notice Create a new token with the specified URI
     /// @dev Throws if `msg.sender` is not allowed to mint
