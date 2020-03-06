@@ -32,7 +32,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Differences with ERC-20
 This section describes the differences between KIP-7 and ERC-20. 
-- More optional functions are included (e.g. mint, burn and pause extensions)
+- More optional functions are included (e.g. mint, burn and pause extensions).
 - Every token transfer/mint/burn MUST be tracked by event logs. This means that a Transfer event MUST be emitted for any action related to transfer/mint/burn.
 - The [KIP-13](https://klaytn.github.io/kips/KIPs/kip-interface_query_standard) interface for each method group MUST be implemented.
 
@@ -145,7 +145,7 @@ interface IKIP7Metadata {
     /// Ether and Wei.
     /// NOTE: This information is only used for _display_ purposes: it in
     /// no way affects any of the arithmetic of the contract, including
-    /// {IKIP-7-balanceOf} and {IKIP-7-transfer}.
+    /// `IKIP7.balanceOf` and `IKIP7.transfer`.
     function decimals() external view returns (uint8);
 }
 ```
