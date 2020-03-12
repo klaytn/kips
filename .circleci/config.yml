@@ -6,7 +6,7 @@ jobs:
     working_directory: ~/kips
     steps:
       - checkout
-      - run: /liche -r ~/kips/KIPs --document-root ~/kips/KIPs
+      - run: /liche -g -r ~/kips/KIPs --document-root ~/kips/KIPs
 
 workflows:
   version: 2
