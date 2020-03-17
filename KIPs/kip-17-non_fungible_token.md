@@ -167,7 +167,7 @@ pragma solidity 0.4.24;
 interface IKIP17TokenReceiver {
     /// @notice Handle the receipt of an NFT
     /// @dev The KIP-17 smart contract calls this function on the recipient
-    ///  after a `transfer`. This function MAY throw to revert and reject the
+    ///  after a `safeTransfer`. This function MAY throw to revert and reject the
     ///  transfer. Return of other than the magic value MUST result in the
     ///  transaction being reverted.
     ///  Note: the contract address is always the message sender.
@@ -191,7 +191,7 @@ pragma solidity 0.4.24;
 interface IERC721TokenReceiver {
     /// @notice Handle the receipt of an NFT
     /// @dev The ERC721 smart contract calls this function on the recipient
-    ///  after a `transfer`. This function MAY throw to revert and reject the
+    ///  after a `safeTransfer`. This function MAY throw to revert and reject the
     ///  transfer. Return of other than the magic value MUST result in the
     ///  transaction being reverted.
     ///  Note: the contract address is always the message sender.
