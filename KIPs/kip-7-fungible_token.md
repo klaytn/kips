@@ -41,7 +41,8 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 
 |Interface|KIP-13 Identifier|
 |---|---|
-|[IKIP7](#kip7-interface)|0x36372b07|
+|[IKIP7](#kip7-interface)|0x65787371|
+|[IKIP7TokenReceiver](#wallet-interface)|0x9d188c22|
 |[IKIP7Metadata](#metadata-extension)|0xa219a025|
 |[IKIP7Mintable](#minting-extension)|0xeab83e20|
 |[IKIP7Burnable](#burning-extension)|0x3b5a0bf8|
@@ -50,7 +51,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 ### KIP7 Interface
 ```solidity
 /// @title KIP-7 Fungible Token Standard
-///  Note: the KIP-13 identifier for this interface is 0x36372b07.
+///  Note: the KIP-13 identifier for this interface is 0x65787371.
 interface IKIP7 {
     /// @dev Emitted when `value` tokens are moved from one account (`from`) to
     /// another (`to`) and created (`from` == 0) and destroyed(`to` == 0).
@@ -119,6 +120,79 @@ interface IKIP7 {
     /// @param recipient The owner will receive the tokens.
     /// @param amount The token amount will be transferred.
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+    
+    /// @notice Moves `amount` tokens from the caller's account to `recipient`.
+    /// @dev Throws if the message caller's balance does not have enough tokens to spend.
+    /// Throws if the contract is pausable and paused.	
+    /// Returns a boolean value indicating whether the operation succeeded.
+    /// Throws if `_to` is the zero address. 
+    /// When transfer is complete, this function checks if `_to` is a smart 
+    /// contract (code size > 0). If so, it calls
+    ///  `onKIP7Received` on `_to` and throws if the return value is not
+    ///  `bytes4(keccak256("onKIP7Received(address,address,uint256,bytes)"))`.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    /// @param data Additional data with no specified format, sent in call to `_to`
+    function safeTransfer(address recipient, uint256 amount, bytes data) external;
+    
+    
+    /// @notice  Moves `amount` tokens from the caller's account to `recipient`.
+    /// @dev This works identically to the other function with an extra data parameter,
+    ///  except this function just sets data to "".
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    function safeTransfer(address recipient, uint256 amount) external;
+    
+    /// @notice Moves `amount` tokens from `sender` to `recipient` using the
+    /// allowance mechanism. `amount` is then deducted from the caller's
+    /// allowance.
+    /// @dev Throw unless the `sender` account has deliberately authorized the sender of the message via some mechanism.
+    /// Throw if `sender` or `recipient` is the zero address.
+    /// Throws if the contract is pausable and paused.
+    /// When transfer is complete, this function checks if `_to` is a smart 
+    /// contract (code size > 0). If so, it calls
+    ///  `onKIP7Received` on `_to` and throws if the return value is not
+    ///  `bytes4(keccak256("onKIP7Received(address,address,uint256,bytes)"))`.
+    /// Emits a {Transfer} event.
+    /// Emits an `Approval` event indicating the updated allowance.
+    /// @param sender The current owner of the tokens.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    /// @param data Additional data with no specified format, sent in call to `_to`
+    function safeTransferFrom(address sender, address recipient, uint256 amount, bytes data) external;
+
+    /// @notice Moves `amount` tokens from `sender` to `recipient` using the
+    /// allowance mechanism. `amount` is then deducted from the caller's
+    /// allowance.
+    /// @dev This works identically to the other function with an extra data parameter,
+    ///  except this function just sets data to "".
+    /// @param sender The current owner of the tokens.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    function safeTransferFrom(address sender, address recipient, uint256 amount) external;
+}
+```
+
+### Wallet Interface
+A wallet/broker/auction application MUST implement the **wallet interface** if it will accept safe transfers.
+
+```solidity
+/// @title KIP-7 Non-Fungible Token Standard, optional wallet interface
+/// @dev Note: the KIP-13 identifier for this interface is 0x9d188c22.
+interface IKIP7TokenReceiver {
+    /// @notice Handle the receipt of KIP-7 token
+    /// @dev The KIP-7 smart contract calls this function on the recipient
+    ///  after a `transfer`. This function MAY throw to revert and reject the
+    ///  transfer. Return of other than the magic value MUST result in the
+    ///  transaction being reverted.
+    ///  Note: the contract address is always the message sender.
+    /// @param _operator The address which called `safeTransferFrom` function
+    /// @param _from The address which previously owned the token
+    /// @param _amount The token amount which is being transferred.
+    /// @param _data Additional data with no specified format
+    /// @return `bytes4(keccak256("onKIP7Received(address,address,uint256,bytes)"))`
+    ///  unless throwing
+    function onKIP7Received(address _operator, address _from, uint256 _amount, bytes _data) external returns(bytes4);
 }
 ```
 
