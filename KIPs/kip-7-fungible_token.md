@@ -124,8 +124,8 @@ interface IKIP7 {
     /// @notice Moves `amount` tokens from the caller's account to `recipient`.
     /// @dev Throws if the message caller's balance does not have enough tokens to spend.
     /// Throws if the contract is pausable and paused.	
-    /// Returns a boolean value indicating whether the operation succeeded.
     /// Throws if `_to` is the zero address. 
+    /// Returns a boolean value indicating whether the operation succeeded.
     /// When transfer is complete, this function checks if `_to` is a smart 
     /// contract (code size > 0). If so, it calls
     ///  `onKIP7Received` on `_to` and throws if the return value is not
