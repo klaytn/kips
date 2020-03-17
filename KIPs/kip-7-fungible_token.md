@@ -177,7 +177,7 @@ interface IKIP7 {
 A wallet/broker/auction application MUST implement the **wallet interface** if it will accept safe transfers.
 
 ```solidity
-/// @title KIP-7 Non-Fungible Token Standard, optional wallet interface
+/// @title KIP-7 Fungible Token Standard, optional wallet interface
 /// @dev Note: the KIP-13 identifier for this interface is 0x9d188c22.
 interface IKIP7TokenReceiver {
     /// @notice Handle the receipt of KIP-7 token
