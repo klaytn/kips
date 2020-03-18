@@ -41,7 +41,8 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 
 |Interface|KIP-13 Identifier|
 |---|---|
-|[IKIP7](#kip7-interface)|0x36372b07|
+|[IKIP7](#kip7-interface)|0x65787371|
+|[IKIP7TokenReceiver](#wallet-interface)|0x9d188c22|
 |[IKIP7Metadata](#metadata-extension)|0xa219a025|
 |[IKIP7Mintable](#minting-extension)|0xeab83e20|
 |[IKIP7Burnable](#burning-extension)|0x3b5a0bf8|
@@ -50,7 +51,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 ### KIP7 Interface
 ```solidity
 /// @title KIP-7 Fungible Token Standard
-///  Note: the KIP-13 identifier for this interface is 0x36372b07.
+///  Note: the KIP-13 identifier for this interface is 0x65787371.
 interface IKIP7 {
     /// @dev Emitted when `value` tokens are moved from one account (`from`) to
     /// another (`to`) and created (`from` == 0) and destroyed(`to` == 0).
@@ -62,36 +63,38 @@ interface IKIP7 {
     /// a call to {approve}. `value` is the new allowance.
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    /// @dev Returns the amount of tokens in existence.
+    /// @notice Returns the amount of tokens in existence.
+    /// @return the total supply of this token.
     function totalSupply() external view returns (uint256);
 
-    /// @dev Returns the amount of tokens owned by `account`.
+    /// @notice Returns the amount of tokens owned by `account`.
     /// @param account An address for whom to query the balance
+    /// @return the amount of tokens owned by `account.
     function balanceOf(address account) external view returns (uint256);
 
-    /// @dev Moves `amount` tokens from the caller's account to `recipient`.
-    /// Throws if the message caller's balance does not have enough tokens to spend.
+    /// @notice Moves `amount` tokens from the caller's account to `recipient`.
+    /// @dev Throws if the message caller's balance does not have enough tokens to spend.
     /// Throws if the contract is pausable and paused.	
-    /// Returns a boolean value indicating whether the operation succeeded.
     ///
     /// Emits a {Transfer} event.
     /// @param recipient The owner will receive the tokens.
     /// @param amount The token amount will be transferred.
+    /// @return A boolean value indicating whether the operation succeeded.
     function transfer(address recipient, uint256 amount) external returns (bool);
 
-    /// @dev Returns the remaining number of tokens that `spender` will be
+    /// @notice Returns the remaining number of tokens that `spender` will be
     /// allowed to spend on behalf of `owner` through {transferFrom}. This is
     /// zero by default.
-    /// Throws if the contract is pausable and paused.	
+    /// @dev Throws if the contract is pausable and paused.	
     ///
     /// This value changes when {approve} or {transferFrom} are called.
     /// @param owner The account allowed `spender` to withdraw the tokens from the account.
     /// @param spender The address is approved to withdraw the tokens.
+    /// @return An amount of spender's token approved by owner.
     function allowance(address owner, address spender) external view returns (uint256);
 
-    /// @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
-    /// Throws if the contract is pausable and paused.
-    /// Returns a boolean value indicating whether the operation succeeded.
+    /// @notice Sets `amount` as the allowance of `spender` over the caller's tokens.
+    /// @dev Throws if the contract is pausable and paused.
     ///
     /// IMPORTANT: Beware that changing an allowance with this method brings the risk
     /// that someone may use both the old and the new allowance by unfortunate
@@ -103,22 +106,95 @@ interface IKIP7 {
     /// Emits an {Approval} event.
     /// @param spender The address is approved to withdraw the tokens.
     /// @param amount The token amount will be approved.
+    /// @return a boolean value indicating whether the operation succeeded.
     function approve(address spender, uint256 amount) external returns (bool);
 
-    /// @dev Moves `amount` tokens from `sender` to `recipient` using the
+    /// @notice Moves `amount` tokens from `sender` to `recipient` using the
     /// allowance mechanism. `amount` is then deducted from the caller's
     /// allowance.
-    /// Throw unless the `sender` account has deliberately authorized the sender of the message via some mechanism.
+    /// @dev Throw unless the `sender` account has deliberately authorized the sender of the message via some mechanism.
     /// Throw if `sender` or `recipient` is the zero address.
     /// Throws if the contract is pausable and paused.	
-    /// Returns a boolean value indicating whether the operation succeeded.
     ///
     /// Emits a {Transfer} event.
     /// Emits an `Approval` event indicating the updated allowance.
     /// @param sender The current owner of the tokens.
     /// @param recipient The owner will receive the tokens.
     /// @param amount The token amount will be transferred.
+    /// @return A boolean value indicating whether the operation succeeded.
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+    
+    /// @notice Moves `amount` tokens from the caller's account to `recipient`.
+    /// @dev Throws if the message caller's balance does not have enough tokens to spend.
+    /// Throws if the contract is pausable and paused.	
+    /// Throws if `_to` is the zero address. 
+    /// When transfer is complete, this function checks if `_to` is a smart 
+    /// contract (code size > 0). If so, it calls
+    ///  `onKIP7Received` on `_to` and throws if the return value is not
+    ///  `bytes4(keccak256("onKIP7Received(address,address,uint256,bytes)"))`.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    /// @param data Additional data with no specified format, sent in call to `_to`
+    function safeTransfer(address recipient, uint256 amount, bytes data) external;
+    
+    
+    /// @notice Moves `amount` tokens from the caller's account to `recipient`.
+    /// @dev This works identically to the other function with an extra data parameter,
+    ///  except this function just sets data to "".
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    function safeTransfer(address recipient, uint256 amount) external;
+    
+    /// @notice Moves `amount` tokens from `sender` to `recipient` using the
+    /// allowance mechanism. `amount` is then deducted from the caller's
+    /// allowance.
+    /// @dev Throw unless the `sender` account has deliberately authorized the sender of the message via some mechanism.
+    /// Throw if `sender` or `recipient` is the zero address.
+    /// Throws if the contract is pausable and paused.
+    /// When transfer is complete, this function checks if `_to` is a smart 
+    /// contract (code size > 0). If so, it calls
+    ///  `onKIP7Received` on `_to` and throws if the return value is not
+    ///  `bytes4(keccak256("onKIP7Received(address,address,uint256,bytes)"))`.
+    /// Emits a {Transfer} event.
+    /// Emits an `Approval` event indicating the updated allowance.
+    /// @param sender The current owner of the tokens.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    /// @param data Additional data with no specified format, sent in call to `_to`
+    function safeTransferFrom(address sender, address recipient, uint256 amount, bytes data) external;
+
+    /// @notice Moves `amount` tokens from `sender` to `recipient` using the
+    /// allowance mechanism. `amount` is then deducted from the caller's
+    /// allowance.
+    /// @dev This works identically to the other function with an extra data parameter,
+    ///  except this function just sets data to "".
+    /// @param sender The current owner of the tokens.
+    /// @param recipient The owner will receive the tokens.
+    /// @param amount The token amount will be transferred.
+    function safeTransferFrom(address sender, address recipient, uint256 amount) external;
+}
+```
+
+### Wallet Interface
+A wallet/broker/auction application MUST implement the **wallet interface** if it will accept safe transfers.
+
+```solidity
+/// @title KIP-7 Fungible Token Standard, optional wallet interface
+/// @dev Note: the KIP-13 identifier for this interface is 0x9d188c22.
+interface IKIP7TokenReceiver {
+    /// @notice Handle the receipt of KIP-7 token
+    /// @dev The KIP-7 smart contract calls this function on the recipient
+    ///  after a `safeTransfer`. This function MAY throw to revert and reject the
+    ///  transfer. Return of other than the magic value MUST result in the
+    ///  transaction being reverted.
+    ///  Note: the contract address is always the message sender.
+    /// @param _operator The address which called `safeTransferFrom` function
+    /// @param _from The address which previously owned the token
+    /// @param _amount The token amount which is being transferred.
+    /// @param _data Additional data with no specified format
+    /// @return `bytes4(keccak256("onKIP7Received(address,address,uint256,bytes)"))`
+    ///  unless throwing
+    function onKIP7Received(address _operator, address _from, uint256 _amount, bytes _data) external returns(bytes4);
 }
 ```
 
@@ -131,14 +207,14 @@ This allows your smart contract to be interrogated for its name and for details 
 /// @title KIP-7 Fungible Token Standard, optional metadata extension
 ///  Note: the KIP-13 identifier for this interface is 0xa219a025.
 interface IKIP7Metadata {
-    /// @dev Returns the name of the token.
+    /// @notice Returns the name of the token.
     function name() external view returns (string memory);
 
-    /// @dev Returns the symbol of the token, usually a shorter version of the
+    /// @notice Returns the symbol of the token, usually a shorter version of the
     /// name.
     function symbol() external view returns (string memory);
 
-    /// @dev Returns the number of decimals used to get its user representation.
+    /// @notice Returns the number of decimals used to get its user representation.
     /// For example, if `decimals` equals `2`, a balance of `505` tokens should
     /// be displayed to a user as `5,05` (`505 / 10 ** 2`).
     ///  Tokens usually opt for a value of 18, imitating the relationship between
@@ -146,6 +222,7 @@ interface IKIP7Metadata {
     /// NOTE: This information is only used for _display_ purposes: it in
     /// no way affects any of the arithmetic of the contract, including
     /// `IKIP7.balanceOf` and `IKIP7.transfer`.
+    /// @return The number of decimals of this token.
     function decimals() external view returns (uint8);
 }
 ```
