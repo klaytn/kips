@@ -26,7 +26,7 @@ There are three types of KIP:
   - **Networking** - includes improvements related to networking layers.
   - **Storage** - includes improvements related to storage layers.
   - **Interface** - includes improvements around client API/RPC specifications and standards, and also certain language-level standards like method names and contract ABIs.
-  - **Token** - includes improvements or standards related to tokens.
+  - **KCT** - includes improvements or standards related to Klaytn compatible tokens.
   - **SDK** - includes improvements related to SDKs.
   - **Application** - application-level standards and conventions, such as name registries, URI schemes, library/package formats, and wallet formats.
 - A **Meta KIP** describes a process surrounding Klaytn or proposes a change to (or an event in) a process. Meta KIPs are like Standard Track KIPs but apply to areas other than the Klaytn protocol itself. They may propose an implementation, but not to Klaytn's codebase; they often require community consensus; unlike Informational KIPs, they are more than recommendations, and users are typically not free to ignore them. Examples include procedures, guidelines, changes to the decision-making process, and changes to the tools or environment used in Klaytn development. Any Meta KIP is also considered a Process KIP.
@@ -129,7 +129,7 @@ Each KIP must begin with an [RFC 822](https://www.ietf.org/rfc/rfc822.txt) style
 
 ` type:` *Standards Track | Informational | Meta*
 
-` * category:` *Core | Networking | Storage | Interface | Token | SDK | Application* (Standards Track KIPs only)
+` * category:` *Core | Networking | Storage | Interface | KCT | SDK | Application* (Standards Track KIPs only)
 
 ` created:` *date created on*
 
