@@ -5,7 +5,7 @@ author: Junghyun Colin Kim <colin.kim@groundx.xyz>, Kyungup Kim <ethan.kim@groun
 discussions-to: https://github.com/klaytn/kips/issues/9
 status: Draft
 type: Standards Track
-category: Token
+category: KCT
 created: 2020-02-20
 ---
 
