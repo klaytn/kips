@@ -5,7 +5,7 @@ author: <a list of the author's or authors' name(s) and/or username(s), or name(
 discussions-to: <URL>
 status: Draft
 type: <Standards Track | Meta | Informational>
-category (*only required for Standard Track): <Core | Networking | Storage | Interface | Token | SDK | Application>
+category (*only required for Standard Track): <Core | Networking | Storage | Interface | KCT | SDK | Application>
 created: <date created on, in ISO 8601 (yyyy-mm-dd) format>
 requires (*optional): <KIP number(s)>
 replaces (*optional): <KIP number(s)>

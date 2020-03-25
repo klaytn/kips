@@ -1,7 +1,14 @@
 ---
 layout: page
-title: Token
+title: KCT
 ---
 
-{% assign kips=site.pages|where:"type","Standards Track"|where:"category","Token" %}
+Klaytn Compatible Token (KCT) is a special type of a smart contract that implements certain technical specifications.
+Everyone who wants to issue tokens on top of Klaytn must follow the specification.
+Below specifications are KCTs currently defined.
+
+<h2></h2>
+
+
+{% assign kips=site.pages|where:"type","Standards Track"|where:"category","KCT" %}
 {% include kiptable.html kips=kips %}
