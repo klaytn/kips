@@ -3,10 +3,11 @@ kip: 7
 title: Fungible Token Standard
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>, Kyungup Kim <ethan.kim@groundx.xyz>
 discussions-to: https://github.com/klaytn/kips/issues/9
-status: Draft
+status: Last Call
 type: Standards Track
 category: KCT
 created: 2020-02-20
+requires: 13
 ---
 
 <!--You can leave these HTML comments in your merged KIP and delete the visible duplicate text guides, they will not appear and may be helpful to refer to if you edit it again. This is the suggested template for new KIPs. Note that a KIP number will be assigned by an editor. When opening a pull request to submit your KIP, please use an abbreviated title in the filename, `kip-draft_title_abbrev.md`. The title should be 44 characters or less.-->
