@@ -4,6 +4,7 @@ title: Fungible Token Standard
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>, Kyungup Kim <ethan.kim@groundx.xyz>
 discussions-to: https://github.com/klaytn/kips/issues/9
 status: Last Call
+review-period-end: 2020-04-16
 type: Standards Track
 category: KCT
 created: 2020-02-20
