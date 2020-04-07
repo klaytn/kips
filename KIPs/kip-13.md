@@ -27,7 +27,7 @@ This proposal defines:
 ## Motivation
 <!--The motivation is critical for KIPs that want to change the Klaytn protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the KIP solves. KIP submissions without sufficient motivation may be rejected outright.-->
 Since there is no clear way to find what functions are implemented in a contract, this KIP proposes a standard method to define and query interfaces in a contract.
-For example, if we define an interface identifier of [KIP-7](http://kips.klaytn.com/KIPs/kip-7), we can easily determine a contract implements [KIP-7](http://kips.klaytn.com/KIPs/kip-7) or not.
+For example, if we define an interface identifier of [KIP-7](https://kips.klaytn.com/KIPs/kip-7), we can easily determine a contract implements [KIP-7](https://kips.klaytn.com/KIPs/kip-7) or not.
 
 ## Specification
 This document derived heavily from Ethereum's [ERC-165](https://eips.ethereum.org/EIPS/eip-165) written by Christian Reitwießner, Nick Johnson, Fabian Vogelsteller, Jordi Baylina, Konrad Feldmeier, and William Entriken.

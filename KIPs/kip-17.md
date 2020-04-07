@@ -543,8 +543,8 @@ This section will be added later if implementation of this proposal appears.
 
 ## References
 - [https://eips.ethereum.org/EIPS/eip-721](https://eips.ethereum.org/EIPS/eip-721)
-- [http://kips.klaytn.com/KIPs/kip-7](http://kips.klaytn.com/KIPs/kip-7)
-- [http://kips.klaytn.com/KIPs/kip-13](http://kips.klaytn.com/KIPs/kip-13)
+- [https://kips.klaytn.com/KIPs/kip-7](https://kips.klaytn.com/KIPs/kip-7)
+- [https://kips.klaytn.com/KIPs/kip-13](https://kips.klaytn.com/KIPs/kip-13)
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
