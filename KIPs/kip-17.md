@@ -3,8 +3,7 @@ kip: 17
 title: Non-fungible Token Standard
 author: Junghyun Colin Kim <colin.kim@groundx.xyz>
 discussions-to: https://github.com/klaytn/kips/issues/17
-status: Last Call
-review-period-end: 2020-04-16
+status: Final
 type: Standards Track
 category: KCT
 created: 2020-03-04
