@@ -65,7 +65,7 @@ Finally, in the `Utils` layer there is a Utils class that provides utility funct
 
 This is the overall class diagram of the SDK. From the next chapter, it is divided into detailed groups focusing on the functions provided.
 
-<!-- Please put Diagram here. -->
+![all](https://user-images.githubusercontent.com/32922423/86310531-4e4cf900-bc59-11ea-8a4e-09a34f7f543d.png)
 
 ### Account Layer Class Diagram
 
@@ -125,7 +125,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 The `RPC` layer provides the functions to use the Node API. The `RPC` is a class that manages the Node API for each namespace. Node APIs currently provided by Caver are [klay] and [net].
 
-<!-- Please put Diagram here. -->
+![rpc](https://user-images.githubusercontent.com/32922423/86310487-2fe6fd80-bc59-11ea-949d-42767bfcd521.png)
 
 `Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
 
@@ -133,7 +133,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-<!-- Please put Diagram here. -->
+![contract](https://user-images.githubusercontent.com/32922423/86310482-2cec0d00-bc59-11ea-94a3-74327094883d.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
