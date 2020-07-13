@@ -34,14 +34,14 @@ With the common architecture, we want to achieve two goals:
 
 |Term|Description|
 |---|---|
-| [Account](#account-layer-class-diagram) | Represents a structure that contains information needed to update the [AccountKey] of an account in the Klaytn blockchain platform (Klaytn). |
-| [Keyring](#wallet-layer-class-diagram) | Represents a structure that contains the address of the account and the private key(s). This is a class that allows users to sign a transaction using their own [Klaytn's account] through the Caver. |
-| [Wallet](#wallet-layer-class-diagram) | Represents an in-memory wallet that can manage multiple keyring instances. |
+| [Account](#account-layer-class-diagram) | Represents the account of the Klaytn blockchain platform (Klaytn) that stores the address and [AccontKey]. |
+| [Keyring](#wallet-layer-class-diagram) | A structure to store Klaytn's account address and private key(s) to use when signing. |
+| [Wallet](#wallet-layer-class-diagram) | An in-memory wallet that manages multiple keyrings. |
 | [Transaction](#transaction-layer-class-diagram) | Represents transactions based on Klaytn's various transaction types. |
-| [RPC](#transaction-layer-class-diagram) | Represents classes consisting of json-rpc methods that interact with a Klaytn Node. |
-| [Contract](#contract-abi-kct-layer-class-diagram) | Represents an object that interacts with a smart contract on the Klaytn. |
-| [ABI](#contract-abi-kct-layer-class-diagram) | Represents a module that is able to decode and encode parameters with an ABI (Application Binary Interface). |
-| [KCT](#contract-abi-kct-layer-class-diagram) | Represents an object that interacts with a KCT token contract on Klaytn. |
+| [RPC](#transaction-layer-class-diagram) | Represents JSON-RPC that interacts with Klaytn Node. |
+| [Contract](#contract-abi-kct-layer-class-diagram) | A smart contract to be deployed or deployed on Klaytn. |
+| [ABI](#contract-abi-kct-layer-class-diagram) | Represents an ABI (Application Binary Interface) of smart contract. |
+| [KCT](#contract-abi-kct-layer-class-diagram) | A KCT token contract to be deployed or deployed on Klaytn. |
 | [Utils](#utils-layer-class-diagram) | Represents the utility functions. |
 
 
