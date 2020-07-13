@@ -1,26 +1,32 @@
 ---
-kip: <to be assigned>
+kip: 34
 title: Klaytn SDK Common Architecture
-author: Junghyun Colin Kim <colin.kim@groundx.xyz>, Jimin Kim <jasmine.kim@groundx.xyz>, Seonyong Kim <kale.kim@groundx.xyz>
-discussions-to: <URL>
+author: Jimin Kim <jasmine.kim@groundx.xyz>, Seonyong Kim <kale.kim@groundx.xyz>, Junghyun Colin Kim <colin.kim@groundx.xyz>
+discussions-to: https://github.com/klaytn/kips/issues/35
 status: Draft
-type: <Standards Track | Meta | Informational>
-category (*only required for Standard Track): <Core | Networking | Storage | Interface | KCT | SDK | Application>
-created: <date created on, in ISO 8601 (yyyy-mm-dd) format>
-requires (*optional): <KIP number(s)>
-replaces (*optional): <KIP number(s)>
+type: Standards Track
+category (*only required for Standard Track): SDK
+created: 2020-07-02
 ---
 
 ## Simple Summary
-A new software architecture for Klaytn development environment which is shared by all Klaytn SDKs.
+A new software architecture for Klaytn development environment which is shared by all Klaytn SDKs (also known as caver).
 
 ## Abstract
-The following standard allows Klaytn's SDK, Caver, to implement a common architecture regardless of language.
+The following standard allows Klaytn's SDK, Caver, to implement a common architecture regardless of programming languages.
 
 ## Motivation
-The terms used in the Klaytn SDK are different, and there is no structure to implement when the SDK is developed with other languages.
+Klaytn SDKs (caver-js and caver-java) do not share common terminology and software architecture.
+It makes difficult to implement blockchain applications using multiple programming languages.
+For example, if the server program is implemented in Java and the client is implemented in Javascript,
+the developer should learn two different SDKs that have different terminology and software architecture
+even if they are developed for the exactly same functionality.
 
-The common architecture is designed to unify the terms used in the SDK and easily extend to other languages by establishing a language independent common architecture.
+The common architecture is designed to unify the terminology used in the SDKs and easily extend to other languages by establishing a language-independent common architecture.
+
+With the common architecture, we want to achieve two goals:
+- Developers can easily implement their application using another language if they have implemented in any Klaytn SDK before.
+- An SDK in another programming language can be implemented relatively easily because the software architecture is commonly defined.
 
 ## Specification
 
@@ -28,20 +34,20 @@ The common architecture is designed to unify the terms used in the SDK and easil
 
 |Term|Description|
 |---|---|
-| [Account](#account-layer-class-diagram) | Represents a structure that contains informations needed to update the [AccountKey] of the account in the Klaytn blockchain platform (Klaytn). |
-| [Keyring](#wallet-layer-class-diagram) | Represents a structure that contains the address of the account and the private key(s). This is a class that allows users to sign on using their own [Klaytn's account] through the Caver. |
+| [Account](#account-layer-class-diagram) | Represents a structure that contains information needed to update the [AccountKey] of an account in the Klaytn blockchain platform (Klaytn). |
+| [Keyring](#wallet-layer-class-diagram) | Represents a structure that contains the address of the account and the private key(s). This is a class that allows users to sign a transaction using their own [Klaytn's account] through the Caver. |
 | [Wallet](#wallet-layer-class-diagram) | Represents an in-memory wallet that can manage multiple keyring instances. |
 | [Transaction](#transaction-layer-class-diagram) | Represents transactions based on Klaytn's various transaction types. |
-| [RPC](#transaction-layer-class-diagram) | Represents a json-rpc call that interacts with a Klaytn Node. |
-| [Contract](#contract-abi-kct-layer-class-diagram) | Represents a smart contract object that interacts with smart contracts on the Klaytn. |
-| [ABI](#contract-abi-kct-layer-class-diagram) | Represents a decode and encode parameter module with an ABI (Application Binary Interface). |
-| [KCT](#contract-abi-kct-layer-class-diagram) | Represents a smart contract object that interacts with KCT token contracts on the Klaytn. |
+| [RPC](#transaction-layer-class-diagram) | Represents classes consisting of json-rpc methods that interact with a Klaytn Node. |
+| [Contract](#contract-abi-kct-layer-class-diagram) | Represents an object that interacts with a smart contract on the Klaytn. |
+| [ABI](#contract-abi-kct-layer-class-diagram) | Represents a module that is able to decode and encode parameters with an ABI (Application Binary Interface). |
+| [KCT](#contract-abi-kct-layer-class-diagram) | Represents an object that interacts with a KCT token contract on Klaytn. |
 | [Utils](#utils-layer-class-diagram) | Represents the utility functions. |
 
 
 ### Layer Diagram
 
-Diagram showing the layers of the SDK. Components belonging to each layer are represented inside the box that represents each layer.
+Below diagram shows the layers of the SDK. Components belonging to each layer are represented inside the layer box.
 
 ![layerDiagram](https://user-images.githubusercontent.com/32922423/85986440-355d0180-ba27-11ea-8475-afe7638e6ffb.png)
 
