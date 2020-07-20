@@ -20,7 +20,7 @@ Klaytn SDKs (caver-js and caver-java) do not share common terminology and softwa
 It makes difficult to implement blockchain applications using multiple programming languages.
 For example, if the server program is implemented in Java and the client is implemented in Javascript,
 the developer should learn two different SDKs that have different terminology and software architecture
-even if they are developed for the exactly same functionality.
+even if those programs utilize a single blockchain platform, Klaytn.
 
 The common architecture is designed to unify the terminology used in the SDKs and easily extend to other languages by establishing a language-independent common architecture.
 
