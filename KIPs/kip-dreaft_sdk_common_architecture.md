@@ -34,16 +34,20 @@ With the common architecture, we want to achieve two goals:
 
 |Term|Description|
 |---|---|
-| [Account](#account-layer-class-diagram) | Represents the account of the Klaytn blockchain platform (Klaytn) that stores the address and [AccontKey]. |
+| [Account](#account-layer-class-diagram) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account. |
 | [Keyring](#wallet-layer-class-diagram) | A structure to store Klaytn's account address and private key(s) to use when signing. |
-| [Wallet](#wallet-layer-class-diagram) | An in-memory wallet that manages multiple keyrings. |
-| [Transaction](#transaction-layer-class-diagram) | Represents transactions based on Klaytn's various transaction types. |
-| [RPC](#transaction-layer-class-diagram) | Represents JSON-RPC that interacts with Klaytn Node. |
-| [Contract](#contract-abi-kct-layer-class-diagram) | A smart contract to be deployed or deployed on Klaytn. |
-| [ABI](#contract-abi-kct-layer-class-diagram) | Represents an ABI (Application Binary Interface) of smart contract. |
-| [KCT](#contract-abi-kct-layer-class-diagram) | A KCT token contract to be deployed or deployed on Klaytn. |
-| [Utils](#utils-layer-class-diagram) | Represents the utility functions. |
+| [Transaction](#transaction-layer-class-diagram) | A message sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
+| [JSON-RPC](#rpc-layer-class-diagram) | JSON-RPC is a remote procedure call protocol encoded in JSON. |
+| [Contract](#contract-abi-kct-layer-class-diagram) | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract to Klaytn or execute smart contract that have already been deployed to Klaytn through transaction. |
+| [ABI](#contract-abi-kct-layer-class-diagram) | An interface between two binary program modules. |
+| [KCT](#contract-abi-kct-layer-class-diagram) | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications. |
 
+
+### Overall Class Diagram
+
+This is the overall class diagram of the SDK.
+
+![all](https://user-images.githubusercontent.com/32922423/86310531-4e4cf900-bc59-11ea-8a4e-09a34f7f543d.png)
 
 ### Layer Diagram
 
@@ -67,11 +71,7 @@ Also, the `RPC` layer includes the `Klay` class, which is responsible for rpc ca
 
 Finally, in the `Utils` layer there is a Utils class that provides utility functions.
 
-### Overall Class Diagram
-
-This is the overall class diagram of the SDK. From the next chapter, it is divided into detailed groups focusing on the functions provided.
-
-![all](https://user-images.githubusercontent.com/32922423/86310531-4e4cf900-bc59-11ea-8a4e-09a34f7f543d.png)
+From the next chapter, details of each layer group are described.
 
 ### Account Layer Class Diagram
 
@@ -159,6 +159,33 @@ The Utils layer provides utility functions.
 
 The Utils class provides basic utility functions required when using Caver, and also converting functions based on `KlayUnit`.
 
+### Example of the source code
+
+In this chapter, the pseudocode for sending a transaction using the SDK that implements the common architecture is explained.
+
+```
+input: keystore.json, password, from, to, value, gas
+output: receipt of value transfer transaction
+
+// Read keystore json file and decrypt keystore
+keystore <- readFile('./keystore.json')
+keyring <- decryptKeystore(keystore, password)
+
+// Add to in-memory wallet
+addToTheWallet(keyring)
+
+// Create value transfer transaction
+vt <- createValueTransferTransaction(from, to, value, gas)
+
+// Sign to the transaction
+signed <- sign(from, vt)
+
+// Send transaction to the Klaytn blockchain platform (Klaytn)
+receipt <- sendRawTransaction(signed)
+print receipt
+```
+
+
 ## Rationale
 While designing the common architecture, I tried to use the concept used in Klaytn in the SDK as much as possible. In addition, in order to provide the functions of the existing Caver, it was designed not to break the existing structure.
 
@@ -184,6 +211,7 @@ Copyright and related rights waived via [CC0](https://creativecommons.org/public
 [AccountKey]: https://docs.klaytn.com/klaytn/design/accounts#account-key
 [Klaytn's account]: https://docs.klaytn.com/klaytn/design/accounts#klaytn-accounts
 [Klaytn account]: https://docs.klaytn.com/klaytn/design/accounts#klaytn-accounts
+[multiple transaction types]: https://docs.klaytn.com/klaytn/design/transactions#klaytn-transactions
 [Basic transactions]: https://docs.klaytn.com/klaytn/design/transactions/basic
 [Fee Delegation transactions]: https://docs.klaytn.com/klaytn/design/transactions/fee-delegation
 [Partial Fee Delegation transactions]: https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation
