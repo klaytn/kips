@@ -65,13 +65,13 @@ The `Transaction` layer contains classes of Klaytn transaction types, `Transacti
 
 The `TransactionDecoder` class decodes the RLP-encoded transaction string. The `TransactionHasher` class calculates the hash of the transaction.
 
-The `Wallet` layer contains keyring classes (`SingleKeyring`, `MultipleKeyring`, and `RoleBasedKeyring`) and `KeyringContainer` class that contains multiple keyrings. The `KeyringContainer` acts as an "in-memory wallet" that stores the keyring instances.
+The `Wallet` layer contains keyring classes (`SingleKeyring`, `MultipleKeyring`, and `RoleBasedKeyring`) and `KeyringContainer` class that contains multiple keyrings. The `KeyringContainer` class acts as an "in-memory wallet" that stores the keyring instances.
 
-The `Account` layer contains an Account class that stores information needed when updating the [AccountKey] of the account in the Klaytn.
+The `Account` layer contains an `Account` class that stores information needed when updating the [AccountKey] of the account in the Klaytn.
 
-Also, the `RPC` layer includes the `Klay` class, which is responsible for rpc calls in the klay namespace, and the `Net` class, which is responsible for rpc calls in the net namespace.
+Also, the `RPC` layer includes the `Klay` class, which is responsible for rpc calls of the klay namespace, and the `Net` class, which is responsible for rpc calls of the net namespace.
 
-Finally, in the `Utils` layer there is a Utils class that provides utility functions.
+Finally, the `Utils` layer contains the `Utils` class that provides utility functions.
 
 From the next chapter, details of each layer group are described.
 
@@ -199,7 +199,7 @@ There is no compatibility problem. When the common architecture is implemented i
 2. The exsiting functions in caver-js and caver-java can be used.
 
 ## Implementation
-PRs related to common architecture are linked to the issues below.
+PRs related to common architecture are linked to the issues below. The common architecture is implemented in caver-js v1.5.0 and caver-java v1.5.0.
 
 - caver-js
     - https://github.com/klaytn/caver-js/issues/249
