@@ -10,7 +10,7 @@ created: 2020-07-02
 ---
 
 ## Simple Summary
-A new software architecture for Klaytn development environment which is shared by all Klaytn SDKs (also known as caver).
+A new software architecture for Klaytn development environment which is shared by all Klaytn SDKs (also known as 'caver' series).
 
 ## Abstract
 The following standard allows Klaytn's SDK, Caver, to implement a common architecture regardless of programming languages.
