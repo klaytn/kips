@@ -73,7 +73,7 @@ Also, the `RPC` layer includes the `Klay` class, which is responsible for rpc ca
 
 Finally, the `Utils` layer contains the `Utils` class that provides utility functions.
 
-From the next chapter, details of each layer group are described.
+From the next chapter, each layer group is described in detail.
 
 ### Account Layer Class Diagram
 
