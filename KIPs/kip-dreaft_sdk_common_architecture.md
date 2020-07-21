@@ -9,13 +9,38 @@ category: SDK
 created: 2020-07-02
 ---
 
+# Table of contents
+
+- [Simple Summary](#simple-summary)
+- [Abstract](#abstract)
+- [Motivation](#motivation)
+- [Specification](#specification)
+  - [Terminology](#terminology)
+  - [Overview of the Common Architecture](#overview-of-the-common-architecture)
+  - [Layer Diagram of the Common Architecture](#layer-diagram-of-the-common-architecture)
+  - [Account Layer Class Diagram](#account-layer-class-diagram)
+  - [Wallet Layer Class Diagram](#wallet-layer-class-diagram)
+  - [Transaction Layer Class Diagram](#transaction-layer-class-diagram)
+  - [RPC Layer Class Diagram](#rpc-layer-class-diagram)
+  - [Contract, ABI, KCT Layer Class Diagram](#contract-abi-kct-layer-class-diagram)
+  - [Utils Layer Class Diagram](#utils-layer-class-diagram)
+- [Example of the source code](#example-of-the-source-code)
+- [Rationale](#rationale)
+- [Backwards Compatibility](#backwards-compatibility)
+- [Test Cases](#test-cases)
+- [Implementation](#implementation)
+- [Copyright](#copyright)
+
 ## Simple Summary
+
 A new software architecture for Klaytn development environment which is shared by all Klaytn SDKs (also known as 'caver' series).
 
 ## Abstract
+
 The following standard allows Klaytn's SDK, Caver, to implement a common architecture regardless of programming languages.
 
 ## Motivation
+
 Klaytn SDKs (caver-js and caver-java) do not share common terminology and software architecture.
 It makes difficult to implement blockchain applications using multiple programming languages.
 For example, if the server program is implemented in Java and the client is implemented in Javascript,
@@ -25,6 +50,7 @@ even if those programs utilize a single blockchain platform, Klaytn.
 The common architecture is designed to unify the terminology used in the SDKs and easily extend to other languages by establishing a language-independent common architecture.
 
 With the common architecture, we want to achieve two goals:
+
 - Developers can easily implement their application using another language if they have implemented in any Klaytn SDK before.
 - An SDK in another programming language can be implemented relatively easily because the software architecture is commonly defined.
 
@@ -32,16 +58,15 @@ With the common architecture, we want to achieve two goals:
 
 ### Terminology
 
-|Term|Description|
-|---|---|
-| [Account](https://docs.klaytn.com/klaytn/design/accounts#overview-of-account-state-and-address) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account. |
-| Keyring | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction. |
-| [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview) | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
-| [JSON-RPC](https://www.jsonrpc.org/specification) | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format. |
-| Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract or execute smart contract that have already been deployed to Klaytn through a transaction. |
-| ABI | An application binary interface (ABI) to communicate between two binary program modules. |
-| [KCT](http://kips.klaytn.com/token) | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications. |
-
+| Term                                                                                            | Description                                                                                                                                                                                                                                                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Account](https://docs.klaytn.com/klaytn/design/accounts#overview-of-account-state-and-address) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account.                                                                    |
+| Keyring                                                                                         | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction.                                                                                                                                                                                                                      |
+| [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview)         | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance.                                                                                              |
+| [JSON-RPC](https://www.jsonrpc.org/specification)                                               | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format.                                                                                                                                                                                                                                    |
+| Contract                                                                                        | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract or execute smart contract that have already been deployed to Klaytn through a transaction. |
+| ABI                                                                                             | An application binary interface (ABI) to communicate between two binary program modules.                                                                                                                                                                                                                                        |
+| [KCT](http://kips.klaytn.com/token)                                                             | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications.                                                                                                                                                                                                             |
 
 ### Overview of the Common Architecture
 
@@ -81,7 +106,7 @@ The `Account` layer provides functionality related to updating the [AccountKey] 
 
 ![account](https://user-images.githubusercontent.com/32922423/86084568-2da96580-bad8-11ea-9c46-e74ae6d8ad7a.png)
 
-`Account` is a class that contains informations needed to update the [AccountKey] of the account in the Klaytn. Inside, it has `address` and `accountKey` as member variables. The `accountKey` can be an instance of AccountKey (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` or `AccountKeyRoleBased`) depending on the key. 
+`Account` is a class that contains informations needed to update the [AccountKey] of the account in the Klaytn. Inside, it has `address` and `accountKey` as member variables. The `accountKey` can be an instance of AccountKey (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` or `AccountKeyRoleBased`) depending on the key.
 
 Account is used in the `account` field of the AccountUpdate transaction (`AccountUpdate`, `FeeDelegatedAccountUpdate` or `FeeDelegatedAccountUpdateWithRatio`). When the AccountUpdate transaction is successfully processed in Klaytn, the [AccountKey] of the [Klaytn account] is updated with the `accountKey` defined in Account.
 
@@ -91,6 +116,84 @@ Interface for AccountKey is defined as `IAccountKey`, and each AccountKey (`Acco
 
 The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode function implemented in each AccountKey class.
 
+#### IAccountKey Method Descriptions
+
+| Method                   | Description |
+| ------------------------ | ----------- |
+| getRLPEncoding(): String |             |
+
+#### AccountKeyLegacy Method Descriptions
+
+| Method                                          | Description |
+| ----------------------------------------------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyLegacy |             |
+| getRLPEncoding(): String                        |             |
+
+#### AccountKeyPublic Method Descriptions
+
+| Method                                              | Description |
+| --------------------------------------------------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyPublic     |             |
+| fromXYPoint(x: String, y: String): AccountKeyPublic |             |
+| fromPublicKey(publicKey: String): AccountKeyPublic  |             |
+| getXYPoint(): String[]                              |             |
+| getRLPEncoding(): String                            |             |
+
+#### AccountKeyFail Method Descriptions
+
+| Method                                        | Description |
+| --------------------------------------------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyFail |             |
+| getRLPEncoding(): String                      |             |
+
+#### AccountKeyWeightedMultiSig Method Descriptions
+
+| Method                                                                                                     | Description |
+| ---------------------------------------------------------------------------------------------------------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig                                                  |             |
+| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMutliSigOptions): AccountKeyWeightedMultiSig |             |
+| getRLPEncoding(): String                                                                                   |             |
+
+#### WeightedPublicKey Method Descriptions
+
+| Method                    | Description |
+| ------------------------- | ----------- |
+| encodeToBytes             |             |
+| encodeToBytes(): String[] |             |
+
+#### AccountKeyRoleBased Method Descriptions
+
+| Method                                                                                                               | Description |
+| -------------------------------------------------------------------------------------------------------------------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyRoleBased                                                                   |             |
+| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased |             |
+| getRLPEncoding(): String                                                                                             |             |
+
+#### AccountKeyDecoder Method Descriptions
+
+| Method                                     | Description |
+| ------------------------------------------ | ----------- |
+| decode(rlpEncodedKey: String): IAccountKey |             |
+
+#### Account Method Descriptions
+
+| Method                                                                                                                            | Description |
+| --------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| create(address: String, publicKey: String): Account                                                                               |             |
+| create(address: String, pubKeys: String[]): Account                                                                               |             |
+| create(address: String, pubKeys: String[], options: WeightedMultiSigOptions): Account                                             |             |
+| create(address: String, roleBasedPubKeys: List<String[]>): Account                                                                |             |
+| create(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account                        |             |
+| createFromRLPEncoding(address: String, rlpEncodedKey: String): Account                                                            |             |
+| createWithAccountKeyLegacy(address: String): Account                                                                              |             |
+| createWithAccountKeyFail(address: String): Account                                                                                |             |
+| createWithAccountKeyPublic(address: String, publicKey: String): Account                                                           |             |
+| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[]): Account                                              |             |
+| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[], options: WeightedMultiSigOptions): Account            |             |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>): Account                                         |             |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account |             |
+| getRLPEncodingAccountKey(): String                                                                                                |             |
+
 ### Wallet Layer Class Diagram
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
@@ -99,7 +202,7 @@ The `Wallet` layer allows the user to sign a message or a transaction through th
 
 In the Wallet layer, an abstract class called `AbstractKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` are implemented by extending AbstractKeyring. AbstractKeyring defines abstract methods that Keyring classes must implement.
 
-`SingleKeyring` is a Keyring class that uses "only one private key", and `MultipleKeyring` is a Keyring class that uses "multiple private keys". `RoleBasedKeyring` is a Keyring class that uses "different private key(s) for each role", and the `keys` member variable is a 2D array in which keys to be used for each role are defined inside the array. 
+`SingleKeyring` is a Keyring class that uses "only one private key", and `MultipleKeyring` is a Keyring class that uses "multiple private keys". `RoleBasedKeyring` is a Keyring class that uses "different private key(s) for each role", and the `keys` member variable is a 2D array in which keys to be used for each role are defined inside the array.
 
 Each Keyring class uses the `PrivateKey` class, which has one private key as a member variable.
 
@@ -113,13 +216,110 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `KeyringContainer` is an "in-memory wallet" class that manages Keyring instances. Manage the Keyring instance using the address as the key value.
 
+#### PrivateKey Method Descriptions
+
+| Method                                               | Description |
+| ---------------------------------------------------- | ----------- |
+| sign(txHash: String, chainId: String): SignatureData |             |
+| sign(txHash: String, chainId: int): SignatureData    |             |
+| signMessage(messageHash: String): SignatureData      |             |
+| getPublicKey(compressed: Boolean): String            |             |
+| getDerivedAddress(): String                          |             |
+
+#### AbstractKeyring Method Descriptions
+
+| Method                                                                        | Description |
+| ----------------------------------------------------------------------------- | ----------- |
+| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62;    |             |
+| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; |             |
+| sign(txHash: String, chainId: int, role: int, index: int): SignatureData      |             |
+| sign(txHash: String, chainId: String, role: int, index: int): SignatureData   |             |
+| signMessage(message: String, role: int): MessageSigned                        |             |
+| signMessage(message: String, role: int, index: int): MessageSigned            |             |
+| getKlaytnWalletKey(): String                                                  |             |
+| encrypt(password: String): Object                                             |             |
+| encrypt(password: String, options: Object): Object                            |             |
+| encryptV3(password: String): Object                                           |             |
+| encryptV3(password: String, options: Object): Object                          |             |
+| isDecoupled(): Boolean                                                        |             |
+| copy(): AbstractKeyring                                                       |             |
+
+#### SingleKeyring Method Descriptions
+
+| Method                         | Description |
+| ------------------------------ | ----------- |
+| getPublicKey(): String         |             |
+| getKeyByRole(role): PrivateKey |             |
+| toAccount(): Account           |             |
+
+#### MultipleKeyring Method Descriptions
+
+| Method                                               | Description |
+| ---------------------------------------------------- | ----------- |
+| getPublicKey(): List&#60;String&#62;                 |             |
+| getKeyByRole(role): List&#60;PrivateKey&#62;         |             |
+| toAccount(options: WeightedMultiSigOptions): Account |             |
+
+#### RoleBasedKeyring Method Descriptions
+
+| Method                                                             | Description |
+| ------------------------------------------------------------------ | ----------- |
+| getPublicKey(): List&#60;List&#60;String&#62;&#62;                 |             |
+| getKeyByRole(role): List&#60;PrivateKey&#62;                       |             |
+| toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account |             |
+
+#### KeyringFactory Method Descriptions
+
+| Method                                                                                               | Description |
+| ---------------------------------------------------------------------------------------------------- | ----------- |
+| generate(): SingleKeyring                                                                            |             |
+| generate(entropy: String): SingleKeyring                                                             |             |
+| generateSingleKey(): String                                                                          |             |
+| generateSingleKey(entropy: String): String                                                           |             |
+| generateMultipleKey(num: int): List&#60;String&#62;                                                  |             |
+| generateMultipleKey(num: int, entropy: String): List&#60;String&#62;                                 |             |
+| generateRoleBasedKey(numArr: List&#60;int&#62;): List&#60;List&#60;String&#62;&#62;                  |             |
+| generateRoleBasedKey(numArr: List&#60;int&#62;, entropy: String): List&#60;List&#60;String&#62;&#62; |             |
+| create(address: String, key: String): SingleKeyring                                                  |             |
+| create(address: String, keys: String[]): MultipleKeyring                                             |             |
+| create(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring                     |             |
+| createFromPrivateKey(key: String): SingleKeyring                                                     |             |
+| createFromKlaytnWalletKey(klaytnWalletKey: String): SingleKeyring                                    |             |
+| createWithSingleKey(address: String, key: String): SingleKeyring                                     |             |
+| createWithMultipleKey(address: String, keys: String[]): MultipleKeyring                              |             |
+| createWithRoleBasedKey(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring     |             |
+| decrypt(keystore: Object, password: String): Keyring                                                 |             |
+
+#### KeyringContainer Method Descriptions
+
+| Method                                                                                                               | Description |
+| -------------------------------------------------------------------------------------------------------------------- | ----------- |
+| generate(num: int, entropy: String): List&#60;String&#62;                                                            |             |
+| add(keyring: AbstractKeyring): AbstractKeyring                                                                       |             |
+| newKeyring(address: String, privateKeyString: String): AbstractKeyring                                               |             |
+| newKeyring(address: String, privateKeyArray: List&#60;String&#62;): AbstractKeyring                                  |             |
+| newKeyring(address: String, roleBasedPrivateKeyArray: List&#60;List&#60;String&#62;&#62;): AbstractKeyring           |             |
+| updateKeyring(keyring: ): AbstractKeyring                                                                            |             |
+| getKeyring(address: String): AbstractKeyring                                                                         |             |
+| sign(address: String, transaction: AbstractTransaction): AbstractTransaction                                         |             |
+| sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction                             |             |
+| sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction                       |             |
+| sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction           |             |
+| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction                               |             |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction                   |             |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction             |             |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction |             |
+| signMessage(address: String, data: String, role: int): MessageSigned                                                 |             |
+| signMessage(address: String, data: String, role: int, index: int): MessageSigned                                     |             |
+| remove(address: String): Boolean                                                                                     |             |
+
 ### Transaction Layer Class Diagram
 
 The `Transaction` layer provides transaction-related functions.
 
 ![transaction](https://user-images.githubusercontent.com/32922423/86089287-ebd1ec80-bae2-11ea-9061-09177d4f22e9.png)
 
-`AbstractTransaction`, `AbstractFeeDelegatedTransaction` and `AbstractFeeDelegatedWithRatioTrasnaction` abstract classes are defined in the Transaction layer. 
+`AbstractTransaction`, `AbstractFeeDelegatedTransaction` and `AbstractFeeDelegatedWithRatioTrasnaction` abstract classes are defined in the Transaction layer.
 
 `AbstractTransaction` defines variables and methods commonly used in all transactions. In addition, abstract methods that must be implemented in classes that extend AbstractTransaction are also defined. `AbstractFeeDelegatedTransaction` extends AbstractTransaction, and AbstractFeeDelegatedTransaction defines variables and methods commonly used in Fee Delegation and Partial Fee Delegation transactions. `AbstractFeeDelegatedWithRatioTransaction` extends AbstractFeeDelegatedTransaction, and AbstractFeeDelegatedWithRatioTransaction defines variables commonly used in Partial Fee Delegation transactions.
 
@@ -129,6 +329,233 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 `TransactionHasher` is a class that calculates the hash of a transaction. It provides a function that calculates a hash when the sender (from of the transaction) signs a transaction and a function that calculates a hash when the fee payer signs a transaction. TransactionHasher provided by caver is implemented based on [Klaytn Design - Transactions].
 
+#### AbstractTransaction Method Descriptions
+
+| Method                                                                            | Description |
+| --------------------------------------------------------------------------------- | ----------- |
+| sign(keyString: String): AbstractTransaction                                      |             |
+| sign(keyString: String, hasher: Function): AbstractTransaction                    |             |
+| sign(keyring: AbstractKeyring): AbstractTransaction                               |             |
+| sign(keyring: AbstractKeyring, index: int): AbstractTransaction                   |             |
+| sign(keyring: AbstractKeyring, hasher: Function): AbstractTransaction             |             |
+| sign(keyring: AbstractKeyring, index: int, hasher: Function): AbstractTransaction |             |
+| appendSignatures(sig: List&#60;String&#62;): void                                 |             |
+| appendSignatures(sig: List&#60;List&#60;String&#62;&#62;): void                   |             |
+| combineSignedRawTransactions(rlpEncoded: List&#60;String&#62;): String            |             |
+| getTransactionHash(): String                                                      |             |
+| getSenderTxHash(): String                                                         |             |
+| getRawTransaction(): String                                                       |             |
+| getRLPEncodingForSignature(): String                                              |             |
+| fillTransaction(): void                                                           |             |
+| getRLPEncoding(): String                                                          |             |
+| getCommonRLPEncodingForSignautre(): String                                        |             |
+
+#### AbstractFeeDelegatedTransaction Method Descriptions
+
+| Method                                                                                                  | Description |
+| ------------------------------------------------------------------------------------------------------- | ----------- |
+| signAsFeePayer(keyString: String): AbstractFeeDelegatedTransaction                                      |             |
+| signAsFeePayer(keyString: String, hasher: Function): AbstractFeeDelegatedTransaction                    |             |
+| signAsFeePayer(keyring: AbstractKeyring): AbstractFeeDelegatedTransaction                               |             |
+| signAsFeePayer(keyring: AbstractKeyring, index: int): AbstractFeeDelegatedTransaction                   |             |
+| signAsFeePayer(keyring: AbstractKeyring, hasher: Function): AbstractFeeDelegatedTransaction             |             |
+| signAsFeePayer(keyring: AbstractKeyring, index: int, hasher: Function): AbstractFeeDelegatedTransaction |             |
+| appendFeePayerSignatures(sig: List&#60;String&#62;): void                                               |             |
+| appendFeePayerSignatures(sig: List&#60;List&#60;String&#62;&#62;): void                                 |             |
+| combineSignedRawTransactions(rlpEncoded: String): String                                                |             |
+| getRLPEncodingForFeePayerSignature(): String                                                            |             |
+
+#### LegacyTransaction Method Descriptions
+
+| Method                                                          | Description |
+| --------------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): LegacyTransaction                   |             |
+| appendSignatures(sig: List&#60;String&#62;): void               |             |
+| appendSignatures(sig: List&#60;List&#60;String&#62;&#62;): void |             |
+| getRLPEncoding(): String                                        |             |
+| getRLPEncodingForSignature(): String                            |             |
+
+#### ValueTransfer Method Descriptions
+
+| Method                                     | Description |
+| ------------------------------------------ | ----------- |
+| decode(rlpEncoded: String): ValueTransfer  |             |
+| getRLPEncoding(): String                   |             |
+| getCommonRLPEncodingForSignature(): String |             |
+
+#### ValueTransferMemo Method Descriptions
+
+| Method                                        | Description |
+| --------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): ValueTransferMemo |             |
+| getRLPEncoding(): String                      |             |
+| getCommonRLPEncodingForSignature(): String    |             |
+
+#### AccountUpdate Method Descriptions
+
+| Method                                     | Description |
+| ------------------------------------------ | ----------- |
+| decode(rlpEncoded: String): AccountUpdate  |             |
+| getRLPEncoding(): String                   |             |
+| getCommonRLPEncodingForSignature(): String |             |
+
+#### SmartContractDeploy Method Descriptions
+
+| Method                                          | Description |
+| ----------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): SmartContractDeploy |             |
+| getRLPEncoding(): String                        |             |
+| getCommonRLPEncodingForSignature(): String      |             |
+
+#### SmartContractExecution Method Descriptions
+
+| Method                                             | Description |
+| -------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): SmartContractExecution |             |
+| getRLPEncoding(): String                           |             |
+| getCommonRLPEncodingForSignature(): String         |             |
+
+#### Cancel Method Descriptions
+
+| Method                                     | Description |
+| ------------------------------------------ | ----------- |
+| decode(rlpEncoded: String): Cancel         |             |
+| getRLPEncoding(): String                   |             |
+| getCommonRLPEncodingForSignature(): String |             |
+
+#### ChainDataAnchoring Method Descriptions
+
+| Method                                         | Description |
+| ---------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): ChainDataAnchoring |             |
+| getRLPEncoding(): String                       |             |
+| getCommonRLPEncodingForSignature(): String     |             |
+
+#### FeeDelegatedValueTransfer Method Descriptions
+
+| Method                                                | Description |
+| ----------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransfer |             |
+| getRLPEncoding(): String                              |             |
+| getCommonRLPEncodingForSignature(): String            |             |
+
+#### FeeDelegatedValueTransferMemo Method Descriptions
+
+| Method                                                    | Description |
+| --------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemo |             |
+| getRLPEncoding(): Stirng                                  |             |
+| getCommonRLPEncodingForSignature(): String                |             |
+
+#### FeeDelegatedAccountUpdate Method Descriptions
+
+| Method                                                | Description |
+| ----------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdate |             |
+| getRLPEncoding(): String                              |             |
+| getCommonRLPEncodingForSignature(): String            |             |
+
+#### FeeDelegatedSmartContractDeploy Method Descriptions
+
+| Method                                                      | Description |
+| ----------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy |             |
+| getRLPEncoding(): String                                    |             |
+| getCommonRLPEncodingForSignature(): String                  |             |
+
+#### FeeDelegatedSmartContractExecution Method Descriptions
+
+| Method                                                         | Description |
+| -------------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution |             |
+| getRLPEncoding(): String                                       |             |
+| getCommonRLPEncodingForSignature(): String                     |             |
+
+#### FeeDelegatedCancel Method Descriptions
+
+| Method                                         | Description |
+| ---------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedCancel |             |
+| getRLPEncoding(): String                       |             |
+| getCommonRLPEncodingForSignature(): String     |             |
+
+#### FeeDelegatedChainDataAnchoring Method Descriptions
+
+| Method                                                     | Description |
+| ---------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring |             |
+| getRLPEncoding(): String                                   |             |
+| getCommonRLPEncodingForSignature(): String                 |             |
+
+#### FeeDelegatedValueTransferWithRatio Method Descriptions
+
+| Method                                                         | Description |
+| -------------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio |             |
+| getRLPEncoding(): String                                       |             |
+| getCommonRLPEncodingForSignature(): String                     |             |
+
+#### FeeDelegatedValueTransferMemoWithRatio Method Descriptions
+
+| Method                                                             | Description |
+| ------------------------------------------------------------------ | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio |             |
+| getRLPEncoding(): Stirng                                           |             |
+| getCommonRLPEncodingForSignature(): String                         |             |
+
+#### FeeDelegatedAccountUpdateWithRatio Method Descriptions
+
+| Method                                                         | Description |
+| -------------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio |             |
+| getRLPEncoding(): String                                       |             |
+| getCommonRLPEncodingForSignature(): String                     |             |
+
+#### FeeDelegatedSmartContractDeployWithRatio Method Descriptions
+
+| Method                                                               | Description |
+| -------------------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio |             |
+| getRLPEncoding(): String                                             |             |
+| getCommonRLPEncodingForSignature(): String                           |             |
+
+#### FeeDelegatedSmartContractExecutionWithRatio Method Descriptions
+
+| Method                                                                  | Description |
+| ----------------------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio |             |
+| getRLPEncoding(): String                                                |             |
+| getCommonRLPEncodingForSignature(): String                              |             |
+
+#### FeeDelegatedCancelWithRatio Method Descriptions
+
+| Method                                                  | Description |
+| ------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio |             |
+| getRLPEncoding(): String                                |             |
+| getCommonRLPEncodingForSignature(): String              |             |
+
+#### FeeDelegatedChainDataAnchoringWithRatio Method Descriptions
+
+| Method                                                              | Description |
+| ------------------------------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio |             |
+| getRLPEncoding(): String                                            |             |
+| getCommonRLPEncodingForSignature(): String                          |             |
+
+#### TransactionDecoder Method Descriptions
+
+| Method                                          | Description |
+| ----------------------------------------------- | ----------- |
+| decode(rlpEncoded: String): AbstractTransaction |             |
+
+#### TransactionHasher Method Descriptions
+
+| Method                                                                            | Description |
+| --------------------------------------------------------------------------------- | ----------- |
+| getHashForSignature(transaction: AbstractTransaction): String                     |             |
+| getHashForFeePayerSignature(transaction: AbstractFeeDelegatedTransaction): String |             |
+
 ### RPC Layer Class Diagram
 
 The `RPC` layer provides the functions to use the Node API. The `RPC` is a class that manages the Node API for each namespace. Node APIs currently provided by Caver are [klay] and [net].
@@ -136,6 +563,114 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 ![rpc](https://user-images.githubusercontent.com/32922423/86310487-2fe6fd80-bc59-11ea-949d-42767bfcd521.png)
 
 `Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
+
+#### Klay Method Descriptions
+
+| Method                                                                    | Description |
+| ------------------------------------------------------------------------- | ----------- |
+| accountCreated(address: String): Boolean                                  |             |
+| accountCreated(address: String, blockNumber: int): Boolean                |             |
+| accountCreated(address: String, blockTag: String): Boolean                |             |
+| getAccounts(): List&#60;String&#62;                                       |             |
+| encodeAccountKey(accountKey: AccountKey): String                          |             |
+| decodeAccountKey(encodedAccountKey: String): Object                       |             |
+| getAccount(address: String): Object                                       |             |
+| getAccount(address: String, blockNumber: int): Object                     |             |
+| getAccount(address: String, blockTag: String): Object                     |             |
+| getAccountKey(address: String): Object                                    |             |
+| getAccountKey(address: String, blockNumber: int): Object                  |             |
+| getAccountKey(address: String, blockTag: String): Object                  |             |
+| getBalance(address: String): String                                       |             |
+| getBalance(address: String, blockNumber: int): String                     |             |
+| getBalance(address: String, blockTag: String): String                     |             |
+| getCode(address: String): String                                          |             |
+| getCode(address: String, blockNumber: int): String                        |             |
+| getCode(address: String, blockTag: String): String                        |             |
+| getTransactionCount(address: String): String                              |             |
+| getTransactionCount(address: String, blockNumber: int): String            |             |
+| getTransactionCount(address: String, blockTag: String): String            |             |
+| isContractAddress(address: String): Boolean                               |             |
+| isContractAddress(address: String, blockNumber: int): Boolean             |             |
+| isContractAddress(address: String, blockTag: String): Boolean             |             |
+| sign(address: String, message: String): String                            |             |
+| getBlockNumber(): String                                                  |             |
+| getBlockByNumber(blockNumber: int): Object                                |             |
+| getBlockByNumber(blockNumber: int, fullTxs: Boolean): Object              |             |
+| getBlockByNumber(blockTag: String): Object                                |             |
+| getBlockByNumber(blockTag: String, fullTxs: Boolean): Object              |             |
+| getBlockByHash(blockHash: String): Object                                 |             |
+| getBlockByHash(blockHash: String, fullTxs: Boolean): Object               |             |
+| getBlockReceipts(blockHash: String): Object                               |             |
+| getBlockTransactionCountByNumber(blockNumber: int): Object                |             |
+| getBlockTransactionCountByNumber(blockTag: String): Object                |             |
+| getBlockTransactionCountByHash(blockHash: String): Object                 |             |
+| getBlockWithConsensusInfoByHash(blockHash: String): Object                |             |
+| getBlockWithConsensusInfoByNumber(blockNumber: int): Object               |             |
+| getBlockWithConsensusInfoByNumber(blockTag: String): Object               |             |
+| getCommittee(): List&#60;String&#62;                                      |             |
+| getCommittee(blockNumber: int): List&#60;String&#62;                      |             |
+| getCommittee(blockTag: String): List&#60;String&#62;                      |             |
+| getCommitteeSize(): int                                                   |             |
+| getCommitteeSize(blockNumber: int): int                                   |             |
+| getCommitteeSize(blockTag: String): int                                   |             |
+| getCouncil(): List&#60;String&#62;                                        |             |
+| getCouncil(blockNumber: int): List&#60;String&#62;                        |             |
+| getCouncil(blockTag: String): List&#60;String&#62;                        |             |
+| getCouncilSize(): int                                                     |             |
+| getCouncilSize(blockNumber: int): int                                     |             |
+| getCouncilSize(blockTag: String): int                                     |             |
+| getStorageAt(address: String, position: int, blockNumber: int): String    |             |
+| getStorageAt(address: String, position: int, blockTag: String): String    |             |
+| isSyncing(): Object                                                       |             |
+| call(callObject: Object): String                                          |             |
+| call(callObject: Object, blockNumber: int): String                        |             |
+| call(callObject: Object, blockTag: String): String                        |             |
+| estimateGas(callObject: Object): String                                   |             |
+| estimateGas(callObject: Object, blockNumber: int): String                 |             |
+| estimateGas(callObject: Object, blockTag: String): String                 |             |
+| estimateComputationCost(callObject: Object): String                       |             |
+| estimateComputationCost(callObject: Object, blockNumber: int): String     |             |
+| estimateComputationCost(callObject: Object, blockTag: String): String     |             |
+| getTransactionByBlockHashAndIndex(hash: String, index: int): Object       |             |
+| getTransactionByBlockNumberAndIndex(blockNumber: int, index: int): Object |             |
+| getTransactionByBlockNumberAndIndex(blockTag: String, index: int): Object |             |
+| getTransactionByHash(hash: String): Object                                |             |
+| getTransactionBySenderTxHash(senderTxHash: String): Object                |             |
+| getTransactionReceipt(hash: String): Object                               |             |
+| getTransactionReceiptBySenderTxHash(senderTxHash: String): Object         |             |
+| sendRawTransaction(rawTransaction: String): Object                        |             |
+| sendTransaction(tx: AbstractTransaction): String                          |             |
+| sendTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): String    |             |
+| signTransaction(tx: AbstractTransaction): Object                          |             |
+| signTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): Object    |             |
+| getDecodedAnchoringTransaction(hash: String): Object                      |             |
+| getChainId(): String                                                      |             |
+| getClientVersion(): String                                                |             |
+| getGasPrice(): String                                                     |             |
+| getGasPriceAt(): String                                                   |             |
+| getGasPriceAt(blockNumber: int): String                                   |             |
+| isParallelDBWrite(): Boolean                                              |             |
+| isSenderTxHashIndexingEnabled(): Boolean                                  |             |
+| getProtocolVersion(): String                                              |             |
+| getRewardbase(): String                                                   |             |
+| writeThroughCaching(): Boolean                                            |             |
+| getFilterChanges(filterId: String): List&#60;Object&#62;                  |             |
+| getFilterLogs(filterId: String): List&#60;Object&#62;                     |             |
+| getLogs(filterOption: Object): List&#60;Object&#62;                       |             |
+| newBlockFilter(): String                                                  |             |
+| newFilter(filterOptions: Object): String                                  |             |
+| newPendingTransactionFilter(): String                                     |             |
+| uninstallFilter(filterId: String): Boolean                                |             |
+| sha3(data: String): String                                                |             |
+
+#### Net Method Descriptions
+
+| Method                       | Description |
+| ---------------------------- | ----------- |
+| getNetworkID(): String       |             |
+| isListening(): Boolean       |             |
+| getPeerCount(): String       |             |
+| getPeerCountByType(): Object |             |
 
 ### Contract, ABI, KCT Layer Class Diagram
 
@@ -147,11 +682,150 @@ The `Contract` class makes it easy to interact with smart contracts based on ABI
 
 The `ABI` class provides functions to encode and decode parameters using the ABI. The `Contract` class encodes and decodes the parameters required for smart contract deployment and execution using the functions provided by the ABI. If the user wants to create a transaction to deploy or execute a smart contract, he can create `input` using functions provided by the ABI.
 
-The `KIP7` class provides the functions to interact with [KIP-7] token contracts on Klaytn. This class allows users to easily 
+The `KIP7` class provides the functions to interact with [KIP-7] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions defined in [KIP-7] and provides them as class methods.
 
-The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily 
+The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all functions defined in [KIP-17] and provides them as class methods.
+
+#### Contract Method Descriptions
+
+| Method                                                                                 | Description |
+| -------------------------------------------------------------------------------------- | ----------- |
+| deploy(deployParam: ContractDeployParams, options: SendOptions): Contract              |             |
+| once(event: String, callback: Function): void                                          |             |
+| once(event: String, options: Object, callback: Function): void                         |             |
+| once(event: String, options: Object, callback: Function): void                         |             |
+| getPastEvent(event: String): List&#60;Object&#62;                                      |             |
+| getPastEvent(event: String, options: Object): List&#60;Object&#62;                     |             |
+| getPastEvent(event: String, callback: Function): List&#60;Object&#62;                  |             |
+| getPastEvent(event: String, options: Object, callback: Function): List&#60;Object&#62; |             |
+
+#### ContractMethod Method Descriptions
+
+| Method                                                           | Description |
+| ---------------------------------------------------------------- | ----------- |
+| call(argumetns: List&#60;any&#62;, options: SendOptions): any    |             |
+| send(arguments: List&#60;any&#62;, options: SendOptions): Object |             |
+| encodeABI(arguments: List&#60;any&#62;): String                  |             |
+| estimateGas(arguments: List&#60;any&#62;): String                |             |
+
+#### ABI Method Descriptions
+
+| Method                                                                                                   | Description |
+| -------------------------------------------------------------------------------------------------------- | ----------- |
+| encodeFunctionSignature(method: ContractMethod): String                                                  |             |
+| encodeFunctionSignature(functionString: String): String                                                  |             |
+| encodeEventSignature(event: ContractEvent): String                                                       |             |
+| encodeEventSignature(eventString: String): String                                                        |             |
+| encodeParameter(type: String, param: any): String                                                        |             |
+| encodeParameter(type: String, param: List&#60;any&#62;): String                                          |             |
+| encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#124;List&#60;any&#62;>&#62;): String |             |
+| encodeFunctionCall(method: ContractMethod, params: List&#60;any&#62;): String                            |             |
+| decodeParameter(type: String, encoded: String): String                                                   |             |
+| decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62;                     |             |
+| decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62;                          |             |
+| decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject  |             |
+
+#### KIP7 Method Descriptions
+
+| Method                                                                                           | Description |
+| ------------------------------------------------------------------------------------------------ | ----------- |
+| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP7                                        |             |
+| clone(): KIP7                                                                                    |             |
+| clone(tokenAddress: address): KIP7                                                               |             |
+| supportInterface(interfaceid: String): Boolean                                                   |             |
+| name(): String                                                                                   |             |
+| symbol(): String                                                                                 |             |
+| decimals(): String                                                                               |             |
+| totalSupply(): String                                                                            |             |
+| balanceOf(account: String): String                                                               |             |
+| allowance(owner: String, spender: String): String                                                |             |
+| isMinter(account: String): Boolean                                                               |             |
+| isPauser(account: String): Boolean                                                               |             |
+| paused(): Boolean                                                                                |             |
+| approve(spender: String, amount: int): Object                                                    |             |
+| approve(spender: String, amount: int, sendParam: SendOptions): Object                            |             |
+| transfer(recipient: String, amount: int): Object                                                 |             |
+| transfer(recipient: String, amount: int, sendParam: SendOptions): Object                         |             |
+| transferFrom(sender: String, recipient: String, amount: int): Object                             |             |
+| transferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object     |             |
+| safeTransfer(recipient: String, amount: int): Object                                             |             |
+| safeTransfer(recipient: String, amount: int, sendParam: SendOptions): Object                     |             |
+| safeTransfer(recipient: String, amount: int, data: String): Object                               |             |
+| safeTransfer(recipient: String, amount: int, data: String, sendParam: SendOptions): Object       |             |
+| safeTransferFrom(sender: String, recipient: String, amount: int): Object                         |             |
+| safeTransferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object |             |
+| safeTransferFrom(sender, recipient, amount, data): Object                                        |             |
+| safeTransferFrom(sender, recipient, amount, data, sendParam: SendOptions): Object                |             |
+| mint(account, amount): Object                                                                    |             |
+| mint(account, amount, sendParam: SendOptions): Object                                            |             |
+| addMinter(account): Object                                                                       |             |
+| addMinter(account, sendParam: SendOptions): Object                                               |             |
+| renounceMinter(): Object                                                                         |             |
+| renounceMinter(sendParam: SendOptions): Object                                                   |             |
+| burn(amount): Object                                                                             |             |
+| burn(amount, sendParam: SendOptions): Object                                                     |             |
+| burnFrom(account, amount): Object                                                                |             |
+| burnFrom(account, amount, sendParam: SendOptions): Object                                        |             |
+| addPauser(account): Object                                                                       |             |
+| addPauser(account, sendParam: SendOptions): Object                                               |             |
+| pause(): Object                                                                                  |             |
+| pause(sendParam: SendOptions): Object                                                            |             |
+| unpuase(): Object                                                                                |             |
+| unpuase(sendParam: SendOptions): Object                                                          |             |
+| renouncePauser(): Object                                                                         |             |
+| renouncePauser(sendParam: SendOptions): Object                                                   |             |
+
+#### KIP17 Method Descriptions
+
+| Method                                                                                                 | Description |
+| ------------------------------------------------------------------------------------------------------ | ----------- |
+| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP17                                             |             |
+| clone(): KIP17                                                                                         |             |
+| clone(tokenAddress: String): KIP17                                                                     |             |
+| supportInterface(interfaceId: String): Boolean                                                         |             |
+| name(): String                                                                                         |             |
+| symbol(): String                                                                                       |             |
+| tokenURI(tokenId: String): String                                                                      |             |
+| totalSupply(): String                                                                                  |             |
+| tokenOwnerByIndex(owner: String, index: int): String                                                   |             |
+| tokenByIndex(index: int): String                                                                       |             |
+| balanceOf(account: String): String                                                                     |             |
+| ownerOf(tokenId: int): String                                                                          |             |
+| getApproved(tokenId: int): Boolean                                                                     |             |
+| isApprovedForAll(owner: String, operator: String): Boolean                                             |             |
+| isMinter(account: String): Boolean                                                                     |             |
+| paused(): Boolean                                                                                      |             |
+| isPauser(account: String): Boolean                                                                     |             |
+| approve(to: String, tokenId: int): Object                                                              |             |
+| approve(to: String, tokenId: int, sendParam: SendOptions): Object                                      |             |
+| setApprovalForAll(to: String, approved: Boolean): Object                                               |             |
+| setApprovalForAll(to: String, approved: Boolean, sendParam: SendOptions): Object                       |             |
+| transferFrom(from: String, to: String, tokenId: int): Object                                           |             |
+| transferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object                   |             |
+| safeTransferFrom(from: String, to: String, tokenId: int): Object                                       |             |
+| safeTransferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object               |             |
+| safeTransferFrom(from: String, to: String, tokenId: int, data: Strings): Object                        |             |
+| safeTransferFrom(from: String, to: String, tokenId: int, data: String, sendParam: SendOptions): Object |             |
+| addMinter(account: String): Object                                                                     |             |
+| addMinter(account: String, sendParam: SendOptions): Object                                             |             |
+| renounceMinter(): Object                                                                               |             |
+| renounceMinter(sendParam: SendOptions): Object                                                         |             |
+| mint(to: String, tokenId: int): Object                                                                 |             |
+| mint(to: String, tokenId: int, sendParam: SendOptions): Object                                         |             |
+| mintWithTokenURI(to: String, tokenId: int, toeknURI: String): Object                                   |             |
+| mintWithTokenURI(to: String, tokenId: int, toeknURI: String, sendParam: SendOptions): Object           |             |
+| burn(tokenId: int): Object                                                                             |             |
+| burn(tokenId: int, sendParam: SendOptions): Object                                                     |             |
+| pause(): Object                                                                                        |             |
+| pause(sendParam: SendOptions): Object                                                                  |             |
+| unpause(): Object                                                                                      |             |
+| unpause(sendParam: SendOptions): Object                                                                |             |
+| addPauser(account: String): Object                                                                     |             |
+| addPauser(account: String, sendParam: SendOptions): Object                                             |             |
+| renouncePauser(): Object                                                                               |             |
+| renouncePauser(sendParam: SendOptions): Object                                                         |             |
 
 ### Utils Layer Class Diagram
 
@@ -160,6 +834,29 @@ The Utils layer provides utility functions.
 ![utils](https://user-images.githubusercontent.com/32922423/86078319-cf28bb00-bac8-11ea-93ce-39a9809b017e.png)
 
 The Utils class provides basic utility functions required when using Caver, and also converting functions based on `KlayUnit`.
+
+#### utils Method Descriptions
+
+| Method                                                                            | Description |
+| --------------------------------------------------------------------------------- | ----------- |
+| isAddress(address: String): Boolean                                               |             |
+| isValidPrivateKey(key: String): Boolean                                           |             |
+| isKlaytnWalletKey(key: String): Boolean                                           |             |
+| isValidPublicKey(key: String): Boolean                                            |             |
+| compressPublicKey(key: String): String                                            |             |
+| decompressPublicKey(key: String): String                                          |             |
+| hashMessage(message: String): String                                              |             |
+| parseKlaytnWalletKey(key: String): String[]                                       |             |
+| isHex(str: String): boolean                                                       |             |
+| isHexStrict(str: String): boolean                                                 |             |
+| addHexPrefix(str: String): String                                                 |             |
+| stripHexPrefix(str: String): String                                               |             |
+| convertToPeb(num: String, unit: String): String                                   |             |
+| convertToPeb(num: String, unit: KlayUnit): String                                 |             |
+| convertFromPeb(num: String, unit: String): String                                 |             |
+| convertFromPeb(num: String, unit: KlayUnit): String                               |             |
+| recover(message: String, signature: KlaySignatureData): String                    |             |
+| recover(message: String, signature: KlaySignatureData, preFixed: Boolean): String |             |
 
 ### Example of the source code
 
@@ -187,41 +884,43 @@ receipt <- sendRawTransaction(signed)
 print receipt
 ```
 
-
 ## Rationale
+
 While designing the common architecture, I tried to use the concept used in Klaytn in the SDK as much as possible. In addition, in order to provide the functions of the existing Caver, it was designed not to break the existing structure.
 
 ## Backwards Compatibility
+
 There is no compatibility problem. When the common architecture is implemented in the existing Klaytn SDK, Caver (caver-js, caver-java), the existing functions should be provided as it is.
 
 ## Test Cases
+
 1. All of the functions defined in the above common architecture diagram should be provided.
 2. The exsiting functions in caver-js and caver-java can be used.
 
 ## Implementation
+
 PRs related to common architecture are linked to the issues below. The common architecture is implemented in caver-js v1.5.0 and caver-java v1.5.0.
 
 - caver-js
-    - https://github.com/klaytn/caver-js/issues/249
-- caver-java
-	- https://github.com/klaytn/caver-java/issues/97
+  - https://github.com/klaytn/caver-js/issues/249
+- caver-java - https://github.com/klaytn/caver-java/issues/97
 
 ## Copyright
+
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
 
-
-[AccountKey]: https://docs.klaytn.com/klaytn/design/accounts#account-key
-[Klaytn's account]: https://docs.klaytn.com/klaytn/design/accounts#klaytn-accounts
-[Klaytn account]: https://docs.klaytn.com/klaytn/design/accounts#klaytn-accounts
+[accountkey]: https://docs.klaytn.com/klaytn/design/accounts#account-key
+[klaytn's account]: https://docs.klaytn.com/klaytn/design/accounts#klaytn-accounts
+[klaytn account]: https://docs.klaytn.com/klaytn/design/accounts#klaytn-accounts
 [multiple transaction types]: https://docs.klaytn.com/klaytn/design/transactions#klaytn-transactions
-[Basic transactions]: https://docs.klaytn.com/klaytn/design/transactions/basic
-[Fee Delegation transactions]: https://docs.klaytn.com/klaytn/design/transactions/fee-delegation
-[Partial Fee Delegation transactions]: https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation
-[Klaytn Design - Transactions]: https://docs.klaytn.com/klaytn/design/transactions
-[KIP-7]: ./kip-7.md
-[KIP-17]: ./kip-17.md
+[basic transactions]: https://docs.klaytn.com/klaytn/design/transactions/basic
+[fee delegation transactions]: https://docs.klaytn.com/klaytn/design/transactions/fee-delegation
+[partial fee delegation transactions]: https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation
+[klaytn design - transactions]: https://docs.klaytn.com/klaytn/design/transactions
+[kip-7]: ./kip-7.md
+[kip-17]: ./kip-17.md
 [klay]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
-[Node API of klay namespace]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
+[node api of klay namespace]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
 [net]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
-[Node API of net namespace]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
-[JSON-RPC APIs]: https://docs.klaytn.com/bapp/json-rpc/api-references
+[node api of net namespace]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
+[json-rpc apis]: https://docs.klaytn.com/bapp/json-rpc/api-references
