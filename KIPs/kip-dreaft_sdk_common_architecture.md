@@ -5,7 +5,7 @@ author: Jimin Kim <jasmine.kim@groundx.xyz>, Seonyong Kim <kale.kim@groundx.xyz>
 discussions-to: https://github.com/klaytn/kips/issues/35
 status: Draft
 type: Standards Track
-category (*only required for Standard Track): SDK
+category: SDK
 created: 2020-07-02
 ---
 
@@ -34,36 +34,38 @@ With the common architecture, we want to achieve two goals:
 
 |Term|Description|
 |---|---|
-| [Account](#account-layer-class-diagram) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account. |
-| [Keyring](#wallet-layer-class-diagram) | A structure to store Klaytn's account address and private key(s) to use when signing. |
-| [Transaction](#transaction-layer-class-diagram) | A message sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
-| [JSON-RPC](#rpc-layer-class-diagram) | JSON-RPC is a remote procedure call protocol encoded in JSON. |
-| [Contract](#contract-abi-kct-layer-class-diagram) | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract to Klaytn or execute smart contract that have already been deployed to Klaytn through transaction. |
-| [ABI](#contract-abi-kct-layer-class-diagram) | An interface between two binary program modules. |
-| [KCT](#contract-abi-kct-layer-class-diagram) | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications. |
+| [Account](https://docs.klaytn.com/klaytn/design/accounts#overview-of-account-state-and-address) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account. |
+| Keyring | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction. |
+| [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview) | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
+| [JSON-RPC](https://www.jsonrpc.org/specification) | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format. |
+| Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract or execute smart contract that have already been deployed to Klaytn through a transaction. |
+| ABI | An application binary interface (ABI) to communicate between two binary program modules. |
+| [KCT](http://kips.klaytn.com/token) | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications. |
 
 
-### Overall Class Diagram
+### Overview of the Common Architecture
 
-This is the overall class diagram of the SDK.
+This is the overview of the common architecture of Klaytn SDK.
 
 ![all](https://user-images.githubusercontent.com/32922423/86310531-4e4cf900-bc59-11ea-8a4e-09a34f7f543d.png)
 
-### Layer Diagram
+### Layer Diagram of the Common Architecture
 
-Below diagram shows the layers of the SDK. Components belonging to each layer are represented inside the layer box.
+Below diagram shows the layers of the common architecture. Components belonging to each layer are represented inside the layer box.
 
 ![layerDiagram](https://user-images.githubusercontent.com/32922423/85986440-355d0180-ba27-11ea-8475-afe7638e6ffb.png)
 
-The `KCT` layer allows you to interact with KCT token contracts (e.g. [KIP-7] or [KIP-17]). This is implemented by extending the `Contract` class belonging to the Contract layer.
+The `KCT` layer allows you to interact with Klaytn compatible token (KCT) contracts (e.g. [KIP-7] or [KIP-17]). This is implemented by extending the `Contract` class in the `Contract` layer.
 
 The `Contract` layer allows you to interact with smart contracts on the Klaytn.
 
 The `ABI` layer provides the functions to encode and decode parameters based on ABI.
 
-Classes exist for each transaction type in the `Transaction` layer, and include the `TransactionDecoder` class that decodes the RLP-encoded transaction string, and the `TransactionHasher` class that calculates the hash of the transaction.
+The `Transaction` layer contains classes of Klaytn transaction types, `TransactionDecoder`, and `TransactionHasher`.
 
-The `Wallet` layer contains Keyring (`SingleKeyring`, `MultipleKeyring`, and `RoleBasedKeyring`) classes and `KeyringContainer` class that acts as an "in-memory wallet" that stores the actual Keyring instances.
+The `TransactionDecoder` class decodes the RLP-encoded transaction string. The `TransactionHasher` class calculates the hash of the transaction.
+
+The `Wallet` layer contains keyring classes (`SingleKeyring`, `MultipleKeyring`, and `RoleBasedKeyring`) and `KeyringContainer` class that contains multiple keyrings. The `KeyringContainer` acts as an "in-memory wallet" that stores the keyring instances.
 
 The `Account` layer contains an Account class that stores information needed when updating the [AccountKey] of the account in the Klaytn.
 
