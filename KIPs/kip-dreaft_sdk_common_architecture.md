@@ -58,15 +58,15 @@ With the common architecture, we want to achieve two goals:
 
 ### Terminology
 
-| Term                                                                                            | Description                                                                                                                                                                                                                                                                                                                     |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Account](https://docs.klaytn.com/klaytn/design/accounts#overview-of-account-state-and-address) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account.                                                                    |
-| Keyring                                                                                         | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction.                                                                                                                                                                                                                      |
-| [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview)         | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance.                                                                                              |
-| [JSON-RPC](https://www.jsonrpc.org/specification)                                               | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format.                                                                                                                                                                                                                                    |
-| Contract                                                                                        | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract or execute smart contract that have already been deployed to Klaytn through a transaction. |
-| ABI                                                                                             | An application binary interface (ABI) to communicate between two binary program modules.                                                                                                                                                                                                                                        |
-| [KCT](http://kips.klaytn.com/token)                                                             | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications.                                                                                                                                                                                                             |
+| Term        | Description |
+| ----------- | ----------- |
+| [Account](https://docs.klaytn.com/klaytn/design/accounts#overview-of-account-state-and-address) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account. |
+| Keyring | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction. |
+| [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview) | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
+| [JSON-RPC](https://www.jsonrpc.org/specification) | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format. |
+| Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract or execute smart contract that have already been deployed to Klaytn through a transaction. |
+| ABI | An application binary interface (ABI) to communicate between two binary program modules. |
+| [KCT](http://kips.klaytn.com/token) | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications. |
 
 ### Overview of the Common Architecture
 
@@ -90,7 +90,7 @@ The `Transaction` layer contains classes of Klaytn transaction types, `Transacti
 
 The `TransactionDecoder` class decodes the RLP-encoded transaction string. The `TransactionHasher` class calculates the hash of the transaction.
 
-The `Wallet` layer contains keyring classes (`SingleKeyring`, `MultipleKeyring`, and `RoleBasedKeyring`) and `KeyringContainer` class that contains multiple keyrings. The `KeyringContainer` class acts as an "in-memory wallet" that stores the keyring instances.
+The `Wallet` layer contains keyring classes (`SingleKeyring`, `MultipleKeyring`, and `RoleBasedKeyring`) and `KeyringContainer` class that contains multiple keyrings. The `KeyringContainer` class acts as an "in-memory wallet" that stores the Keyring instances.
 
 The `Account` layer contains an `Account` class that stores information needed when updating the [AccountKey] of the account in the Klaytn.
 
@@ -118,81 +118,82 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 #### IAccountKey Method Descriptions
 
-| Method                   | Description |
-| ------------------------ | ----------- |
-| getRLPEncoding(): String |             |
+| Method | Description |
+| ----------- | ----------- |
+| getRLPEncoding(): String | Returns RLP-encoded string of AccountKey. AccountKey classes implement `IAccountKey`, and this function must be implemented internally. |
 
 #### AccountKeyLegacy Method Descriptions
 
-| Method                                          | Description |
-| ----------------------------------------------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyLegacy |             |
-| getRLPEncoding(): String                        |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes RLP-encoded AccountKeyLegacy. |
+| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyLegacy. |
 
 #### AccountKeyPublic Method Descriptions
 
-| Method                                              | Description |
-| --------------------------------------------------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyPublic     |             |
-| fromXYPoint(x: String, y: String): AccountKeyPublic |             |
-| fromPublicKey(publicKey: String): AccountKeyPublic  |             |
-| getXYPoint(): String[]                              |             |
-| getRLPEncoding(): String                            |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyPublic | Decodes RLP-encoded AccountKeyPublic. |
+| fromXYPoint(x: String, y: String): AccountKeyPublic | Creates an instance of AccountKeyPublic from x and y points. |
+| fromPublicKey(publicKey: String): AccountKeyPublic | Creates an instance of AccountKeyPublic from public key string. |
+| getXYPoint(): String[] | Returns the x and y points of the public key. |
+| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyPublic. |
 
 #### AccountKeyFail Method Descriptions
 
-| Method                                        | Description |
-| --------------------------------------------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyFail |             |
-| getRLPEncoding(): String                      |             |
+
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyFail | Decodes RLP-encoded AccountKeyFail. |
+| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyFail. |
 
 #### AccountKeyWeightedMultiSig Method Descriptions
 
-| Method                                                                                                     | Description |
-| ---------------------------------------------------------------------------------------------------------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig                                                  |             |
-| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMutliSigOptions): AccountKeyWeightedMultiSig |             |
-| getRLPEncoding(): String                                                                                   |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig | Decodes RLP-encoded AccountKeyWeightedMultiSig. |
+| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMutliSigOptions): AccountKeyWeightedMultiSig | Creates an instance of AccountKeyWeightedMultiSig with public key strings and option that defines threshold and weight of each key. |
+| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyWeightedMultiSig. |
 
 #### WeightedPublicKey Method Descriptions
 
-| Method                    | Description |
-| ------------------------- | ----------- |
-| encodeToBytes             |             |
-| encodeToBytes(): String[] |             |
+| Method | Description |
+| ----------- | ----------- |
+| encodeToBytes(): String[] | Returns an encoded weighted public key string. |
 
 #### AccountKeyRoleBased Method Descriptions
 
-| Method                                                                                                               | Description |
-| -------------------------------------------------------------------------------------------------------------------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyRoleBased                                                                   |             |
-| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased |             |
-| getRLPEncoding(): String                                                                                             |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncodedKey: String): AccountKeyRoleBased | Decodes RLP-encoded AccountKeyRoleBased. |
+| fromRoledPublicKeysAndOptions(pubArray: List<String[]>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key string for each role. |
+| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key string for each role and option that defines threshold and weight of each key. |
+| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyRoleBased. |
 
 #### AccountKeyDecoder Method Descriptions
 
-| Method                                     | Description |
-| ------------------------------------------ | ----------- |
-| decode(rlpEncodedKey: String): IAccountKey |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncodedKey: String): IAccountKey | Decodes RLP-encoded AccountKey. |
 
 #### Account Method Descriptions
 
-| Method                                                                                                                            | Description |
-| --------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| create(address: String, publicKey: String): Account                                                                               |             |
-| create(address: String, pubKeys: String[]): Account                                                                               |             |
-| create(address: String, pubKeys: String[], options: WeightedMultiSigOptions): Account                                             |             |
-| create(address: String, roleBasedPubKeys: List<String[]>): Account                                                                |             |
-| create(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account                        |             |
-| createFromRLPEncoding(address: String, rlpEncodedKey: String): Account                                                            |             |
-| createWithAccountKeyLegacy(address: String): Account                                                                              |             |
-| createWithAccountKeyFail(address: String): Account                                                                                |             |
-| createWithAccountKeyPublic(address: String, publicKey: String): Account                                                           |             |
-| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[]): Account                                              |             |
-| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[], options: WeightedMultiSigOptions): Account            |             |
-| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>): Account                                         |             |
-| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account |             |
-| getRLPEncodingAccountKey(): String                                                                                                |             |
+| Method | Description |
+| ----------- | ----------- |
+| create(address: String, publicKey: String): Account | Generates an Account instance with an address and a public key string. |
+| create(address: String, pubKeys: String[]): Account | Generates an Account instance with an address and public key strings. |
+| create(address: String, pubKeys: String[], options: WeightedMultiSigOptions): Account | Generates an Account instance with an address and public key strings and options that defines threshold and weight of each key. |
+| create(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance with an array of public keys defined for each role. |
+| create(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account | Creates an Account instance with an array of public keys defined for each role and an array of options defined for each role. |
+| createFromRLPEncoding(address: String, rlpEncodedKey: String): Account | Creates an Account instance with an address and RLP-encoded string. |
+| createWithAccountKeyLegacy(address: String): Account | Creates an Account instance which has AccountKeyLegacy as an accountKey. |
+| createWithAccountKeyPublic(address: String, publicKey: String): Account | Creates an Account instance which has AccountKeyPublic as an accountKey. |
+| createWithAccountKeyFail(address: String): Account | Creates an Account instance which has AccountKeyFail as an accountKey. |
+| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[]): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. The options required for AccountKeyWeightedMultiSig use default values (threshold:1, weight of each key: 1). |
+| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[], options: WeightedMultiSigOptions): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. If multiple keys are used among the defined roles, options use the default value (threshold:1, weight of each key: 1). |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. |
+| getRLPEncodingAccountKey(): String | Return RLP-encoded string of AccountKey in Account instance. |
 
 ### Wallet Layer Class Diagram
 
@@ -218,82 +219,83 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 #### PrivateKey Method Descriptions
 
-| Method                                               | Description |
-| ---------------------------------------------------- | ----------- |
-| sign(txHash: String, chainId: String): SignatureData |             |
-| sign(txHash: String, chainId: int): SignatureData    |             |
-| signMessage(messageHash: String): SignatureData      |             |
-| getPublicKey(compressed: Boolean): String            |             |
-| getDerivedAddress(): String                          |             |
+| Method | Description |
+| ----------- | ----------- |
+| sign(txHash: String, chainId: String): SignatureData | Signs the transaction. |
+| sign(txHash: String, chainId: int): SignatureData | Signs the transaction. |
+| signMessage(messageHash: String): SignatureData | Signs the message. |
+| getPublicKey(compressed: Boolean): String | Returns public key string. |
+| getDerivedAddress(): String | Returns derived address from private key string. |
 
 #### AbstractKeyring Method Descriptions
 
-| Method                                                                        | Description |
-| ----------------------------------------------------------------------------- | ----------- |
-| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62;    |             |
-| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; |             |
-| sign(txHash: String, chainId: int, role: int, index: int): SignatureData      |             |
-| sign(txHash: String, chainId: String, role: int, index: int): SignatureData   |             |
-| signMessage(message: String, role: int): MessageSigned                        |             |
-| signMessage(message: String, role: int, index: int): MessageSigned            |             |
-| getKlaytnWalletKey(): String                                                  |             |
-| encrypt(password: String): Object                                             |             |
-| encrypt(password: String, options: Object): Object                            |             |
-| encryptV3(password: String): Object                                           |             |
-| encryptV3(password: String, options: Object): Object                          |             |
-| isDecoupled(): Boolean                                                        |             |
-| copy(): AbstractKeyring                                                       |             |
+| Method | Description |
+| ----------- | ----------- |
+| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using key(s) defined in role. |
+| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using key(s) defined in role. |
+| sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key defined in role. |
+| sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key defined in role. |
+| signMessage(message: String, role: int): MessageSigned | Signs the message using key(s) defined in role. |
+| signMessage(message: String, role: int, index: int): MessageSigned | Signs the message using a key defined in role. |
+| getKlaytnWalletKey(): String | Returns KlaytnWalletKey string. |
+| encrypt(password: String): Object | Encrypts a Keyring instance with keystore v4 format. |
+| encrypt(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v4 format. |
+| encryptV3(password: String): Object | Encrypts a Keyring instance with keystore v3 format. |
+| encryptV3(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v3 format. |
+| isDecoupled(): Boolean | Returns true if keyring has decoupled key. |
+| copy(): AbstractKeyring | Returns a copied Keyring instance. |
 
-#### SingleKeyring Method Descriptions
+#### SingleKeyring Method Descriptionss
 
-| Method                         | Description |
-| ------------------------------ | ----------- |
-| getPublicKey(): String         |             |
-| getKeyByRole(role): PrivateKey |             |
-| toAccount(): Account           |             |
+| Method | Description |
+| ----------- | ----------- |
+| getPublicKey(): String | Returns public key string. |
+| getKeyByRole(role): PrivateKey | Returns keys by role. SingleKeyring always returns a same key. |
+| toAccount(): Account | Returns an instance of Account. |
 
 #### MultipleKeyring Method Descriptions
 
-| Method                                               | Description |
-| ---------------------------------------------------- | ----------- |
-| getPublicKey(): List&#60;String&#62;                 |             |
-| getKeyByRole(role): List&#60;PrivateKey&#62;         |             |
-| toAccount(options: WeightedMultiSigOptions): Account |             |
+| Method | Description |
+| ----------- | ----------- |
+| getPublicKey(): List&#60;String&#62; | Returns public key strings. |
+| getKeyByRole(role): List&#60;PrivateKey&#62; | Returns keys by role. SingleKeyring always returns same keys. |
+| toAccount(options: WeightedMultiSigOptions): Account | Returns an instance of Account. |
 
 #### RoleBasedKeyring Method Descriptions
 
-| Method                                                             | Description |
-| ------------------------------------------------------------------ | ----------- |
-| getPublicKey(): List&#60;List&#60;String&#62;&#62;                 |             |
-| getKeyByRole(role): List&#60;PrivateKey&#62;                       |             |
-| toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account |             |
+| Method | Description |
+| ----------- | ----------- |
+| getPublicKey(): List&#60;List&#60;String&#62;&#62; | Returns public key strings by roles. |
+| getKeyByRole(role): List&#60;PrivateKey&#62; | Returns keys by role. |
+| toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an instance of Account. |
 
 #### KeyringFactory Method Descriptions
 
-| Method                                                                                               | Description |
-| ---------------------------------------------------------------------------------------------------- | ----------- |
-| generate(): SingleKeyring                                                                            |             |
-| generate(entropy: String): SingleKeyring                                                             |             |
-| generateSingleKey(): String                                                                          |             |
-| generateSingleKey(entropy: String): String                                                           |             |
-| generateMultipleKey(num: int): List&#60;String&#62;                                                  |             |
-| generateMultipleKey(num: int, entropy: String): List&#60;String&#62;                                 |             |
-| generateRoleBasedKey(numArr: List&#60;int&#62;): List&#60;List&#60;String&#62;&#62;                  |             |
-| generateRoleBasedKey(numArr: List&#60;int&#62;, entropy: String): List&#60;List&#60;String&#62;&#62; |             |
-| create(address: String, key: String): SingleKeyring                                                  |             |
-| create(address: String, keys: String[]): MultipleKeyring                                             |             |
-| create(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring                     |             |
-| createFromPrivateKey(key: String): SingleKeyring                                                     |             |
-| createFromKlaytnWalletKey(klaytnWalletKey: String): SingleKeyring                                    |             |
-| createWithSingleKey(address: String, key: String): SingleKeyring                                     |             |
-| createWithMultipleKey(address: String, keys: String[]): MultipleKeyring                              |             |
-| createWithRoleBasedKey(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring     |             |
-| decrypt(keystore: Object, password: String): Keyring                                                 |             |
+| Method | Description |
+| ----------- | ----------- |
+| generate(): SingleKeyring | Generates a SingleKeyring instance with a randomly generated private key. |
+| generate(entropy: String): SingleKeyring | Generates a SingleKeyring instance with a randomly generated private key. |
+| generateSingleKey(): String | Generates a private key string. |
+| generateSingleKey(entropy: String): String | Generates a private key string. |
+| generateMultipleKey(num: int): List&#60;String&#62; | Generates private key strings. |
+| generateMultipleKey(num: int, entropy: String): List&#60;String&#62; | Generates private key strings. |
+| generateRoleBasedKey(numArr: List&#60;int&#62;): List&#60;List&#60;String&#62;&#62; | Generates a 2D array of which each array element contains keys defined for each role. |
+| generateRoleBasedKey(numArr: List&#60;int&#62;, entropy: String): List&#60;List&#60;String&#62;&#62; | Generates a 2D array of which each array element contains keys defined for each role. |
+| create(address: String, key: String): SingleKeyring | Creates a SingleKeyring instance with an address and a private key string. |
+| create(address: String, keys: String[]): MultipleKeyring | Creates a MultipleKeyring instance with an address and private key strings. |
+| create(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance with an address and private key strings by roles. |
+| createFromPrivateKey(key: String): SingleKeyring | Creates a SingleKeyring instance from a private key string or a KlaytnWalletKey. |
+| createFromKlaytnWalletKey(klaytnWalletKey: String): SingleKeyring | Creates a SingleKeyring instance from a KlaytnWalletKey string. |
+| createWithSingleKey(address: String, key: String): SingleKeyring | Creates a SingleKeyring instance from an address and a private key string.
+ |
+| createWithMultipleKey(address: String, keys: String[]): MultipleKeyring | Creates a MultipleKeyring instance from an address and private key strings. |
+| createWithRoleBasedKey(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance from an address and a 2D array of which each array element contains keys defined for each role. |
+| decrypt(keystore: Object, password: String): Keyring | Decrypts a keystore v3 or v4 JSON and returns the decrypted Keyring instance. |
 
 #### KeyringContainer Method Descriptions
 
-| Method                                                                                                               | Description |
-| -------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Method | Description |
+| ----------- | ----------- |
 | generate(num: int, entropy: String): List&#60;String&#62;                                                            |             |
 | add(keyring: AbstractKeyring): AbstractKeyring                                                                       |             |
 | newKeyring(address: String, privateKeyString: String): AbstractKeyring                                               |             |
@@ -331,230 +333,230 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### AbstractTransaction Method Descriptions
 
-| Method                                                                            | Description |
-| --------------------------------------------------------------------------------- | ----------- |
-| sign(keyString: String): AbstractTransaction                                      |             |
-| sign(keyString: String, hasher: Function): AbstractTransaction                    |             |
-| sign(keyring: AbstractKeyring): AbstractTransaction                               |             |
-| sign(keyring: AbstractKeyring, index: int): AbstractTransaction                   |             |
-| sign(keyring: AbstractKeyring, hasher: Function): AbstractTransaction             |             |
-| sign(keyring: AbstractKeyring, index: int, hasher: Function): AbstractTransaction |             |
-| appendSignatures(sig: List&#60;String&#62;): void                                 |             |
-| appendSignatures(sig: List&#60;List&#60;String&#62;&#62;): void                   |             |
-| combineSignedRawTransactions(rlpEncoded: List&#60;String&#62;): String            |             |
-| getTransactionHash(): String                                                      |             |
-| getSenderTxHash(): String                                                         |             |
-| getRawTransaction(): String                                                       |             |
-| getRLPEncodingForSignature(): String                                              |             |
-| fillTransaction(): void                                                           |             |
-| getRLPEncoding(): String                                                          |             |
-| getCommonRLPEncodingForSignautre(): String                                        |             |
+| Method | Description |
+| ----------- | ----------- |
+| sign(keyString: String): AbstractTransaction | Signs the transaction as a transaction sender with the private key (or KlaytnWalletKey) and appends signatures in the transaction object. |
+| sign(keyString: String, hasher: Function): AbstractTransaction | Signs the transaction as a transaction sender with the private key (or KlaytnWalletKey) and appends signatures in the transaction object. The hasher function will be used when get the hash of transaction. |
+| sign(keyring: AbstractKeyring): AbstractTransaction | Signs the transaction as a transaction sender with the private keys in the keyring and appends signatures in the transaction object. |
+| sign(keyring: AbstractKeyring, index: int): AbstractTransaction | Signs the transaction as a transaction sender with the a private key in the keyring and appends signatures in the transaction object. |
+| sign(keyring: AbstractKeyring, hasher: Function): AbstractTransaction | Signs the transaction as a transaction sender with the private keys in the keyring and appends signatures in the transaction object. |
+| sign(keyring: AbstractKeyring, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a transaction sender with the a private key in the keyring and appends signatures in the transaction object. The hasher function will be used when get the hash of transaction. |
+| appendSignatures(sig: SignatureData): void | Appends signature to the transaction. |
+| appendSignatures(sig: List&#60;SignatureData&#62;): void | Appends signatures to the transaction. |
+| combineSignedRawTransactions(rlpEncoded: List&#60;String&#62;): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns a RLP-encoded transaction string which includes all signs. |
+| getTransactionHash(): String | Returns a transactionHash. |
+| getSenderTxHash(): String | Returns a senderTxHash of transaction. |
+| getRawTransaction(): String | Returns a rawTransaction string (a RLP-encoded transaction string). This function is same with transaction.getRLPEncoding. |
+| getRLPEncodingForSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction sender. |
+| fillTransaction(): void | Fills in the optional variables in transaction. |
+| getRLPEncoding(): String | Returns a RLP-encoded transaction string. |
+| getCommonRLPEncodingForSignautre(): String | Encodes and returns the values needed to sign each transaction. For example, in the case of ValueTransfer, if SigRLP is `encode([encode([type, nonce, gasPrice, gas, to, value, from]), chainid, 0, 0])`, among them, the RLP-encoded values of the transaction required for signing is `encoded([type, nonce, gasPrice, gas, to, value, from])`. This function is used in getRLPEncodingForSignature or getRLPEncodingForFeePayerSignature function. |
 
 #### AbstractFeeDelegatedTransaction Method Descriptions
 
-| Method                                                                                                  | Description |
-| ------------------------------------------------------------------------------------------------------- | ----------- |
-| signAsFeePayer(keyString: String): AbstractFeeDelegatedTransaction                                      |             |
-| signAsFeePayer(keyString: String, hasher: Function): AbstractFeeDelegatedTransaction                    |             |
-| signAsFeePayer(keyring: AbstractKeyring): AbstractFeeDelegatedTransaction                               |             |
-| signAsFeePayer(keyring: AbstractKeyring, index: int): AbstractFeeDelegatedTransaction                   |             |
-| signAsFeePayer(keyring: AbstractKeyring, hasher: Function): AbstractFeeDelegatedTransaction             |             |
-| signAsFeePayer(keyring: AbstractKeyring, index: int, hasher: Function): AbstractFeeDelegatedTransaction |             |
-| appendFeePayerSignatures(sig: List&#60;String&#62;): void                                               |             |
-| appendFeePayerSignatures(sig: List&#60;List&#60;String&#62;&#62;): void                                 |             |
-| combineSignedRawTransactions(rlpEncoded: String): String                                                |             |
-| getRLPEncodingForFeePayerSignature(): String                                                            |             |
+| Method | Description |
+| ----------- | ----------- |
+| signAsFeePayer(keyString: String): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with a private key string (or KlaytnWalletKey) and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. |
+| signAsFeePayer(keyString: String, hasher: Function): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with a private key string (or KlaytnWalletKey) and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. The hasher function will be used when get the hash of transaction. |
+| signAsFeePayer(keyring: AbstractKeyring): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with private keys in the keyring and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. |
+| signAsFeePayer(keyring: AbstractKeyring, index: int): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with a private key in the keyring and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. |
+| signAsFeePayer(keyring: AbstractKeyring, hasher: Function): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with private keys in the keyring and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. The hasher function will be used when get the hash of transaction. |
+| signAsFeePayer(keyring: AbstractKeyring, index: int, hasher: Function): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with a private key in the keyring and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. The hasher function will be used when get the hash of transaction. |
+| appendFeePayerSignatures(sig: SignatureData): void | Appends feePayerSignatures to the transaction. |
+| appendFeePayerSignatures(sig: List&#60;SignatureData&#62;): void | Appends feePayerSignatures to the tr  ansaction. |
+| combineSignedRawTransactions(rlpEncoded: String): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns a RLP-encoded transaction string which includes all signs. |
+| getRLPEncodingForFeePayerSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction fee payer. |
 
 #### LegacyTransaction Method Descriptions
 
-| Method                                                          | Description |
-| --------------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): LegacyTransaction                   |             |
-| appendSignatures(sig: List&#60;String&#62;): void               |             |
-| appendSignatures(sig: List&#60;List&#60;String&#62;&#62;): void |             |
-| getRLPEncoding(): String                                        |             |
-| getRLPEncodingForSignature(): String                            |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): LegacyTransaction | Decodes RLP-encoded LegacyTransaction string, a raw transaction, and returns a LegacyTransaction instance. |
+| appendSignatures(sig: SignatureData): void | Appends signature to the transaction. LegacyTransaction can only have one signature. |
+| appendSignatures(sig: List&#60;SignatureData&#62;): void | Appends signature to the transaction. LegacyTransaction can only have one signature. |
+| getRLPEncoding(): String | Returns a RLP-encoded LegacyTransaction string. |
+| getRLPEncodingForSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction sender. Since the method of obtaining RLP-encoding for signature of LegacyTransaction is different from other transaction types, getRLPEncodingForSignature should be overrided. |
 
 #### ValueTransfer Method Descriptions
 
-| Method                                     | Description |
-| ------------------------------------------ | ----------- |
-| decode(rlpEncoded: String): ValueTransfer  |             |
-| getRLPEncoding(): String                   |             |
-| getCommonRLPEncodingForSignature(): String |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): ValueTransfer | Decodes RLP-encoded ValueTransfer string, a raw transaction, and returns a ValueTransfer instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded ValueTransfer string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### ValueTransferMemo Method Descriptions
 
-| Method                                        | Description |
-| --------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): ValueTransferMemo |             |
-| getRLPEncoding(): String                      |             |
-| getCommonRLPEncodingForSignature(): String    |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): ValueTransferMemo | Decodes RLP-encoded ValueTransferMemo string, a raw transaction, and returns a ValueTransferMemo instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded ValueTransferMemo string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### AccountUpdate Method Descriptions
 
-| Method                                     | Description |
-| ------------------------------------------ | ----------- |
-| decode(rlpEncoded: String): AccountUpdate  |             |
-| getRLPEncoding(): String                   |             |
-| getCommonRLPEncodingForSignature(): String |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): AccountUpdate | Decodes RLP-encoded AccountUpdate string, a raw transaction, and returns a AccountUpdate instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded AccountUpdate string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### SmartContractDeploy Method Descriptions
 
-| Method                                          | Description |
-| ----------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): SmartContractDeploy |             |
-| getRLPEncoding(): String                        |             |
-| getCommonRLPEncodingForSignature(): String      |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): SmartContractDeploy | Decodes RLP-encoded SmartContractDeploy string, a raw transaction, and returns a SmartContractDeploy instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded SmartContractDeploy string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### SmartContractExecution Method Descriptions
 
-| Method                                             | Description |
-| -------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): SmartContractExecution |             |
-| getRLPEncoding(): String                           |             |
-| getCommonRLPEncodingForSignature(): String         |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): SmartContractExecution | Decodes RLP-encoded SmartContractExecution string, a raw transaction, and returns a SmartContractExecution instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded SmartContractExecution string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### Cancel Method Descriptions
 
-| Method                                     | Description |
-| ------------------------------------------ | ----------- |
-| decode(rlpEncoded: String): Cancel         |             |
-| getRLPEncoding(): String                   |             |
-| getCommonRLPEncodingForSignature(): String |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): Cancel | Decodes RLP-encoded Cancel string, a raw transaction, and returns a Cancel instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded Cancel string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### ChainDataAnchoring Method Descriptions
 
-| Method                                         | Description |
-| ---------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): ChainDataAnchoring |             |
-| getRLPEncoding(): String                       |             |
-| getCommonRLPEncodingForSignature(): String     |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): ChainDataAnchoring | Decodes RLP-encoded ChainDataAnchoring string, a raw transaction, and returns a ChainDataAnchoring instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded ChainDataAnchoring string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedValueTransfer Method Descriptions
 
-| Method                                                | Description |
-| ----------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransfer |             |
-| getRLPEncoding(): String                              |             |
-| getCommonRLPEncodingForSignature(): String            |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransfer | Decodes RLP-encoded FeeDelegatedValueTransfer string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedValueTransfer string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedValueTransferMemo Method Descriptions
 
-| Method                                                    | Description |
-| --------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferMemo |             |
-| getRLPEncoding(): Stirng                                  |             |
-| getCommonRLPEncodingForSignature(): String                |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes RLP-encoded FeeDelegatedValueTransferMemo string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
+| getRLPEncoding(): Stirng | Returns a RLP-encoded FeeDelegatedValueTransferMemo string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedAccountUpdate Method Descriptions
 
-| Method                                                | Description |
-| ----------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedAccountUpdate |             |
-| getRLPEncoding(): String                              |             |
-| getCommonRLPEncodingForSignature(): String            |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes RLP-encoded FeeDelegatedAccountUpdate string, a raw transaction, and returns a FeeDelegatedAccountUpdate instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedAccountUpdate string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedSmartContractDeploy Method Descriptions
 
-| Method                                                      | Description |
-| ----------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy |             |
-| getRLPEncoding(): String                                    |             |
-| getCommonRLPEncodingForSignature(): String                  |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes RLP-encoded FeeDelegatedSmartContractDeploy string, a raw transaction, and returns a FeeDelegatedSmartContractDeploy instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractDeploy string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedSmartContractExecution Method Descriptions
 
-| Method                                                         | Description |
-| -------------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution |             |
-| getRLPEncoding(): String                                       |             |
-| getCommonRLPEncodingForSignature(): String                     |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes RLP-encoded FeeDelegatedSmartContractExecution string, a raw transaction, and returns a FeeDelegatedSmartContractExecution instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractExecution string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedCancel Method Descriptions
 
-| Method                                         | Description |
-| ---------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancel |             |
-| getRLPEncoding(): String                       |             |
-| getCommonRLPEncodingForSignature(): String     |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedCancel | Decodes RLP-encoded FeeDelegatedCancel string, a raw transaction, and returns a FeeDelegatedCancel instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedCancel string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedChainDataAnchoring Method Descriptions
 
-| Method                                                     | Description |
-| ---------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring |             |
-| getRLPEncoding(): String                                   |             |
-| getCommonRLPEncodingForSignature(): String                 |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes RLP-encoded FeeDelegatedChainDataAnchoring string, a raw transaction, and returns a FeeDelegatedChainDataAnchoring instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedChainDataAnchoring string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedValueTransferWithRatio Method Descriptions
 
-| Method                                                         | Description |
-| -------------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio |             |
-| getRLPEncoding(): String                                       |             |
-| getCommonRLPEncodingForSignature(): String                     |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes RLP-encoded FeeDelegatedValueTransferWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferWithRatio instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedValueTransferWithRatio string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedValueTransferMemoWithRatio Method Descriptions
 
-| Method                                                             | Description |
-| ------------------------------------------------------------------ | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio |             |
-| getRLPEncoding(): Stirng                                           |             |
-| getCommonRLPEncodingForSignature(): String                         |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes RLP-encoded FeeDelegatedValueTransferMemoWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferMemoWithRatio instance. |
+| getRLPEncoding(): Stirng | Returns a RLP-encoded FeeDelegatedValueTransferMemoWithRatio string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedAccountUpdateWithRatio Method Descriptions
 
-| Method                                                         | Description |
-| -------------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio |             |
-| getRLPEncoding(): String                                       |             |
-| getCommonRLPEncodingForSignature(): String                     |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes RLP-encoded FeeDelegatedAccountUpdateWithRatio string, a raw transaction, and returns a FeeDelegatedAccountUpdateWithRatio instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedAccountUpdateWithRatio string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedSmartContractDeployWithRatio Method Descriptions
 
-| Method                                                               | Description |
-| -------------------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio |             |
-| getRLPEncoding(): String                                             |             |
-| getCommonRLPEncodingForSignature(): String                           |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes RLP-encoded FeeDelegatedSmartContractDeployWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractDeployWithRatio instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractDeployWithRatio string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedSmartContractExecutionWithRatio Method Descriptions
 
-| Method                                                                  | Description |
-| ----------------------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio |             |
-| getRLPEncoding(): String                                                |             |
-| getCommonRLPEncodingForSignature(): String                              |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractExecutionWithRatio instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedCancelWithRatio Method Descriptions
 
-| Method                                                  | Description |
-| ------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio |             |
-| getRLPEncoding(): String                                |             |
-| getCommonRLPEncodingForSignature(): String              |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes RLP-encoded FeeDelegatedCancelWithRatio string, a raw transaction, and returns a FeeDelegatedCancelWithRatio instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedCancelWithRatio string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### FeeDelegatedChainDataAnchoringWithRatio Method Descriptions
 
-| Method                                                              | Description |
-| ------------------------------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio |             |
-| getRLPEncoding(): String                                            |             |
-| getCommonRLPEncodingForSignature(): String                          |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string, a raw transaction, and returns a FeeDelegatedChainDataAnchoringWithRatio instance. |
+| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
 #### TransactionDecoder Method Descriptions
 
-| Method                                          | Description |
-| ----------------------------------------------- | ----------- |
-| decode(rlpEncoded: String): AbstractTransaction |             |
+| Method | Description |
+| ----------- | ----------- |
+| decode(rlpEncoded: String): AbstractTransaction | Decodes RLP-encoded transaction string, a raw transaction, and returns a Transaction instance. |
 
 #### TransactionHasher Method Descriptions
 
-| Method                                                                            | Description |
-| --------------------------------------------------------------------------------- | ----------- |
-| getHashForSignature(transaction: AbstractTransaction): String                     |             |
-| getHashForFeePayerSignature(transaction: AbstractFeeDelegatedTransaction): String |             |
+| Method | Description |
+| ----------- | ----------- |
+| getHashForSignature(transaction: AbstractTransaction): String | Returns the hash of the transaction for the sender to sign. |
+| getHashForFeePayerSignature(transaction: AbstractFeeDelegatedTransaction): String | Returns the hash of the transaction for the fee payer to sign. |
 
 ### RPC Layer Class Diagram
 
@@ -566,111 +568,111 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 #### Klay Method Descriptions
 
-| Method                                                                    | Description |
-| ------------------------------------------------------------------------- | ----------- |
-| accountCreated(address: String): Boolean                                  |             |
-| accountCreated(address: String, blockNumber: int): Boolean                |             |
-| accountCreated(address: String, blockTag: String): Boolean                |             |
-| getAccounts(): List&#60;String&#62;                                       |             |
-| encodeAccountKey(accountKey: AccountKey): String                          |             |
-| decodeAccountKey(encodedAccountKey: String): Object                       |             |
-| getAccount(address: String): Object                                       |             |
-| getAccount(address: String, blockNumber: int): Object                     |             |
-| getAccount(address: String, blockTag: String): Object                     |             |
-| getAccountKey(address: String): Object                                    |             |
-| getAccountKey(address: String, blockNumber: int): Object                  |             |
-| getAccountKey(address: String, blockTag: String): Object                  |             |
-| getBalance(address: String): String                                       |             |
-| getBalance(address: String, blockNumber: int): String                     |             |
-| getBalance(address: String, blockTag: String): String                     |             |
-| getCode(address: String): String                                          |             |
-| getCode(address: String, blockNumber: int): String                        |             |
-| getCode(address: String, blockTag: String): String                        |             |
-| getTransactionCount(address: String): String                              |             |
-| getTransactionCount(address: String, blockNumber: int): String            |             |
-| getTransactionCount(address: String, blockTag: String): String            |             |
-| isContractAddress(address: String): Boolean                               |             |
-| isContractAddress(address: String, blockNumber: int): Boolean             |             |
-| isContractAddress(address: String, blockTag: String): Boolean             |             |
-| sign(address: String, message: String): String                            |             |
-| getBlockNumber(): String                                                  |             |
-| getBlockByNumber(blockNumber: int): Object                                |             |
-| getBlockByNumber(blockNumber: int, fullTxs: Boolean): Object              |             |
-| getBlockByNumber(blockTag: String): Object                                |             |
-| getBlockByNumber(blockTag: String, fullTxs: Boolean): Object              |             |
-| getBlockByHash(blockHash: String): Object                                 |             |
-| getBlockByHash(blockHash: String, fullTxs: Boolean): Object               |             |
-| getBlockReceipts(blockHash: String): Object                               |             |
-| getBlockTransactionCountByNumber(blockNumber: int): Object                |             |
-| getBlockTransactionCountByNumber(blockTag: String): Object                |             |
-| getBlockTransactionCountByHash(blockHash: String): Object                 |             |
-| getBlockWithConsensusInfoByHash(blockHash: String): Object                |             |
-| getBlockWithConsensusInfoByNumber(blockNumber: int): Object               |             |
-| getBlockWithConsensusInfoByNumber(blockTag: String): Object               |             |
-| getCommittee(): List&#60;String&#62;                                      |             |
-| getCommittee(blockNumber: int): List&#60;String&#62;                      |             |
-| getCommittee(blockTag: String): List&#60;String&#62;                      |             |
-| getCommitteeSize(): int                                                   |             |
-| getCommitteeSize(blockNumber: int): int                                   |             |
-| getCommitteeSize(blockTag: String): int                                   |             |
-| getCouncil(): List&#60;String&#62;                                        |             |
-| getCouncil(blockNumber: int): List&#60;String&#62;                        |             |
-| getCouncil(blockTag: String): List&#60;String&#62;                        |             |
-| getCouncilSize(): int                                                     |             |
-| getCouncilSize(blockNumber: int): int                                     |             |
-| getCouncilSize(blockTag: String): int                                     |             |
-| getStorageAt(address: String, position: int, blockNumber: int): String    |             |
-| getStorageAt(address: String, position: int, blockTag: String): String    |             |
-| isSyncing(): Object                                                       |             |
-| call(callObject: Object): String                                          |             |
-| call(callObject: Object, blockNumber: int): String                        |             |
-| call(callObject: Object, blockTag: String): String                        |             |
-| estimateGas(callObject: Object): String                                   |             |
-| estimateGas(callObject: Object, blockNumber: int): String                 |             |
-| estimateGas(callObject: Object, blockTag: String): String                 |             |
-| estimateComputationCost(callObject: Object): String                       |             |
-| estimateComputationCost(callObject: Object, blockNumber: int): String     |             |
-| estimateComputationCost(callObject: Object, blockTag: String): String     |             |
-| getTransactionByBlockHashAndIndex(hash: String, index: int): Object       |             |
-| getTransactionByBlockNumberAndIndex(blockNumber: int, index: int): Object |             |
-| getTransactionByBlockNumberAndIndex(blockTag: String, index: int): Object |             |
-| getTransactionByHash(hash: String): Object                                |             |
-| getTransactionBySenderTxHash(senderTxHash: String): Object                |             |
-| getTransactionReceipt(hash: String): Object                               |             |
-| getTransactionReceiptBySenderTxHash(senderTxHash: String): Object         |             |
-| sendRawTransaction(rawTransaction: String): Object                        |             |
-| sendTransaction(tx: AbstractTransaction): String                          |             |
-| sendTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): String    |             |
-| signTransaction(tx: AbstractTransaction): Object                          |             |
-| signTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): Object    |             |
-| getDecodedAnchoringTransaction(hash: String): Object                      |             |
-| getChainId(): String                                                      |             |
-| getClientVersion(): String                                                |             |
-| getGasPrice(): String                                                     |             |
-| getGasPriceAt(): String                                                   |             |
-| getGasPriceAt(blockNumber: int): String                                   |             |
-| isParallelDBWrite(): Boolean                                              |             |
-| isSenderTxHashIndexingEnabled(): Boolean                                  |             |
-| getProtocolVersion(): String                                              |             |
-| getRewardbase(): String                                                   |             |
-| writeThroughCaching(): Boolean                                            |             |
-| getFilterChanges(filterId: String): List&#60;Object&#62;                  |             |
-| getFilterLogs(filterId: String): List&#60;Object&#62;                     |             |
-| getLogs(filterOption: Object): List&#60;Object&#62;                       |             |
-| newBlockFilter(): String                                                  |             |
-| newFilter(filterOptions: Object): String                                  |             |
-| newPendingTransactionFilter(): String                                     |             |
-| uninstallFilter(filterId: String): Boolean                                |             |
-| sha3(data: String): String                                                |             |
+| Method | Description |
+| ----------- | ----------- |
+| accountCreated(address: String): Boolean | Call `klay_accountCreated` JSON-RPC. |
+| accountCreated(address: String, blockNumber: int): Boolean | Call `klay_accountCreated` JSON-RPC. |
+| accountCreated(address: String, blockTag: String): Boolean | Call `klay_accountCreated` JSON-RPC. |
+| getAccounts(): List&#60;String&#62; | Call `klay_accounts` JSON-RPC. |
+| encodeAccountKey(accountKey: AccountKey): String | Call `klay_encodeAccountKey` JSON-RPC. |
+| decodeAccountKey(encodedAccountKey: String): Object | Call `klay_decodeAccountKey` JSON-RPC. |
+| getAccount(address: String): Object                                       | Call `klay_getAccount` JSON-RPC. |
+| getAccount(address: String, blockNumber: int): Object                     | Call `klay_getAccount` JSON-RPC. |
+| getAccount(address: String, blockTag: String): Object                     | Call `klay_getAccount` JSON-RPC. |
+| getAccountKey(address: String): Object                                    | Call `klay_getAccountKey` JSON-RPC. |
+| getAccountKey(address: String, blockNumber: int): Object                  | Call `klay_getAccountKey` JSON-RPC. |
+| getAccountKey(address: String, blockTag: String): Object                  | Call `klay_getAccountKey` JSON-RPC. |
+| getBalance(address: String): String                                       | Call `klay_getBalance` JSON-RPC. |
+| getBalance(address: String, blockNumber: int): String                     | Call `klay_getBalance` JSON-RPC. |
+| getBalance(address: String, blockTag: String): String                     | Call `klay_getBalance` JSON-RPC. |
+| getCode(address: String): String                                          | Call `klay_getCode` JSON-RPC. |
+| getCode(address: String, blockNumber: int): String                        | Call `klay_getCode` JSON-RPC. |
+| getCode(address: String, blockTag: String): String                        | Call `klay_getCode` JSON-RPC. |
+| getTransactionCount(address: String): String                              | Call `klay_getTransactionCount` JSON-RPC. |
+| getTransactionCount(address: String, blockNumber: int): String            | Call `klay_getTransactionCount` JSON-RPC. |
+| getTransactionCount(address: String, blockTag: String): String            | Call `klay_getTransactionCount` JSON-RPC. |
+| isContractAddress(address: String): Boolean                               | Call `klay_isContractAccount` JSON-RPC. |
+| isContractAddress(address: String, blockNumber: int): Boolean             | Call `klay_isContractAccount` JSON-RPC. |
+| isContractAddress(address: String, blockTag: String): Boolean             | Call `klay_isContractAccount` JSON-RPC. |
+| sign(address: String, message: String): String                            | Call `klay_sign` JSON-RPC. |
+| getBlockNumber(): String                                                  | Call `klay_blockNumber` JSON-RPC. |
+| getBlockByNumber(blockNumber: int): Object                                | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByNumber(blockNumber: int, fullTxs: Boolean): Object              | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByNumber(blockTag: String): Object                                | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByNumber(blockTag: String, fullTxs: Boolean): Object              | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByHash(blockHash: String): Object                                 | Call `klay_getBlockByHash` JSON-RPC. |
+| getBlockByHash(blockHash: String, fullTxs: Boolean): Object               | Call `klay_getBlockByHash` JSON-RPC. |
+| getBlockReceipts(blockHash: String): Object                               | Call `klay_getBlockReceipts` JSON-RPC. |
+| getBlockTransactionCountByNumber(blockNumber: int): Object                | Call `klay_getBlockTransactionCountByNumber` JSON-RPC. |
+| getBlockTransactionCountByNumber(blockTag: String): Object                | Call `klay_getBlockTransactionCountByNumber` JSON-RPC. |
+| getBlockTransactionCountByHash(blockHash: String): Object                 | Call `klay_getBlockTransactionCountByHash` JSON-RPC. |
+| getBlockWithConsensusInfoByHash(blockHash: String): Object                | Call `klay_getBlockWithConsensusInfoByHash` JSON-RPC. |
+| getBlockWithConsensusInfoByNumber(blockNumber: int): Object               | Call `klay_getBlockWithConsensusInfoByNumber` JSON-RPC. |
+| getBlockWithConsensusInfoByNumber(blockTag: String): Object               | Call `klay_getBlockWithConsensusInfoByNumber` JSON-RPC. |
+| getCommittee(): List&#60;String&#62;                                      | Call `klay_getCommittee` JSON-RPC. |
+| getCommittee(blockNumber: int): List&#60;String&#62;                      | Call `klay_getCommittee` JSON-RPC. |
+| getCommittee(blockTag: String): List&#60;String&#62;                      | Call `klay_getCommittee` JSON-RPC. |
+| getCommitteeSize(): int                                                   | Call `klay_getCommitteeSize` JSON-RPC. |
+| getCommitteeSize(blockNumber: int): int                                   | Call `klay_getCommitteeSize` JSON-RPC. |
+| getCommitteeSize(blockTag: String): int                                   | Call `klay_getCommitteeSize` JSON-RPC. |
+| getCouncil(): List&#60;String&#62;                                        | Call `klay_getCouncil` JSON-RPC. |
+| getCouncil(blockNumber: int): List&#60;String&#62;                        | Call `klay_getCouncil` JSON-RPC. |
+| getCouncil(blockTag: String): List&#60;String&#62;                        | Call `klay_getCouncil` JSON-RPC. |
+| getCouncilSize(): int                                                     | Call `klay_getCouncilSize` JSON-RPC. |
+| getCouncilSize(blockNumber: int): int                                     | Call `klay_getCouncilSize` JSON-RPC. |
+| getCouncilSize(blockTag: String): int                                     | Call `klay_getCouncilSize` JSON-RPC. |
+| getStorageAt(address: String, position: int, blockNumber: int): String    | Call `klay_getStorageAt` JSON-RPC. |
+| getStorageAt(address: String, position: int, blockTag: String): String    | Call `klay_getStorageAt` JSON-RPC. |
+| isSyncing(): Object                                                       | Call `klay_syncing` JSON-RPC. |
+| call(callObject: Object): String                                          | Call `klay_call` JSON-RPC. |
+| call(callObject: Object, blockNumber: int): String                        | Call `klay_call` JSON-RPC. |
+| call(callObject: Object, blockTag: String): String                        | Call `klay_call` JSON-RPC. |
+| estimateGas(callObject: Object): String                                   | Call `klay_estimateGas` JSON-RPC. |
+| estimateGas(callObject: Object, blockNumber: int): String                 | Call `klay_estimateGas` JSON-RPC. |
+| estimateGas(callObject: Object, blockTag: String): String                 | Call `klay_estimateGas` JSON-RPC. |
+| estimateComputationCost(callObject: Object): String                       | Call `klay_estimateComputationCost` JSON-RPC. |
+| estimateComputationCost(callObject: Object, blockNumber: int): String     | Call `klay_estimateComputationCost` JSON-RPC. |
+| estimateComputationCost(callObject: Object, blockTag: String): String     | Call `klay_estimateComputationCost` JSON-RPC. |
+| getTransactionByBlockHashAndIndex(hash: String, index: int): Object       | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
+| getTransactionByBlockNumberAndIndex(blockNumber: int, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
+| getTransactionByBlockNumberAndIndex(blockTag: String, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
+| getTransactionByHash(hash: String): Object                                | Call `klay_getTransactionByHash` JSON-RPC. |
+| getTransactionBySenderTxHash(senderTxHash: String): Object                | Call `klay_getTransactionBySenderTxHash` JSON-RPC. |
+| getTransactionReceipt(hash: String): Object                               | Call `klay_getTransactionReceipt` JSON-RPC. |
+| getTransactionReceiptBySenderTxHash(senderTxHash: String): Object         | Call `klay_getTransactionReceiptBySenderTxHash` JSON-RPC. |
+| sendRawTransaction(rawTransaction: String): Object                        | Call `klay_sendRawTransaction` JSON-RPC. |
+| sendTransaction(tx: AbstractTransaction): String                          | Call `klay_sendTransaction` JSON-RPC. |
+| sendTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): String    | Call `klay_sendTransactionAsFeePayer` JSON-RPC. |
+| signTransaction(tx: AbstractTransaction): Object                          | Call `klay_signTransaction` JSON-RPC. |
+| signTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): Object    | Call `klay_signTransactionAsFeePayer` JSON-RPC. |
+| getDecodedAnchoringTransaction(hash: String): Object                      | Call `klay_getDecodedAnchoringTransactionByHash` JSON-RPC. |
+| getChainId(): String                                                      | Call `klay_chainID` JSON-RPC. |
+| getClientVersion(): String                                                | Call `klay_clientVersion` JSON-RPC. |
+| getGasPrice(): String                                                     | Call `klay_gasPrice` JSON-RPC. |
+| getGasPriceAt(): String                                                   | Call `klay_gasPriceAt` JSON-RPC. |
+| getGasPriceAt(blockNumber: int): String                                   | Call `klay_gasPriceAt` JSON-RPC. |
+| isParallelDBWrite(): Boolean                                              | Call `klay_isParallelDBWrite` JSON-RPC. |
+| isSenderTxHashIndexingEnabled(): Boolean                                  | Call `klay_isSenderTxHashIndexingEnabled` JSON-RPC. |
+| getProtocolVersion(): String                                              | Call `klay_protocolVersion` JSON-RPC. |
+| getRewardbase(): String                                                   | Call `klay_rewardbase` JSON-RPC. |
+| writeThroughCaching(): Boolean                                            | Call `klay_writeThroughCaching` JSON-RPC. |
+| getFilterChanges(filterId: String): List&#60;Object&#62;                  | Call `klay_getFilterChanges` JSON-RPC. |
+| getFilterLogs(filterId: String): List&#60;Object&#62;                     | Call `klay_getFilterLogs` JSON-RPC. |
+| getLogs(filterOption: Object): List&#60;Object&#62;                       | Call `klay_getLogs` JSON-RPC. |
+| newBlockFilter(): String                                                  | Call `klay_newBlockFilter` JSON-RPC. |
+| newFilter(filterOptions: Object): String                                  | Call `klay_newFilter` JSON-RPC. |
+| newPendingTransactionFilter(): String                                     | Call `klay_newPendingTransactionFilter` JSON-RPC. |
+| uninstallFilter(filterId: String): Boolean                                | Call `klay_uninstallFilter` JSON-RPC. |
+| sha3(data: String): String                                                | Call `klay_sha3` JSON-RPC. |
 
 #### Net Method Descriptions
 
-| Method                       | Description |
-| ---------------------------- | ----------- |
-| getNetworkID(): String       |             |
-| isListening(): Boolean       |             |
-| getPeerCount(): String       |             |
-| getPeerCountByType(): Object |             |
+| Method | Description |
+| ----------- | ----------- |
+| getNetworkID(): String       | Call `net_networkID` JSON-RPC. |
+| isListening(): Boolean       | Call `net_listening` JSON-RPC. |
+| getPeerCount(): String       | Call `net_peerCount` JSON-RPC. |
+| getPeerCountByType(): Object | Call `net_peerCountByType` JSON-RPC. |
 
 ### Contract, ABI, KCT Layer Class Diagram
 
@@ -690,142 +692,140 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 #### Contract Method Descriptions
 
-| Method                                                                                 | Description |
-| -------------------------------------------------------------------------------------- | ----------- |
-| deploy(deployParam: ContractDeployParams, options: SendOptions): Contract              |             |
-| once(event: String, callback: Function): void                                          |             |
-| once(event: String, options: Object, callback: Function): void                         |             |
-| once(event: String, options: Object, callback: Function): void                         |             |
-| getPastEvent(event: String): List&#60;Object&#62;                                      |             |
-| getPastEvent(event: String, options: Object): List&#60;Object&#62;                     |             |
-| getPastEvent(event: String, callback: Function): List&#60;Object&#62;                  |             |
-| getPastEvent(event: String, options: Object, callback: Function): List&#60;Object&#62; |             |
+| Method | Description |
+| ----------- | ----------- |
+| deploy(deployParam: ContractDeployParams, options: SendOptions): Contract | Deploys the contract to the Klaytn. |
+| once(event: String, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
+| once(event: String, options: Object, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
+| getPastEvent(event: String): List&#60;Object&#62; | Gets past events for this contract. |
+| getPastEvent(event: String, options: Object): List&#60;Object&#62; | Gets past events for this contract. |
+| getPastEvent(event: String, callback: Function): List&#60;Object&#62; | Gets past events for this contract. |
+| getPastEvent(event: String, options: Object, callback: Function): List&#60;Object&#62; | Gets past events for this contract. |
 
 #### ContractMethod Method Descriptions
 
-| Method                                                           | Description |
-| ---------------------------------------------------------------- | ----------- |
-| call(argumetns: List&#60;any&#62;, options: SendOptions): any    |             |
-| send(arguments: List&#60;any&#62;, options: SendOptions): Object |             |
-| encodeABI(arguments: List&#60;any&#62;): String                  |             |
-| estimateGas(arguments: List&#60;any&#62;): String                |             |
+| Method | Description |
+| ----------- | ----------- |
+| call(argumetns: List&#60;any&#62;, options: SendOptions): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. |
+| send(arguments: List&#60;any&#62;, options: SendOptions): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
+| encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
+| estimateGas(arguments: List&#60;any&#62;): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. |
 
 #### ABI Method Descriptions
 
-| Method                                                                                                   | Description |
-| -------------------------------------------------------------------------------------------------------- | ----------- |
-| encodeFunctionSignature(method: ContractMethod): String                                                  |             |
-| encodeFunctionSignature(functionString: String): String                                                  |             |
-| encodeEventSignature(event: ContractEvent): String                                                       |             |
-| encodeEventSignature(eventString: String): String                                                        |             |
-| encodeParameter(type: String, param: any): String                                                        |             |
-| encodeParameter(type: String, param: List&#60;any&#62;): String                                          |             |
-| encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#124;List&#60;any&#62;>&#62;): String |             |
-| encodeFunctionCall(method: ContractMethod, params: List&#60;any&#62;): String                            |             |
-| decodeParameter(type: String, encoded: String): String                                                   |             |
-| decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62;                     |             |
-| decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62;                          |             |
-| decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject  |             |
+| Method | Description |
+| ----------- | ----------- |
+| encodeFunctionSignature(method: ContractMethod): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name including parameter types. |
+| encodeFunctionSignature(functionString: String): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name including parameter types. |
+| encodeEventSignature(event: ContractEvent): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
+| encodeEventSignature(eventString: String): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
+| encodeParameter(param: any): String | Encodes a parameter based on its type to its ABI representation. | <!-- check parameter with caver-java -->
+| encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#124;List&#60;any&#62;>&#62;): String | Encodes parameters based on its type to its ABI representation. | <!-- check parameter with caver-java -->
+| encodeFunctionCall(method: ContractMethod, params: List&#60;any&#62;): String | Encodes a function call using its JSON interface object and given parameters. |
+| decodeParameter(type: String, encoded: String): String | Decodes an ABI encoded parameter. |
+| decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. |
+| decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. |
+| decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI encoded log data and indexed topic data. |
 
 #### KIP7 Method Descriptions
 
-| Method                                                                                           | Description |
-| ------------------------------------------------------------------------------------------------ | ----------- |
-| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP7                                        |             |
-| clone(): KIP7                                                                                    |             |
-| clone(tokenAddress: address): KIP7                                                               |             |
-| supportInterface(interfaceid: String): Boolean                                                   |             |
-| name(): String                                                                                   |             |
-| symbol(): String                                                                                 |             |
-| decimals(): String                                                                               |             |
-| totalSupply(): String                                                                            |             |
-| balanceOf(account: String): String                                                               |             |
-| allowance(owner: String, spender: String): String                                                |             |
-| isMinter(account: String): Boolean                                                               |             |
-| isPauser(account: String): Boolean                                                               |             |
-| paused(): Boolean                                                                                |             |
-| approve(spender: String, amount: int): Object                                                    |             |
-| approve(spender: String, amount: int, sendParam: SendOptions): Object                            |             |
-| transfer(recipient: String, amount: int): Object                                                 |             |
-| transfer(recipient: String, amount: int, sendParam: SendOptions): Object                         |             |
-| transferFrom(sender: String, recipient: String, amount: int): Object                             |             |
-| transferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object     |             |
-| safeTransfer(recipient: String, amount: int): Object                                             |             |
-| safeTransfer(recipient: String, amount: int, sendParam: SendOptions): Object                     |             |
-| safeTransfer(recipient: String, amount: int, data: String): Object                               |             |
-| safeTransfer(recipient: String, amount: int, data: String, sendParam: SendOptions): Object       |             |
-| safeTransferFrom(sender: String, recipient: String, amount: int): Object                         |             |
-| safeTransferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object |             |
-| safeTransferFrom(sender, recipient, amount, data): Object                                        |             |
-| safeTransferFrom(sender, recipient, amount, data, sendParam: SendOptions): Object                |             |
-| mint(account, amount): Object                                                                    |             |
-| mint(account, amount, sendParam: SendOptions): Object                                            |             |
-| addMinter(account): Object                                                                       |             |
-| addMinter(account, sendParam: SendOptions): Object                                               |             |
-| renounceMinter(): Object                                                                         |             |
-| renounceMinter(sendParam: SendOptions): Object                                                   |             |
-| burn(amount): Object                                                                             |             |
-| burn(amount, sendParam: SendOptions): Object                                                     |             |
-| burnFrom(account, amount): Object                                                                |             |
-| burnFrom(account, amount, sendParam: SendOptions): Object                                        |             |
-| addPauser(account): Object                                                                       |             |
-| addPauser(account, sendParam: SendOptions): Object                                               |             |
-| pause(): Object                                                                                  |             |
-| pause(sendParam: SendOptions): Object                                                            |             |
-| unpuase(): Object                                                                                |             |
-| unpuase(sendParam: SendOptions): Object                                                          |             |
-| renouncePauser(): Object                                                                         |             |
-| renouncePauser(sendParam: SendOptions): Object                                                   |             |
+| Method | Description |
+| ----------- | ----------- |
+| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn blockchain. |
+| clone(): KIP7 | Clones the current KIP7 instance. |
+| clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and set address of contract to tokenAddress parameter. |
+| supportInterface(interfaceid: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
+| name(): String | Return the name of the token. |
+| symbol(): String | Return the symbol of the token. |
+| decimals(): String | Return the number of decimal places the token uses. |
+| totalSupply(): String | Return the total token supply. |
+| balanceOf(account: String): String | Return the balance of the given account address. |
+| allowance(owner: String, spender: String): String | Return the amount of token that spender is allowed to withdraw from owner. |
+| isMinter(account: String): Boolean | Return true if the given account is a minter who can issue new KIP7 tokens. |
+| isPauser(account: String): Boolean | Return true if the given account is a pauser who can suspend transferring tokens. |
+| paused(): Boolean | Return true if the contract is paused, and false otherwise. |
+| approve(spender: String, amount: int): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
+| approve(spender: String, amount: int, sendParam: SendOptions): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
+| transfer(recipient: String, amount: int): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
+| transfer(recipient: String, amount: int, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
+| transferFrom(sender: String, recipient: String, amount: int): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| transferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransfer(recipient: String, amount: int): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransfer(recipient: String, amount: int, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransfer(recipient: String, amount: int, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransfer(recipient: String, amount: int, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransferFrom(sender: String, recipient: String, amount: int): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender, recipient, amount, data): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender, recipient, amount, data, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| mint(account, amount): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
+| mint(account, amount, sendParam: SendOptions): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
+| addMinter(account): Object | Adds an account as a minter, who are permitted to mint tokens. |
+| addMinter(account, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
+| renounceMinter(): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
+| renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
+| burn(amount): Object | Destroys the amount of tokens in the sender's balance. |
+| burn(amount, sendParam: SendOptions): Object | Destroys the amount of tokens in the sender's balance. |
+| burnFrom(account, amount): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| burnFrom(account, amount, sendParam: SendOptions): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| addPauser(account): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| addPauser(account, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| pause(): Object | Suspends functions related to sending tokens. |
+| pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. |
+| unpuase(): Object | Resumes the paused contract. |
+| unpuase(sendParam: SendOptions): Object | Resumes the paused contract. |
+| renouncePauser(): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
+| renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
 
 #### KIP17 Method Descriptions
 
-| Method                                                                                                 | Description |
-| ------------------------------------------------------------------------------------------------------ | ----------- |
-| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP17                                             |             |
-| clone(): KIP17                                                                                         |             |
-| clone(tokenAddress: String): KIP17                                                                     |             |
-| supportInterface(interfaceId: String): Boolean                                                         |             |
-| name(): String                                                                                         |             |
-| symbol(): String                                                                                       |             |
-| tokenURI(tokenId: String): String                                                                      |             |
-| totalSupply(): String                                                                                  |             |
-| tokenOwnerByIndex(owner: String, index: int): String                                                   |             |
-| tokenByIndex(index: int): String                                                                       |             |
-| balanceOf(account: String): String                                                                     |             |
-| ownerOf(tokenId: int): String                                                                          |             |
-| getApproved(tokenId: int): Boolean                                                                     |             |
-| isApprovedForAll(owner: String, operator: String): Boolean                                             |             |
-| isMinter(account: String): Boolean                                                                     |             |
-| paused(): Boolean                                                                                      |             |
-| isPauser(account: String): Boolean                                                                     |             |
-| approve(to: String, tokenId: int): Object                                                              |             |
-| approve(to: String, tokenId: int, sendParam: SendOptions): Object                                      |             |
-| setApprovalForAll(to: String, approved: Boolean): Object                                               |             |
-| setApprovalForAll(to: String, approved: Boolean, sendParam: SendOptions): Object                       |             |
-| transferFrom(from: String, to: String, tokenId: int): Object                                           |             |
-| transferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object                   |             |
-| safeTransferFrom(from: String, to: String, tokenId: int): Object                                       |             |
-| safeTransferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object               |             |
-| safeTransferFrom(from: String, to: String, tokenId: int, data: Strings): Object                        |             |
-| safeTransferFrom(from: String, to: String, tokenId: int, data: String, sendParam: SendOptions): Object |             |
-| addMinter(account: String): Object                                                                     |             |
-| addMinter(account: String, sendParam: SendOptions): Object                                             |             |
-| renounceMinter(): Object                                                                               |             |
-| renounceMinter(sendParam: SendOptions): Object                                                         |             |
-| mint(to: String, tokenId: int): Object                                                                 |             |
-| mint(to: String, tokenId: int, sendParam: SendOptions): Object                                         |             |
-| mintWithTokenURI(to: String, tokenId: int, toeknURI: String): Object                                   |             |
-| mintWithTokenURI(to: String, tokenId: int, toeknURI: String, sendParam: SendOptions): Object           |             |
-| burn(tokenId: int): Object                                                                             |             |
-| burn(tokenId: int, sendParam: SendOptions): Object                                                     |             |
-| pause(): Object                                                                                        |             |
-| pause(sendParam: SendOptions): Object                                                                  |             |
-| unpause(): Object                                                                                      |             |
-| unpause(sendParam: SendOptions): Object                                                                |             |
-| addPauser(account: String): Object                                                                     |             |
-| addPauser(account: String, sendParam: SendOptions): Object                                             |             |
-| renouncePauser(): Object                                                                               |             |
-| renouncePauser(sendParam: SendOptions): Object                                                         |             |
+| Method | Description |
+| ----------- | ----------- |
+| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP17 | Deploys the KIP-17 token contract to the Klaytn blockchain. |
+| clone(): KIP17 | Clones the current KIP17 instance. |
+| clone(tokenAddress: String): KIP17 | Clones the current KIP17 instance and set address of contract to tokenAddress parameter. |
+| supportInterface(interfaceId: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
+| name(): String | Returns the name of the token. |
+| symbol(): String | Returns the symbol of the token. |
+| tokenURI(tokenId: String): String | Returns the URI for a given token id. |
+| totalSupply(): String | Returns the total number of tokens minted by the contract. |
+| tokenOwnerByIndex(owner: String, index: int): String | Searches the owner's token list for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
+| tokenByIndex(index: int): String | Searches the list of all tokens in this contract for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
+| balanceOf(account: String): String | Returns the balance of the given account address. |
+| ownerOf(tokenId: int): String | Returns the address of the owner of the specified token id. |
+| getApproved(tokenId: int): Boolean | Returns the address who was permitted to transfer this token, or 'zero' address, if no address was approved. |
+| isApprovedForAll(owner: String, operator: String): Boolean | Returns true if an operator is approved to transfer all tokens that belong to the owner. |
+| isMinter(account: String): Boolean | Returns true if the given account is a minter who can issue new tokens in the current contract conforming to KIP-17. |
+| paused(): Boolean | Returns true if the contract is paused, and false otherwise. |
+| isPauser(account: String): Boolean | Returns true if the given account is a pauser who can suspend transferring tokens. |
+| approve(to: String, tokenId: int): Object | Approves another address to transfer a token of the given token id. |
+| approve(to: String, tokenId: int, sendParam: SendOptions): Object | Approves another address to transfer a token of the given token id. |
+| setApprovalForAll(to: String, approved: Boolean): Object | Approves the given operator to, or disallow the given operator, to transfer all tokens of the owner. |
+| setApprovalForAll(to: String, approved: Boolean, sendParam: SendOptions): Object | Approves the given operator to, or disallow the given operator, to transfer all tokens of the owner. |
+| transferFrom(from: String, to: String, tokenId: int): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
+| transferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
+| safeTransferFrom(from: String, to: String, tokenId: int): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: int, data: Strings): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: int, data: String, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| addMinter(account: String): Object | Adds an account as a minter, who are permitted to mint tokens. |
+| addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
+| renounceMinter(): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
+| renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
+| mint(to: String, tokenId: int): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
+| mint(to: String, tokenId: int, sendParam: SendOptions): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
+| mintWithTokenURI(to: String, tokenId: int, toeknURI: String): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
+| mintWithTokenURI(to: String, tokenId: int, toeknURI: String, sendParam: SendOptions): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
+| burn(tokenId: int): Object | Destroys the token of the given token id. |
+| burn(tokenId: int, sendParam: SendOptions): Object | Destroys the token of the given token id. |
+| pause(): Object | Suspends functions related to sending tokens. |
+| pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. |
+| unpause(): Object | Resumes the paused contract. |
+| unpause(sendParam: SendOptions): Object | Resumes the paused contract. |
+| addPauser(account: String): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| addPauser(account: String, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| renouncePauser(): Object | Renounces the right to pause the contract. |
+| renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. |
 
 ### Utils Layer Class Diagram
 
@@ -837,26 +837,26 @@ The Utils class provides basic utility functions required when using Caver, and 
 
 #### utils Method Descriptions
 
-| Method                                                                            | Description |
-| --------------------------------------------------------------------------------- | ----------- |
-| isAddress(address: String): Boolean                                               |             |
-| isValidPrivateKey(key: String): Boolean                                           |             |
-| isKlaytnWalletKey(key: String): Boolean                                           |             |
-| isValidPublicKey(key: String): Boolean                                            |             |
-| compressPublicKey(key: String): String                                            |             |
-| decompressPublicKey(key: String): String                                          |             |
-| hashMessage(message: String): String                                              |             |
-| parseKlaytnWalletKey(key: String): String[]                                       |             |
-| isHex(str: String): boolean                                                       |             |
-| isHexStrict(str: String): boolean                                                 |             |
-| addHexPrefix(str: String): String                                                 |             |
-| stripHexPrefix(str: String): String                                               |             |
-| convertToPeb(num: String, unit: String): String                                   |             |
-| convertToPeb(num: String, unit: KlayUnit): String                                 |             |
-| convertFromPeb(num: String, unit: String): String                                 |             |
-| convertFromPeb(num: String, unit: KlayUnit): String                               |             |
-| recover(message: String, signature: KlaySignatureData): String                    |             |
-| recover(message: String, signature: KlaySignatureData, preFixed: Boolean): String |             |
+| Method | Description |
+| ----------- | ----------- |
+| isAddress(address: String): Boolean | Checks if a given string is a valid Klaytn address. It will also check the checksum if the address has upper and lowercase letters. |
+| isValidPrivateKey(key: String): Boolean | Returns true if privateKey is valid, otherwise it returns false. |
+| isKlaytnWalletKey(key: String): Boolean | Returns true if key is in KlaytnWalletKey format, otherwise it returns false. |
+| isValidPublicKey(key: String): Boolean | Returns true if publicKey is valid, otherwise it returns false. |
+| compressPublicKey(key: String): String | Compresses the uncompressed public key. |
+| decompressPublicKey(key: String): String | Decompresses the compressed public key. |
+| hashMessage(message: String): String | Hashes message with Klaytn specific prefix: `keccak256("\x19Klaytn Signed Message:\n" + len(message) + message))` |
+| parseKlaytnWalletKey(key: String): String[] | Parses KlaytnWalletKey string to an array which includes "private key", "type", "address". |
+| isHex(str: String): boolean | Checks if a given string is a HEX string. |
+| isHexStrict(str: String): boolean | Checks if a given string is a HEX string. Difference to caver.utils.isHex is that it expects HEX to be prefixed with 0x. |
+| addHexPrefix(str: String): String | Returns a 0x-prefixed hex string. If the input is already 0x-prefixed or a non-hex string, the input value is returned as-is. |
+| stripHexPrefix(str: String): String | Returns the result with 0x prefix stripped from input. |
+| convertToPeb(num: String, unit: String): String | Converts any KLAY value into peb. |
+| convertToPeb(num: String, unit: KlayUnit): String | Converts any KLAY value into peb. |
+| convertFromPeb(num: String, unit: String): String | Converts any KLAY value from peb. |
+| convertFromPeb(num: String, unit: KlayUnit): String | Converts any KLAY value from peb. |
+| recover(message: String, signature: KlaySignatureData): String | Recovers the Klaytn address that was used to sign the given data. |
+| recover(message: String, signature: KlaySignatureData, preFixed: Boolean): String | Recovers the Klaytn address that was used to sign the given data. |
 
 ### Example of the source code
 
