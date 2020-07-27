@@ -72,7 +72,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![all](https://user-images.githubusercontent.com/32922423/86310531-4e4cf900-bc59-11ea-8a4e-09a34f7f543d.png)
+![0727All](https://user-images.githubusercontent.com/32922423/88506780-afc47580-d015-11ea-98ff-26f0003f3123.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -199,7 +199,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
 
-![wallet](https://user-images.githubusercontent.com/32922423/86085859-3485a780-badb-11ea-966c-8812ecf5b29d.png)
+![0727Wallet](https://user-images.githubusercontent.com/32922423/88506774-adfab200-d015-11ea-8bda-8a16580d92de.png)
 
 In the Wallet layer, an abstract class called `AbstractKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` are implemented by extending AbstractKeyring. AbstractKeyring defines abstract methods that Keyring classes must implement.
 
@@ -296,30 +296,30 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 | Method | Description |
 | ----------- | ----------- |
-| generate(num: int, entropy: String): List&#60;String&#62;                                                            |             |
-| add(keyring: AbstractKeyring): AbstractKeyring                                                                       |             |
-| newKeyring(address: String, privateKeyString: String): AbstractKeyring                                               |             |
-| newKeyring(address: String, privateKeyArray: List&#60;String&#62;): AbstractKeyring                                  |             |
-| newKeyring(address: String, roleBasedPrivateKeyArray: List&#60;List&#60;String&#62;&#62;): AbstractKeyring           |             |
-| updateKeyring(keyring: ): AbstractKeyring                                                                            |             |
-| getKeyring(address: String): AbstractKeyring                                                                         |             |
-| sign(address: String, transaction: AbstractTransaction): AbstractTransaction                                         |             |
-| sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction                             |             |
-| sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction                       |             |
-| sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction           |             |
-| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction                               |             |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction                   |             |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction             |             |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction |             |
-| signMessage(address: String, data: String, role: int): MessageSigned                                                 |             |
-| signMessage(address: String, data: String, role: int, index: int): MessageSigned                                     |             |
-| remove(address: String): Boolean                                                                                     |             |
+| generate(num: int, entropy: String): List&#60;String&#62; | Generates instances of SingleKeyring in the keyringContainer with randomly generated private keys. |
+| add(keyring: AbstractKeyring): AbstractKeyring | Adds an instance of keyring to the keyringContainer. |
+| newKeyring(address: String, privateKeyString: String): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the caver.wallet. If key is a private key string, a SingleKeyring instance that uses a single private key is created. The keyring created is added to caver.wallet. |
+| newKeyring(address: String, privateKeyArray: List&#60;String&#62;): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the caver.wallet. If key is an array containing private key strings, a MultipleKeyring instance that use multiple private keys is created. The keyring created is added to caver.wallet. |
+| newKeyring(address: String, roleBasedPrivateKeyArray: List&#60;List&#60;String&#62;&#62;): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the caver.wallet. If key is a 2D array of which each element contains the private key(s) to be used for each role, a RoleBasedKeyring instance is created. The keyring created is added to caver.wallet. |
+| updateKeyring(keyring: ): AbstractKeyring | Updates the keyring inside the keyringContainer. |
+| getKeyring(address: String): AbstractKeyring | Returns the keyring instance corresponding to the address. |
+| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. |
+| sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. |
+| sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
+| sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
+| signMessage(address: String, data: String, role: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring stored in keyringContainer. This method will use all the private keys. |
+| signMessage(address: String, data: String, role: int, index: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring stored in keyringContainer. This method uses the private key at the index th in the keyring.  |
+| remove(address: String): Boolean | Deletes the keyring from keyringContainer whose address matches the address of the given keyring. |
 
 ### Transaction Layer Class Diagram
 
 The `Transaction` layer provides transaction-related functions.
 
-![transaction](https://user-images.githubusercontent.com/32922423/86089287-ebd1ec80-bae2-11ea-9061-09177d4f22e9.png)
+![0727Transaction](https://user-images.githubusercontent.com/32922423/88506775-ae934880-d015-11ea-82e4-91c87e3482a8.png)
 
 `AbstractTransaction`, `AbstractFeeDelegatedTransaction` and `AbstractFeeDelegatedWithRatioTrasnaction` abstract classes are defined in the Transaction layer.
 
@@ -562,7 +562,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 The `RPC` layer provides the functions to use the Node API. The `RPC` is a class that manages the Node API for each namespace. Node APIs currently provided by Caver are [klay] and [net].
 
-![rpc](https://user-images.githubusercontent.com/32922423/86310487-2fe6fd80-bc59-11ea-949d-42767bfcd521.png)
+![0727RPC](https://user-images.githubusercontent.com/32922423/88506771-ac30ee80-d015-11ea-8d33-b4be4835bef6.png)
 
 `Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
 
@@ -576,109 +576,109 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 | getAccounts(): List&#60;String&#62; | Call `klay_accounts` JSON-RPC. |
 | encodeAccountKey(accountKey: AccountKey): String | Call `klay_encodeAccountKey` JSON-RPC. |
 | decodeAccountKey(encodedAccountKey: String): Object | Call `klay_decodeAccountKey` JSON-RPC. |
-| getAccount(address: String): Object                                       | Call `klay_getAccount` JSON-RPC. |
-| getAccount(address: String, blockNumber: int): Object                     | Call `klay_getAccount` JSON-RPC. |
-| getAccount(address: String, blockTag: String): Object                     | Call `klay_getAccount` JSON-RPC. |
-| getAccountKey(address: String): Object                                    | Call `klay_getAccountKey` JSON-RPC. |
-| getAccountKey(address: String, blockNumber: int): Object                  | Call `klay_getAccountKey` JSON-RPC. |
-| getAccountKey(address: String, blockTag: String): Object                  | Call `klay_getAccountKey` JSON-RPC. |
-| getBalance(address: String): String                                       | Call `klay_getBalance` JSON-RPC. |
-| getBalance(address: String, blockNumber: int): String                     | Call `klay_getBalance` JSON-RPC. |
-| getBalance(address: String, blockTag: String): String                     | Call `klay_getBalance` JSON-RPC. |
-| getCode(address: String): String                                          | Call `klay_getCode` JSON-RPC. |
-| getCode(address: String, blockNumber: int): String                        | Call `klay_getCode` JSON-RPC. |
-| getCode(address: String, blockTag: String): String                        | Call `klay_getCode` JSON-RPC. |
-| getTransactionCount(address: String): String                              | Call `klay_getTransactionCount` JSON-RPC. |
-| getTransactionCount(address: String, blockNumber: int): String            | Call `klay_getTransactionCount` JSON-RPC. |
-| getTransactionCount(address: String, blockTag: String): String            | Call `klay_getTransactionCount` JSON-RPC. |
-| isContractAddress(address: String): Boolean                               | Call `klay_isContractAccount` JSON-RPC. |
-| isContractAddress(address: String, blockNumber: int): Boolean             | Call `klay_isContractAccount` JSON-RPC. |
-| isContractAddress(address: String, blockTag: String): Boolean             | Call `klay_isContractAccount` JSON-RPC. |
-| sign(address: String, message: String): String                            | Call `klay_sign` JSON-RPC. |
-| getBlockNumber(): String                                                  | Call `klay_blockNumber` JSON-RPC. |
-| getBlockByNumber(blockNumber: int): Object                                | Call `klay_getBlockByNumber` JSON-RPC. |
-| getBlockByNumber(blockNumber: int, fullTxs: Boolean): Object              | Call `klay_getBlockByNumber` JSON-RPC. |
-| getBlockByNumber(blockTag: String): Object                                | Call `klay_getBlockByNumber` JSON-RPC. |
-| getBlockByNumber(blockTag: String, fullTxs: Boolean): Object              | Call `klay_getBlockByNumber` JSON-RPC. |
-| getBlockByHash(blockHash: String): Object                                 | Call `klay_getBlockByHash` JSON-RPC. |
-| getBlockByHash(blockHash: String, fullTxs: Boolean): Object               | Call `klay_getBlockByHash` JSON-RPC. |
-| getBlockReceipts(blockHash: String): Object                               | Call `klay_getBlockReceipts` JSON-RPC. |
-| getBlockTransactionCountByNumber(blockNumber: int): Object                | Call `klay_getBlockTransactionCountByNumber` JSON-RPC. |
-| getBlockTransactionCountByNumber(blockTag: String): Object                | Call `klay_getBlockTransactionCountByNumber` JSON-RPC. |
-| getBlockTransactionCountByHash(blockHash: String): Object                 | Call `klay_getBlockTransactionCountByHash` JSON-RPC. |
-| getBlockWithConsensusInfoByHash(blockHash: String): Object                | Call `klay_getBlockWithConsensusInfoByHash` JSON-RPC. |
-| getBlockWithConsensusInfoByNumber(blockNumber: int): Object               | Call `klay_getBlockWithConsensusInfoByNumber` JSON-RPC. |
-| getBlockWithConsensusInfoByNumber(blockTag: String): Object               | Call `klay_getBlockWithConsensusInfoByNumber` JSON-RPC. |
-| getCommittee(): List&#60;String&#62;                                      | Call `klay_getCommittee` JSON-RPC. |
-| getCommittee(blockNumber: int): List&#60;String&#62;                      | Call `klay_getCommittee` JSON-RPC. |
-| getCommittee(blockTag: String): List&#60;String&#62;                      | Call `klay_getCommittee` JSON-RPC. |
-| getCommitteeSize(): int                                                   | Call `klay_getCommitteeSize` JSON-RPC. |
-| getCommitteeSize(blockNumber: int): int                                   | Call `klay_getCommitteeSize` JSON-RPC. |
-| getCommitteeSize(blockTag: String): int                                   | Call `klay_getCommitteeSize` JSON-RPC. |
-| getCouncil(): List&#60;String&#62;                                        | Call `klay_getCouncil` JSON-RPC. |
-| getCouncil(blockNumber: int): List&#60;String&#62;                        | Call `klay_getCouncil` JSON-RPC. |
-| getCouncil(blockTag: String): List&#60;String&#62;                        | Call `klay_getCouncil` JSON-RPC. |
-| getCouncilSize(): int                                                     | Call `klay_getCouncilSize` JSON-RPC. |
-| getCouncilSize(blockNumber: int): int                                     | Call `klay_getCouncilSize` JSON-RPC. |
-| getCouncilSize(blockTag: String): int                                     | Call `klay_getCouncilSize` JSON-RPC. |
-| getStorageAt(address: String, position: int, blockNumber: int): String    | Call `klay_getStorageAt` JSON-RPC. |
-| getStorageAt(address: String, position: int, blockTag: String): String    | Call `klay_getStorageAt` JSON-RPC. |
-| isSyncing(): Object                                                       | Call `klay_syncing` JSON-RPC. |
-| call(callObject: Object): String                                          | Call `klay_call` JSON-RPC. |
-| call(callObject: Object, blockNumber: int): String                        | Call `klay_call` JSON-RPC. |
-| call(callObject: Object, blockTag: String): String                        | Call `klay_call` JSON-RPC. |
-| estimateGas(callObject: Object): String                                   | Call `klay_estimateGas` JSON-RPC. |
-| estimateGas(callObject: Object, blockNumber: int): String                 | Call `klay_estimateGas` JSON-RPC. |
-| estimateGas(callObject: Object, blockTag: String): String                 | Call `klay_estimateGas` JSON-RPC. |
-| estimateComputationCost(callObject: Object): String                       | Call `klay_estimateComputationCost` JSON-RPC. |
-| estimateComputationCost(callObject: Object, blockNumber: int): String     | Call `klay_estimateComputationCost` JSON-RPC. |
-| estimateComputationCost(callObject: Object, blockTag: String): String     | Call `klay_estimateComputationCost` JSON-RPC. |
-| getTransactionByBlockHashAndIndex(hash: String, index: int): Object       | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
+| getAccount(address: String): Object | Call `klay_getAccount` JSON-RPC. |
+| getAccount(address: String, blockNumber: int): Object | Call `klay_getAccount` JSON-RPC. |
+| getAccount(address: String, blockTag: String): Object | Call `klay_getAccount` JSON-RPC. |
+| getAccountKey(address: String): Object | Call `klay_getAccountKey` JSON-RPC. |
+| getAccountKey(address: String, blockNumber: int): Object | Call `klay_getAccountKey` JSON-RPC. |
+| getAccountKey(address: String, blockTag: String): Object | Call `klay_getAccountKey` JSON-RPC. |
+| getBalance(address: String): String | Call `klay_getBalance` JSON-RPC. |
+| getBalance(address: String, blockNumber: int): String | Call `klay_getBalance` JSON-RPC. |
+| getBalance(address: String, blockTag: String): String | Call `klay_getBalance` JSON-RPC. |
+| getCode(address: String): String | Call `klay_getCode` JSON-RPC. |
+| getCode(address: String, blockNumber: int): String | Call `klay_getCode` JSON-RPC. |
+| getCode(address: String, blockTag: String): String | Call `klay_getCode` JSON-RPC. |
+| getTransactionCount(address: String): String | Call `klay_getTransactionCount` JSON-RPC. |
+| getTransactionCount(address: String, blockNumber: int): String | Call `klay_getTransactionCount` JSON-RPC. |
+| getTransactionCount(address: String, blockTag: String): String | Call `klay_getTransactionCount` JSON-RPC. |
+| isContractAddress(address: String): Boolean | Call `klay_isContractAccount` JSON-RPC. |
+| isContractAddress(address: String, blockNumber: int): Boolean | Call `klay_isContractAccount` JSON-RPC. |
+| isContractAddress(address: String, blockTag: String): Boolean | Call `klay_isContractAccount` JSON-RPC. |
+| sign(address: String, message: String): String | Call `klay_sign` JSON-RPC. |
+| getBlockNumber(): String | Call `klay_blockNumber` JSON-RPC. |
+| getBlockByNumber(blockNumber: int): Object | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByNumber(blockNumber: int, fullTxs: Boolean): Object | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByNumber(blockTag: String): Object | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByNumber(blockTag: String, fullTxs: Boolean): Object | Call `klay_getBlockByNumber` JSON-RPC. |
+| getBlockByHash(blockHash: String): Object | Call `klay_getBlockByHash` JSON-RPC. |
+| getBlockByHash(blockHash: String, fullTxs: Boolean): Object | Call `klay_getBlockByHash` JSON-RPC. |
+| getBlockReceipts(blockHash: String): Object | Call `klay_getBlockReceipts` JSON-RPC. |
+| getBlockTransactionCountByNumber(blockNumber: int): Object | Call `klay_getBlockTransactionCountByNumber` JSON-RPC. |
+| getBlockTransactionCountByNumber(blockTag: String): Object | Call `klay_getBlockTransactionCountByNumber` JSON-RPC. |
+| getBlockTransactionCountByHash(blockHash: String): Object | Call `klay_getBlockTransactionCountByHash` JSON-RPC. |
+| getBlockWithConsensusInfoByHash(blockHash: String): Object | Call `klay_getBlockWithConsensusInfoByHash` JSON-RPC. |
+| getBlockWithConsensusInfoByNumber(blockNumber: int): Object | Call `klay_getBlockWithConsensusInfoByNumber` JSON-RPC. |
+| getBlockWithConsensusInfoByNumber(blockTag: String): Object | Call `klay_getBlockWithConsensusInfoByNumber` JSON-RPC. |
+| getCommittee(): List&#60;String&#62; | Call `klay_getCommittee` JSON-RPC. |
+| getCommittee(blockNumber: int): List&#60;String&#62; | Call `klay_getCommittee` JSON-RPC. |
+| getCommittee(blockTag: String): List&#60;String&#62; | Call `klay_getCommittee` JSON-RPC. |
+| getCommitteeSize(): int | Call `klay_getCommitteeSize` JSON-RPC. |
+| getCommitteeSize(blockNumber: int): int | Call `klay_getCommitteeSize` JSON-RPC. |
+| getCommitteeSize(blockTag: String): int | Call `klay_getCommitteeSize` JSON-RPC. |
+| getCouncil(): List&#60;String&#62; | Call `klay_getCouncil` JSON-RPC. |
+| getCouncil(blockNumber: int): List&#60;String&#62; | Call `klay_getCouncil` JSON-RPC. |
+| getCouncil(blockTag: String): List&#60;String&#62; | Call `klay_getCouncil` JSON-RPC. |
+| getCouncilSize(): int | Call `klay_getCouncilSize` JSON-RPC. |
+| getCouncilSize(blockNumber: int): int | Call `klay_getCouncilSize` JSON-RPC. |
+| getCouncilSize(blockTag: String): int | Call `klay_getCouncilSize` JSON-RPC. |
+| getStorageAt(address: String, position: int, blockNumber: int): String | Call `klay_getStorageAt` JSON-RPC. |
+| getStorageAt(address: String, position: int, blockTag: String): String | Call `klay_getStorageAt` JSON-RPC. |
+| isSyncing(): Object | Call `klay_syncing` JSON-RPC. |
+| call(callObject: Object): String | Call `klay_call` JSON-RPC. |
+| call(callObject: Object, blockNumber: int): String | Call `klay_call` JSON-RPC. |
+| call(callObject: Object, blockTag: String): String | Call `klay_call` JSON-RPC. |
+| estimateGas(callObject: Object): String | Call `klay_estimateGas` JSON-RPC. |
+| estimateGas(callObject: Object, blockNumber: int): String | Call `klay_estimateGas` JSON-RPC. |
+| estimateGas(callObject: Object, blockTag: String): String | Call `klay_estimateGas` JSON-RPC. |
+| estimateComputationCost(callObject: Object): String | Call `klay_estimateComputationCost` JSON-RPC. |
+| estimateComputationCost(callObject: Object, blockNumber: int): String | Call `klay_estimateComputationCost` JSON-RPC. |
+| estimateComputationCost(callObject: Object, blockTag: String): String | Call `klay_estimateComputationCost` JSON-RPC. |
+| getTransactionByBlockHashAndIndex(hash: String, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
 | getTransactionByBlockNumberAndIndex(blockNumber: int, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
 | getTransactionByBlockNumberAndIndex(blockTag: String, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
-| getTransactionByHash(hash: String): Object                                | Call `klay_getTransactionByHash` JSON-RPC. |
-| getTransactionBySenderTxHash(senderTxHash: String): Object                | Call `klay_getTransactionBySenderTxHash` JSON-RPC. |
-| getTransactionReceipt(hash: String): Object                               | Call `klay_getTransactionReceipt` JSON-RPC. |
-| getTransactionReceiptBySenderTxHash(senderTxHash: String): Object         | Call `klay_getTransactionReceiptBySenderTxHash` JSON-RPC. |
-| sendRawTransaction(rawTransaction: String): Object                        | Call `klay_sendRawTransaction` JSON-RPC. |
-| sendTransaction(tx: AbstractTransaction): String                          | Call `klay_sendTransaction` JSON-RPC. |
-| sendTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): String    | Call `klay_sendTransactionAsFeePayer` JSON-RPC. |
-| signTransaction(tx: AbstractTransaction): Object                          | Call `klay_signTransaction` JSON-RPC. |
-| signTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): Object    | Call `klay_signTransactionAsFeePayer` JSON-RPC. |
-| getDecodedAnchoringTransaction(hash: String): Object                      | Call `klay_getDecodedAnchoringTransactionByHash` JSON-RPC. |
-| getChainId(): String                                                      | Call `klay_chainID` JSON-RPC. |
-| getClientVersion(): String                                                | Call `klay_clientVersion` JSON-RPC. |
-| getGasPrice(): String                                                     | Call `klay_gasPrice` JSON-RPC. |
-| getGasPriceAt(): String                                                   | Call `klay_gasPriceAt` JSON-RPC. |
-| getGasPriceAt(blockNumber: int): String                                   | Call `klay_gasPriceAt` JSON-RPC. |
-| isParallelDBWrite(): Boolean                                              | Call `klay_isParallelDBWrite` JSON-RPC. |
-| isSenderTxHashIndexingEnabled(): Boolean                                  | Call `klay_isSenderTxHashIndexingEnabled` JSON-RPC. |
-| getProtocolVersion(): String                                              | Call `klay_protocolVersion` JSON-RPC. |
-| getRewardbase(): String                                                   | Call `klay_rewardbase` JSON-RPC. |
-| writeThroughCaching(): Boolean                                            | Call `klay_writeThroughCaching` JSON-RPC. |
-| getFilterChanges(filterId: String): List&#60;Object&#62;                  | Call `klay_getFilterChanges` JSON-RPC. |
-| getFilterLogs(filterId: String): List&#60;Object&#62;                     | Call `klay_getFilterLogs` JSON-RPC. |
-| getLogs(filterOption: Object): List&#60;Object&#62;                       | Call `klay_getLogs` JSON-RPC. |
-| newBlockFilter(): String                                                  | Call `klay_newBlockFilter` JSON-RPC. |
-| newFilter(filterOptions: Object): String                                  | Call `klay_newFilter` JSON-RPC. |
-| newPendingTransactionFilter(): String                                     | Call `klay_newPendingTransactionFilter` JSON-RPC. |
-| uninstallFilter(filterId: String): Boolean                                | Call `klay_uninstallFilter` JSON-RPC. |
-| sha3(data: String): String                                                | Call `klay_sha3` JSON-RPC. |
+| getTransactionByHash(hash: String): Object | Call `klay_getTransactionByHash` JSON-RPC. |
+| getTransactionBySenderTxHash(senderTxHash: String): Object | Call `klay_getTransactionBySenderTxHash` JSON-RPC. |
+| getTransactionReceipt(hash: String): Object | Call `klay_getTransactionReceipt` JSON-RPC. |
+| getTransactionReceiptBySenderTxHash(senderTxHash: String): Object | Call `klay_getTransactionReceiptBySenderTxHash` JSON-RPC. |
+| sendRawTransaction(rawTransaction: String): Object | Call `klay_sendRawTransaction` JSON-RPC. |
+| sendTransaction(tx: AbstractTransaction): String | Call `klay_sendTransaction` JSON-RPC. |
+| sendTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): String | Call `klay_sendTransactionAsFeePayer` JSON-RPC. |
+| signTransaction(tx: AbstractTransaction): Object | Call `klay_signTransaction` JSON-RPC. |
+| signTransactionAsFeePayer(tx: AbstractFeeDelegatedTransaction): Object | Call `klay_signTransactionAsFeePayer` JSON-RPC. |
+| getDecodedAnchoringTransaction(hash: String): Object | Call `klay_getDecodedAnchoringTransactionByHash` JSON-RPC. |
+| getChainId(): String | Call `klay_chainID` JSON-RPC. |
+| getClientVersion(): String | Call `klay_clientVersion` JSON-RPC. |
+| getGasPrice(): String | Call `klay_gasPrice` JSON-RPC. |
+| getGasPriceAt(): String | Call `klay_gasPriceAt` JSON-RPC. |
+| getGasPriceAt(blockNumber: int): String | Call `klay_gasPriceAt` JSON-RPC. |
+| isParallelDBWrite(): Boolean | Call `klay_isParallelDBWrite` JSON-RPC. |
+| isSenderTxHashIndexingEnabled(): Boolean | Call `klay_isSenderTxHashIndexingEnabled` JSON-RPC. |
+| getProtocolVersion(): String | Call `klay_protocolVersion` JSON-RPC. |
+| getRewardbase(): String | Call `klay_rewardbase` JSON-RPC. |
+| writeThroughCaching(): Boolean | Call `klay_writeThroughCaching` JSON-RPC. |
+| getFilterChanges(filterId: String): List&#60;Object&#62; | Call `klay_getFilterChanges` JSON-RPC. |
+| getFilterLogs(filterId: String): List&#60;Object&#62; | Call `klay_getFilterLogs` JSON-RPC. |
+| getLogs(filterOption: Object): List&#60;Object&#62; | Call `klay_getLogs` JSON-RPC. |
+| newBlockFilter(): String | Call `klay_newBlockFilter` JSON-RPC. |
+| newFilter(filterOptions: Object): String | Call `klay_newFilter` JSON-RPC. |
+| newPendingTransactionFilter(): String | Call `klay_newPendingTransactionFilter` JSON-RPC. |
+| uninstallFilter(filterId: String): Boolean | Call `klay_uninstallFilter` JSON-RPC. |
+| sha3(data: String): String | Call `klay_sha3` JSON-RPC. |
 
 #### Net Method Descriptions
 
 | Method | Description |
 | ----------- | ----------- |
-| getNetworkID(): String       | Call `net_networkID` JSON-RPC. |
-| isListening(): Boolean       | Call `net_listening` JSON-RPC. |
-| getPeerCount(): String       | Call `net_peerCount` JSON-RPC. |
+| getNetworkID(): String | Call `net_networkID` JSON-RPC. |
+| isListening(): Boolean | Call `net_listening` JSON-RPC. |
+| getPeerCount(): String | Call `net_peerCount` JSON-RPC. |
 | getPeerCountByType(): Object | Call `net_peerCountByType` JSON-RPC. |
 
 ### Contract, ABI, KCT Layer Class Diagram
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![contract](https://user-images.githubusercontent.com/32922423/86310482-2cec0d00-bc59-11ea-94a3-74327094883d.png)
+![0727Contract](https://user-images.githubusercontent.com/32922423/88506778-af2bdf00-d015-11ea-807a-01ad83fae2c9.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -706,7 +706,9 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 | Method | Description |
 | ----------- | ----------- |
+| call(argumetns: List&#60;any&#62;): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. Call by using default sendOptions defined by user in Contract. |
 | call(argumetns: List&#60;any&#62;, options: SendOptions): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. |
+| send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send by using default sendOptions defined by user in Contract. |
 | send(arguments: List&#60;any&#62;, options: SendOptions): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
 | encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
 | estimateGas(arguments: List&#60;any&#62;): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. |
@@ -719,8 +721,8 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | encodeFunctionSignature(functionString: String): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name including parameter types. |
 | encodeEventSignature(event: ContractEvent): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
 | encodeEventSignature(eventString: String): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
-| encodeParameter(param: any): String | Encodes a parameter based on its type to its ABI representation. | <!-- check parameter with caver-java -->
-| encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#124;List&#60;any&#62;>&#62;): String | Encodes parameters based on its type to its ABI representation. | <!-- check parameter with caver-java -->
+| encodeParameter(type: String, param: any): String | Encodes a parameter based on its type to its ABI representation. |
+| encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#62;): String | Encodes parameters based on its type to its ABI representation. |
 | encodeFunctionCall(method: ContractMethod, params: List&#60;any&#62;): String | Encodes a function call using its JSON interface object and given parameters. |
 | decodeParameter(type: String, encoded: String): String | Decodes an ABI encoded parameter. |
 | decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. |
@@ -731,7 +733,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 | Method | Description |
 | ----------- | ----------- |
-| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn blockchain. |
+| deploy(tokenInfo: KIP7DeployParams, deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn blockchain. |
 | clone(): KIP7 | Clones the current KIP7 instance. |
 | clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and set address of contract to tokenAddress parameter. |
 | supportInterface(interfaceid: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
@@ -781,7 +783,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 | Method | Description |
 | ----------- | ----------- |
-| deploy(tokenInfo: KCTDeployParam, deployer: String): KIP17 | Deploys the KIP-17 token contract to the Klaytn blockchain. |
+| deploy(tokenInfo: KIP17DeployParams, deployer: String): KIP17 | Deploys the KIP-17 token contract to the Klaytn blockchain. |
 | clone(): KIP17 | Clones the current KIP17 instance. |
 | clone(tokenAddress: String): KIP17 | Clones the current KIP17 instance and set address of contract to tokenAddress parameter. |
 | supportInterface(interfaceId: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
@@ -831,7 +833,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 The Utils layer provides utility functions.
 
-![utils](https://user-images.githubusercontent.com/32922423/86078319-cf28bb00-bac8-11ea-93ce-39a9809b017e.png)
+![0727Utils](https://user-images.githubusercontent.com/32922423/88506767-a9ce9480-d015-11ea-90ac-365d96c40d4a.png)
 
 The Utils class provides basic utility functions required when using Caver, and also converting functions based on `KlayUnit`.
 
