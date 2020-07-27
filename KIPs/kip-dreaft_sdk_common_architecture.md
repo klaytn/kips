@@ -72,7 +72,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0727All](https://user-images.githubusercontent.com/32922423/88506780-afc47580-d015-11ea-98ff-26f0003f3123.png)
+![0727All](https://user-images.githubusercontent.com/32922423/88514451-12713d80-d025-11ea-83b5-3373f13babc3.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -678,7 +678,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![0727Contract](https://user-images.githubusercontent.com/32922423/88506778-af2bdf00-d015-11ea-807a-01ad83fae2c9.png)
+![0727contract (1)](https://user-images.githubusercontent.com/32922423/88514435-0e452000-d025-11ea-9fc1-58d2197a3399.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -706,8 +706,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 | Method | Description |
 | ----------- | ----------- |
-| call(argumetns: List&#60;any&#62;): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. Call by using default sendOptions defined by user in Contract. |
-| call(argumetns: List&#60;any&#62;, options: SendOptions): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. |
+| call(argumetns: List&#60;any&#62;, callObject: Object): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. |
 | send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send by using default sendOptions defined by user in Contract. |
 | send(arguments: List&#60;any&#62;, options: SendOptions): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
 | encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
