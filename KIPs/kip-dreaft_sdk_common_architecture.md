@@ -72,7 +72,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0727All](https://user-images.githubusercontent.com/32922423/88514451-12713d80-d025-11ea-83b5-3373f13babc3.png)
+![0728All](https://user-images.githubusercontent.com/32922423/88608809-92e37d00-d0bd-11ea-9e50-a8bdebaa3490.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -678,7 +678,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![0727contract (1)](https://user-images.githubusercontent.com/32922423/88514435-0e452000-d025-11ea-9fc1-58d2197a3399.png)
+![0728Contract (1)](https://user-images.githubusercontent.com/32922423/88609250-9d524680-d0be-11ea-85d8-07155334bcbf.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -757,20 +757,20 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | safeTransfer(recipient: String, amount: int, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
 | safeTransferFrom(sender: String, recipient: String, amount: int): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
 | safeTransferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender, recipient, amount, data): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender, recipient, amount, data, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| mint(account, amount): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
-| mint(account, amount, sendParam: SendOptions): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
-| addMinter(account): Object | Adds an account as a minter, who are permitted to mint tokens. |
-| addMinter(account, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
+| safeTransferFrom(sender: String, recipient: String, amount: int, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender: String, recipient: String, amount: int, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| mint(account: String, amount: int): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
+| mint(account: String, amount: int, sendParam: SendOptions): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
+| addMinter(account: String): Object | Adds an account as a minter, who are permitted to mint tokens. |
+| addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
 | renounceMinter(): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
 | renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
-| burn(amount): Object | Destroys the amount of tokens in the sender's balance. |
-| burn(amount, sendParam: SendOptions): Object | Destroys the amount of tokens in the sender's balance. |
-| burnFrom(account, amount): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
-| burnFrom(account, amount, sendParam: SendOptions): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
-| addPauser(account): Object | Adds an account as a pauser that has the right to suspend the contract. |
-| addPauser(account, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| burn(amount: int): Object | Destroys the amount of tokens in the sender's balance. |
+| burn(amount: int, sendParam: SendOptions): Object | Destroys the amount of tokens in the sender's balance. |
+| burnFrom(account: String, amount: int): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| burnFrom(account: String, amount: int, sendParam: SendOptions): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| addPauser(account: String): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| addPauser(account: String, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. |
 | pause(): Object | Suspends functions related to sending tokens. |
 | pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. |
 | unpuase(): Object | Resumes the paused contract. |
