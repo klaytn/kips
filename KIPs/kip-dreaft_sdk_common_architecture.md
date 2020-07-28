@@ -72,7 +72,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0728All](https://user-images.githubusercontent.com/32922423/88608809-92e37d00-d0bd-11ea-9e50-a8bdebaa3490.png)
+![0728Allestimate](https://user-images.githubusercontent.com/32922423/88634432-53cf1f00-d0f1-11ea-849a-0248935393e0.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -678,7 +678,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![0728Contract (1)](https://user-images.githubusercontent.com/32922423/88609250-9d524680-d0be-11ea-85d8-07155334bcbf.png)
+![0728contractestimate](https://user-images.githubusercontent.com/32922423/88634461-5a5d9680-d0f1-11ea-81fc-082df86d8ce3.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
