@@ -121,14 +121,14 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 | Method | Description |
 | ----------- | ----------- |
-| getRLPEncoding(): String | Returns an RLP-encoded string of AccountKey. AccountKey classes implement `IAccountKey`, and this function must be implemented. |
+| getRLPEncoding(): String | Returns a RLP-encoded string of AccountKey. AccountKey classes implement `IAccountKey`, and this function must be implemented. |
 
 #### AccountKeyLegacy
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes an RLP-encoded string of AccountKeyLegacy. |
-| getRLPEncoding(): String | Returns an RLP-encoded string of AccountKeyLegacy. |
+| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes a RLP-encoded string of AccountKeyLegacy. |
+| getRLPEncoding(): String | Returns a RLP-encoded string of AccountKeyLegacy. |
 
 #### AccountKeyPublic
 
@@ -140,7 +140,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | getXYPoint(): String[] | Returns the x and y points of the public key. |
 | getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyPublic. |
 
-#### AccountKeyFail Method Descriptions
+#### AccountKeyFail
 
 
 | Method | Description |
@@ -148,7 +148,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | decode(rlpEncodedKey: String): AccountKeyFail | Decodes RLP-encoded AccountKeyFail. |
 | getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyFail. |
 
-#### AccountKeyWeightedMultiSig Method Descriptions
+#### AccountKeyWeightedMultiSig
 
 | Method | Description |
 | ----------- | ----------- |
@@ -156,13 +156,13 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | fromPublicKeysAndOptions(pubArray: String[], options: WeightedMutliSigOptions): AccountKeyWeightedMultiSig | Creates an instance of AccountKeyWeightedMultiSig with public key strings and option that defines threshold and weight of each key. |
 | getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyWeightedMultiSig. |
 
-#### WeightedPublicKey Method Descriptions
+#### WeightedPublicKey
 
 | Method | Description |
 | ----------- | ----------- |
 | encodeToBytes(): String[] | Returns an encoded weighted public key string. |
 
-#### AccountKeyRoleBased Method Descriptions
+#### AccountKeyRoleBased
 
 | Method | Description |
 | ----------- | ----------- |
@@ -171,13 +171,13 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key string for each role and option that defines threshold and weight of each key. |
 | getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyRoleBased. |
 
-#### AccountKeyDecoder Method Descriptions
+#### AccountKeyDecoder
 
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): IAccountKey | Decodes RLP-encoded AccountKey. |
 
-#### Account Method Descriptions
+#### Account
 
 | Method | Description |
 | ----------- | ----------- |
@@ -218,7 +218,7 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `KeyringContainer` is an "in-memory wallet" class that manages Keyring instances. Manage the Keyring instance using the address as the key value.
 
-#### PrivateKey Method Descriptions
+#### PrivateKey
 
 | Method | Description |
 | ----------- | ----------- |
@@ -228,7 +228,7 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | getPublicKey(compressed: Boolean): String | Returns public key string. |
 | getDerivedAddress(): String | Returns derived address from private key string. |
 
-#### AbstractKeyring Method Descriptions
+#### AbstractKeyring
 
 | Method | Description |
 | ----------- | ----------- |
@@ -246,7 +246,7 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | isDecoupled(): Boolean | Returns true if keyring has decoupled key. |
 | copy(): AbstractKeyring | Returns a copied Keyring instance. |
 
-#### SingleKeyring Method Descriptionss
+#### SingleKeyrings
 
 | Method | Description |
 | ----------- | ----------- |
@@ -254,7 +254,7 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | getKeyByRole(role): PrivateKey | Returns keys by role. SingleKeyring always returns a same key. |
 | toAccount(): Account | Returns an instance of Account. |
 
-#### MultipleKeyring Method Descriptions
+#### MultipleKeyring
 
 | Method | Description |
 | ----------- | ----------- |
@@ -262,7 +262,7 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | getKeyByRole(role): List&#60;PrivateKey&#62; | Returns keys by role. SingleKeyring always returns same keys. |
 | toAccount(options: WeightedMultiSigOptions): Account | Returns an instance of Account. |
 
-#### RoleBasedKeyring Method Descriptions
+#### RoleBasedKeyring
 
 | Method | Description |
 | ----------- | ----------- |
@@ -270,7 +270,7 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | getKeyByRole(role): List&#60;PrivateKey&#62; | Returns keys by role. |
 | toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an instance of Account. |
 
-#### KeyringFactory Method Descriptions
+#### KeyringFactory
 
 | Method | Description |
 | ----------- | ----------- |
@@ -293,7 +293,7 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | createWithRoleBasedKey(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance from an address and a 2D array of which each array element contains keys defined for each role. |
 | decrypt(keystore: Object, password: String): Keyring | Decrypts a keystore v3 or v4 JSON and returns the decrypted Keyring instance. |
 
-#### KeyringContainer Method Descriptions
+#### KeyringContainer
 
 | Method | Description |
 | ----------- | ----------- |
@@ -332,7 +332,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 `TransactionHasher` is a class that calculates the hash of a transaction. It provides a function that calculates a hash when the sender (from of the transaction) signs a transaction and a function that calculates a hash when the fee payer signs a transaction. TransactionHasher provided by caver is implemented based on [Klaytn Design - Transactions].
 
-#### AbstractTransaction Method Descriptions
+#### AbstractTransaction
 
 | Method | Description |
 | ----------- | ----------- |
@@ -353,7 +353,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getRLPEncoding(): String | Returns a RLP-encoded transaction string. |
 | getCommonRLPEncodingForSignautre(): String | Encodes and returns the values needed to sign each transaction. For example, in the case of ValueTransfer, if SigRLP is `encode([encode([type, nonce, gasPrice, gas, to, value, from]), chainid, 0, 0])`, among them, the RLP-encoded values of the transaction required for signing is `encoded([type, nonce, gasPrice, gas, to, value, from])`. This function is used in getRLPEncodingForSignature or getRLPEncodingForFeePayerSignature function. |
 
-#### AbstractFeeDelegatedTransaction Method Descriptions
+#### AbstractFeeDelegatedTransaction
 
 | Method | Description |
 | ----------- | ----------- |
@@ -368,191 +368,191 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | combineSignedRawTransactions(rlpEncoded: String): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns a RLP-encoded transaction string which includes all signs. |
 | getRLPEncodingForFeePayerSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction fee payer. |
 
-#### LegacyTransaction Method Descriptions
+#### LegacyTransaction
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): LegacyTransaction | Decodes RLP-encoded LegacyTransaction string, a raw transaction, and returns a LegacyTransaction instance. |
+| decode(rlpEncoded: String): LegacyTransaction | Decodes a RLP-encoded LegacyTransaction string, a raw transaction, and returns a LegacyTransaction instance. |
 | appendSignatures(sig: SignatureData): void | Appends signature to the transaction. LegacyTransaction can only have one signature. |
 | appendSignatures(sig: List&#60;SignatureData&#62;): void | Appends signature to the transaction. LegacyTransaction can only have one signature. |
 | getRLPEncoding(): String | Returns a RLP-encoded LegacyTransaction string. |
 | getRLPEncodingForSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction sender. Since the method of obtaining RLP-encoding for signature of LegacyTransaction is different from other transaction types, getRLPEncodingForSignature should be overrided. |
 
-#### ValueTransfer Method Descriptions
+#### ValueTransfer
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): ValueTransfer | Decodes RLP-encoded ValueTransfer string, a raw transaction, and returns a ValueTransfer instance. |
+| decode(rlpEncoded: String): ValueTransfer | Decodes a RLP-encoded ValueTransfer string, a raw transaction, and returns a ValueTransfer instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded ValueTransfer string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### ValueTransferMemo Method Descriptions
+#### ValueTransferMemo
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): ValueTransferMemo | Decodes RLP-encoded ValueTransferMemo string, a raw transaction, and returns a ValueTransferMemo instance. |
+| decode(rlpEncoded: String): ValueTransferMemo | Decodes a RLP-encoded ValueTransferMemo string, a raw transaction, and returns a ValueTransferMemo instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded ValueTransferMemo string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### AccountUpdate Method Descriptions
+#### AccountUpdate
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): AccountUpdate | Decodes RLP-encoded AccountUpdate string, a raw transaction, and returns a AccountUpdate instance. |
+| decode(rlpEncoded: String): AccountUpdate | Decodes a RLP-encoded AccountUpdate string, a raw transaction, and returns a AccountUpdate instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded AccountUpdate string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### SmartContractDeploy Method Descriptions
+#### SmartContractDeploy
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): SmartContractDeploy | Decodes RLP-encoded SmartContractDeploy string, a raw transaction, and returns a SmartContractDeploy instance. |
+| decode(rlpEncoded: String): SmartContractDeploy | Decodes a RLP-encoded SmartContractDeploy string, a raw transaction, and returns a SmartContractDeploy instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded SmartContractDeploy string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### SmartContractExecution Method Descriptions
+#### SmartContractExecution
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): SmartContractExecution | Decodes RLP-encoded SmartContractExecution string, a raw transaction, and returns a SmartContractExecution instance. |
+| decode(rlpEncoded: String): SmartContractExecution | Decodes a RLP-encoded SmartContractExecution string, a raw transaction, and returns a SmartContractExecution instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded SmartContractExecution string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### Cancel Method Descriptions
+#### Cancel
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): Cancel | Decodes RLP-encoded Cancel string, a raw transaction, and returns a Cancel instance. |
+| decode(rlpEncoded: String): Cancel | Decodes a RLP-encoded Cancel string, a raw transaction, and returns a Cancel instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded Cancel string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### ChainDataAnchoring Method Descriptions
+#### ChainDataAnchoring
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): ChainDataAnchoring | Decodes RLP-encoded ChainDataAnchoring string, a raw transaction, and returns a ChainDataAnchoring instance. |
+| decode(rlpEncoded: String): ChainDataAnchoring | Decodes a RLP-encoded ChainDataAnchoring string, a raw transaction, and returns a ChainDataAnchoring instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded ChainDataAnchoring string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedValueTransfer Method Descriptions
+#### FeeDelegatedValueTransfer
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransfer | Decodes RLP-encoded FeeDelegatedValueTransfer string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransfer | Decodes a RLP-encoded FeeDelegatedValueTransfer string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedValueTransfer string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedValueTransferMemo Method Descriptions
+#### FeeDelegatedValueTransferMemo
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes RLP-encoded FeeDelegatedValueTransferMemo string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes a RLP-encoded FeeDelegatedValueTransferMemo string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
 | getRLPEncoding(): Stirng | Returns a RLP-encoded FeeDelegatedValueTransferMemo string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedAccountUpdate Method Descriptions
+#### FeeDelegatedAccountUpdate
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes RLP-encoded FeeDelegatedAccountUpdate string, a raw transaction, and returns a FeeDelegatedAccountUpdate instance. |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes a RLP-encoded FeeDelegatedAccountUpdate string, a raw transaction, and returns a FeeDelegatedAccountUpdate instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedAccountUpdate string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedSmartContractDeploy Method Descriptions
+#### FeeDelegatedSmartContractDeploy
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes RLP-encoded FeeDelegatedSmartContractDeploy string, a raw transaction, and returns a FeeDelegatedSmartContractDeploy instance. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes a RLP-encoded FeeDelegatedSmartContractDeploy string, a raw transaction, and returns a FeeDelegatedSmartContractDeploy instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractDeploy string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedSmartContractExecution Method Descriptions
+#### FeeDelegatedSmartContractExecution
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes RLP-encoded FeeDelegatedSmartContractExecution string, a raw transaction, and returns a FeeDelegatedSmartContractExecution instance. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes a RLP-encoded FeeDelegatedSmartContractExecution string, a raw transaction, and returns a FeeDelegatedSmartContractExecution instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractExecution string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedCancel Method Descriptions
+#### FeeDelegatedCancel
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancel | Decodes RLP-encoded FeeDelegatedCancel string, a raw transaction, and returns a FeeDelegatedCancel instance. |
+| decode(rlpEncoded: String): FeeDelegatedCancel | Decodes a RLP-encoded FeeDelegatedCancel string, a raw transaction, and returns a FeeDelegatedCancel instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedCancel string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedChainDataAnchoring Method Descriptions
+#### FeeDelegatedChainDataAnchoring
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes RLP-encoded FeeDelegatedChainDataAnchoring string, a raw transaction, and returns a FeeDelegatedChainDataAnchoring instance. |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes a RLP-encoded FeeDelegatedChainDataAnchoring string, a raw transaction, and returns a FeeDelegatedChainDataAnchoring instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedChainDataAnchoring string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedValueTransferWithRatio Method Descriptions
+#### FeeDelegatedValueTransferWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes RLP-encoded FeeDelegatedValueTransferWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferWithRatio instance. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes a RLP-encoded FeeDelegatedValueTransferWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferWithRatio instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedValueTransferWithRatio string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedValueTransferMemoWithRatio Method Descriptions
+#### FeeDelegatedValueTransferMemoWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes RLP-encoded FeeDelegatedValueTransferMemoWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferMemoWithRatio instance. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes a RLP-encoded FeeDelegatedValueTransferMemoWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferMemoWithRatio instance. |
 | getRLPEncoding(): Stirng | Returns a RLP-encoded FeeDelegatedValueTransferMemoWithRatio string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedAccountUpdateWithRatio Method Descriptions
+#### FeeDelegatedAccountUpdateWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes RLP-encoded FeeDelegatedAccountUpdateWithRatio string, a raw transaction, and returns a FeeDelegatedAccountUpdateWithRatio instance. |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes a RLP-encoded FeeDelegatedAccountUpdateWithRatio string, a raw transaction, and returns a FeeDelegatedAccountUpdateWithRatio instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedAccountUpdateWithRatio string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedSmartContractDeployWithRatio Method Descriptions
+#### FeeDelegatedSmartContractDeployWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes RLP-encoded FeeDelegatedSmartContractDeployWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractDeployWithRatio instance. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes a RLP-encoded FeeDelegatedSmartContractDeployWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractDeployWithRatio instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractDeployWithRatio string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedSmartContractExecutionWithRatio Method Descriptions
+#### FeeDelegatedSmartContractExecutionWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractExecutionWithRatio instance. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes a RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractExecutionWithRatio instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedCancelWithRatio Method Descriptions
+#### FeeDelegatedCancelWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes RLP-encoded FeeDelegatedCancelWithRatio string, a raw transaction, and returns a FeeDelegatedCancelWithRatio instance. |
+| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes a RLP-encoded FeeDelegatedCancelWithRatio string, a raw transaction, and returns a FeeDelegatedCancelWithRatio instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedCancelWithRatio string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### FeeDelegatedChainDataAnchoringWithRatio Method Descriptions
+#### FeeDelegatedChainDataAnchoringWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string, a raw transaction, and returns a FeeDelegatedChainDataAnchoringWithRatio instance. |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes a RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string, a raw transaction, and returns a FeeDelegatedChainDataAnchoringWithRatio instance. |
 | getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
 
-#### TransactionDecoder Method Descriptions
+#### TransactionDecoder
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): AbstractTransaction | Decodes RLP-encoded transaction string, a raw transaction, and returns a Transaction instance. |
+| decode(rlpEncoded: String): AbstractTransaction | Decodes a RLP-encoded transaction string, a raw transaction, and returns a Transaction instance. |
 
-#### TransactionHasher Method Descriptions
+#### TransactionHasher
 
 | Method | Description |
 | ----------- | ----------- |
@@ -567,7 +567,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 `Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
 
-#### Klay Method Descriptions
+#### Klay
 
 | Method | Description |
 | ----------- | ----------- |
@@ -666,7 +666,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 | uninstallFilter(filterId: String): Boolean | Call `klay_uninstallFilter` JSON-RPC. |
 | sha3(data: String): String | Call `klay_sha3` JSON-RPC. |
 
-#### Net Method Descriptions
+#### Net
 
 | Method | Description |
 | ----------- | ----------- |
@@ -691,7 +691,7 @@ deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions 
 The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all functions defined in [KIP-17] and provides them as class methods.
 
-#### Contract Method Descriptions
+#### Contract
 
 | Method | Description |
 | ----------- | ----------- |
@@ -703,7 +703,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | getPastEvent(event: String, callback: Function): List&#60;Object&#62; | Gets past events for this contract. |
 | getPastEvent(event: String, options: Object, callback: Function): List&#60;Object&#62; | Gets past events for this contract. |
 
-#### ContractMethod Method Descriptions
+#### ContractMethod
 
 | Method | Description |
 | ----------- | ----------- |
@@ -713,7 +713,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
 | estimateGas(arguments: List&#60;any&#62;): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. |
 
-#### ABI Method Descriptions
+#### ABI
 
 | Method | Description |
 | ----------- | ----------- |
@@ -729,7 +729,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. |
 | decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI encoded log data and indexed topic data. |
 
-#### KIP7 Method Descriptions
+#### KIP7
 
 | Method | Description |
 | ----------- | ----------- |
@@ -779,7 +779,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | renouncePauser(): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
 | renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
 
-#### KIP17 Method Descriptions
+#### KIP17
 
 | Method | Description |
 | ----------- | ----------- |
@@ -837,7 +837,7 @@ The Utils layer provides utility functions.
 
 The Utils class provides basic utility functions required when using Caver, and also converting functions based on `KlayUnit`.
 
-#### utils Method Descriptions
+#### utils
 
 | Method | Description |
 | ----------- | ----------- |
