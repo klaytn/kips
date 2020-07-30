@@ -61,12 +61,13 @@ With the common architecture, we want to achieve two goals:
 | Term        | Description |
 | ----------- | ----------- |
 | [Account](https://docs.klaytn.com/klaytn/design/accounts#overview-of-account-state-and-address) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account. |
+| Account key | A data structure representing various Klaytn account key types. Please refer to [accountkey] for more detail. |
 | Keyring | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction. |
 | [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview) | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
 | [JSON-RPC](https://www.jsonrpc.org/specification) | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format. |
-| Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy smart contract or execute smart contract that have already been deployed to Klaytn through a transaction. |
+| Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy a smart contract or execute a smart contract that has already been deployed to Klaytn through a transaction. |
 | ABI | An application binary interface (ABI) to communicate between two binary program modules. |
-| [KCT](http://kips.klaytn.com/token) | Klaytn Compatible Token (KCT) is a special type of smart contract that implements certain technical specifications. |
+| [KCT (Klaytn Compatible Token)](http://kips.klaytn.com/token) | A special type of smart contract that implements token specifications defined in [Klaytn Improvement Proposals](http://kips.klaytn.com/). |
 
 ### Overview of the Common Architecture
 
@@ -98,38 +99,38 @@ Also, the `RPC` layer includes the `Klay` class, which is responsible for rpc ca
 
 Finally, the `Utils` layer contains the `Utils` class that provides utility functions.
 
-From the next chapter, each layer group is described in detail.
+From the next chapter, each layer is described in detail.
 
 ### Account Layer Class Diagram
 
-The `Account` layer provides functionality related to updating the [AccountKey] of the Klatyn account.
+The `Account` layer provides functionality related to updating the [AccountKey] of the Klaytn account.
 
 ![account](https://user-images.githubusercontent.com/32922423/86084568-2da96580-bad8-11ea-9c46-e74ae6d8ad7a.png)
 
-`Account` is a class that contains informations needed to update the [AccountKey] of the account in the Klaytn. Inside, it has `address` and `accountKey` as member variables. The `accountKey` can be an instance of AccountKey (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` or `AccountKeyRoleBased`) depending on the key.
+`Account` is a class that contains information needed to update the [AccountKey] of the account in the Klaytn. It has `address` and `accountKey` as member variables. The `accountKey` can be an instance of (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` or `AccountKeyRoleBased`) depending on the key.
 
-Account is used in the `account` field of the AccountUpdate transaction (`AccountUpdate`, `FeeDelegatedAccountUpdate` or `FeeDelegatedAccountUpdateWithRatio`). When the AccountUpdate transaction is successfully processed in Klaytn, the [AccountKey] of the [Klaytn account] is updated with the `accountKey` defined in Account.
+An `Account` instance is injected into the `account` field of the AccountUpdate transaction types (`AccountUpdate`, `FeeDelegatedAccountUpdate` or `FeeDelegatedAccountUpdateWithRatio`). When an AccountUpdate transaction is successfully processed in Klaytn, the account key of the [Klaytn account] is updated with the `accountKey` defined in the `Account` instance.
 
-Interface for AccountKey is defined as `IAccountKey`, and each AccountKey (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` and `AccountKeyRoleBased`) implements IAccountKey.
+Interface for AccountKey is defined as `IAccountKey`, and account key classes (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` and `AccountKeyRoleBased`) implements IAccountKey.
 
-`WeightedMultiSigOptions` for AccountKeyWeightedMultiSig where threshold and weight of each key are defined are also provided as classes.
+`WeightedMultiSigOptions` is provided for `AccountKeyWeightedMultiSig` where the threshold and the weight of each key are defined.
 
 The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode function implemented in each AccountKey class.
 
-#### IAccountKey Method Descriptions
+#### IAccountKey
 
 | Method | Description |
 | ----------- | ----------- |
-| getRLPEncoding(): String | Returns RLP-encoded string of AccountKey. AccountKey classes implement `IAccountKey`, and this function must be implemented internally. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of AccountKey. AccountKey classes implement `IAccountKey`, and this function must be implemented. |
 
-#### AccountKeyLegacy Method Descriptions
+#### AccountKeyLegacy
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes RLP-encoded AccountKeyLegacy. |
-| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyLegacy. |
+| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes an RLP-encoded string of AccountKeyLegacy. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of AccountKeyLegacy. |
 
-#### AccountKeyPublic Method Descriptions
+#### AccountKeyPublic
 
 | Method | Description |
 | ----------- | ----------- |
