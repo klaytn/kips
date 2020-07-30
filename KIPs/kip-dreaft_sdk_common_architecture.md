@@ -72,7 +72,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0730All](https://user-images.githubusercontent.com/32922423/88868993-9c4f1f80-d24c-11ea-908c-5f5f5fb3032a.png)
+![0731All](https://user-images.githubusercontent.com/32922423/88896691-2adf9300-d285-11ea-9ddd-93bbe0a4837d.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -678,7 +678,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![0730Contract](https://user-images.githubusercontent.com/32922423/88868990-9a855c00-d24c-11ea-850f-0c222fe74112.png)
+![0731Contract](https://user-images.githubusercontent.com/32922423/88896680-26b37580-d285-11ea-87ec-b529a3237514.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -738,37 +738,37 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | supportInterface(interfaceid: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
 | name(): String | Return the name of the token. |
 | symbol(): String | Return the symbol of the token. |
-| decimals(): String | Return the number of decimal places the token uses. |
-| totalSupply(): String | Return the total token supply. |
-| balanceOf(account: String): String | Return the balance of the given account address. |
-| allowance(owner: String, spender: String): String | Return the amount of token that spender is allowed to withdraw from owner. |
+| decimals(): int | Return the number of decimal places the token uses. |
+| totalSupply(): BigInteger | Return the total token supply. |
+| balanceOf(account: String): BigInteger | Return the balance of the given account address. |
+| allowance(owner: String, spender: String): BigInteger | Return the amount of token that spender is allowed to withdraw from owner. |
 | isMinter(account: String): Boolean | Return true if the given account is a minter who can issue new KIP7 tokens. |
 | isPauser(account: String): Boolean | Return true if the given account is a pauser who can suspend transferring tokens. |
 | paused(): Boolean | Return true if the contract is paused, and false otherwise. |
-| approve(spender: String, amount: int): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
-| approve(spender: String, amount: int, sendParam: SendOptions): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
-| transfer(recipient: String, amount: int): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
-| transfer(recipient: String, amount: int, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
-| transferFrom(sender: String, recipient: String, amount: int): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| transferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransfer(recipient: String, amount: int): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
-| safeTransfer(recipient: String, amount: int, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
-| safeTransfer(recipient: String, amount: int, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
-| safeTransfer(recipient: String, amount: int, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
-| safeTransferFrom(sender: String, recipient: String, amount: int): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender: String, recipient: String, amount: int, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender: String, recipient: String, amount: int, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender: String, recipient: String, amount: int, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| mint(account: String, amount: int): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
-| mint(account: String, amount: int, sendParam: SendOptions): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
+| approve(spender: String, amount: BigInteger): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
+| approve(spender: String, amount: BigInteger, sendParam: SendOptions): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
+| transfer(recipient: String, amount: BigInteger): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
+| transfer(recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
+| transferFrom(sender: String, recipient: String, amount: BigInteger): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| transferFrom(sender: String, recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransfer(recipient: String, amount: BigInteger): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransfer(recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransfer(recipient: String, amount: BigInteger, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransfer(recipient: String, amount: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransferFrom(sender: String, recipient: String, amount: BigInteger): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| mint(account: String, amount: BigInteger): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
+| mint(account: String, amount: BigInteger, sendParam: SendOptions): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
 | addMinter(account: String): Object | Adds an account as a minter, who are permitted to mint tokens. |
 | addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
 | renounceMinter(): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
 | renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
-| burn(amount: int): Object | Destroys the amount of tokens in the sender's balance. |
-| burn(amount: int, sendParam: SendOptions): Object | Destroys the amount of tokens in the sender's balance. |
-| burnFrom(account: String, amount: int): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
-| burnFrom(account: String, amount: int, sendParam: SendOptions): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| burn(amount: BigInteger): Object | Destroys the amount of tokens in the sender's balance. |
+| burn(amount: BigInteger, sendParam: SendOptions): Object | Destroys the amount of tokens in the sender's balance. |
+| burnFrom(account: String, amount: BigInteger): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| burnFrom(account: String, amount: BigInteger, sendParam: SendOptions): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
 | addPauser(account: String): Object | Adds an account as a pauser that has the right to suspend the contract. |
 | addPauser(account: String, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. |
 | pause(): Object | Suspends functions related to sending tokens. |
@@ -789,36 +789,36 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | name(): String | Returns the name of the token. |
 | symbol(): String | Returns the symbol of the token. |
 | tokenURI(tokenId: String): String | Returns the URI for a given token id. |
-| totalSupply(): String | Returns the total number of tokens minted by the contract. |
-| tokenOwnerByIndex(owner: String, index: int): String | Searches the owner's token list for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
-| tokenByIndex(index: int): String | Searches the list of all tokens in this contract for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
-| balanceOf(account: String): String | Returns the balance of the given account address. |
-| ownerOf(tokenId: int): String | Returns the address of the owner of the specified token id. |
-| getApproved(tokenId: int): Boolean | Returns the address who was permitted to transfer this token, or 'zero' address, if no address was approved. |
+| totalSupply(): BigInteger | Returns the total number of tokens minted by the contract. |
+| tokenOwnerByIndex(owner: String, index: int): BigInteger | Searches the owner's token list for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
+| tokenByIndex(index: int): BigInteger | Searches the list of all tokens in this contract for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
+| balanceOf(account: String): BigInteger | Returns the balance of the given account address. |
+| ownerOf(tokenId: BigInteger): String | Returns the address of the owner of the specified token id. |
+| getApproved(tokenId: BigInteger): Boolean | Returns the address who was permitted to transfer this token, or 'zero' address, if no address was approved. |
 | isApprovedForAll(owner: String, operator: String): Boolean | Returns true if an operator is approved to transfer all tokens that belong to the owner. |
 | isMinter(account: String): Boolean | Returns true if the given account is a minter who can issue new tokens in the current contract conforming to KIP-17. |
 | paused(): Boolean | Returns true if the contract is paused, and false otherwise. |
 | isPauser(account: String): Boolean | Returns true if the given account is a pauser who can suspend transferring tokens. |
-| approve(to: String, tokenId: int): Object | Approves another address to transfer a token of the given token id. |
-| approve(to: String, tokenId: int, sendParam: SendOptions): Object | Approves another address to transfer a token of the given token id. |
+| approve(to: String, tokenId: BigInteger): Object | Approves another address to transfer a token of the given token id. |
+| approve(to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Approves another address to transfer a token of the given token id. |
 | setApprovalForAll(to: String, approved: Boolean): Object | Approves the given operator to, or disallow the given operator, to transfer all tokens of the owner. |
 | setApprovalForAll(to: String, approved: Boolean, sendParam: SendOptions): Object | Approves the given operator to, or disallow the given operator, to transfer all tokens of the owner. |
-| transferFrom(from: String, to: String, tokenId: int): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
-| transferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
-| safeTransferFrom(from: String, to: String, tokenId: int): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
-| safeTransferFrom(from: String, to: String, tokenId: int, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
-| safeTransferFrom(from: String, to: String, tokenId: int, data: Strings): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
-| safeTransferFrom(from: String, to: String, tokenId: int, data: String, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| transferFrom(from: String, to: String, tokenId: BigInteger): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
+| transferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: Strings): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
 | addMinter(account: String): Object | Adds an account as a minter, who are permitted to mint tokens. |
 | addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
 | renounceMinter(): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
 | renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
-| mint(to: String, tokenId: int): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
-| mint(to: String, tokenId: int, sendParam: SendOptions): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
-| mintWithTokenURI(to: String, tokenId: int, toeknURI: String): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
-| mintWithTokenURI(to: String, tokenId: int, toeknURI: String, sendParam: SendOptions): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
-| burn(tokenId: int): Object | Destroys the token of the given token id. |
-| burn(tokenId: int, sendParam: SendOptions): Object | Destroys the token of the given token id. |
+| mint(to: String, tokenId: BigInteger): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
+| mint(to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
+| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
+| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String, sendParam: SendOptions): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
+| burn(tokenId: BigInteger): Object | Destroys the token of the given token id. |
+| burn(tokenId: BigInteger, sendParam: SendOptions): Object | Destroys the token of the given token id. |
 | pause(): Object | Suspends functions related to sending tokens. |
 | pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. |
 | unpause(): Object | Resumes the paused contract. |
