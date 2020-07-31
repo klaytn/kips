@@ -127,7 +127,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes a RLP-encoded string of AccountKeyLegacy. |
+| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes an RLP-encoded string of AccountKeyLegacy and returns an `AccountKeyLegacy` instance. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyLegacy. |
 
 #### AccountKeyPublic
