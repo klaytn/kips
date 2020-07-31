@@ -128,17 +128,17 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes a RLP-encoded string of AccountKeyLegacy. |
-| getRLPEncoding(): String | Returns a RLP-encoded string of AccountKeyLegacy. |
+| getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyLegacy. |
 
 #### AccountKeyPublic
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyPublic | Decodes RLP-encoded AccountKeyPublic. |
-| fromXYPoint(x: String, y: String): AccountKeyPublic | Creates an instance of AccountKeyPublic from x and y points. |
-| fromPublicKey(publicKey: String): AccountKeyPublic | Creates an instance of AccountKeyPublic from public key string. |
+| decode(rlpEncodedKey: String): AccountKeyPublic | Decodes a RLP-encoded string of AccountKeyPublic and returns an `AccountKeyPublic` instance. |
+| fromXYPoint(x: String, y: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from x and y points. |
+| fromPublicKey(publicKey: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from public key string. |
 | getXYPoint(): String[] | Returns the x and y points of the public key. |
-| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyPublic. |
+| getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyPublic. |
 
 #### AccountKeyFail
 
@@ -146,7 +146,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): AccountKeyFail | Decodes RLP-encoded AccountKeyFail. |
-| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyFail. |
+| getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyFail. |
 
 #### AccountKeyWeightedMultiSig
 
