@@ -73,7 +73,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0731All](https://user-images.githubusercontent.com/32922423/88896691-2adf9300-d285-11ea-9ddd-93bbe0a4837d.png)
+![finalOverview](https://user-images.githubusercontent.com/32922423/89011411-457c3f80-d34b-11ea-947d-e3558a46b7f6.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -105,7 +105,7 @@ From the next chapter, each layer is described in detail.
 
 The `Account` layer provides functionality related to updating the [AccountKey] of the Klaytn account.
 
-![account](https://user-images.githubusercontent.com/32922423/86084568-2da96580-bad8-11ea-9c46-e74ae6d8ad7a.png)
+![finalAccount](https://user-images.githubusercontent.com/32922423/89011409-44e3a900-d34b-11ea-8dc8-bed423c4e17a.png)
 
 `Account` is a class that contains information needed to update the [AccountKey] of the account in the Klaytn. It has `address` and `accountKey` as member variables. The `accountKey` can be an instance of (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` or `AccountKeyRoleBased`) depending on the key.
 
@@ -127,16 +127,16 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes an RLP-encoded string of AccountKeyLegacy and returns an `AccountKeyLegacy` instance. |
+| decode(rlpEncodedKey: String): AccountKeyLegacy | Decodes an RLP-encoded string of AccountKeyLegacy and returns an `AccountKeyLegacy` instance. It throws an exception if the decoding is failed. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyLegacy. |
 
 #### AccountKeyPublic
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyPublic | Decodes a RLP-encoded string of AccountKeyPublic and returns an `AccountKeyPublic` instance. |
-| fromXYPoint(x: String, y: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from x and y points. |
-| fromPublicKey(publicKey: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from public key string. |
+| decode(rlpEncodedKey: String): AccountKeyPublic | Decodes an RLP-encoded string of AccountKeyPublic and returns an `AccountKeyPublic` instance. It throws an exception if the decoding is failed. |
+| fromXYPoint(x: String, y: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from x and y points. It throws an exception if the x and y points are invalid. |
+| fromPublicKey(publicKey: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from public key string. It throws an exception if the public key is invalid. |
 | getXYPoint(): String[] | Returns the x and y points of the public key. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyPublic. |
 
@@ -145,62 +145,56 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyFail | Decodes an RLP-encoded string of AccountKeyFail and returns an `AccountKeyFail` instance. |
+| decode(rlpEncodedKey: String): AccountKeyFail | Decodes an RLP-encoded string of AccountKeyFail and returns an `AccountKeyFail` instance. It throws an exception if the decoding is failed. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyFail. |
 
 #### AccountKeyWeightedMultiSig
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig | Decodes an RLP-encoded string of AccountKeyWeightedMultiSig and returns an `AccountKeyWeightedMultiSig` instance. |
-| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMultiSigOptions): AccountKeyWeightedMultiSig | Creates an `AccountKeyWeightedMultiSig` instance with public key strings in `pubArray` and the option that defines the threshold and the weight of each key in `WeightedMultiSigOptions `. |
+| decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig | Decodes an RLP-encoded string of AccountKeyWeightedMultiSig and returns an `AccountKeyWeightedMultiSig` instance. It throws an exception if the decoding is failed. |
+| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMultiSigOptions): AccountKeyWeightedMultiSig | Creates an `AccountKeyWeightedMultiSig` instance with public key strings in `pubArray` and the option that defines the threshold and the weight of each key in `WeightedMultiSigOptions `. It throws an exception if the options or public key for accountKeyWeightedMultiSig is invalid. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyWeightedMultiSig. |
-
-#### WeightedPublicKey
-
-| Method | Description |
-| ----------- | ----------- |
-| encodeToBytes(): String[] | Returns an encoded weighted public key string. |
 
 #### AccountKeyRoleBased
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyRoleBased | Decodes an RLP-encoded string of AccountKeyRoleBased. |
+| decode(rlpEncodedKey: String): AccountKeyRoleBased | Decodes an RLP-encoded string of AccountKeyRoleBased. It throws an exception if the decoding is failed. |
 | fromRoledPublicKeysAndOptions(pubArray: List<String[]>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role. |
-| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role and the option that defines threshold and weight of each key. |
+| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role and the option that defines threshold and weight of each key. It throws an exception if the public key(s) for each role or options is invalid. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyRoleBased. |
 
 #### AccountKeyDecoder
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): IAccountKey | Decodes an RLP-encoded string of any class that inherits `IAccountKey`. |
+| decode(rlpEncodedKey: String): IAccountKey | Decodes an RLP-encoded string of any class that inherits `IAccountKey`. It throws an exception if the decoding is failed. |
 
 #### Account
 
 | Method | Description |
 | ----------- | ----------- |
 | create(address: String, publicKey: String): Account | Generates an Account instance with an address and a public key string. |
-| create(address: String, pubKeys: String[]): Account | Generates an Account instance with an address and public key strings. |
+| create(address: String, pubKeys: String[]): Account | Generates an Account instance with an address and public key strings. A default option with a threshold of 1 and a weight of 1 for each key will be used. |
 | create(address: String, pubKeys: String[], options: WeightedMultiSigOptions): Account | Generates an Account instance with an address and public key strings and options that defines threshold and weight of each key. |
-| create(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance with an array of public keys defined for each role. |
+| create(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance with an array of public keys defined for each role. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
 | create(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account | Creates an Account instance with an array of public keys defined for each role and an array of options defined for each role. |
-| createFromRLPEncoding(address: String, rlpEncodedKey: String): Account | Creates an Account instance with an address and RLP-encoded string. |
-| createWithAccountKeyLegacy(address: String): Account | Creates an Account instance which has AccountKeyLegacy as an accountKey. |
-| createWithAccountKeyPublic(address: String, publicKey: String): Account | Creates an Account instance which has AccountKeyPublic as an accountKey. |
-| createWithAccountKeyFail(address: String): Account | Creates an Account instance which has AccountKeyFail as an accountKey. |
-| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[]): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. The options required for AccountKeyWeightedMultiSig use default values (threshold:1, weight of each key: 1). |
-| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[], options: WeightedMultiSigOptions): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. |
-| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. If multiple keys are used among the defined roles, options use the default value (threshold:1, weight of each key: 1). |
-| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. |
+| createFromRLPEncoding(address: String, rlpEncodedKey: String): Account | Creates an Account instance with an address and RLP-encoded string. It throws an exception if the RLP-encoded string is invalid. |
+| createWithAccountKeyLegacy(address: String): Account | Creates an Account instance which has AccountKeyLegacy as an accountKey. It throws an exception if the address string is invalid. |
+| createWithAccountKeyPublic(address: String, publicKey: String): Account | Creates an Account instance which has AccountKeyPublic as an accountKey. It throws an exception if the address string or public key string is invalid. |
+| createWithAccountKeyFail(address: String): Account | Creates an Account instance which has AccountKeyFail as an accountKey. It throws an exception if the address string is invalid. |
+| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[]): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. The options required for AccountKeyWeightedMultiSig use default values (threshold:1, weight of each key: 1). It throws an exception if the address string or public key strings are invalid. |
+| createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[], options: WeightedMultiSigOptions): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. If multiple keys are used among the defined roles, options use the default value (threshold:1, weight of each key: 1). It throws an exception if the address string or public key strings are invalid. |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
 | getRLPEncodingAccountKey(): String | Return RLP-encoded string of AccountKey in Account instance. |
 
 ### Wallet Layer Class Diagram
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
 
-![0727Wallet](https://user-images.githubusercontent.com/32922423/88506774-adfab200-d015-11ea-8bda-8a16580d92de.png)
+![finalWallet](https://user-images.githubusercontent.com/32922423/89011391-3eedc800-d34b-11ea-999e-da5a059ca2bf.png)
 
 In the Wallet layer, an abstract class called `AbstractKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` are implemented by extending AbstractKeyring. AbstractKeyring defines abstract methods that Keyring classes must implement.
 
@@ -260,7 +254,8 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | ----------- | ----------- |
 | getPublicKey(): List&#60;String&#62; | Returns public key strings. |
 | getKeyByRole(role): List&#60;PrivateKey&#62; | Returns keys by role. SingleKeyring always returns same keys. |
-| toAccount(options: WeightedMultiSigOptions): Account | Returns an instance of Account. |
+| toAccount(): Account | Returns an instance of Account. A default option with a threshold of 1 and a weight of 1 for each key will be used. |
+| toAccount(options: WeightedMultiSigOptions): Account | Returns an instance of Account. It throws an exception if the options is invalid. |
 
 #### RoleBasedKeyring
 
@@ -268,7 +263,8 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | ----------- | ----------- |
 | getPublicKey(): List&#60;List&#60;String&#62;&#62; | Returns public key strings by roles. |
 | getKeyByRole(role): List&#60;PrivateKey&#62; | Returns keys by role. |
-| toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an instance of Account. |
+| toAccount(): Account | Returns an instance of Account. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
+| toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an instance of Account. It throws an exception if the options is invalid. |
 
 #### KeyringFactory
 
@@ -282,45 +278,44 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | generateMultipleKey(num: int, entropy: String): List&#60;String&#62; | Generates private key strings. |
 | generateRoleBasedKey(numArr: List&#60;int&#62;): List&#60;List&#60;String&#62;&#62; | Generates a 2D array of which each array element contains keys defined for each role. |
 | generateRoleBasedKey(numArr: List&#60;int&#62;, entropy: String): List&#60;List&#60;String&#62;&#62; | Generates a 2D array of which each array element contains keys defined for each role. |
-| create(address: String, key: String): SingleKeyring | Creates a SingleKeyring instance with an address and a private key string. |
-| create(address: String, keys: String[]): MultipleKeyring | Creates a MultipleKeyring instance with an address and private key strings. |
-| create(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance with an address and private key strings by roles. |
-| createFromPrivateKey(key: String): SingleKeyring | Creates a SingleKeyring instance from a private key string or a KlaytnWalletKey. |
-| createFromKlaytnWalletKey(klaytnWalletKey: String): SingleKeyring | Creates a SingleKeyring instance from a KlaytnWalletKey string. |
-| createWithSingleKey(address: String, key: String): SingleKeyring | Creates a SingleKeyring instance from an address and a private key string.
- |
-| createWithMultipleKey(address: String, keys: String[]): MultipleKeyring | Creates a MultipleKeyring instance from an address and private key strings. |
-| createWithRoleBasedKey(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance from an address and a 2D array of which each array element contains keys defined for each role. |
-| decrypt(keystore: Object, password: String): Keyring | Decrypts a keystore v3 or v4 JSON and returns the decrypted Keyring instance. |
+| create(address: String, key: String): SingleKeyring | Creates a SingleKeyring instance with an address and a private key string. It throws an exception if the address string or private key string is invalid. |
+| create(address: String, keys: String[]): MultipleKeyring | Creates a MultipleKeyring instance with an address and private key strings. It throws an exception if the address string or private key strings are invalid. |
+| create(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance with an address and private key strings by roles. It throws an exception if the address string or private key strings are invalid. |
+| createFromPrivateKey(key: String): SingleKeyring | Creates a SingleKeyring instance from a private key string or a KlaytnWalletKey. It throws an exception if the private key string is invalid. |
+| createFromKlaytnWalletKey(klaytnWalletKey: String): SingleKeyring | Creates a SingleKeyring instance from a KlaytnWalletKey string. It throws an exception if the KlaytnWalletKey is invalid. |
+| createWithSingleKey(address: String, key: String): SingleKeyring | Creates a SingleKeyring instance from an address and a private key string. It throws an exception if the address string or private key string is invalid. |
+| createWithMultipleKey(address: String, keys: String[]): MultipleKeyring | Creates a MultipleKeyring instance from an address and private key strings. It throws an exception if the address string or private key strings are invalid. |
+| createWithRoleBasedKey(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance from an address and a 2D array of which each array element contains keys defined for each role. It throws an exception if the address string or private key strings are invalid. |
+| decrypt(keystore: Object, password: String): Keyring | Decrypts a keystore v3 or v4 JSON and returns the decrypted Keyring instance. It throws an exception if the decrypting is failed. |
 
 #### KeyringContainer
 
 | Method | Description |
 | ----------- | ----------- |
 | generate(num: int, entropy: String): List&#60;String&#62; | Generates instances of SingleKeyring in the keyringContainer with randomly generated private keys. |
-| add(keyring: AbstractKeyring): AbstractKeyring | Adds an instance of keyring to the keyringContainer. |
-| newKeyring(address: String, privateKeyString: String): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the caver.wallet. If key is a private key string, a SingleKeyring instance that uses a single private key is created. The keyring created is added to caver.wallet. |
-| newKeyring(address: String, privateKeyArray: List&#60;String&#62;): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the caver.wallet. If key is an array containing private key strings, a MultipleKeyring instance that use multiple private keys is created. The keyring created is added to caver.wallet. |
-| newKeyring(address: String, roleBasedPrivateKeyArray: List&#60;List&#60;String&#62;&#62;): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the caver.wallet. If key is a 2D array of which each element contains the private key(s) to be used for each role, a RoleBasedKeyring instance is created. The keyring created is added to caver.wallet. |
-| updateKeyring(keyring: ): AbstractKeyring | Updates the keyring inside the keyringContainer. |
+| add(keyring: AbstractKeyring): AbstractKeyring | Adds an instance of keyring to the keyringContainer. It throws an exception if the newly given keyring has the same address with one of the keyrings that already exist in `caver.wallet`. |
+| newKeyring(address: String, privateKeyString: String): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the `caver.wallet`. If key is a private key string, a SingleKeyring instance that uses a single private key is created. The keyring created is added to `caver.wallet`. It throws an exception if the address string or private key string is invalid. |
+| newKeyring(address: String, privateKeyArray: List&#60;String&#62;): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the `caver.wallet`. If key is an array containing private key strings, a MultipleKeyring instance that use multiple private keys is created. The keyring created is added to `caver.wallet`. It throws an exception if the address string or private key strings are invalid. |
+| newKeyring(address: String, roleBasedPrivateKeyArray: List&#60;List&#60;String&#62;&#62;): AbstractKeyring | Creates a keyring instance with given parameters and adds it to the `caver.wallet`. If key is a 2D array of which each element contains the private key(s) to be used for each role, a RoleBasedKeyring instance is created. The keyring created is added to `caver.wallet`. It throws an exception if the address string or private key strings are invalid. |
+| updateKeyring(keyring: AbstractKeyring): AbstractKeyring | Updates the keyring inside the keyringContainer. It throws an exception if the matching keyring is not found. |
 | getKeyring(address: String): AbstractKeyring | Returns the keyring instance corresponding to the address. |
-| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. |
-| sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. |
-| sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
-| sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. |
-| signMessage(address: String, data: String, role: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring stored in keyringContainer. This method will use all the private keys. |
-| signMessage(address: String, data: String, role: int, index: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring stored in keyringContainer. This method uses the private key at the index th in the keyring.  |
+| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring in keyringContainer. This method will use all the private keys. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring in keyringContainer. This method uses the private key at the index th in the keyring. When obtaining the transaction hash, the function transmitted by the user as a parameter is used. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| signMessage(address: String, data: String, role: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring stored in keyringContainer. This method will use all the private keys. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
+| signMessage(address: String, data: String, role: int, index: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring stored in keyringContainer. This method uses the private key at the index th in the keyring. It throws an exception if the keyring to be used for signing cannot be found in `caver.wallet`. |
 | remove(address: String): Boolean | Deletes the keyring from keyringContainer whose address matches the address of the given keyring. |
 
 ### Transaction Layer Class Diagram
 
 The `Transaction` layer provides transaction-related functions.
 
-![0727Transaction](https://user-images.githubusercontent.com/32922423/88506775-ae934880-d015-11ea-82e4-91c87e3482a8.png)
+![finalTransaction](https://user-images.githubusercontent.com/32922423/89011399-4319e580-d34b-11ea-8021-4b9358b98bcb.png)
 
 `AbstractTransaction`, `AbstractFeeDelegatedTransaction` and `AbstractFeeDelegatedWithRatioTrasnaction` abstract classes are defined in the Transaction layer.
 
@@ -344,13 +339,13 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | sign(keyring: AbstractKeyring, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a transaction sender with the a private key in the keyring and appends signatures in the transaction object. The hasher function will be used when get the hash of transaction. |
 | appendSignatures(sig: SignatureData): void | Appends signature to the transaction. |
 | appendSignatures(sig: List&#60;SignatureData&#62;): void | Appends signatures to the transaction. |
-| combineSignedRawTransactions(rlpEncoded: List&#60;String&#62;): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns a RLP-encoded transaction string which includes all signs. |
+| combineSignedRawTransactions(rlpEncoded: List&#60;String&#62;): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns an RLP-encoded transaction string which includes all signs. |
 | getTransactionHash(): String | Returns a transactionHash. |
 | getSenderTxHash(): String | Returns a senderTxHash of transaction. |
-| getRawTransaction(): String | Returns a rawTransaction string (a RLP-encoded transaction string). This function is same with transaction.getRLPEncoding. |
-| getRLPEncodingForSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction sender. |
+| getRawTransaction(): String | Returns a rawTransaction string (an RLP-encoded transaction string). This function is same with transaction.getRLPEncoding. |
+| getRLPEncodingForSignature(): String | Returns an RLP-encoded transaction string for making the signature of the transaction sender. |
 | fillTransaction(): void | Fills in the optional variables in transaction. |
-| getRLPEncoding(): String | Returns a RLP-encoded transaction string. |
+| getRLPEncoding(): String | Returns an RLP-encoded transaction string. |
 | getCommonRLPEncodingForSignautre(): String | Encodes and returns the values needed to sign each transaction. For example, in the case of ValueTransfer, if SigRLP is `encode([encode([type, nonce, gasPrice, gas, to, value, from]), chainid, 0, 0])`, among them, the RLP-encoded values of the transaction required for signing is `encoded([type, nonce, gasPrice, gas, to, value, from])`. This function is used in getRLPEncodingForSignature or getRLPEncodingForFeePayerSignature function. |
 
 #### AbstractFeeDelegatedTransaction
@@ -365,192 +360,192 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | signAsFeePayer(keyring: AbstractKeyring, index: int, hasher: Function): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with a private key in the keyring and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. The hasher function will be used when get the hash of transaction. |
 | appendFeePayerSignatures(sig: SignatureData): void | Appends feePayerSignatures to the transaction. |
 | appendFeePayerSignatures(sig: List&#60;SignatureData&#62;): void | Appends feePayerSignatures to the tr  ansaction. |
-| combineSignedRawTransactions(rlpEncoded: String): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns a RLP-encoded transaction string which includes all signs. |
-| getRLPEncodingForFeePayerSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction fee payer. |
+| combineSignedRawTransactions(rlpEncoded: String): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns an RLP-encoded transaction string which includes all signs. |
+| getRLPEncodingForFeePayerSignature(): String | Returns an RLP-encoded transaction string for making the signature of the transaction fee payer. |
 
 #### LegacyTransaction
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): LegacyTransaction | Decodes a RLP-encoded LegacyTransaction string, a raw transaction, and returns a LegacyTransaction instance. |
-| appendSignatures(sig: SignatureData): void | Appends signature to the transaction. LegacyTransaction can only have one signature. |
-| appendSignatures(sig: List&#60;SignatureData&#62;): void | Appends signature to the transaction. LegacyTransaction can only have one signature. |
-| getRLPEncoding(): String | Returns a RLP-encoded LegacyTransaction string. |
-| getRLPEncodingForSignature(): String | Returns a RLP-encoded transaction string for making the signature of the transaction sender. Since the method of obtaining RLP-encoding for signature of LegacyTransaction is different from other transaction types, getRLPEncodingForSignature should be overrided. |
+| decode(rlpEncoded: String): LegacyTransaction | Decodes an RLP-encoded LegacyTransaction string, a raw transaction, and returns a LegacyTransaction instance. It throws an exception if the decoding is failed. |
+| appendSignatures(sig: SignatureData): void | Appends signature to the transaction. LegacyTransaction can only have one signature. It throws an exception if multiple signatures are assigned to a `signatures`. |
+| appendSignatures(sig: List&#60;SignatureData&#62;): void | Appends signature to the transaction. LegacyTransaction can only have one signature. It throws an exception if multiple signatures are assigned to a `signatures`. |
+| getRLPEncoding(): String | Returns an RLP-encoded LegacyTransaction string. It throws an exception if the variables required for encoding are not defined. |
+| getRLPEncodingForSignature(): String | Returns an RLP-encoded transaction string for making the signature of the transaction sender. Since the method of obtaining RLP-encoding for signature of LegacyTransaction is different from other transaction types, getRLPEncodingForSignature should be overrided. It throws an exception if the variables required for encoding are not defined. |
 
 #### ValueTransfer
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): ValueTransfer | Decodes a RLP-encoded ValueTransfer string, a raw transaction, and returns a ValueTransfer instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded ValueTransfer string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): ValueTransfer | Decodes an RLP-encoded ValueTransfer string, a raw transaction, and returns a ValueTransfer instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded ValueTransfer string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### ValueTransferMemo
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): ValueTransferMemo | Decodes a RLP-encoded ValueTransferMemo string, a raw transaction, and returns a ValueTransferMemo instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded ValueTransferMemo string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): ValueTransferMemo | Decodes an RLP-encoded ValueTransferMemo string, a raw transaction, and returns a ValueTransferMemo instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded ValueTransferMemo string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### AccountUpdate
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): AccountUpdate | Decodes a RLP-encoded AccountUpdate string, a raw transaction, and returns a AccountUpdate instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded AccountUpdate string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): AccountUpdate | Decodes an RLP-encoded AccountUpdate string, a raw transaction, and returns a AccountUpdate instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded AccountUpdate string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### SmartContractDeploy
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): SmartContractDeploy | Decodes a RLP-encoded SmartContractDeploy string, a raw transaction, and returns a SmartContractDeploy instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded SmartContractDeploy string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): SmartContractDeploy | Decodes an RLP-encoded SmartContractDeploy string, a raw transaction, and returns a SmartContractDeploy instance. |
+| getRLPEncoding(): String | Returns an RLP-encoded SmartContractDeploy string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### SmartContractExecution
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): SmartContractExecution | Decodes a RLP-encoded SmartContractExecution string, a raw transaction, and returns a SmartContractExecution instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded SmartContractExecution string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): SmartContractExecution | Decodes an RLP-encoded SmartContractExecution string, a raw transaction, and returns a SmartContractExecution instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded SmartContractExecution string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### Cancel
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): Cancel | Decodes a RLP-encoded Cancel string, a raw transaction, and returns a Cancel instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded Cancel string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): Cancel | Decodes an RLP-encoded Cancel string, a raw transaction, and returns a Cancel instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded Cancel string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### ChainDataAnchoring
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): ChainDataAnchoring | Decodes a RLP-encoded ChainDataAnchoring string, a raw transaction, and returns a ChainDataAnchoring instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded ChainDataAnchoring string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): ChainDataAnchoring | Decodes an RLP-encoded ChainDataAnchoring string, a raw transaction, and returns a ChainDataAnchoring instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded ChainDataAnchoring string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransfer
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransfer | Decodes a RLP-encoded FeeDelegatedValueTransfer string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedValueTransfer string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransfer | Decodes an RLP-encoded FeeDelegatedValueTransfer string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedValueTransfer string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransferMemo
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes a RLP-encoded FeeDelegatedValueTransferMemo string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. |
-| getRLPEncoding(): Stirng | Returns a RLP-encoded FeeDelegatedValueTransferMemo string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes an RLP-encoded FeeDelegatedValueTransferMemo string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): Stirng | Returns an RLP-encoded FeeDelegatedValueTransferMemo string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedAccountUpdate
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes a RLP-encoded FeeDelegatedAccountUpdate string, a raw transaction, and returns a FeeDelegatedAccountUpdate instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedAccountUpdate string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes an RLP-encoded FeeDelegatedAccountUpdate string, a raw transaction, and returns a FeeDelegatedAccountUpdate instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedAccountUpdate string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractDeploy
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes a RLP-encoded FeeDelegatedSmartContractDeploy string, a raw transaction, and returns a FeeDelegatedSmartContractDeploy instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractDeploy string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes an RLP-encoded FeeDelegatedSmartContractDeploy string, a raw transaction, and returns a FeeDelegatedSmartContractDeploy instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractDeploy string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractExecution
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes a RLP-encoded FeeDelegatedSmartContractExecution string, a raw transaction, and returns a FeeDelegatedSmartContractExecution instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractExecution string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes an RLP-encoded FeeDelegatedSmartContractExecution string, a raw transaction, and returns a FeeDelegatedSmartContractExecution instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractExecution string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedCancel
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancel | Decodes a RLP-encoded FeeDelegatedCancel string, a raw transaction, and returns a FeeDelegatedCancel instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedCancel string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedCancel | Decodes an RLP-encoded FeeDelegatedCancel string, a raw transaction, and returns a FeeDelegatedCancel instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedCancel string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedChainDataAnchoring
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes a RLP-encoded FeeDelegatedChainDataAnchoring string, a raw transaction, and returns a FeeDelegatedChainDataAnchoring instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedChainDataAnchoring string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes an RLP-encoded FeeDelegatedChainDataAnchoring string, a raw transaction, and returns a FeeDelegatedChainDataAnchoring instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedChainDataAnchoring string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransferWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes a RLP-encoded FeeDelegatedValueTransferWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferWithRatio instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedValueTransferWithRatio string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes an RLP-encoded FeeDelegatedValueTransferWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferWithRatio instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedValueTransferWithRatio string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransferMemoWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes a RLP-encoded FeeDelegatedValueTransferMemoWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferMemoWithRatio instance. |
-| getRLPEncoding(): Stirng | Returns a RLP-encoded FeeDelegatedValueTransferMemoWithRatio string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes an RLP-encoded FeeDelegatedValueTransferMemoWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferMemoWithRatio instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): Stirng | Returns an RLP-encoded FeeDelegatedValueTransferMemoWithRatio string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedAccountUpdateWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes a RLP-encoded FeeDelegatedAccountUpdateWithRatio string, a raw transaction, and returns a FeeDelegatedAccountUpdateWithRatio instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedAccountUpdateWithRatio string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes an RLP-encoded FeeDelegatedAccountUpdateWithRatio string, a raw transaction, and returns a FeeDelegatedAccountUpdateWithRatio instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedAccountUpdateWithRatio string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractDeployWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes a RLP-encoded FeeDelegatedSmartContractDeployWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractDeployWithRatio instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractDeployWithRatio string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes an RLP-encoded FeeDelegatedSmartContractDeployWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractDeployWithRatio instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractDeployWithRatio string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractExecutionWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes a RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractExecutionWithRatio instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes an RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractExecutionWithRatio instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedCancelWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes a RLP-encoded FeeDelegatedCancelWithRatio string, a raw transaction, and returns a FeeDelegatedCancelWithRatio instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedCancelWithRatio string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes an RLP-encoded FeeDelegatedCancelWithRatio string, a raw transaction, and returns a FeeDelegatedCancelWithRatio instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedCancelWithRatio string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedChainDataAnchoringWithRatio
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes a RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string, a raw transaction, and returns a FeeDelegatedChainDataAnchoringWithRatio instance. |
-| getRLPEncoding(): String | Returns a RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes an RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string, a raw transaction, and returns a FeeDelegatedChainDataAnchoringWithRatio instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### TransactionDecoder
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): AbstractTransaction | Decodes a RLP-encoded transaction string, a raw transaction, and returns a Transaction instance. |
+| decode(rlpEncoded: String): AbstractTransaction | Decodes an RLP-encoded transaction string, a raw transaction, and returns a Transaction instance. It throws an exception if the decoding is failed. |
 
 #### TransactionHasher
 
@@ -679,7 +674,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![0731Contract](https://user-images.githubusercontent.com/32922423/88896680-26b37580-d285-11ea-87ec-b529a3237514.png)
+![finalContractContract](https://user-images.githubusercontent.com/32922423/89011406-444b1280-d34b-11ea-989e-44c1605eda7b.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -697,21 +692,21 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | ----------- | ----------- |
 | deploy(deployParam: ContractDeployParams, options: SendOptions): Contract | Deploys the contract to the Klaytn. |
 | once(event: String, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
-| once(event: String, options: Object, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
+| once(event: String, options: Object, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. The options object should define `filter` or `topics`. |
 | getPastEvent(event: String): List&#60;Object&#62; | Gets past events for this contract. |
-| getPastEvent(event: String, options: Object): List&#60;Object&#62; | Gets past events for this contract. |
+| getPastEvent(event: String, options: Object): List&#60;Object&#62; | Gets past events for this contract. The options object can define the filter options needed when calling [klay_logs]. See [klay_logs] for more details about options. |
 | getPastEvent(event: String, callback: Function): List&#60;Object&#62; | Gets past events for this contract. |
-| getPastEvent(event: String, options: Object, callback: Function): List&#60;Object&#62; | Gets past events for this contract. |
+| getPastEvent(event: String, options: Object, callback: Function): List&#60;Object&#62; | Gets past events for this contract. The options object can define the filter options needed when calling [klay_logs]. See [klay_logs] for more details about options. |
 
 #### ContractMethod
 
 | Method | Description |
 | ----------- | ----------- |
-| call(argumetns: List&#60;any&#62;, callObject: Object): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. |
-| send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send by using default sendOptions defined by user in Contract. |
+| call(argumetns: List&#60;any&#62;, callObject: Object): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. See [klay_call] for more details about callObject. |
+| send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send a transaction using the value defined in defaultSendOptions of the Contract. It thorws an exception if the value required for transaction (i.e `from` or `gas`) is not defined in defaultSendOptions. |
 | send(arguments: List&#60;any&#62;, options: SendOptions): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
 | encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
-| estimateGas(arguments: List&#60;any&#62;): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. |
+| estimateGas(arguments: List&#60;any&#62;, callObject: Object): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. See [klay_call] for more details about callObject.  |
 
 #### ABI
 
@@ -721,19 +716,19 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | encodeFunctionSignature(functionString: String): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name including parameter types. |
 | encodeEventSignature(event: ContractEvent): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
 | encodeEventSignature(eventString: String): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
-| encodeParameter(type: String, param: any): String | Encodes a parameter based on its type to its ABI representation. |
-| encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#62;): String | Encodes parameters based on its type to its ABI representation. |
-| encodeFunctionCall(method: ContractMethod, params: List&#60;any&#62;): String | Encodes a function call using its JSON interface object and given parameters. |
-| decodeParameter(type: String, encoded: String): String | Decodes an ABI encoded parameter. |
-| decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. |
-| decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. |
-| decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI encoded log data and indexed topic data. |
+| encodeParameter(type: String, param: any): String | Encodes a parameter based on its type to its ABI representation. It throws an exception if the param is invalid. |
+| encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#62;): String | Encodes parameters based on its type to its ABI representation. It throws an exception if the params are invalid. |
+| encodeFunctionCall(method: ContractMethod, params: List&#60;any&#62;): String | Encodes a function call using its JSON interface object and given parameters. It throws an exception if the params are invalid. |
+| decodeParameter(type: String, encoded: String): String | Decodes an ABI encoded parameter. It throws an exception if the decoding is failed. |
+| decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. It throws an exception if the decoding is failed. |
+| decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. It throws an exception if the decoding is failed. |
+| decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI encoded log data and indexed topic data. It throws an exception if the decoding is failed. |
 
 #### KIP7
 
 | Method | Description |
 | ----------- | ----------- |
-| deploy(tokenInfo: KIP7DeployParams, deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn blockchain. |
+| deploy(tokenInfo: KIP7DeployParams, deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn. |
 | clone(): KIP7 | Clones the current KIP7 instance. |
 | clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and set address of contract to tokenAddress parameter. |
 | supportInterface(interfaceid: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
@@ -783,7 +778,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 | Method | Description |
 | ----------- | ----------- |
-| deploy(tokenInfo: KIP17DeployParams, deployer: String): KIP17 | Deploys the KIP-17 token contract to the Klaytn blockchain. |
+| deploy(tokenInfo: KIP17DeployParams, deployer: String): KIP17 | Deploys the KIP-17 token contract to the Klaytn. |
 | clone(): KIP17 | Clones the current KIP17 instance. |
 | clone(tokenAddress: String): KIP17 | Clones the current KIP17 instance and set address of contract to tokenAddress parameter. |
 | supportInterface(interfaceId: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
@@ -791,8 +786,8 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | symbol(): String | Returns the symbol of the token. |
 | tokenURI(tokenId: String): String | Returns the URI for a given token id. |
 | totalSupply(): BigInteger | Returns the total number of tokens minted by the contract. |
-| tokenOwnerByIndex(owner: String, index: int): BigInteger | Searches the owner's token list for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
-| tokenByIndex(index: int): BigInteger | Searches the list of all tokens in this contract for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
+| tokenOwnerByIndex(owner: String, index: BigInteger): BigInteger | Searches the owner's token list for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
+| tokenByIndex(index: BigInteger): BigInteger | Searches the list of all tokens in this contract for the given index, and returns the token id of a token positioned at the matched index in the list if there is a match. |
 | balanceOf(account: String): BigInteger | Returns the balance of the given account address. |
 | ownerOf(tokenId: BigInteger): String | Returns the address of the owner of the specified token id. |
 | getApproved(tokenId: BigInteger): Boolean | Returns the address who was permitted to transfer this token, or 'zero' address, if no address was approved. |
@@ -808,7 +803,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | transferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
 | safeTransferFrom(from: String, to: String, tokenId: BigInteger): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
 | safeTransferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
-| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: Strings): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: String): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
 | safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
 | addMinter(account: String): Object | Adds an account as a minter, who are permitted to mint tokens. |
 | addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
@@ -926,3 +921,5 @@ Copyright and related rights waived via [CC0](https://creativecommons.org/public
 [net]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
 [node api of net namespace]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
 [json-rpc apis]: https://docs.klaytn.com/bapp/json-rpc/api-references
+[klay_logs]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay/filter#klay_getlogs
+[klay_call]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay/transaction#klay_call
