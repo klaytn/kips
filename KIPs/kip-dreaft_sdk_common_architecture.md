@@ -60,7 +60,7 @@ With the common architecture, we want to achieve two goals:
 
 | Term        | Description |
 | ----------- | ----------- |
-| [Account](https://docs.klaytn.com/klaytn/design/accounts#overview-of-account-state-and-address) | A data structure containing information about a person's balance or a smart contract. Klaytn provides the function to separate the address of the account from the key pair used in the account, so the account stores the [AccountKey] used in the account. |
+| Account | A data structure containing information like balance, nonce, public key(s), etc. Note that the public key(s) of the account can be changed in Klaytn because the public key(s) and the account address are decoupled. Please refer to [klaytn account] for more detail.  |
 | Account key | A data structure representing various Klaytn account key types. Please refer to [accountkey] for more detail. |
 | Keyring | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction. |
 | [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview) | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
