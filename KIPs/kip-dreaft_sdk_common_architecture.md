@@ -121,7 +121,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 | Method | Description |
 | ----------- | ----------- |
-| getRLPEncoding(): String | Returns a RLP-encoded string of AccountKey. AccountKey classes implement `IAccountKey`, and this function must be implemented. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of AccountKey. AccountKey* classes below inherit `IAccountKey`, and this function must be implemented. |
 
 #### AccountKeyLegacy
 
@@ -145,16 +145,16 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyFail | Decodes RLP-encoded AccountKeyFail. |
+| decode(rlpEncodedKey: String): AccountKeyFail | Decodes an RLP-encoded string of AccountKeyFail and returns an `AccountKeyFail` instance. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyFail. |
 
 #### AccountKeyWeightedMultiSig
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig | Decodes RLP-encoded AccountKeyWeightedMultiSig. |
-| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMutliSigOptions): AccountKeyWeightedMultiSig | Creates an instance of AccountKeyWeightedMultiSig with public key strings and option that defines threshold and weight of each key. |
-| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyWeightedMultiSig. |
+| decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig | Decodes an RLP-encoded string of AccountKeyWeightedMultiSig and returns an `AccountKeyWeightedMultiSig` instance. |
+| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMultiSigOptions): AccountKeyWeightedMultiSig | Creates an `AccountKeyWeightedMultiSig` instance with public key strings in `pubArray` and the option that defines the threshold and the weight of each key in `WeightedMultiSigOptions `. |
+| getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyWeightedMultiSig. |
 
 #### WeightedPublicKey
 
@@ -166,16 +166,16 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): AccountKeyRoleBased | Decodes RLP-encoded AccountKeyRoleBased. |
-| fromRoledPublicKeysAndOptions(pubArray: List<String[]>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key string for each role. |
-| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key string for each role and option that defines threshold and weight of each key. |
-| getRLPEncoding(): String | Returns RLP-encoded string of AccountKeyRoleBased. |
+| decode(rlpEncodedKey: String): AccountKeyRoleBased | Decodes an RLP-encoded string of AccountKeyRoleBased. |
+| fromRoledPublicKeysAndOptions(pubArray: List<String[]>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role. |
+| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role and the option that defines threshold and weight of each key. |
+| getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyRoleBased. |
 
 #### AccountKeyDecoder
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): IAccountKey | Decodes RLP-encoded AccountKey. |
+| decode(rlpEncodedKey: String): IAccountKey | Decodes an RLP-encoded string of any class that inherits `IAccountKey`. |
 
 #### Account
 
