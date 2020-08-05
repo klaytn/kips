@@ -73,7 +73,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![finalOverview](https://user-images.githubusercontent.com/32922423/89011411-457c3f80-d34b-11ea-947d-e3558a46b7f6.png)
+![0805All](https://user-images.githubusercontent.com/32922423/89377494-e6447380-d72c-11ea-84f1-1cdc9894d5fa.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -674,7 +674,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![finalContractContract](https://user-images.githubusercontent.com/32922423/89011406-444b1280-d34b-11ea-989e-44c1605eda7b.png)
+![0805Contract](https://user-images.githubusercontent.com/32922423/89377502-ecd2eb00-d72c-11ea-84b2-d219bceb36d2.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -723,7 +723,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. It throws an exception if the decoding is failed. |
 | decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. It throws an exception if the decoding is failed. |
 | decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI encoded log data and indexed topic data. It throws an exception if the decoding is failed. |
-
+| encodeContractDeploy(constructor: ContractMethod, byteCode: String, params: List&#60;any&#62;): String | Encodes smart contract bytecode with the arguments of the constructor. |
 #### KIP7
 
 | Method | Description |
