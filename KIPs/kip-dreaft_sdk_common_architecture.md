@@ -73,7 +73,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0805All](https://user-images.githubusercontent.com/32922423/89377494-e6447380-d72c-11ea-84f1-1cdc9894d5fa.png)
+![0807All](https://user-images.githubusercontent.com/32922423/89621951-31958800-d8cd-11ea-9efa-92231fad7d7d.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -558,7 +558,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 The `RPC` layer provides the functions to use the Node API. The `RPC` is a class that manages the Node API for each namespace. Node APIs currently provided by Caver are [klay] and [net].
 
-![0727RPC](https://user-images.githubusercontent.com/32922423/88506771-ac30ee80-d015-11ea-8d33-b4be4835bef6.png)
+![0807RPC](https://user-images.githubusercontent.com/32922423/89621961-3823ff80-d8cd-11ea-9cdf-451fa19554a5.png)
 
 `Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
 
@@ -624,11 +624,7 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 | call(callObject: Object, blockNumber: int): String | Call `klay_call` JSON-RPC. |
 | call(callObject: Object, blockTag: String): String | Call `klay_call` JSON-RPC. |
 | estimateGas(callObject: Object): String | Call `klay_estimateGas` JSON-RPC. |
-| estimateGas(callObject: Object, blockNumber: int): String | Call `klay_estimateGas` JSON-RPC. |
-| estimateGas(callObject: Object, blockTag: String): String | Call `klay_estimateGas` JSON-RPC. |
 | estimateComputationCost(callObject: Object): String | Call `klay_estimateComputationCost` JSON-RPC. |
-| estimateComputationCost(callObject: Object, blockNumber: int): String | Call `klay_estimateComputationCost` JSON-RPC. |
-| estimateComputationCost(callObject: Object, blockTag: String): String | Call `klay_estimateComputationCost` JSON-RPC. |
 | getTransactionByBlockHashAndIndex(hash: String, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
 | getTransactionByBlockNumberAndIndex(blockNumber: int, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
 | getTransactionByBlockNumberAndIndex(blockTag: String, index: int): Object | Call `klay_getTransactionByBlockHashAndIndex` JSON-RPC. |
