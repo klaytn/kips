@@ -153,7 +153,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig | Decodes an RLP-encoded string of AccountKeyWeightedMultiSig and returns an `AccountKeyWeightedMultiSig` instance. It throws an exception if the decoding is failed. |
-| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMultiSigOptions): AccountKeyWeightedMultiSig | Creates an `AccountKeyWeightedMultiSig` instance with public key strings in `pubArray` and the option that defines the threshold and the weight of each key in `WeightedMultiSigOptions `. It throws an exception if the options or public key for accountKeyWeightedMultiSig is invalid. |
+| fromPublicKeysAndOptions(pubArray: String[], options: WeightedMultiSigOptions): AccountKeyWeightedMultiSig | Creates an `AccountKeyWeightedMultiSig` instance with public key strings in `pubArray` and the options defining the threshold and the weight of each key in `WeightedMultiSigOptions `. It throws an exception if the options or public keys for accountKeyWeightedMultiSig are invalid. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyWeightedMultiSig. |
 
 #### AccountKeyRoleBased
