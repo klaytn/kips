@@ -129,7 +129,7 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| getRLPEncoding(): String | Returns an RLP-encoded string of AccountKey. AccountKey* classes below implements `IAccountKey` interface, and this function must be implemented. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of AccountKey. AccountKey classes below implements `IAccountKey` interface, and this function must be implemented. |
 
 #### AccountKeyLegacy
 
