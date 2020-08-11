@@ -1250,7 +1250,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | Method | Description |
 | ----------- | ----------- |
 | call(argumetns: List&#60;any&#62;, callObject: Object): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. See [klay_call] for more details about callObject. |
-| send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send a transaction using the value defined in defaultSendOptions of the Contract. It thorws an exception if the value required for transaction (i.e `from` or `gas`) is not defined in defaultSendOptions. |
+| send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send a transaction using the value defined in defaultSendOptions of the Contract. It throws an exception if the value required for transaction (i.e `from` or `gas`) is not defined in defaultSendOptions. |
 | send(arguments: List&#60;any&#62;, options: SendOptions): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
 | encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
 | estimateGas(arguments: List&#60;any&#62;, callObject: Object): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. See [klay_call] for more details about callObject. |
