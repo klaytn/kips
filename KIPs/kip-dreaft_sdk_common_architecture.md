@@ -73,7 +73,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0805All](https://user-images.githubusercontent.com/32922423/89377494-e6447380-d72c-11ea-84f1-1cdc9894d5fa.png)
+![0811All](https://user-images.githubusercontent.com/32922423/89860556-af63d700-dbde-11ea-815a-433aef0ae806.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -105,7 +105,7 @@ From the next chapter, each layer is described in detail.
 
 The `Account` layer provides functionality related to updating the [AccountKey] of the Klaytn account.
 
-![finalAccount](https://user-images.githubusercontent.com/32922423/89011409-44e3a900-d34b-11ea-8dc8-bed423c4e17a.png)
+![0811Account](https://user-images.githubusercontent.com/32922423/89860635-e508c000-dbde-11ea-8c2f-b755212f3556.png)
 
 `Account` is a class that contains information needed to update the [AccountKey] of the account in the Klaytn. It has `address` and `accountKey` as member variables. The `accountKey` can be an instance of (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` or `AccountKeyRoleBased`) depending on the key.
 
@@ -297,7 +297,7 @@ None
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
 
-![finalWallet](https://user-images.githubusercontent.com/32922423/89011391-3eedc800-d34b-11ea-999e-da5a059ca2bf.png)
+![0811Wallet](https://user-images.githubusercontent.com/32922423/89861019-c8b95300-dbdf-11ea-8aa6-30015a33100d.png)
 
 In the Wallet layer, an abstract class called `AbstractKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` are implemented by extending AbstractKeyring. AbstractKeyring defines abstract methods that Keyring classes must implement.
 
@@ -349,19 +349,19 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 | Method | Description |
 | ----------- | ----------- |
-| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using key(s) defined in role. |
-| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using key(s) defined in role. |
-| sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key defined in role. |
-| sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key defined in role. |
-| signMessage(message: String, role: int): MessageSigned | Signs the message using key(s) defined in role. |
-| signMessage(message: String, role: int, index: int): MessageSigned | Signs the message using a key defined in role. |
-| getKlaytnWalletKey(): String | Returns KlaytnWalletKey string. |
+| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using key(s) defined in role. `sign` is defined as an "abstract method" in AbstractKeyring, and must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key defined in role. `sign` is defined as an "abstract method" in AbstractKeyring, and must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| signMessage(message: String, role: int): MessageSigned | Signs the message using key(s) defined in role. `signMessage` is defined as an "abstract method" in AbstractKeyring, and must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| signMessage(message: String, role: int, index: int): MessageSigned | Signs the message using a key defined in role. `signMessage` is defined as an "abstract method" in AbstractKeyring, and must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| encrypt(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v4 format. `encrypt` is defined as an "abstract method" in AbstractKeyring, and must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| copy(): AbstractKeyring | Returns a copied Keyring instance. `copy` is defined as an "abstract method" in AbstractKeyring, and must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using key(s) defined in role. Converts the type of chainId inputted as String into int and calls the sign function implemented in keyring. |
+| sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key defined in role. Converts the type of chainId inputted as String into int and calls the sign function implemented in keyring. |
+| getKlaytnWalletKey(): String | Returns KlaytnWalletKey string. getKlaytnWalletKey is implemented to throw exception by default in `AbstractKeyring`. In the case of `SingleKeyring` that can use KlaytnWalletKey format, getKlaytnWalletKey function must be overridden. |
 | encrypt(password: String): Object | Encrypts a Keyring instance with keystore v4 format. |
-| encrypt(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v4 format. |
-| encryptV3(password: String): Object | Encrypts a Keyring instance with keystore v3 format. |
-| encryptV3(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v3 format. |
-| isDecoupled(): Boolean | Returns true if keyring has decoupled key. |
-| copy(): AbstractKeyring | Returns a copied Keyring instance. |
+| encryptV3(password: String): Object | Encrypts a Keyring instance with keystore v3 format. encryptV3 is implemented to throw exception by default in `AbstractKeyring`. In the case of `SingleKeyring` that can encrypt to keystore v3, encryptV3 function must be overridden. |
+| encryptV3(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v3 format. encryptV3 is implemented to throw exception by default in `AbstractKeyring`. In the case of `SingleKeyring` that can encrypt to keystore v3, encryptV3 function must be overridden. |
+| isDecoupled(): Boolean | Returns true if keyring has decoupled key. isDecoupled is implemented to return "false" by default in `AbstractKeyring`. In the case of SingleKeyring that can be used by coupled keyring, the isDecoupled function must be overridden. |
 
 #### SingleKeyrings
 
@@ -520,7 +520,7 @@ None
 
 The `Transaction` layer provides transaction-related functions.
 
-![finalTransaction](https://user-images.githubusercontent.com/32922423/89011399-4319e580-d34b-11ea-8021-4b9358b98bcb.png)
+![0811Transaction](https://user-images.githubusercontent.com/32922423/89860534-a410ab80-dbde-11ea-9bc1-a69991482d25.png)
 
 `AbstractTransaction`, `AbstractFeeDelegatedTransaction` and `AbstractFeeDelegatedWithRatioTrasnaction` abstract classes are defined in the Transaction layer.
 
@@ -552,6 +552,8 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 | Method | Description |
 | ----------- | ----------- |
+| getRLPEncoding(): String | Returns an RLP-encoded transaction string. `getRLPEncoding` is defined as an "abstract method" in AbstractTransaction, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
+| getCommonRLPEncodingForSignautre(): String | Encodes and returns the values needed to sign each transaction. For example, in the case of ValueTransfer, if SigRLP is `encode([encode([type, nonce, gasPrice, gas, to, value, from]), chainid, 0, 0])`, among them, the RLP-encoded values of the transaction required for signing is `encoded([type, nonce, gasPrice, gas, to, value, from])`. This function is used in getRLPEncodingForSignature or getRLPEncodingForFeePayerSignature function. `getCommonRLPEncodingForSignautre` is defined as an "abstract method" in AbstractTransaction, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
 | sign(keyString: String): AbstractTransaction | Signs the transaction as a transaction sender with the private key (or KlaytnWalletKey) and appends signatures in the transaction object. |
 | sign(keyString: String, hasher: Function): AbstractTransaction | Signs the transaction as a transaction sender with the private key (or KlaytnWalletKey) and appends signatures in the transaction object. The hasher function will be used when get the hash of transaction. |
 | sign(keyring: AbstractKeyring): AbstractTransaction | Signs the transaction as a transaction sender with the private keys in the keyring and appends signatures in the transaction object. |
@@ -566,8 +568,6 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getRawTransaction(): String | Returns a rawTransaction string (an RLP-encoded transaction string). This function is same with transaction.getRLPEncoding. |
 | getRLPEncodingForSignature(): String | Returns an RLP-encoded transaction string for making the signature of the transaction sender. |
 | fillTransaction(): void | Fills in the optional variables in transaction. |
-| getRLPEncoding(): String | Returns an RLP-encoded transaction string. |
-| getCommonRLPEncodingForSignautre(): String | Encodes and returns the values needed to sign each transaction. For example, in the case of ValueTransfer, if SigRLP is `encode([encode([type, nonce, gasPrice, gas, to, value, from]), chainid, 0, 0])`, among them, the RLP-encoded values of the transaction required for signing is `encoded([type, nonce, gasPrice, gas, to, value, from])`. This function is used in getRLPEncodingForSignature or getRLPEncodingForFeePayerSignature function. |
 
 #### AbstractFeeDelegatedTransaction
 
@@ -1063,7 +1063,7 @@ None
 
 The `RPC` layer provides the functions to use the Node API. The `RPC` is a class that manages the Node API for each namespace. Node APIs currently provided by Caver are [klay] and [net].
 
-![0727RPC](https://user-images.githubusercontent.com/32922423/88506771-ac30ee80-d015-11ea-8d33-b4be4835bef6.png)
+![0811RPC](https://user-images.githubusercontent.com/32922423/89860609-d6220d80-dbde-11ea-85f6-ea3fc6f47991.png)
 
 `Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
 
@@ -1193,7 +1193,7 @@ None
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
 
-![0805Contract](https://user-images.githubusercontent.com/32922423/89377502-ecd2eb00-d72c-11ea-84b2-d219bceb36d2.png)
+![0811Contract](https://user-images.githubusercontent.com/32922423/89860622-de7a4880-dbde-11ea-9986-3af7ae595150.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -1495,7 +1495,7 @@ None
 
 The Utils layer provides utility functions.
 
-![0727Utils](https://user-images.githubusercontent.com/32922423/88506767-a9ce9480-d015-11ea-90ac-365d96c40d4a.png)
+![0811Utils](https://user-images.githubusercontent.com/32922423/89860605-d4f0e080-dbde-11ea-86e3-8d77d66ebb4a.png)
 
 The Utils class provides basic utility functions required when using Caver, and also converting functions based on `KlayUnit`.
 
