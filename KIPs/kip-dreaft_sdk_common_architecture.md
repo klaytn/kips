@@ -1199,10 +1199,10 @@ The `Contract` class makes it easy to interact with smart contracts based on ABI
 
 The `ABI` class provides functions to encode and decode parameters using the ABI. The `Contract` class encodes and decodes the parameters required for smart contract deployment and execution using the functions provided by the ABI. If the user wants to create a transaction to deploy or execute a smart contract, he can create `input` using functions provided by the ABI.
 
-The `KIP7` class provides the functions to interact with [KIP-7] token contracts on Klaytn. This a class allows users to easily
+The `KIP7` class provides the functions to interact with [KIP-7] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions defined in [KIP-7] and provides them as class methods.
 
-The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This a class allows users to easily
+The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all functions defined in [KIP-17] and provides them as class methods.
 
 #### Contract
