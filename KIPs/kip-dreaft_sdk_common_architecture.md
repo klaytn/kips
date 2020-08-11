@@ -66,7 +66,7 @@ With the common architecture, we want to achieve two goals:
 | [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview) | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
 | [JSON-RPC](https://www.jsonrpc.org/specification) | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format. |
 | Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy a smart contract or execute a smart contract that has already been deployed to Klaytn through a transaction. |
-| ABI | An application binary interface (ABI) to communicate between two binary program modules. |
+| ABI | The Contract Application Binary Interface(ABI) to communicate between two binary program modules.(contract to contract, from outside the blockchain) |
 | [KCT (Klaytn Compatible Token)](http://kips.klaytn.com/token) | A special type of smart contract that implements token specifications defined in [Klaytn Improvement Proposals](http://kips.klaytn.com/). |
 
 ### Overview of the Common Architecture
