@@ -119,11 +119,27 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 #### IAccountKey
 
+`IAccountKey` is the interface of AccountKey. All AccountKey classes must implement `IAccountKey`.
+
+- Variable description
+
+None
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | getRLPEncoding(): String | Returns an RLP-encoded string of AccountKey. AccountKey* classes below inherit `IAccountKey`, and this function must be implemented. |
 
 #### AccountKeyLegacy
+
+`AccountKeyLegacy` is a class representing [AccountKeyLegacy](https://docs.klaytn.com/klaytn/design/accounts#accountkeylegacy).
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -131,6 +147,16 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyLegacy. |
 
 #### AccountKeyPublic
+
+`AccountKeyPublic` is a class representing [AccountKeyPublic](https://docs.klaytn.com/klaytn/design/accounts#accountkeypublic).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| publicKey: String | A public key string. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -142,6 +168,13 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 #### AccountKeyFail
 
+`AccountKeyFail` is a class representing [AccountKeyFail](https://docs.klaytn.com/klaytn/design/accounts#accountkeyfail).
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -150,22 +183,81 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 #### AccountKeyWeightedMultiSig
 
+`AccountKeyWeightedMultiSig` is a class representing [AccountKeyWeightedMultiSig](https://docs.klaytn.com/klaytn/design/accounts#accountkeyweightedmultisig).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| threshold: int | A validation threshold. |
+| weightedPublicKey: List&#60;WeightedPublicKey&#62; | A list of weighted public keys. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): AccountKeyWeightedMultiSig | Decodes an RLP-encoded string of AccountKeyWeightedMultiSig and returns an `AccountKeyWeightedMultiSig` instance. It throws an exception if the decoding is failed. |
 | fromPublicKeysAndOptions(pubArray: String[], options: WeightedMultiSigOptions): AccountKeyWeightedMultiSig | Creates an `AccountKeyWeightedMultiSig` instance with public key strings in `pubArray` and the options defining the threshold and the weight of each key in `WeightedMultiSigOptions `. It throws an exception if the options or public keys for accountKeyWeightedMultiSig are invalid. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyWeightedMultiSig. |
 
+#### WeightedPublicKey
+
+`WeightedPublicKey` is a class for storing public key with weight.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| publicKey: String | A public key string. |
+| weight: int | A weight of the public key. |
+
+- Method description
+
+None
+
+#### WeightedKeyMultiSigOptions
+
+`WeightedKeyMultiSigOptions` is a class that defines the threshold and the weight of each public key for AccountKeyWeightedMultiSig.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| threshold: int | A validation threshold. |
+| weighted: List&#60;int&#62; | A List of weights of public keys. |
+
+- Method description
+
+None
+
 #### AccountKeyRoleBased
+
+`AccountKeyRoleBased` is a class representing [AccountKeyRoleBased](https://docs.klaytn.com/klaytn/design/accounts#accountkeyrolebased).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| accountKeys: List&#60;IAccountKey&#62; | A list of keys to be used for each role. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): AccountKeyRoleBased | Decodes an RLP-encoded string of AccountKeyRoleBased. It throws an exception if the decoding is failed. |
-| fromRoledPublicKeysAndOptions(pubArray: List<String[]>, options: List<WeightedMultiSigOptions>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role and the option that defines threshold and weight of each key. It throws an exception if the public key(s) for each role or options is invalid. |
-| fromRoledPublicKeysAndOptions(pubArray: List<String[]>): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role. This function assumes that all the values of the threshold and weights are set to be one. |
+| fromRoledPublicKeysAndOptions(pubArray: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role and the option that defines threshold and weight of each key. It throws an exception if the public key(s) for each role or options is invalid. |
+| fromRoledPublicKeysAndOptions(pubArray: List&#60;String[]&#62;): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role. This function assumes that all the values of the threshold and weights are set to be one. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyRoleBased. |
 
 #### AccountKeyDecoder
+
+`AccountKeyDecoder` provides the function to decode RLP-encoded accountKey strings.
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -173,21 +265,32 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 #### Account
 
+`Account` is a class that contains information needed to update the AccountKey of the account in the Klaytn.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| address: String | The address of account to be updated. |
+| accountKey: IAccountKey | The new accountKey to be used in account. This can be an instance of [AccountKeyLegacy](#accountkeylegacy), [AccountKeyPublic](#accountkeypublic), [AccountKeyFail](#accountkeyfail), [AccountKeyWeightedMultiSig](#accountkeyweightedmultisig) or [AccountKeyRoleBased](#accountkeyrolebased). |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | create(address: String, publicKey: String): Account | Generates an Account instance with an address and a public key string. |
 | create(address: String, pubKeys: String[]): Account | Generates an Account instance with an address and public key strings. A default option with a threshold of 1 and a weight of 1 for each key will be used. |
 | create(address: String, pubKeys: String[], options: WeightedMultiSigOptions): Account | Generates an Account instance with an address and public key strings and options that defines threshold and weight of each key. |
-| create(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance with an array of public keys defined for each role. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
-| create(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account | Creates an Account instance with an array of public keys defined for each role and an array of options defined for each role. |
+| create(address: String, roleBasedPubKeys: List&#60;String[]&#62;): Account | Creates an Account instance with an array of public keys defined for each role. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
+| create(address: String, roleBasedPubKeys: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): Account | Creates an Account instance with an array of public keys defined for each role and an array of options defined for each role. |
 | createFromRLPEncoding(address: String, rlpEncodedKey: String): Account | Creates an Account instance with an address and RLP-encoded string. It throws an exception if the RLP-encoded string is invalid. |
 | createWithAccountKeyLegacy(address: String): Account | Creates an Account instance which has AccountKeyLegacy as an accountKey. It throws an exception if the address string is invalid. |
 | createWithAccountKeyPublic(address: String, publicKey: String): Account | Creates an Account instance which has AccountKeyPublic as an accountKey. It throws an exception if the address string or public key string is invalid. |
 | createWithAccountKeyFail(address: String): Account | Creates an Account instance which has AccountKeyFail as an accountKey. It throws an exception if the address string is invalid. |
 | createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[]): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. The options required for AccountKeyWeightedMultiSig use default values (threshold:1, weight of each key: 1). It throws an exception if the address string or public key strings are invalid. |
 | createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[], options: WeightedMultiSigOptions): Account | Creates an Account instance which has AccountKeyWeightedMultiSig as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
-| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. If multiple keys are used among the defined roles, options use the default value (threshold:1, weight of each key: 1). It throws an exception if the address string or public key strings are invalid. |
-| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List<String[]>, options: List<WeightedMultiSigOptions>): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List&#60;String[]&#62;): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. If multiple keys are used among the defined roles, options use the default value (threshold:1, weight of each key: 1). It throws an exception if the address string or public key strings are invalid. |
+| createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): Account | Creates an Account instance which has AccountKeyRoleBased as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
 | getRLPEncodingAccountKey(): String | Return RLP-encoded string of AccountKey in Account instance. |
 
 ### Wallet Layer Class Diagram
@@ -214,6 +317,16 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 #### PrivateKey
 
+`PrivateKey` is a class that contains a private key string. The private key to be used for each role in Keyring is defined as this `PrivateKey` instance.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| privateKey: String | The private key string. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | sign(txHash: String, chainId: String): SignatureData | Signs the transaction. |
@@ -223,6 +336,16 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | getDerivedAddress(): String | Returns derived address from private key string. |
 
 #### AbstractKeyring
+
+`AbstractKeyring` is an abstract class that abstracts Keyring classes that store the account address and private key(s) to use. All Keyring classes are implemented by extending `AbstractKeyring`.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| address: String | The address of the account. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -242,6 +365,16 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 #### SingleKeyrings
 
+`SingleKeyring` is a class that stores the address of the account and a private key.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| key: PrivateKey | An instance of private key containing one private key inside. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | getPublicKey(): String | Returns public key string. |
@@ -249,6 +382,16 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | toAccount(): Account | Returns an instance of Account. |
 
 #### MultipleKeyring
+
+`MultipleKeyring` is a class that stores the address of the account and the multiple private keys.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| keys: List&#60;PrivateKey&#62; | An array of PrivateKey instances containing one private key inside. `keys` can contain up to 10 PrivateKey instances. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -259,6 +402,17 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 
 #### RoleBasedKeyring
 
+`RoleBasedKeyring` is a class that stores the address of the account and the private keys to be used for each role in the form of an array.
+`RoleBasedKeyring` defines keys which is implemented as a two-dimensional array (empty keys looks like [ [], [], [] ]) that can include multiple keys for each role. The first array element defines the private key(s) for roleTransactionKey, the second defines private key(s) for roleAccountUpdateKey, and the third defines the private key(s) for roleFeePayerKey.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| keys: List&#60;List&#60;PrivateKey&#62;&#62; | A two-dimensional array that defines the keys used for each role. Each role includes PrivateKey instance(s). The first element in this is roleTransactionKey. The second element is roleAccountUpdateKey. The last element is roleFeePayerKey. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | getPublicKey(): List&#60;List&#60;String&#62;&#62; | Returns public key strings by roles. |
@@ -266,7 +420,47 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | toAccount(): Account | Returns an instance of Account. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
 | toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an instance of Account. It throws an exception if the options is invalid. |
 
+#### SignatureData
+
+`SignatureData` is a class that contain a signature string inside.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| v: String | ECDSA recovery id. |
+| r: String | ECDSA signature r. |
+| s: String | ECDSA signature s. |
+
+- Method description
+
+None
+
+#### MessageSigned
+
+`MessageSigned` stores the result of signing a message.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| messageHash: String | The hashed message string. |
+| signatureData: List<SignatureData> | An array of signatures. |
+| message: String | The message to sign. |
+
+- Method description
+
+None
+
 #### KeyringFactory
+
+`KeyringFactory` provides functions to create Keyring (SingleKeyring, MultipleKeyring, RoleBasedKeyring) instances.
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -289,6 +483,17 @@ Each Keyring class uses the `PrivateKey` class, which has one private key as a m
 | decrypt(keystore: Object, password: String): Keyring | Decrypts a keystore v3 or v4 JSON and returns the decrypted Keyring instance. It throws an exception if the decrypting is failed. |
 
 #### KeyringContainer
+
+`KeyringContainer` is a class that manages SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| length: int | The number of keyrings in keyringContainer. |
+| addressKeyringMap: Map<String, AbstractKeyring> | A Map that has an account address as a key and a Keyring instance corresponding to that address as a value. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -329,6 +534,22 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### AbstractTransaction
 
+`AbstractTransaction` is an abstract class that abstracts [Basic Transaction](https://docs.klaytn.com/klaytn/design/transactions/basic) classes. All Basic Transaction classes are implemented by extending `AbstractTransaction`.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| type: String | The type string of the transaction. |
+| from: String | The address of the sender. |
+| nonce: String | A value used to uniquely identify a sender’s transaction. If omitted when create a transaction, [klay_getTransactionCount](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/account#klay_gettransactioncount) will be used to set nonce. |
+| gas: String | The maximum amount of transaction fee the transaction is allowed to use. |
+| gasPrice: String | A multiplier to get how much the sender will pay in tokens. If omitted when create a transaction, [klay_gasPrice](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/config#klay_gasprice) will be used to set gasPrice. |
+| signatures: String | An array of signatures. The result of signing the transaction is appended to this signatures. When appending a signature, duplicate signatures are not appended. |
+| chainId: String | The chain id of the Klaytn network. If omitted when create a transaction, [klay_chainID](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/config#klay_chainid) will be used to set chainId. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | sign(keyString: String): AbstractTransaction | Signs the transaction as a transaction sender with the private key (or KlaytnWalletKey) and appends signatures in the transaction object. |
@@ -350,6 +571,17 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### AbstractFeeDelegatedTransaction
 
+`AbstractFeeDelegatedTransaction` is an abstract class that abstracts [Fee Delegation Transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation) classes. `AbstractFeeDelegatedTransaction` is implemented by extending `AbstractTransaction`. All Fee Delegation Transaction classes are implemented by extending `AbstractFeeDelegatedTransaction`.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| feePayer: String | The address of the fee payer. |
+| feePayerSignatures: String | An array of feePayerSignatures. The result of signing the transaction as a fee payer is appended to this feePayerSignatures. When appending a feePayerSignatures, duplicate feePayerSignatures are not appended. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | signAsFeePayer(keyString: String): AbstractFeeDelegatedTransaction | Signs the transaction as a transaction fee payer with a private key string (or KlaytnWalletKey) and appends feePayerSignatures in the transaction object with the private key(s) in the keyring. |
@@ -363,7 +595,33 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | combineSignedRawTransactions(rlpEncoded: String): String | Collects signs in each RLP-encoded transaction string in the given array, combines them with the transaction instance, and returns an RLP-encoded transaction string which includes all signs. |
 | getRLPEncodingForFeePayerSignature(): String | Returns an RLP-encoded transaction string for making the signature of the transaction fee payer. |
 
+#### AbstractFeeDelegatedWithRatioTransaction
+
+`AbstractFeeDelegatedWithRatioTransaction` is an abstract class that abstracts [Partial Fee Delegation Transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation) classes. `AbstractFeeDelegatedWithRatioTransaction` is implemented by extending `AbstractFeeDelegatedTransaction`. All Partial Fee Delegation Transaction classes are implemented by extending `AbstractFeeDelegatedWithRatioTransaction`.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| feeRatio: String | The ratio that constitutes the proportion of the transaction fee the fee payer will be burdened with. The valid range of this ratio is between 1 and 99. The ratio of 0, or 100 and above are not allowed. |
+
+- Method description
+
+None
+
 #### LegacyTransaction
+
+`LegacyTransaction` represents a [legacy transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypelegacytransaction). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The account address that will receive the transferred value or smart contact address if a legacy transaction execute smart contract. If a legacy transaction deploys a smart contract, to with the default value "0x". |
+| input: String | Data attached to the transaction, used for smart contract deployment/execution. |
+| value: String | The amount of KLAY in peb to be transferred. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -375,6 +633,17 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### ValueTransfer
 
+`ValueTransfer` represents a [value transfer transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypevaluetransfer). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The account address that will receive the transferred value. |
+| value: String | The amount of KLAY in peb to be transferred. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ValueTransfer | Decodes an RLP-encoded ValueTransfer string, a raw transaction, and returns a ValueTransfer instance. It throws an exception if the decoding is failed. |
@@ -382,6 +651,18 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### ValueTransferMemo
+
+`ValueTransferMemo` represents a [value transfer memo transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypevaluetransfermemo). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The account address that will receive the transferred value. |
+| value: String | The amount of KLAY in peb to be transferred. |
+| input: String | Data attached to the transaction. The message should be passed to this attribute. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -391,6 +672,16 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### AccountUpdate
 
+`AccountUpdate` represents a [account update transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypeaccountupdate). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| account: Account | An [Account](#account) instance that contains the information needed to update your account. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): AccountUpdate | Decodes an RLP-encoded AccountUpdate string, a raw transaction, and returns a AccountUpdate instance. It throws an exception if the decoding is failed. |
@@ -398,6 +689,20 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### SmartContractDeploy
+
+`SmartContractDeploy` represents a [smart contract deploy transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypesmartcontractdeploy). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | Address to which the smart contract is deployed. Currently, this value cannot be defined by user, so to should be defined with the default value "0x". Specifying the address will be supported in the future. |
+| value: String | The amount of KLAY in peb to be transferred to and stored in the balance of the smart contract address when the contract is initialized. If value is not defined by user, value should be defined with the default value "0x0". |
+| input: String | Data attached to the transaction. The byte code of the smart contract to be deployed and its arguments. |
+| humanReadable: String | This must be "false" since human-readable address is not supported yet. If humanReadable is not defined by user, humanReadable should be defined with the default value "false". |
+| codeFormat: String | The code format of smart contract code. The supported value, for now, is "EVM" only. If codeFormat is not defined by user, codeFormat should be defined with the default value "EVM". This value is converted to hex string after the assignment(e.g> EVM is converted to 0x0) internally. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -407,6 +712,18 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### SmartContractExecution
 
+`SmartContractExecution` represents a [smart contract execution transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypesmartcontractexecution). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The address of the smart contract account to be executed. |
+| value: String | The amount of KLAY in peb to be transferred. If value is not defined by user, value should be defined with the default value "0x0". |
+| input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed to this function. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): SmartContractExecution | Decodes an RLP-encoded SmartContractExecution string, a raw transaction, and returns a SmartContractExecution instance. It throws an exception if the decoding is failed. |
@@ -414,6 +731,14 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### Cancel
+
+`Cancel` represents a [cancel transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypecancel). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -423,6 +748,16 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### ChainDataAnchoring
 
+`ChainDataAnchoring` represents a [chain data anchoring transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypechaindataanchoring). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| input: String | Data of the service chain. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ChainDataAnchoring | Decodes an RLP-encoded ChainDataAnchoring string, a raw transaction, and returns a ChainDataAnchoring instance. It throws an exception if the decoding is failed. |
@@ -430,6 +765,17 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransfer
+
+`FeeDelegatedValueTransfer` represents a [fee delegated value transfer transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedvaluetransfer). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The account address that will receive the transferred value. |
+| value: String | The amount of KLAY in peb to be transferred. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -439,6 +785,18 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### FeeDelegatedValueTransferMemo
 
+`FeeDelegatedValueTransferMemo` represents a [fee delegated value transfer memo transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedvaluetransfermemo). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The account address that will receive the transferred value. |
+| value: String | The amount of KLAY in peb to be transferred. |
+| input: String | Data attached to the transaction. The message should be passed to this attribute. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes an RLP-encoded FeeDelegatedValueTransferMemo string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. It throws an exception if the decoding is failed. |
@@ -446,6 +804,16 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedAccountUpdate
+
+`FeeDelegatedAccountUpdate` represents a [fee delegated account update transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedaccountupdate). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| account: Account | An [Account](#account) instance that contains the information needed to update your account. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -455,6 +823,20 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### FeeDelegatedSmartContractDeploy
 
+`FeeDelegatedSmartContractDeploy` represents a [fee delegated smart contract deploy transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedsmartcontractdeploy). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | Address to which the smart contract is deployed. Currently, this value cannot be defined by user, so to should be defined with the default value "0x". Specifying the address will be supported in the future. |
+| value: String | The amount of KLAY in peb to be transferred to and stored in the balance of the smart contract address when the contract is initialized. If value is not defined by user, value should be defined with the default value "0x0". |
+| input: String | Data attached to the transaction. The byte code of the smart contract to be deployed and its arguments. |
+| humanReadable: String | This must be "false" since human-readable address is not supported yet. If humanReadable is not defined by user, humanReadable should be defined with the default value "false". |
+| codeFormat: String | The code format of smart contract code. The supported value, for now, is "EVM" only. If codeFormat is not defined by user, codeFormat should be defined with the default value "EVM". This value is converted to hex string after the assignment(e.g> EVM is converted to 0x0) internally. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes an RLP-encoded FeeDelegatedSmartContractDeploy string, a raw transaction, and returns a FeeDelegatedSmartContractDeploy instance. It throws an exception if the decoding is failed. |
@@ -462,6 +844,18 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractExecution
+
+`FeeDelegatedSmartContractExecution` represents a [fee delegated smart contract execution transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedsmartcontractexecution). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The address of the smart contract account to be executed. |
+| value: String | The amount of KLAY in peb to be transferred. If value is not defined by user, value should be defined with the default value "0x0". |
+| input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed to this function. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -471,6 +865,14 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### FeeDelegatedCancel
 
+`FeeDelegatedCancel` represents a [fee delegated cancel transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedcancel). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
+
+- Variable description
+
+None
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedCancel | Decodes an RLP-encoded FeeDelegatedCancel string, a raw transaction, and returns a FeeDelegatedCancel instance. It throws an exception if the decoding is failed. |
@@ -478,6 +880,16 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedChainDataAnchoring
+
+`FeeDelegatedChainDataAnchoring` represents a [fee delegated chain data anchoring transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedchaindataanchoring). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| input: String | Data of the service chain. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -487,6 +899,17 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### FeeDelegatedValueTransferWithRatio
 
+`FeeDelegatedValueTransferWithRatio` represents a [fee delegated value transfer with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedvaluetransferwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The account address that will receive the transferred value. |
+| value: String | The amount of KLAY in peb to be transferred. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes an RLP-encoded FeeDelegatedValueTransferWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferWithRatio instance. It throws an exception if the decoding is failed. |
@@ -494,6 +917,18 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransferMemoWithRatio
+
+`FeeDelegatedValueTransferMemoWithRatio` represents a [fee delegated value transfer memo with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedvaluetransfermemowithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The account address that will receive the transferred value. |
+| value: String | The amount of KLAY in peb to be transferred. |
+| input: String | Data attached to the transaction. The message should be passed to this attribute. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -503,6 +938,16 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### FeeDelegatedAccountUpdateWithRatio
 
+`FeeDelegatedAccountUpdateWithRatio` represents a [fee delegated account update with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedaccountupdatewithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| account: Account | An [Account](#account) instance that contains the information needed to update your account. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes an RLP-encoded FeeDelegatedAccountUpdateWithRatio string, a raw transaction, and returns a FeeDelegatedAccountUpdateWithRatio instance. It throws an exception if the decoding is failed. |
@@ -510,6 +955,20 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractDeployWithRatio
+
+`FeeDelegatedSmartContractDeployWithRatio` represents a [fee delegated smart contract deploy with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedsmartcontractdeploywithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | Address to which the smart contract is deployed. Currently, this value cannot be defined by user, so to should be defined with the default value "0x". Specifying the address will be supported in the future. |
+| value: String | The amount of KLAY in peb to be transferred to and stored in the balance of the smart contract address when the contract is initialized. If value is not defined by user, value should be defined with the default value "0x0". |
+| input: String | Data attached to the transaction. The byte code of the smart contract to be deployed and its arguments. |
+| humanReadable: String | This must be "false" since human-readable address is not supported yet. If humanReadable is not defined by user, humanReadable should be defined with the default value "false". |
+| codeFormat: String | The code format of smart contract code. The supported value, for now, is "EVM" only. If codeFormat is not defined by user, codeFormat should be defined with the default value "EVM". This value is converted to hex string after the assignment(e.g> EVM is converted to 0x0) internally. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -519,6 +978,18 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### FeeDelegatedSmartContractExecutionWithRatio
 
+`FeeDelegatedSmartContractExecutionWithRatio` represents a [fee delegated smart contract execution with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedsmartcontractexecutionwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| to: String | The address of the smart contract account to be executed. |
+| value: String | The amount of KLAY in peb to be transferred. If value is not defined by user, value should be defined with the default value "0x0". |
+| input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed to this function. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes an RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractExecutionWithRatio instance. It throws an exception if the decoding is failed. |
@@ -526,6 +997,14 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedCancelWithRatio
+
+`FeeDelegatedCancelWithRatio` represents a [fee delegated cancel with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedcancelwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -535,6 +1014,16 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### FeeDelegatedChainDataAnchoringWithRatio
 
+`FeeDelegatedChainDataAnchoringWithRatio` represents a [fee delegated chain data anchoring with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedchaindataanchoringwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| input: String | Data of the service chain. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes an RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string, a raw transaction, and returns a FeeDelegatedChainDataAnchoringWithRatio instance. It throws an exception if the decoding is failed. |
@@ -543,11 +1032,27 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the decode f
 
 #### TransactionDecoder
 
+`TransactionDecoder` provides the function to decode RLP-encoded transaction strings.
+
+- Variable description
+
+None
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): AbstractTransaction | Decodes an RLP-encoded transaction string, a raw transaction, and returns a Transaction instance. It throws an exception if the decoding is failed. |
 
 #### TransactionHasher
+
+`TransactionHasher` provides the functions to calculate hash of transaction for signing.
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -563,6 +1068,14 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 `Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
 
 #### Klay
+
+`Klay` provides JSON-RPC call with "klay" name space.
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -587,9 +1100,9 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 | getTransactionCount(address: String): String | Call `klay_getTransactionCount` JSON-RPC. |
 | getTransactionCount(address: String, blockNumber: int): String | Call `klay_getTransactionCount` JSON-RPC. |
 | getTransactionCount(address: String, blockTag: String): String | Call `klay_getTransactionCount` JSON-RPC. |
-| isContractAddress(address: String): Boolean | Call `klay_isContractAccount` JSON-RPC. |
-| isContractAddress(address: String, blockNumber: int): Boolean | Call `klay_isContractAccount` JSON-RPC. |
-| isContractAddress(address: String, blockTag: String): Boolean | Call `klay_isContractAccount` JSON-RPC. |
+| isContractAccount(address: String): Boolean | Call `klay_isContractAccount` JSON-RPC. |
+| isContractAccount(address: String, blockNumber: int): Boolean | Call `klay_isContractAccount` JSON-RPC. |
+| isContractAccount(address: String, blockTag: String): Boolean | Call `klay_isContractAccount` JSON-RPC. |
 | sign(address: String, message: String): String | Call `klay_sign` JSON-RPC. |
 | getBlockNumber(): String | Call `klay_blockNumber` JSON-RPC. |
 | getBlockByNumber(blockNumber: int): Object | Call `klay_getBlockByNumber` JSON-RPC. |
@@ -624,8 +1137,6 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 | call(callObject: Object, blockNumber: int): String | Call `klay_call` JSON-RPC. |
 | call(callObject: Object, blockTag: String): String | Call `klay_call` JSON-RPC. |
 | estimateGas(callObject: Object): String | Call `klay_estimateGas` JSON-RPC. |
-| estimateGas(callObject: Object, blockNumber: int): String | Call `klay_estimateGas` JSON-RPC. |
-| estimateGas(callObject: Object, blockTag: String): String | Call `klay_estimateGas` JSON-RPC. |
 | estimateComputationCost(callObject: Object): String | Call `klay_estimateComputationCost` JSON-RPC. |
 | estimateComputationCost(callObject: Object, blockNumber: int): String | Call `klay_estimateComputationCost` JSON-RPC. |
 | estimateComputationCost(callObject: Object, blockTag: String): String | Call `klay_estimateComputationCost` JSON-RPC. |
@@ -663,6 +1174,14 @@ The `RPC` layer provides the functions to use the Node API. The `RPC` is a class
 
 #### Net
 
+`Net` provides JSON-RPC call with "net" name space.
+
+- Variable description
+
+None
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | getNetworkID(): String | Call `net_networkID` JSON-RPC. |
@@ -680,17 +1199,31 @@ The `Contract` class makes it easy to interact with smart contracts based on ABI
 
 The `ABI` class provides functions to encode and decode parameters using the ABI. The `Contract` class encodes and decodes the parameters required for smart contract deployment and execution using the functions provided by the ABI. If the user wants to create a transaction to deploy or execute a smart contract, he can create `input` using functions provided by the ABI.
 
-The `KIP7` class provides the functions to interact with [KIP-7] token contracts on Klaytn. This class allows users to easily
+The `KIP7` class provides the functions to interact with [KIP-7] token contracts on Klaytn. This a class allows users to easily
 deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions defined in [KIP-7] and provides them as class methods.
 
-The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily
+The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This a class allows users to easily
 deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all functions defined in [KIP-17] and provides them as class methods.
 
 #### Contract
 
+`Contract` is a class that allows users to easily interact with smart contracts on Klaytn. Contract can deploy a smart contract to Klaytn or execute a smart contract deployed on Klaytn.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| address: String | The address of the smart contract to call. If the smart contract has already been deployed to Klaytn, user can specify the address of the smart contract to be called by the contract. If the smart contract has not yet been deployed, the address is empty, and the deployed smart contract address is defined inside the Contract instance that is returned as a result of calling the deploy function that deploys the smart contract to Klaytn. |
+| abi: List&#60;Object&#62; | The abi of the smart contract to interact with. |
+| methods: Map&#60;String:[ContractMethod](#contractmethod)&#62; | The methods of the smart contract. When a contract receives an abi from the user, it parses the abi, makes functions that can be called in smart contracts into ContractMethod, and stores them in the Map data structure mapped with the name of the function. |
+| events: Map&#60;String:[ContractEvent](#contractevent)&#62; | The events of the smart contract. When a contract receives an abi from the user, it parses the abi, makes events that can be fired in smart contracts into ContractEvent, and stores them in the Map data structure mapped with the name of the event. |
+| defaultSendOptions: SendOptions | An object that contains information to be used as default when a user send a transaction that changes the state of a smart contract through a contract. "from", "gas", and "value" can be optionally defined in SendOptions. When a user calls a method to send a transaction, the user can optionally define sendOptions. If the user defines sendOptions separately when calling the function, the values inside this object passed as a parameter when sending a transaction have higher priority than defaultSendOptions. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
-| deploy(deployParam: ContractDeployParams, options: SendOptions): Contract | Deploys the contract to the Klaytn. |
+| deploy(deployParam: [ContractDeployParams](#contractdeployparams), options: SendOptions): Contract | Deploys the contract to the Klaytn. |
 | once(event: String, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
 | once(event: String, options: Object, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. The options object should define `filter` or `topics`. |
 | getPastEvent(event: String): List&#60;Object&#62; | Gets past events for this contract. |
@@ -700,15 +1233,100 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 #### ContractMethod
 
+`ContractMethod` is a class that contains abi information of smart contract function.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| name: String | The name of the function in smrat contract. |
+| inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the function. In the list, each parameter of the function is defined as ContractIOType. When the `call` or `send` function is called, this is used to encode the parameter to create an input string. |
+| outputs: List&#60;[ContractIOType](#contractiotype)&#62; | The output values of the function. This is used to decode the value returned as the result of executing the function. |
+| signature: String | The [function signature](https://docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.contract#cf-function-signature-function-selector) (function selector). The first four bytes of the input data for specifying the function to be called (or executed). It is the first (left, high-order in big-endian) four bytes of the Keccak-256 (SHA-3) hash of the signature of the function. |
+| nextMethods: List&#60;ContractMethod&#62; | nextMethods stores functions with the same name implemented in smart contracts. If the parameter passed by the user is different from the input of this contractMethod, it traverses the contractMethods defined in nextMethods to find the contractMethod to be called. |
+
+- Method description
+
 | Method | Description |
 | ----------- | ----------- |
 | call(argumetns: List&#60;any&#62;, callObject: Object): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. See [klay_call] for more details about callObject. |
 | send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send a transaction using the value defined in defaultSendOptions of the Contract. It thorws an exception if the value required for transaction (i.e `from` or `gas`) is not defined in defaultSendOptions. |
 | send(arguments: List&#60;any&#62;, options: SendOptions): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
 | encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
-| estimateGas(arguments: List&#60;any&#62;, callObject: Object): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. See [klay_call] for more details about callObject.  |
+| estimateGas(arguments: List&#60;any&#62;, callObject: Object): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. See [klay_call] for more details about callObject. |
+
+#### ContractEvent
+
+`ContractEvent` is a class that contains abi information of smart contract event.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| name: String | The name of the event in smrat contract. |
+| inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the event. In the list, each input of the event is defined as ContractIOType. This inputs value is used to convert the parameter to a topic. |
+| signature: String | The event signature which is the sha3 hash of the event name including input parameter types. |
+
+- Method description
+
+None
+
+#### ContractIOType
+
+`ContractIOType` is a class used when defining the input and output of the smart contract.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| name: String | The name of the value. |
+| type: String | The type of the value. |
+| indexed: Boolean | Whether indexed or not, the input values of the contract event are separately defined as indexed. If indexed is not separately used, there is no need to define this. |
+
+- Method description
+
+None
+
+#### SendOptions
+
+`SendOptions` is a class that defines values required when sending a transaction. When executing a method that triggers a transaction, the user can use it to define from, gas or value.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| from: String | The address of the sender. |
+| gas: String | The maximum amount of transaction fee the transaction is allowed to use. |
+| value: String | The value in peb to be transferred to the address of the smart contract by this transaction. |
+
+- Method description
+
+None
+
+#### ContractDeployParams
+
+`ContractDeployParams` is a class that defines the byte code and constructor parameters required when deploying a smart contract.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| byteCode: String | The byte code of the contract. |
+| args: List&#60;any&#62; | The arguments that get passed to the constructor on deployment. |
+
+- Method description
+
+None
 
 #### ABI
+
+`ABI` provides the functions to encode/decode parameters with ABI.
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -724,11 +1342,20 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. It throws an exception if the decoding is failed. |
 | decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI encoded log data and indexed topic data. It throws an exception if the decoding is failed. |
 | encodeContractDeploy(constructor: ContractMethod, byteCode: String, params: List&#60;any&#62;): String | Encodes smart contract bytecode with the arguments of the constructor. |
+
 #### KIP7
+
+`KIP7` is a class to easily interact with Klaytn's KIP-7 token contract. This is implemented by extending [Contract](#contract).
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| deploy(tokenInfo: KIP7DeployParams, deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn. |
+| deploy(tokenInfo: [KIP7DeployParams](#kip7deployparams), deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn. |
 | clone(): KIP7 | Clones the current KIP7 instance. |
 | clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and set address of contract to tokenAddress parameter. |
 | supportInterface(interfaceid: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
@@ -774,7 +1401,32 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | renouncePauser(): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
 | renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
 
+#### KIP7DeployParams
+
+`KIP7DeployParams` is a class that defines the token informations required when deploying a KIP-7 token contract.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| name: String | The name of the token. |
+| symbol: String | The symbol of the token. |
+| decimals: int | The number of decimal places the token uses. |
+| initialSupply: BigInteger | The total amount of token to be supplied initially. |
+
+- Method description
+
+None
+
 #### KIP17
+
+`KIP17` is a class to easily interact with Klaytn's KIP-17 token contract. This is implemented by extending [Contract](#contract).
+
+- Variable description
+
+None
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -824,6 +1476,21 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | renouncePauser(): Object | Renounces the right to pause the contract. |
 | renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. |
 
+#### KIP17DeployParams
+
+`KIP17DeployParams` is a class that defines the token informations required when deploying a KIP-17 token contract.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| name: String | The name of the token. |
+| symbol: String | The symbol of the token. |
+
+- Method description
+
+None
+
 ### Utils Layer Class Diagram
 
 The Utils layer provides utility functions.
@@ -832,7 +1499,17 @@ The Utils layer provides utility functions.
 
 The Utils class provides basic utility functions required when using Caver, and also converting functions based on `KlayUnit`.
 
-#### utils
+#### Utils
+
+`Utils` provides the utility functions.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| klayUnit: KlayUnit | Unit of KLAY used in Klaytn. |
+
+- Method description
 
 | Method | Description |
 | ----------- | ----------- |
@@ -854,6 +1531,27 @@ The Utils class provides basic utility functions required when using Caver, and 
 | convertFromPeb(num: String, unit: KlayUnit): String | Converts any KLAY value from peb. |
 | recover(message: String, signature: KlaySignatureData): String | Recovers the Klaytn address that was used to sign the given data. |
 | recover(message: String, signature: KlaySignatureData, preFixed: Boolean): String | Recovers the Klaytn address that was used to sign the given data. |
+
+#### KlayUnit
+
+`KlayUnit` is defined as the [unit used in Klaytn](https://docs.klaytn.com/klaytn/design/klaytn-native-coin-klay#units-of-klay) as Enumerated type. Each unit defines the unit's `name` and `pebFactor`. `pebFactor` is used when converting to peb.
+
+- Variable description
+
+| Variable | Description |
+| ----------- | ----------- |
+| peb: Object | unit: 'peb', pebFactor: 0 |
+| kpeb: Object | unit: 'kpeb', pebFactor: 3 |
+| Mpeb: Object | unit: 'Mpeb', pebFactor: 6 |
+| Gpeb: Object | unit: 'Gpeb', pebFactor: 9 |
+| ston: Object | unit: 'ston', pebFactor: 9 |
+| uKLAY: Object | unit: 'uKLAY', pebFactor: 12 |
+| mKLAY: Object | unit: 'mKLAY', pebFactor: 15 |
+| KLAY: Object | unit: 'KLAY', pebFactor: 18 |
+| kKLAY: Object | unit: 'kKLAY', pebFactor: 21 |
+| MKLAY: Object | unit: 'MKLAY', pebFactor: 24 |
+| GKLAY: Object | unit: 'GKLAY', pebFactor: 27 |
+| TKLAY: Object | unit: 'TKLAY', pebFactor: 30 |
 
 ### Example of the source code
 
