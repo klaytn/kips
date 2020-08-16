@@ -829,19 +829,19 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| to: String | Address to which the smart contract is deployed. Currently, this value cannot be defined by user, so to should be defined with the default value "0x". Specifying the address will be supported in the future. |
-| value: String | The amount of KLAY in peb to be transferred to and stored in the balance of the smart contract address when the contract is initialized. If value is not defined by user, value should be defined with the default value "0x0". |
-| input: String | Data attached to the transaction. The byte code of the smart contract to be deployed and its arguments. |
-| humanReadable: String | This must be "false" since human-readable address is not supported yet. If humanReadable is not defined by user, humanReadable should be defined with the default value "false". |
-| codeFormat: String | The code format of smart contract code. The supported value, for now, is "EVM" only. If codeFormat is not defined by user, codeFormat should be defined with the default value "EVM". This value is converted to hex string after the assignment(e.g> EVM is converted to 0x0) internally. |
+| to: String | An address to which the smart contract is deployed. Currently, this value cannot be defined by user, so it must be defined with the default value "0x". Specifying the address will be supported in the future. |
+| value: String | The amount of KLAY in peb to be transferred. If the value is not defined by user, the value is defined with the default value "0x0". |
+| input: String | Data attached to the transaction. It contains the byte code of the smart contract to be deployed and its arguments. |
+| humanReadable: String | This must be "false" since human-readable address is not supported yet. If the value is not defined by user, it is defined with the default value "false". |
+| codeFormat: String | The code format of the smart contract. The supported value, for now, is "EVM" only. If it is not defined by user, it is defined with the default value "EVM". This value is converted to a hex string after the assignment(e.g., EVM is converted to 0x0). |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes an RLP-encoded FeeDelegatedSmartContractDeploy string, a raw transaction, and returns a FeeDelegatedSmartContractDeploy instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractDeploy string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes an RLP-encoded string of FeeDelegatedSmartContractDeploy and returns a `FeeDelegatedSmartContractDeploy` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractExecution
 
@@ -852,16 +852,16 @@ None
 | Variable | Description |
 | ----------- | ----------- |
 | to: String | The address of the smart contract account to be executed. |
-| value: String | The amount of KLAY in peb to be transferred. If value is not defined by user, value should be defined with the default value "0x0". |
-| input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed to this function. |
+| value: String | The amount of KLAY in peb to be transferred. If the value is not defined by user, the value is defined with the default value "0x0". |
+| input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes an RLP-encoded FeeDelegatedSmartContractExecution string, a raw transaction, and returns a FeeDelegatedSmartContractExecution instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractExecution string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes an RLP-encoded string of FeeDelegatedSmartContractExecution and returns a `FeeDelegatedSmartContractExecution` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedCancel
 
@@ -875,9 +875,9 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancel | Decodes an RLP-encoded FeeDelegatedCancel string, a raw transaction, and returns a FeeDelegatedCancel instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedCancel string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedCancel | Decodes an RLP-encoded string of FeeDelegatedCancel and returns a `FeeDelegatedCancel` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedChainDataAnchoring
 
@@ -887,15 +887,15 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| input: String | Data of the service chain. |
+| input: String | Data to be anchored. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes an RLP-encoded FeeDelegatedChainDataAnchoring string, a raw transaction, and returns a FeeDelegatedChainDataAnchoring instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedChainDataAnchoring string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes an RLP-encoded string of FeeDelegatedChainDataAnchoring and returns a `FeeDelegatedChainDataAnchoring` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransferWithRatio
 
@@ -912,9 +912,9 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes an RLP-encoded FeeDelegatedValueTransferWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferWithRatio instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedValueTransferWithRatio string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes an RLP-encoded string of FeeDelegatedValueTransferWithRatio and returns a `FeeDelegatedValueTransferWithRatio` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransferMemoWithRatio
 
@@ -926,15 +926,15 @@ None
 | ----------- | ----------- |
 | to: String | The account address that will receive the transferred value. |
 | value: String | The amount of KLAY in peb to be transferred. |
-| input: String | Data attached to the transaction. The message should be passed to this attribute. |
+| input: String | Data attached to the transaction. The message can be passed to this attribute. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes an RLP-encoded FeeDelegatedValueTransferMemoWithRatio string, a raw transaction, and returns a FeeDelegatedValueTransferMemoWithRatio instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): Stirng | Returns an RLP-encoded FeeDelegatedValueTransferMemoWithRatio string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes an RLP-encoded string of FeeDelegatedValueTransferMemoWithRatio and returns a `FeeDelegatedValueTransferMemoWithRatio` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): Stirng | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedAccountUpdateWithRatio
 
@@ -944,15 +944,15 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| account: Account | An [Account](#account) instance that contains the information needed to update your account. |
+| account: Account | An [Account](#account) instance that contains the information needed to update the given account. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes an RLP-encoded FeeDelegatedAccountUpdateWithRatio string, a raw transaction, and returns a FeeDelegatedAccountUpdateWithRatio instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedAccountUpdateWithRatio string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes an RLP-encoded string of FeeDelegatedAccountUpdateWithRatio and returns a `FeeDelegatedAccountUpdateWithRatio` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractDeployWithRatio
 
@@ -962,19 +962,19 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| to: String | Address to which the smart contract is deployed. Currently, this value cannot be defined by user, so to should be defined with the default value "0x". Specifying the address will be supported in the future. |
-| value: String | The amount of KLAY in peb to be transferred to and stored in the balance of the smart contract address when the contract is initialized. If value is not defined by user, value should be defined with the default value "0x0". |
-| input: String | Data attached to the transaction. The byte code of the smart contract to be deployed and its arguments. |
-| humanReadable: String | This must be "false" since human-readable address is not supported yet. If humanReadable is not defined by user, humanReadable should be defined with the default value "false". |
-| codeFormat: String | The code format of smart contract code. The supported value, for now, is "EVM" only. If codeFormat is not defined by user, codeFormat should be defined with the default value "EVM". This value is converted to hex string after the assignment(e.g> EVM is converted to 0x0) internally. |
+| to: String | An address to which the smart contract is deployed. Currently, this value cannot be defined by user, so it must be defined with the default value "0x". Specifying the address will be supported in the future. |
+| value: String | The amount of KLAY in peb to be transferred. If the value is not defined by user, the value must be defined with the default value "0x0". |
+| input: String | Data attached to the transaction. It contains the byte code of the smart contract to be deployed and its arguments. |
+| humanReadable: String | This must be "false" since human-readable address is not supported yet. If the value is not defined by user, it is defined with the default value "false". |
+| codeFormat: String | The code format of smart contract code. The supported value, for now, is "EVM" only. If it is not defined by user, it is defined with the default value "EVM". This value is converted to a hex string after the assignment(e.g., EVM is converted to 0x0). |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes an RLP-encoded FeeDelegatedSmartContractDeployWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractDeployWithRatio instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractDeployWithRatio string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes an RLP-encoded string of FeeDelegatedSmartContractDeployWithRatio and returns a `FeeDelegatedSmartContractDeployWithRatio` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractExecutionWithRatio
 
@@ -985,16 +985,16 @@ None
 | Variable | Description |
 | ----------- | ----------- |
 | to: String | The address of the smart contract account to be executed. |
-| value: String | The amount of KLAY in peb to be transferred. If value is not defined by user, value should be defined with the default value "0x0". |
-| input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed to this function. |
+| value: String | The amount of KLAY in peb to be transferred. If the value is not defined by user, it is defined with the default value "0x0". |
+| input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes an RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string, a raw transaction, and returns a FeeDelegatedSmartContractExecutionWithRatio instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedSmartContractExecutionWithRatio string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes an RLP-encoded string of FeeDelegatedSmartContractExecutionWithRatio and returns a `FeeDelegatedSmartContractExecutionWithRatio` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedCancelWithRatio
 
@@ -1008,9 +1008,9 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes an RLP-encoded FeeDelegatedCancelWithRatio string, a raw transaction, and returns a FeeDelegatedCancelWithRatio instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedCancelWithRatio string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes an RLP-encoded string of FeeDelegatedCancelWithRatio and returns a `FeeDelegatedCancelWithRatio` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transation instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedChainDataAnchoringWithRatio
 
@@ -1020,19 +1020,19 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| input: String | Data of the service chain. |
+| input: String | Data to be anchored. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes an RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string, a raw transaction, and returns a FeeDelegatedChainDataAnchoringWithRatio instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedChainDataAnchoringWithRatio string. It throws an exception if the variables required for encoding are not defined. |
-| getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
+| decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes an RLP-encoded string of FeeDelegatedChainDataAnchoringWithRatio and returns a `FeeDelegatedChainDataAnchoringWithRatio` instance. It throws an exception if the decoding is failed. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
+| getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### TransactionDecoder
 
-`TransactionDecoder` provides the function to decode RLP-encoded transaction strings.
+`TransactionDecoder` provides the function to decode an RLP-encoded string of a transaction class.
 
 ##### Variable description
 
@@ -1042,11 +1042,11 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): AbstractTransaction | Decodes an RLP-encoded transaction string, a raw transaction, and returns a Transaction instance. It throws an exception if the decoding is failed. |
+| decode(rlpEncoded: String): AbstractTransaction | Decodes an RLP-encoded transaction string and returns a transaction instance. It throws an exception if the decoding is failed. |
 
 #### TransactionHasher
 
-`TransactionHasher` provides the functions to calculate hash of transaction for signing.
+`TransactionHasher` provides the functions to calculate the hash of a transaction for signing.
 
 ##### Variable description
 
@@ -1059,17 +1059,17 @@ None
 | getHashForSignature(transaction: AbstractTransaction): String | Returns the hash of the transaction for the sender to sign. |
 | getHashForFeePayerSignature(transaction: AbstractFeeDelegatedTransaction): String | Returns the hash of the transaction for the fee payer to sign. |
 
-### RPC Layer Class Diagram
+### RPC Layer
 
-The `RPC` layer provides the functions to use the Node API. The `RPC` is a class that manages the Node API for each namespace. Node APIs currently provided by Caver are [klay] and [net].
+The `RPC` layer provides the functions to use the Node APIs. The `RPC` is a class that manages the Node API for each namespace. Node APIs currently provided by Caver are [klay] and [net].
 
 ![0811RPC](https://user-images.githubusercontent.com/32922423/89860609-d6220d80-dbde-11ea-85f6-ea3fc6f47991.png)
 
-`Klay` is a class that provides [Node API of klay namespace]. `Net` is a class that provides [Node API of net namespace]. The result value received from Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
+`Klay` is a class that provides [klay namespace of the Node API]. `Net` is a class that provides [net namespace of the Node API]. The result value received from a Klaytn Node is returned to the user. For more information about each API and the returned result, refer to [JSON-RPC APIs].
 
 #### Klay
 
-`Klay` provides JSON-RPC call with "klay" name space.
+`Klay` provides JSON-RPC call with "klay" namespace.
 
 ##### Variable description
 
@@ -1174,7 +1174,7 @@ None
 
 #### Net
 
-`Net` provides JSON-RPC call with "net" name space.
+`Net` provides JSON-RPC call with "net" namespace.
 
 ##### Variable description
 
@@ -1189,15 +1189,15 @@ None
 | getPeerCount(): String | Call `net_peerCount` JSON-RPC. |
 | getPeerCountByType(): Object | Call `net_peerCountByType` JSON-RPC. |
 
-### Contract, ABI, KCT Layer Class Diagram
+### Contract, ABI, KCT Layer
 
-The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e [KIP-7] or [KIP-17]) on Klaytn.
+The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e., [KIP-7] or [KIP-17]) on Klaytn.
 
 ![0811Contract](https://user-images.githubusercontent.com/32922423/89860622-de7a4880-dbde-11ea-9986-3af7ae595150.png)
 
-The `Contract` class makes it easy to interact with smart contracts based on ABI. Also, if you pass byte code and constructor parameters while calling the deploy method, you can use the Contract instance to deploy the smart contract to Klaytn. The Contract class processes the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
+The `Contract` class makes it easy to interact with smart contracts based on ABI. If you have the byte code and constructor parameters, you can use the `Contract` instance to deploy the smart contract to Klaytn. The class can process the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
-The `ABI` class provides functions to encode and decode parameters using the ABI. The `Contract` class encodes and decodes the parameters required for smart contract deployment and execution using the functions provided by the ABI. If the user wants to create a transaction to deploy or execute a smart contract, he can create `input` using functions provided by the ABI.
+The `ABI` class provides functions to encode and decode parameters. The `Contract` class encodes and decodes the parameters required for smart contract deployment and execution using the functions provided by the ABI. To create a transaction to deploy or execute a smart contract, the required data can be filled with `ABI`.
 
 The `KIP7` class provides the functions to interact with [KIP-7] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions defined in [KIP-7] and provides them as class methods.
@@ -1207,23 +1207,23 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 #### Contract
 
-`Contract` is a class that allows users to easily interact with smart contracts on Klaytn. Contract can deploy a smart contract to Klaytn or execute a smart contract deployed on Klaytn.
+`Contract` is a class that allows users to easily interact with smart contracts on Klaytn. It can deploy a smart contract to Klaytn or execute a smart contract deployed on Klaytn.
 
 ##### Variable description
 
 | Variable | Description |
 | ----------- | ----------- |
-| address: String | The address of the smart contract to call. If the smart contract has already been deployed to Klaytn, user can specify the address of the smart contract to be called by the contract. If the smart contract has not yet been deployed, the address is empty, and the deployed smart contract address is defined inside the Contract instance that is returned as a result of calling the deploy function that deploys the smart contract to Klaytn. |
+| address: String | The address of the smart contract to call. If the smart contract has already been deployed to Klaytn, user can specify the address of the smart contract to be called. This value is set after the contract deployment is successfully performed. |
 | abi: List&#60;Object&#62; | The abi of the smart contract to interact with. |
-| methods: Map&#60;String:[ContractMethod](#contractmethod)&#62; | The methods of the smart contract. When a contract receives an abi from the user, it parses the abi, makes functions that can be called in smart contracts into ContractMethod, and stores them in the Map data structure mapped with the name of the function. |
-| events: Map&#60;String:[ContractEvent](#contractevent)&#62; | The events of the smart contract. When a contract receives an abi from the user, it parses the abi, makes events that can be fired in smart contracts into ContractEvent, and stores them in the Map data structure mapped with the name of the event. |
-| defaultSendOptions: SendOptions | An object that contains information to be used as default when a user send a transaction that changes the state of a smart contract through a contract. "from", "gas", and "value" can be optionally defined in SendOptions. When a user calls a method to send a transaction, the user can optionally define sendOptions. If the user defines sendOptions separately when calling the function, the values inside this object passed as a parameter when sending a transaction have higher priority than defaultSendOptions. |
+| methods: Map&#60;String:[ContractMethod](#contractmethod)&#62; | The methods of the smart contract. When a contract receives an abi from the user, it parses the abi, makes functions that can be called into `ContractMethod`, and stores them into this variable. |
+| events: Map&#60;String:[ContractEvent](#contractevent)&#62; | The events of the smart contract. When a contract receives an abi from the user, it parses the abi, makes events that can be fired into `ContractEvent`, and stores them into this variable. |
+| defaultSendOptions: SendOptions | An object that contains information to be used as default values when a user sends a transaction that changes the state of a smart contract. The values (`from`, `gas`, and `value`) can be optionally defined in SendOptions. When a user calls a method to send a transaction, the user can optionally define sendOptions. If the user defines sendOptions separately when calling the function, the parameter in the function call has higher priority. The conflicting attributes in this variable will be ignored in that case. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| deploy(deployParam: [ContractDeployParams](#contractdeployparams), options: SendOptions): Contract | Deploys the contract to the Klaytn. |
+| deploy(deployParam: [ContractDeployParams](#contractdeployparams), options: SendOptions): Contract | Deploys the contract to Klaytn. |
 | once(event: String, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
 | once(event: String, options: Object, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. The options object should define `filter` or `topics`. |
 | getPastEvent(event: String): List&#60;Object&#62; | Gets past events for this contract. |
@@ -1233,38 +1233,38 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 #### ContractMethod
 
-`ContractMethod` is a class that contains abi information of smart contract function.
+`ContractMethod` is a class that contains abi information of a smart contract function.
 
 ##### Variable description
 
 | Variable | Description |
 | ----------- | ----------- |
-| name: String | The name of the function in smrat contract. |
-| inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the function. In the list, each parameter of the function is defined as ContractIOType. When the `call` or `send` function is called, this is used to encode the parameter to create an input string. |
+| name: String | The name of the function in a smart contract. |
+| inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the function. In the list, each parameter of the function is defined as ContractIOType. When the `call` or `send` function is called, this is used to encode the parameter to create the input field of a transaction. |
 | outputs: List&#60;[ContractIOType](#contractiotype)&#62; | The output values of the function. This is used to decode the value returned as the result of executing the function. |
 | signature: String | The [function signature](https://docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.contract#cf-function-signature-function-selector) (function selector). The first four bytes of the input data for specifying the function to be called (or executed). It is the first (left, high-order in big-endian) four bytes of the Keccak-256 (SHA-3) hash of the signature of the function. |
-| nextMethods: List&#60;ContractMethod&#62; | nextMethods stores functions with the same name implemented in smart contracts. If the parameter passed by the user is different from the input of this contractMethod, it traverses the contractMethods defined in nextMethods to find the contractMethod to be called. |
+| nextMethods: List&#60;ContractMethod&#62; | nextMethods stores functions with the same name implemented in a smart contract. If the parameter passed by the user is different from the input of this contractMethod, it traverses the contractMethods defined in nextMethods to find the contractMethod to be called. |
 
 ##### Method description
 
 | Method | Description |
 | ----------- | ----------- |
-| call(argumetns: List&#60;any&#62;, callObject: Object): any | Call a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. See [klay_call] for more details about callObject. |
-| send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. Send a transaction using the value defined in defaultSendOptions of the Contract. It throws an exception if the value required for transaction (i.e `from` or `gas`) is not defined in defaultSendOptions. |
-| send(arguments: List&#60;any&#62;, options: SendOptions): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
-| encodeABI(arguments: List&#60;any&#62;): String | Encodes the ABI for this method. This can be used to send a transaction or call a method, or pass it into another smart contract method as arguments. |
+| call(argumetns: List&#60;any&#62;, callObject: Object): any | Calls a "constant" method and execute its smart contract method in the Klaytn Virtual Machine without sending any transaction. See [klay_call] for more details about callObject. |
+| send(arguments: List&#60;any&#62;, options: SendOptions): Object | Sends a transaction to the smart contract and executes its method. This can alter the smart contract state. It sends a transaction using the value defined in defaultSendOptions of the Contract. It throws an exception if the value required for transaction (i.e `from` or `gas`) is not defined in defaultSendOptions. |
+| send(arguments: List&#60;any&#62;): Object | Send a transaction to the smart contract and execute its method. This can alter the smart contract state. |
+| encodeABI(arguments: List&#60;any&#62;): String | Generates data to be filled in the `input` field of a transaction. This can be used to send a transaction, call a method, or pass it into another smart contract method as arguments. |
 | estimateGas(arguments: List&#60;any&#62;, callObject: Object): String | Estimates the gas that a method execution will take when executed in the Klaytn Virtual Machine. See [klay_call] for more details about callObject. |
 
 #### ContractEvent
 
-`ContractEvent` is a class that contains abi information of smart contract event.
+`ContractEvent` is a class that contains abi information of a smart contract event.
 
 ##### Variable description
 
 | Variable | Description |
 | ----------- | ----------- |
-| name: String | The name of the event in smrat contract. |
-| inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the event. In the list, each input of the event is defined as ContractIOType. This inputs value is used to convert the parameter to a topic. |
+| name: String | The name of the event in the smart contract. |
+| inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the event. In the list, each input of the event is defined as ContractIOType. This value is used to convert the parameter to a topic. |
 | signature: String | The event signature which is the sha3 hash of the event name including input parameter types. |
 
 ##### Method description
@@ -1296,7 +1296,7 @@ None
 | Variable | Description |
 | ----------- | ----------- |
 | from: String | The address of the sender. |
-| gas: String | The maximum amount of transaction fee the transaction is allowed to use. |
+| gas: String | The maximum amount of transaction fee that the transaction is allowed to use. |
 | value: String | The value in peb to be transferred to the address of the smart contract by this transaction. |
 
 ##### Method description
@@ -1330,18 +1330,18 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| encodeFunctionSignature(method: ContractMethod): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name including parameter types. |
-| encodeFunctionSignature(functionString: String): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name including parameter types. |
-| encodeEventSignature(event: ContractEvent): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
-| encodeEventSignature(eventString: String): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name including input parameter types. |
+| encodeFunctionSignature(method: ContractMethod): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name with its parameter types. |
+| encodeFunctionSignature(functionString: String): String | Encodes the function signature to its ABI signature, which are the first 4 bytes of the sha3 hash of the function name with its parameter types. |
+| encodeEventSignature(event: ContractEvent): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name with its parameter types. |
+| encodeEventSignature(eventString: String): String | Encodes the event signature to its ABI signature, which is the sha3 hash of the event name with its parameter types. |
 | encodeParameter(type: String, param: any): String | Encodes a parameter based on its type to its ABI representation. It throws an exception if the param is invalid. |
 | encodeParameters(types: List&#60;String&#62;, params: List&#60;any&#62;): String | Encodes parameters based on its type to its ABI representation. It throws an exception if the params are invalid. |
 | encodeFunctionCall(method: ContractMethod, params: List&#60;any&#62;): String | Encodes a function call using its JSON interface object and given parameters. It throws an exception if the params are invalid. |
-| decodeParameter(type: String, encoded: String): String | Decodes an ABI encoded parameter. It throws an exception if the decoding is failed. |
-| decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. It throws an exception if the decoding is failed. |
-| decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI encoded parameters. It throws an exception if the decoding is failed. |
-| decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI encoded log data and indexed topic data. It throws an exception if the decoding is failed. |
-| encodeContractDeploy(constructor: ContractMethod, byteCode: String, params: List&#60;any&#62;): String | Encodes smart contract bytecode with the arguments of the constructor. |
+| decodeParameter(type: String, encoded: String): String | Decodes an ABI-encoded parameter. It throws an exception if the decoding is failed. |
+| decodeParameters(types: List&#60;String&#62;, encoded: String): List&#60;String&#62; | Decodes ABI-encoded parameters. It throws an exception if the decoding is failed. |
+| decodeParameters(method: ContractMethod, encoded: String): List&#60;String&#62; | Decodes ABI-encoded parameters. It throws an exception if the decoding is failed. |
+| decodeLog(inputs: List&#60;ContractIOType&#62;, data: String, topics: List&#60;String&#62;): JSONObject | Decodes ABI-encoded log data and indexed topic data. It throws an exception if the decoding is failed. |
+| encodeContractDeploy(constructor: ContractMethod, byteCode: String, params: List&#60;any&#62;): String | Encodes smart contract bytecode with the arguments of the constructor for smart contract deployment. |
 
 #### KIP7
 
@@ -1357,49 +1357,49 @@ None
 | ----------- | ----------- |
 | deploy(tokenInfo: [KIP7DeployParams](#kip7deployparams), deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn. |
 | clone(): KIP7 | Clones the current KIP7 instance. |
-| clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and set address of contract to tokenAddress parameter. |
-| supportInterface(interfaceid: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
-| name(): String | Return the name of the token. |
-| symbol(): String | Return the symbol of the token. |
-| decimals(): int | Return the number of decimal places the token uses. |
-| totalSupply(): BigInteger | Return the total token supply. |
-| balanceOf(account: String): BigInteger | Return the balance of the given account address. |
-| allowance(owner: String, spender: String): BigInteger | Return the amount of token that spender is allowed to withdraw from owner. |
-| isMinter(account: String): Boolean | Return true if the given account is a minter who can issue new KIP7 tokens. |
-| isPauser(account: String): Boolean | Return true if the given account is a pauser who can suspend transferring tokens. |
-| paused(): Boolean | Return true if the contract is paused, and false otherwise. |
-| approve(spender: String, amount: BigInteger): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
-| approve(spender: String, amount: BigInteger, sendParam: SendOptions): Object | Set the amount of the tokens of the token owner to be spent by the spender. |
+| clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and sets the address of the new instance to `tokenAddress` . |
+| supportInterface(interfaceid: String): Boolean | Returns true if this contract implements the interface defined by `interfaceId`. |
+| name(): String | Returns the name of the token. |
+| symbol(): String | Returns the symbol of the token. |
+| decimals(): int | Returns the number of decimal places the token uses. |
+| totalSupply(): BigInteger | Returns the total token supply. |
+| balanceOf(account: String): BigInteger | Returns the balance of the given account address. |
+| allowance(owner: String, spender: String): BigInteger | Returns the amount of tokens that `spender` is allowed to withdraw tokens of `owner`. |
+| isMinter(account: String): Boolean | Returns true if the given account is a minter who can issue new KIP7 tokens. |
+| isPauser(account: String): Boolean | Returns true if the given account is a pauser who can suspend transferring tokens. |
+| paused(): Boolean | Returns true if the contract is paused, and false otherwise. |
+| approve(spender: String, amount: BigInteger): Object | Sets the amount of the tokens of the token owner to be spent by the spender. |
+| approve(spender: String, amount: BigInteger, sendParam: SendOptions): Object | Sets the amount of the tokens of the token owner to be spent by the spender. The transaction is formed based on `sendParam`. |
 | transfer(recipient: String, amount: BigInteger): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
-| transfer(recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. |
+| transfer(recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The transaction is formed based on `sendParam`. |
 | transferFrom(sender: String, recipient: String, amount: BigInteger): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| transferFrom(sender: String, recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| transferFrom(sender: String, recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. The transaction is formed based on `sendParam`. |
 | safeTransfer(recipient: String, amount: BigInteger): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
-| safeTransfer(recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
-| safeTransfer(recipient: String, amount: BigInteger, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
-| safeTransfer(recipient: String, amount: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. |
+| safeTransfer(recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The transaction is formed based on `sendParam`. |
+| safeTransfer(recipient: String, amount: BigInteger, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient with additional data. |
+| safeTransfer(recipient: String, amount: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient with additional data. The transaction is formed based on `sendParam`. |
 | safeTransferFrom(sender: String, recipient: String, amount: BigInteger): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
-| mint(account: String, amount: BigInteger): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
-| mint(account: String, amount: BigInteger, sendParam: SendOptions): Object | Creates the amount of token and issues it to the account, increasing the total supply of token. |
+| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. The transaction is formed based on `sendParam`. |
+| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, data: String): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient with additional data. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. |
+| safeTransferFrom(sender: String, recipient: String, amount: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the given amount of the token from the token owner's balance to the recipient with additional data. The address who was approved to send the token owner's tokens is expected to execute this token transferring transaction. The transaction is formed based on `sendParam`. |
+| mint(account: String, amount: BigInteger): Object | Creates the amount of tokens and issues them to the account, increasing the total supply of tokens. |
+| mint(account: String, amount: BigInteger, sendParam: SendOptions): Object | Creates the amount of tokens and issues them to the account, increasing the total supply of tokens. The transaction is formed based on `sendParam`. |
 | addMinter(account: String): Object | Adds an account as a minter, who are permitted to mint tokens. |
-| addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
-| renounceMinter(): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
-| renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
+| addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. The transaction is formed based on `sendParam`. |
+| renounceMinter(): Object | Renounces the right to mint tokens. Only a minter can renounce the minting right. |
+| renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter can renounce the minting right. The transaction is formed based on `sendParam`. |
 | burn(amount: BigInteger): Object | Destroys the amount of tokens in the sender's balance. |
-| burn(amount: BigInteger, sendParam: SendOptions): Object | Destroys the amount of tokens in the sender's balance. |
-| burnFrom(account: String, amount: BigInteger): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
-| burnFrom(account: String, amount: BigInteger, sendParam: SendOptions): Object | Destroys the given number of tokens from account. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| burn(amount: BigInteger, sendParam: SendOptions): Object | Destroys the amount of tokens in the sender's balance. The transaction is formed based on `sendParam`. |
+| burnFrom(account: String, amount: BigInteger): Object | Destroys the given number of tokens from `account`. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. |
+| burnFrom(account: String, amount: BigInteger, sendParam: SendOptions): Object | Destroys the given number of tokens from `account`. The address who was approved to use the token owner's tokens is expected to execute this token burning transaction. The transaction is formed based on `sendParam`. |
 | addPauser(account: String): Object | Adds an account as a pauser that has the right to suspend the contract. |
-| addPauser(account: String, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| addPauser(account: String, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. The transaction is formed based on `sendParam`. |
 | pause(): Object | Suspends functions related to sending tokens. |
-| pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. |
-| unpuase(): Object | Resumes the paused contract. |
-| unpuase(sendParam: SendOptions): Object | Resumes the paused contract. |
+| pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. The transaction is formed based on `sendParam`. |
+| unpause(): Object | Resumes the paused contract. |
+| unpause(sendParam: SendOptions): Object | Resumes the paused contract. The transaction is formed based on `sendParam`. |
 | renouncePauser(): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
-| renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. |
+| renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. Only a pauser address can renounce the pausing right. The transaction is formed based on `sendParam`. |
 
 #### KIP7DeployParams
 
@@ -1430,10 +1430,10 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| deploy(tokenInfo: KIP17DeployParams, deployer: String): KIP17 | Deploys the KIP-17 token contract to the Klaytn. |
+| deploy(tokenInfo: KIP17DeployParams, deployer: String): KIP17 | Deploys the KIP-17 token contract to Klaytn. |
 | clone(): KIP17 | Clones the current KIP17 instance. |
-| clone(tokenAddress: String): KIP17 | Clones the current KIP17 instance and set address of contract to tokenAddress parameter. |
-| supportInterface(interfaceId: String): Boolean | Return true if this contract implements the interface defined by interfaceId. |
+| clone(tokenAddress: String): KIP17 | Clones the current KIP17 instance and sets address of the new contract instance to `tokenAddress` . |
+| supportInterface(interfaceId: String): Boolean | Returns true if this contract implements the interface defined by `interfaceId`. |
 | name(): String | Returns the name of the token. |
 | symbol(): String | Returns the symbol of the token. |
 | tokenURI(tokenId: String): String | Returns the URI for a given token id. |
@@ -1445,36 +1445,36 @@ None
 | getApproved(tokenId: BigInteger): Boolean | Returns the address who was permitted to transfer this token, or 'zero' address, if no address was approved. |
 | isApprovedForAll(owner: String, operator: String): Boolean | Returns true if an operator is approved to transfer all tokens that belong to the owner. |
 | isMinter(account: String): Boolean | Returns true if the given account is a minter who can issue new tokens in the current contract conforming to KIP-17. |
-| paused(): Boolean | Returns true if the contract is paused, and false otherwise. |
+| paused(): Boolean | Returns true if the contract is paused. It returns false otherwise. |
 | isPauser(account: String): Boolean | Returns true if the given account is a pauser who can suspend transferring tokens. |
 | approve(to: String, tokenId: BigInteger): Object | Approves another address to transfer a token of the given token id. |
-| approve(to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Approves another address to transfer a token of the given token id. |
-| setApprovalForAll(to: String, approved: Boolean): Object | Approves the given operator to, or disallow the given operator, to transfer all tokens of the owner. |
-| setApprovalForAll(to: String, approved: Boolean, sendParam: SendOptions): Object | Approves the given operator to, or disallow the given operator, to transfer all tokens of the owner. |
-| transferFrom(from: String, to: String, tokenId: BigInteger): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
-| transferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction |
-| safeTransferFrom(from: String, to: String, tokenId: BigInteger): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
-| safeTransferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
-| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: String): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
-| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the token of the given token id tokenId from the token owner's balance to another address. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| approve(to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Approves another address to transfer a token of the given token id. The transaction is formed based on `sendParam`. |
+| setApprovalForAll(to: String, approved: Boolean): Object | Approves or disallow the given operator to transfer all tokens of the owner based on `approved`. |
+| setApprovalForAll(to: String, approved: Boolean, sendParam: SendOptions): Object | Approves or disallow the given operator to transfer all tokens of the owner based on `approved`. The transaction is formed based on `sendParam`. |
+| transferFrom(from: String, to: String, tokenId: BigInteger): Object | Transfers the token specified by `tokenId` from the the owner to `to`. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| transferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Transfers the token specified by `tokenId` from the the owner to `to`. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. The transaction is formed based on `sendParam`. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger): Object | Safely transfers the token specified by `tokenId` from the owner to `to`. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Safely transfers the token specified by `tokenId` from the owner to `to`. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. The transaction is formed based on `sendParam`. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: String): Object | Safely transfers the token specified by `tokenId` from the owner to `to` with additional `data`. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. |
+| safeTransferFrom(from: String, to: String, tokenId: BigInteger, data: String, sendParam: SendOptions): Object | Safely transfers the token specified by `tokenId` from the owner to `to` with additional `data`. The address who was approved to send the token owner's token (the operator) or the token owner itself is expected to execute this token transferring transaction. The transaction is formed based on `sendParam`. |
 | addMinter(account: String): Object | Adds an account as a minter, who are permitted to mint tokens. |
-| addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. |
+| addMinter(account: String, sendParam: SendOptions): Object | Adds an account as a minter, who are permitted to mint tokens. The transaction is formed based on `sendParam`. |
 | renounceMinter(): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
-| renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. |
-| mint(to: String, tokenId: BigInteger): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
-| mint(to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Creates a token and assigns them to the given account. This method increases the total supply of this token. |
-| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
-| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String, sendParam: SendOptions): Object | Creates a token with the given uri and assigns them to the given account. This method increases the total supply of this token. |
+| renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. The transaction is formed based on `sendParam`. |
+| mint(to: String, tokenId: BigInteger): Object | Creates a token and assigns it to the given account `to`. This method increases the total supply of the contract. |
+| mint(to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Creates a token and assigns it to the given account `to`. This method increases the total supply of the contract. The transaction is formed based on `sendParam`. |
+| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String): Object | Creates a token with the given uri and assigns it to the given account `to`. This method increases the total supply of the contract. |
+| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String, sendParam: SendOptions): Object | jCreates a token with the given uri and assigns it to the given account `to`. This method increases the total supply of the contract. The transaction is formed based on `sendParam`. |
 | burn(tokenId: BigInteger): Object | Destroys the token of the given token id. |
-| burn(tokenId: BigInteger, sendParam: SendOptions): Object | Destroys the token of the given token id. |
+| burn(tokenId: BigInteger, sendParam: SendOptions): Object | Destroys the token of the given token id. The transaction is formed based on `sendParam`. |
 | pause(): Object | Suspends functions related to sending tokens. |
-| pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. |
+| pause(sendParam: SendOptions): Object | Suspends functions related to sending tokens. The transaction is formed based on `sendParam`. |
 | unpause(): Object | Resumes the paused contract. |
-| unpause(sendParam: SendOptions): Object | Resumes the paused contract. |
+| unpause(sendParam: SendOptions): Object | Resumes the paused contract. The transaction is formed based on `sendParam`. |
 | addPauser(account: String): Object | Adds an account as a pauser that has the right to suspend the contract. |
-| addPauser(account: String, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. |
+| addPauser(account: String, sendParam: SendOptions): Object | Adds an account as a pauser that has the right to suspend the contract. The transaction is formed based on `sendParam`. |
 | renouncePauser(): Object | Renounces the right to pause the contract. |
-| renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. |
+| renouncePauser(sendParam: SendOptions): Object | Renounces the right to pause the contract. The transaction is formed based on `sendParam`. |
 
 #### KIP17DeployParams
 
@@ -1491,13 +1491,13 @@ None
 
 None
 
-### Utils Layer Class Diagram
+### Utils Layer
 
 The Utils layer provides utility functions.
 
 ![0811Utils](https://user-images.githubusercontent.com/32922423/89860605-d4f0e080-dbde-11ea-86e3-8d77d66ebb4a.png)
 
-The Utils class provides basic utility functions required when using Caver, and also converting functions based on `KlayUnit`.
+The Utils class provides basic utility functions required when using Caver, and it also provides converting functions based on `KlayUnit`.
 
 #### Utils
 
@@ -1514,15 +1514,15 @@ The Utils class provides basic utility functions required when using Caver, and 
 | Method | Description |
 | ----------- | ----------- |
 | isAddress(address: String): Boolean | Checks if a given string is a valid Klaytn address. It will also check the checksum if the address has upper and lowercase letters. |
-| isValidPrivateKey(key: String): Boolean | Returns true if privateKey is valid, otherwise it returns false. |
-| isKlaytnWalletKey(key: String): Boolean | Returns true if key is in KlaytnWalletKey format, otherwise it returns false. |
-| isValidPublicKey(key: String): Boolean | Returns true if publicKey is valid, otherwise it returns false. |
-| compressPublicKey(key: String): String | Compresses the uncompressed public key. |
-| decompressPublicKey(key: String): String | Decompresses the compressed public key. |
-| hashMessage(message: String): String | Hashes message with Klaytn specific prefix: `keccak256("\x19Klaytn Signed Message:\n" + len(message) + message))` |
-| parseKlaytnWalletKey(key: String): String[] | Parses KlaytnWalletKey string to an array which includes "private key", "type", "address". |
-| isHex(str: String): boolean | Checks if a given string is a HEX string. |
-| isHexStrict(str: String): boolean | Checks if a given string is a HEX string. Difference to caver.utils.isHex is that it expects HEX to be prefixed with 0x. |
+| isValidPrivateKey(key: String): Boolean | Returns true if the given string is a valid private key. Otherwise, it returns false. |
+| isKlaytnWalletKey(key: String): Boolean | Returns true if the given string is a valid KlaytnWalletKey. Otherwise, it returns false. |
+| isValidPublicKey(key: String): Boolean | Returns true if the given string is a valid public key. Otherwise, it returns false. |
+| compressPublicKey(key: String): String | Compresses the uncompressed public key and returns the compressed public key. |
+| decompressPublicKey(key: String): String | Decompresses the compressed public key and returns the uncompressed public key. |
+| hashMessage(message: String): String | Hashes the given lmessage with the Klaytn-specific prefix: `keccak256("\x19Klaytn Signed Message:\n" + len(message) + message))` |
+| parseKlaytnWalletKey(key: String): String[] | Parses the givein KlaytnWalletKey string to an array which includes "private key", "type", "address". |
+| isHex(str: String): boolean | Checks if a given string is a hex string. |
+| isHexStrict(str: String): boolean | Checks if a given string is a hex string. Difference to `isHex` is that it expects the string to be prefixed with 0x. |
 | addHexPrefix(str: String): String | Returns a 0x-prefixed hex string. If the input is already 0x-prefixed or a non-hex string, the input value is returned as-is. |
 | stripHexPrefix(str: String): String | Returns the result with 0x prefix stripped from input. |
 | convertToPeb(num: String, unit: String): String | Converts any KLAY value into peb. |
@@ -1534,7 +1534,7 @@ The Utils class provides basic utility functions required when using Caver, and 
 
 #### KlayUnit
 
-`KlayUnit` is defined as the [unit used in Klaytn](https://docs.klaytn.com/klaytn/design/klaytn-native-coin-klay#units-of-klay) as Enumerated type. Each unit defines the unit's `name` and `pebFactor`. `pebFactor` is used when converting to peb.
+`KlayUnit` is defined as the [unit used in Klaytn](https://docs.klaytn.com/klaytn/design/klaytn-native-coin-klay#units-of-klay) as an enumerated type. Each unit defines the unit's `name` and `pebFactor`. `pebFactor` is used when converting the value to peb.
 
 ##### Variable description
 
@@ -1553,7 +1553,7 @@ The Utils class provides basic utility functions required when using Caver, and 
 | GKLAY: Object | unit: 'GKLAY', pebFactor: 27 |
 | TKLAY: Object | unit: 'TKLAY', pebFactor: 30 |
 
-### Example of the source code
+### Example Usage of the Common Architecture
 
 In this chapter, the pseudocode for sending a transaction using the SDK that implements the common architecture is explained.
 
@@ -1565,27 +1565,27 @@ output: receipt of value transfer transaction
 keystore <- readFile('./keystore.json')
 keyring <- decryptKeystore(keystore, password)
 
-// Add to in-memory wallet
+// Add the keyring to the in-memory wallet
 addToTheWallet(keyring)
 
-// Create value transfer transaction
+// Create a value transfer transaction
 vt <- createValueTransferTransaction(from, to, value, gas)
 
-// Sign to the transaction
+// Sign the transaction
 signed <- sign(from, vt)
 
-// Send transaction to the Klaytn blockchain platform (Klaytn)
+// Send the transaction to Klaytn
 receipt <- sendRawTransaction(signed)
 print receipt
 ```
 
 ## Rationale
 
-While designing the common architecture, I tried to use the concept used in Klaytn in the SDK as much as possible. In addition, in order to provide the functions of the existing Caver, it was designed not to break the existing structure.
+While designing the common architecture, we tried to use the concept used in Klaytn as much as possible.
 
 ## Backwards Compatibility
 
-There is no compatibility problem. When the common architecture is implemented in the existing Klaytn SDK, Caver (caver-js, caver-java), the existing functions should be provided as it is.
+The backward compatibility is preserved. That is, previous implementation using Klaytn SDKs will work without any changes.
 
 ## Test Cases
 
@@ -1615,9 +1615,9 @@ Copyright and related rights waived via [CC0](https://creativecommons.org/public
 [kip-7]: ./kip-7.md
 [kip-17]: ./kip-17.md
 [klay]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
-[node api of klay namespace]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
+[klay namespace of the node api]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
 [net]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
-[node api of net namespace]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
+[net namespace of the node api]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
 [json-rpc apis]: https://docs.klaytn.com/bapp/json-rpc/api-references
 [klay_logs]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay/filter#klay_getlogs
 [klay_call]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay/transaction#klay_call
