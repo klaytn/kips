@@ -157,7 +157,7 @@ None
 | ----------- | ----------- |
 | publicKey: String | A public key string. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
