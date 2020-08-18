@@ -190,7 +190,7 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| threshold: int | A validation threshold. |
+| threshold: int | A validation threshold. To be a valid transaction, the transaction must contain valid signatures equal to or more than the threshold. |
 | weightedPublicKey: List&#60;WeightedPublicKey&#62; | A list of weighted public keys. |
 
 ##### Method description
