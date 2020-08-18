@@ -292,7 +292,7 @@ None
 | createWithAccountKeyWeightedMultiSig(address: String, publicKeys: String[], options: WeightedMultiSigOptions): Account | Creates and returns an Account instance which has AccountKeyWeightedMultiSig as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
 | createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List&#60;String[]&#62;): Account | Creates and returns an Account instance which has AccountKeyRoleBased as an accountKey. If multiple keys are used among the defined roles, options use the default value (threshold:1, weight of each key: 1). It throws an exception if the address string or public key strings are invalid. |
 | createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): Account | Creates and returns an Account instance which has AccountKeyRoleBased as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
-| getRLPEncodingAccountKey(): String | Return RLP-encoded string of AccountKey in Account instance. |
+| getRLPEncodingAccountKey(): String | Returns the RLP-encoded string of the account key in the Account instance. |
 
 ### Wallet Layer
 
