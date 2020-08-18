@@ -169,7 +169,7 @@ None
 
 #### AccountKeyFail
 
-`AccountKeyFail` is a class representing [AccountKeyFail](https://docs.klaytn.com/klaytn/design/accounts#accountkeyfail).
+`AccountKeyFail` is a class representing [AccountKeyFail](https://docs.klaytn.com/klaytn/design/accounts#accountkeyfail). It is used when all transactions sent from the account are expected to be failed.
 
 ##### Variables
 
