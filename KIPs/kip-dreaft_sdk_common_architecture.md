@@ -820,7 +820,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes an RLP-encoded FeeDelegatedAccountUpdate string, a raw transaction, and returns a FeeDelegatedAccountUpdate instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded FeeDelegatedAccountUpdate string. It throws an exception if the variables required for encoding are not defined. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedSmartContractDeploy
