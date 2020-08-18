@@ -709,7 +709,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): SmartContractDeploy | Decodes an RLP-encoded SmartContractDeploy string, a raw transaction, and returns a SmartContractDeploy instance. |
-| getRLPEncoding(): String | Returns an RLP-encoded SmartContractDeploy string. It throws an exception if the variables required for encoding are not defined. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. It throws an exception if the variables required for encoding are not defined. |
 
 #### SmartContractExecution
