@@ -284,7 +284,7 @@ None
 | create(address: String, pubKeys: String[], options: WeightedMultiSigOptions): Account | Generates an Account instance with an address and public key strings and options that defines threshold and weight of each key. |
 | create(address: String, roleBasedPubKeys: List&#60;String[]&#62;): Account | Creates an Account instance with an array of public keys defined for each role. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
 | create(address: String, roleBasedPubKeys: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): Account | Creates an Account instance with an array of public keys defined for each role and an array of options defined for each role. |
-| createFromRLPEncoding(address: String, rlpEncodedKey: String): Account | Creates an Account instance with an address and RLP-encoded string. It throws an exception if the RLP-encoded string is invalid. |
+| createFromRLPEncoding(address: String, rlpEncodedKey: String): Account | Creates and returns an Account instance with an address and RLP-encoded string. It throws an exception if the RLP-encoded string is invalid. |
 | createWithAccountKeyLegacy(address: String): Account | Creates an Account instance which has AccountKeyLegacy as an accountKey. It throws an exception if the address string is invalid. |
 | createWithAccountKeyPublic(address: String, publicKey: String): Account | Creates an Account instance which has AccountKeyPublic as an accountKey. It throws an exception if the address string or public key string is invalid. |
 | createWithAccountKeyFail(address: String): Account | Creates an Account instance which has AccountKeyFail as an accountKey. It throws an exception if the address string is invalid. |
