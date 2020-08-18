@@ -358,7 +358,7 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | copy(): AbstractKeyring | Duplicates the Keyring instance and returns it. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
 | sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using key(s) defined in role. Converts the type of chainId inputted as String into int and calls the sign function implemented in keyring. |
 | sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. |
-| getKlaytnWalletKey(): String | Returns KlaytnWalletKey string. getKlaytnWalletKey is implemented to throw exception by default in `AbstractKeyring`. In the case of `SingleKeyring` that can use KlaytnWalletKey format, getKlaytnWalletKey function must be overridden. |
+| getKlaytnWalletKey(): String | Returns the KlaytnWalletKey string. It throws an exception by default in `AbstractKeyring`. |
 | encrypt(password: String): Object | Encrypts a Keyring instance with keystore v4 format. |
 | encryptV3(password: String): Object | Encrypts a Keyring instance in the keystore v3 format. |
 | encryptV3(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v3 format. encryptV3 is implemented to throw exception by default in `AbstractKeyring`. In the case of `SingleKeyring` that can encrypt to keystore v3, encryptV3 function must be overridden. |
