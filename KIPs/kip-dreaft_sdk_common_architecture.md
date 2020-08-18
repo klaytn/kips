@@ -795,7 +795,7 @@ None
 | ----------- | ----------- |
 | to: String | The account address that will receive the transferred value. |
 | value: String | The amount of KLAY in peb to be transferred. |
-| input: String | Data attached to the transaction. The message should be passed to this attribute. |
+| input: String | Data attached to the transaction. The message can be passed to this attribute. |
 
 ##### Method description
 
