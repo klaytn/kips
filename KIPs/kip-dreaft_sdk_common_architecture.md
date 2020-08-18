@@ -18,13 +18,13 @@ created: 2020-07-02
   - [Terminology](#terminology)
   - [Overview of the Common Architecture](#overview-of-the-common-architecture)
   - [Layer Diagram of the Common Architecture](#layer-diagram-of-the-common-architecture)
-  - [Account Layer Class Diagram](#account-layer-class-diagram)
-  - [Wallet Layer Class Diagram](#wallet-layer-class-diagram)
-  - [Transaction Layer Class Diagram](#transaction-layer-class-diagram)
-  - [RPC Layer Class Diagram](#rpc-layer-class-diagram)
-  - [Contract, ABI, KCT Layer Class Diagram](#contract-abi-kct-layer-class-diagram)
-  - [Utils Layer Class Diagram](#utils-layer-class-diagram)
-- [Example of the source code](#example-of-the-source-code)
+  - [Account Layer](#account-layer)
+  - [Wallet Layer](#wallet-layer)
+  - [Transaction Layer](#transaction-layer)
+  - [RPC Layer](#rpc-layer)
+  - [Contract, ABI, KCT Layer](#contract-abi-kct-layer)
+  - [Utils Layer](#utils-layer)
+- [Example Usage of the Common Architecture](#example-usage-of-the-common-architecture)
 - [Rationale](#rationale)
 - [Backwards Compatibility](#backwards-compatibility)
 - [Test Cases](#test-cases)
@@ -102,7 +102,7 @@ Finally, the `Utils` layer contains the `Utils` class that provides utility func
 
 From the next chapter, each layer is described in detail.
 
-### Account Layer Class Diagram
+### Account Layer
 
 The `Account` layer provides functionality related to updating the [AccountKey] of the Klaytn account.
 
@@ -186,14 +186,14 @@ None
 
 `AccountKeyWeightedMultiSig` is a class representing [AccountKeyWeightedMultiSig](https://docs.klaytn.com/klaytn/design/accounts#accountkeyweightedmultisig). It is an account key type containing a threshold and WeightedPublicKeys which contains a list whose item is composed of a public key and its weight.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | threshold: int | A validation threshold. To be a valid transaction, the transaction must contain valid signatures equal to or more than the threshold. |
 | weightedPublicKey: List&#60;WeightedPublicKey&#62; | A list of weighted public keys. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -205,14 +205,14 @@ None
 
 `WeightedPublicKey` is a class storing a public key with its weight. It is used for AccountKeyWeightedMultiSig.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | publicKey: String | A public key string. |
 | weight: int | A weight of the public key. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -220,14 +220,14 @@ None
 
 `WeightedKeyMultiSigOptions` is a class that defines the threshold and the weight of each public key for AccountKeyWeightedMultiSig.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | threshold: int | A validation threshold. |
 | weighted: List&#60;int&#62; | A list of weights of public keys. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -235,13 +235,13 @@ None
 
 `AccountKeyRoleBased` is a class representing [AccountKeyRoleBased](https://docs.klaytn.com/klaytn/design/accounts#accountkeyrolebased). It is used to set different key pairs to different roles in an account.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | accountKeys: List&#60;IAccountKey&#62; | A list of keys to be used for each role. An item of the list represents a role. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -254,11 +254,11 @@ None
 
 `AccountKeyDecoder` provides the function to decode RLP-encoded accountKey strings.
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -268,14 +268,14 @@ None
 
 `Account` is a class that represents a Klaytn account. It contains information needed to update the AccountKey of the account in the Klaytn.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | address: String | The address of an account to be updated. |
 | accountKey: IAccountKey | The new accountKey to be used in the given account. This can be an instance of [AccountKeyLegacy](#accountkeylegacy), [AccountKeyPublic](#accountkeypublic), [AccountKeyFail](#accountkeyfail), [AccountKeyWeightedMultiSig](#accountkeyweightedmultisig) and [AccountKeyRoleBased](#accountkeyrolebased). |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -320,13 +320,13 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `PrivateKey` is a class that contains a private key string.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | privateKey: String | The private key string. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -340,41 +340,41 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `AbstractKeyring` is an abstract class of keyring classes. It stores the account address and private key(s). All keyring classes extends the `AbstractKeyring` class.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | address: String | The address of the account. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
 | sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role, and it returns the signature. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
 | sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using the key(s) specified by the role and the index, and it returns the signature. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
-| signMessage(message: String, role: int): MessageSigned | Signs the transaction using the key(s) specified by the role, and it returns the signature. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
-| signMessage(message: String, role: int, index: int): MessageSigned | Signs the transaction using the key(s) specified by the role and the index, and it returns the signature. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
-| encrypt(password: String, options: Object): Object | Encrypts a Keyring instance in the [keystore v4 format](http://kips.klaytn.com/KIPs/kip-3). It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
-| copy(): AbstractKeyring | Duplicates the Keyring instance and returns it. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
 | sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role and returns the signatures. |
 | sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. |
-| getKlaytnWalletKey(): String | Returns the KlaytnWalletKey string. It throws an exception by default in `AbstractKeyring`. |
+| signMessage(message: String, role: int): MessageSigned | Signs the transaction using the key(s) specified by the role, and it returns the signature. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| signMessage(message: String, role: int, index: int): MessageSigned | Signs the transaction using the key(s) specified by the role and the index, and it returns the signature. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
 | encrypt(password: String): Object | Encrypts a Keyring instance in the keystore v4 format. |
+| encrypt(password: String, options: Object): Object | Encrypts a Keyring instance in the [keystore v4 format](http://kips.klaytn.com/KIPs/kip-3). In options, the encrypt method (scrypt, pbkdf2, etc.) and parameters used for encrypting (dklen, salt, etc.) can be defined. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
 | encryptV3(password: String): Object | Encrypts a Keyring instance in the keystore v3 format. |
-| encryptV3(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v3 format. |
+| encryptV3(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v3 format. In options, the encrypt method (scrypt, pbkdf2, etc.) and parameters used for encrypting (dklen, salt, etc.) can be defined. |
+| copy(): AbstractKeyring | Duplicates the Keyring instance and returns it. It is defined as an abstract method, and it must be implemented in all keyring classes that extend `AbstractKeyring`. |
+| getKlaytnWalletKey(): String | Returns the KlaytnWalletKey string. It throws an exception by default in `AbstractKeyring`. |
 | isDecoupled(): Boolean | Returns true if keyring has a decoupled key. |
 
 #### SingleKeyring
 
 `SingleKeyring` is a class that stores the account address and a private key.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | key: PrivateKey | An instance of `PrivateKey` containing one private key. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -386,13 +386,13 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `MultipleKeyring` is a class that stores an account address and multiple private keys.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | keys: List&#60;PrivateKey&#62; | An array of PrivateKey instances containing one private key. `keys` can contain up to ten PrivateKey instances. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -406,13 +406,13 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 `RoleBasedKeyring` is a class that stores the account address and the private keys for each role in the form of an array.
 `RoleBasedKeyring` defines keys which are implemented as a two-dimensional array (empty keys looks like [ [], [], [] ]) that can include multiple keys for each role. The each array element defines the private key(s) for roleTransactionKey, roleAccountUpdateKey, and roleFeePayerKey, respectively.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | keys: List&#60;List&#60;PrivateKey&#62;&#62; | A two-dimensional array that defines the keys used for each role. Each role includes PrivateKey instance(s). The each array element defines the private key(s) for roleTransactionKey, roleAccountUpdateKey, and roleFeePayerKey, respectively. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -425,7 +425,7 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `SignatureData` is a class that contains a signature string.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -433,7 +433,7 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | r: String | ECDSA signature r. |
 | s: String | ECDSA signature s. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -441,7 +441,7 @@ None
 
 `MessageSigned` stores the result of signing a message.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -449,7 +449,7 @@ None
 | signatureData: List<SignatureData> | An array of signatures. |
 | message: String | The original message used for signing. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -457,11 +457,11 @@ None
 
 `KeyringFactory` provides functions to create Keyring (SingleKeyring, MultipleKeyring, and RoleBasedKeyring) instances.
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -469,10 +469,10 @@ None
 | generate(entropy: String): SingleKeyring | Generates a SingleKeyring instance with a randomly generated private key based on the entropy. |
 | generateSingleKey(): String | Generates a private key string. |
 | generateSingleKey(entropy: String): String | Generates a private key string based on the entropy. |
-| generateMultipleKey(num: int): List&#60;String&#62; | Generates private key strings. |
+| generateMultipleKeys(num: int): List&#60;String&#62; | Generates private key strings. |
 | generateMultipleKeys(num: int, entropy: String): List&#60;String&#62; | Generates private key strings based on the entropy. |
 | generateRoleBasedKeys(numArr: List&#60;int&#62;): List&#60;List&#60;String&#62;&#62; | Generates and returns private keys for each role. The number of keys for each role is defined in numArr. |
-| generateRoleBasedKey(numArr: List&#60;int&#62;, entropy: String): List&#60;List&#60;String&#62;&#62; | Generates and returns private keys for each role based on the entropy. The number of keys for each role is defined in numArr. |
+| generateRoleBasedKeys(numArr: List&#60;int&#62;, entropy: String): List&#60;List&#60;String&#62;&#62; | Generates and returns private keys for each role based on the entropy. The number of keys for each role is defined in numArr. |
 | create(address: String, key: String): SingleKeyring | Creates and returns a SingleKeyring instance with an address and a private key string. It throws an exception if the address string or private key string is invalid. |
 | create(address: String, keys: String[]): MultipleKeyring | Creates a MultipleKeyring instance with an address and private key strings. It throws an exception if the address string or private key strings are invalid. |
 | create(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance with an address and private key strings by roles. It throws an exception if the address string or private key strings are invalid. |
@@ -487,14 +487,14 @@ None
 
 `KeyringContainer` is a class that contains SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances based on the address.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | length: int | The number of keyrings in the `KeyringContainer` instance. |
 | addressKeyringMap: Map<String, AbstractKeyring> | A Map that has an account address as a key and a Keyring instance corresponding to that address as a value. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -505,14 +505,14 @@ None
 | newKeyring(address: String, roleBasedPrivateKeyArray: List&#60;List&#60;String&#62;&#62;): AbstractKeyring | Creates a `RoleBasedKeyring` instance with given parameters and adds it to the `KeyringContainer` instance. It returns the newly added keyring instance. It throws an exception if the address string or private key strings are invalid. |
 | updateKeyring(keyring: AbstractKeyring): AbstractKeyring | Replaces the keyring instance having the same address with the given keyring in the parameter. It throws an exception if the matching keyring is not found. |
 | getKeyring(address: String): AbstractKeyring | Returns the keyring instance corresponding to the address. |
-| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
-| sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at the index in the keyring. It throws an exception if the matched keyring cannot be found in the `KeyringContainer` instance |
-| sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
-| sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring associated with the given address in  the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
+| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the sender of the actual transaction do not match. |
+| sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at the index in the keyring. It throws an exception if the matched keyring cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the sender of the actual transaction do not match. |
+| sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the sender of the actual transaction do not match. |
+| sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the sender of the actual transaction do not match. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring associated with the given address in  the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
 | signMessage(address: String, data: String, role: int): MessageSigned | Signs the message with the Klaytn-specific prefix using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
 | signMessage(address: String, data: String, role: int, index: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
 | remove(address: String): Boolean | Deletes the keyring associated with the given address from the `KeyringContainer` instance. |
@@ -537,7 +537,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the `decode`
 
 `AbstractTransaction` is an abstract class that represents transaction types defined in [Basic Transaction](https://docs.klaytn.com/klaytn/design/transactions/basic). All basic transaction classes extends `AbstractTransaction`.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -546,10 +546,10 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the `decode`
 | nonce: String | A value used to uniquely identify a sender’s transaction. If omitted when creating a transaction, [klay_getTransactionCount](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/account#klay_gettransactioncount) will be used to set an appropriate nonce. |
 | gas: String | The maximum amount of the transaction fee allowed to use. |
 | gasPrice: String | A multiplier to get how much the sender will pay in KLAY. If omitted when create a transaction, [klay_gasPrice](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/config#klay_gasprice) will be used to set this value. |
-| signatures: List<String> | An array of signatures. The result of signing the transaction is appended to this signatures. When appending a signature, duplicate signatures are not appended. |
+| signatures: List<SignatureData> | An array of signatures. The result of signing the transaction is appended to this signatures. When appending a signature, duplicate signatures are not appended. |
 | chainId: String | The chain id of the Klaytn network. If omitted when creating a transaction, [klay_chainID](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/config#klay_chainid) will be used to set this value. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -574,14 +574,14 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the `decode`
 
 `AbstractFeeDelegatedTransaction` is an abstract class that represents transaction types defined in [fee delegation transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation). `AbstractFeeDelegatedTransaction` is implemented by extending `AbstractTransaction`. All fee delegation transaction classes are implemented by extending `AbstractFeeDelegatedTransaction`.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | feePayer: String | The address of the fee payer. |
-| feePayerSignatures: List<String> | An array of signatures of fee payers. The result of signing the transaction as a fee payer is appended to this array. If the duplicated fee payer signature is added, it fails. |
+| feePayerSignatures: List<SignatureData> | An array of signatures of fee payers. The result of signing the transaction as a fee payer is appended to this array. If the duplicated fee payer signature is added, it fails. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -600,13 +600,13 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the `decode`
 
 `AbstractFeeDelegatedWithRatioTransaction` is an abstract class that represents transaction types defined in [partial fee delegation transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation). `AbstractFeeDelegatedWithRatioTransaction` is implemented by extending `AbstractFeeDelegatedTransaction`. All partial fee delegation transaction classes extends `AbstractFeeDelegatedWithRatioTransaction`.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | feeRatio: String | The ratio that constitutes the proportion of the transaction fee the fee payer will be burdened with. The valid range of this ratio is between 1 and 99. The ratio of negatives, 0, or 100 and above are not allowed. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -614,7 +614,7 @@ None
 
 `LegacyTransaction` represents a [legacy transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypelegacytransaction). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -622,7 +622,7 @@ None
 | input: String | Data attached to the transaction. It is used for smart contract deployment/execution. |
 | value: String | The amount of KLAY in peb to be transferred. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -636,14 +636,14 @@ None
 
 `ValueTransfer` represents a [value transfer transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypevaluetransfer). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | to: String | The account address that will receive the transferred value. |
 | value: String | The amount of KLAY in peb to be transferred. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -655,7 +655,7 @@ None
 
 `ValueTransferMemo` represents a [value transfer memo transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypevaluetransfermemo). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -663,7 +663,7 @@ None
 | value: String | The amount of KLAY in peb to be transferred. |
 | input: String | Data attached to the transaction. The message can be passed to this attribute. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -675,13 +675,13 @@ None
 
 `AccountUpdate` represents an [account update transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypeaccountupdate). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | account: Account | An [Account](#account) instance that contains the information needed to update the given account. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -693,7 +693,7 @@ None
 
 `SmartContractDeploy` represents a [smart contract deploy transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypesmartcontractdeploy). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -703,7 +703,7 @@ None
 | humanReadable: String | This must be "false" since human-readable address is not supported yet. If the value is not defined by user, it is defined with the default value "false". |
 | codeFormat: String | The code format of the smart contract. The supported value, for now, is "EVM" only. If the value is not defined by user, it is defined with the default value "EVM". This value is converted to a hex string after the assignment (e.g., EVM is converted to 0x0). |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -715,7 +715,7 @@ None
 
 `SmartContractExecution` represents a [smart contract execution transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypesmartcontractexecution). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -723,7 +723,7 @@ None
 | value: String | The amount of KLAY in peb to be transferred. If the value is not defined by user, the value is defined with the default value "0x0". |
 | input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -735,11 +735,11 @@ None
 
 `Cancel` represents a [cancel transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypecancel). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -751,13 +751,13 @@ None
 
 `ChainDataAnchoring` represents a [chain data anchoring transaction](https://docs.klaytn.com/klaytn/design/transactions/basic#txtypechaindataanchoring). This class is implemented by extending [AbstractTransaction](#abstracttransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | input: String | Data to be anchored. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -769,14 +769,14 @@ None
 
 `FeeDelegatedValueTransfer` represents a [fee delegated value transfer transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedvaluetransfer). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | to: String | The account address that will receive the transferred value. |
 | value: String | The amount of KLAY in peb to be transferred. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -788,7 +788,7 @@ None
 
 `FeeDelegatedValueTransferMemo` represents a [fee delegated value transfer memo transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedvaluetransfermemo). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -796,7 +796,7 @@ None
 | value: String | The amount of KLAY in peb to be transferred. |
 | input: String | Data attached to the transaction. The message can be passed to this attribute. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -808,13 +808,13 @@ None
 
 `FeeDelegatedAccountUpdate` represents a [fee delegated account update transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedaccountupdate). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | account: Account | An [Account](#account) instance that contains the information needed to update the given account. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -826,7 +826,7 @@ None
 
 `FeeDelegatedSmartContractDeploy` represents a [fee delegated smart contract deploy transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedsmartcontractdeploy). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -836,7 +836,7 @@ None
 | humanReadable: String | This must be "false" since human-readable address is not supported yet. If the value is not defined by user, it is defined with the default value "false". |
 | codeFormat: String | The code format of the smart contract. The supported value, for now, is "EVM" only. If it is not defined by user, it is defined with the default value "EVM". This value is converted to a hex string after the assignment(e.g., EVM is converted to 0x0). |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -848,7 +848,7 @@ None
 
 `FeeDelegatedSmartContractExecution` represents a [fee delegated smart contract execution transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedsmartcontractexecution). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -856,7 +856,7 @@ None
 | value: String | The amount of KLAY in peb to be transferred. If the value is not defined by user, the value is defined with the default value "0x0". |
 | input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -868,11 +868,11 @@ None
 
 `FeeDelegatedCancel` represents a [fee delegated cancel transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedcancel). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -884,13 +884,13 @@ None
 
 `FeeDelegatedChainDataAnchoring` represents a [fee delegated chain data anchoring transaction](https://docs.klaytn.com/klaytn/design/transactions/fee-delegation#txtypefeedelegatedchaindataanchoring). This class is implemented by extending [AbstractFeeDelegatedTransaction](#abstractfeedelegatedtransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | input: String | Data to be anchored. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -902,14 +902,14 @@ None
 
 `FeeDelegatedValueTransferWithRatio` represents a [fee delegated value transfer with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedvaluetransferwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | to: String | The account address that will receive the transferred value. |
 | value: String | The amount of KLAY in peb to be transferred. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -921,7 +921,7 @@ None
 
 `FeeDelegatedValueTransferMemoWithRatio` represents a [fee delegated value transfer memo with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedvaluetransfermemowithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -929,7 +929,7 @@ None
 | value: String | The amount of KLAY in peb to be transferred. |
 | input: String | Data attached to the transaction. The message can be passed to this attribute. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -941,13 +941,13 @@ None
 
 `FeeDelegatedAccountUpdateWithRatio` represents a [fee delegated account update with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedaccountupdatewithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | account: Account | An [Account](#account) instance that contains the information needed to update the given account. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -959,7 +959,7 @@ None
 
 `FeeDelegatedSmartContractDeployWithRatio` represents a [fee delegated smart contract deploy with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedsmartcontractdeploywithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -969,7 +969,7 @@ None
 | humanReadable: String | This must be "false" since human-readable address is not supported yet. If the value is not defined by user, it is defined with the default value "false". |
 | codeFormat: String | The code format of smart contract code. The supported value, for now, is "EVM" only. If it is not defined by user, it is defined with the default value "EVM". This value is converted to a hex string after the assignment(e.g., EVM is converted to 0x0). |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -981,7 +981,7 @@ None
 
 `FeeDelegatedSmartContractExecutionWithRatio` represents a [fee delegated smart contract execution with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedsmartcontractexecutionwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -989,7 +989,7 @@ None
 | value: String | The amount of KLAY in peb to be transferred. If the value is not defined by user, it is defined with the default value "0x0". |
 | input: String | Data attached to the transaction, used for transaction execution. The input is an encoded string that indicates a function to call and parameters to be passed. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1001,11 +1001,11 @@ None
 
 `FeeDelegatedCancelWithRatio` represents a [fee delegated cancel with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedcancelwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1017,13 +1017,13 @@ None
 
 `FeeDelegatedChainDataAnchoringWithRatio` represents a [fee delegated chain data anchoring with ratio transaction](https://docs.klaytn.com/klaytn/design/transactions/partial-fee-delegation#txtypefeedelegatedchaindataanchoringwithratio). This class is implemented by extending [AbstractFeeDelegatedWithRatioTransaction](#abstractfeedelegatedwithratiotransaction).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | input: String | Data to be anchored. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1035,11 +1035,11 @@ None
 
 `TransactionDecoder` provides the function to decode an RLP-encoded string of a transaction class.
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1049,11 +1049,11 @@ None
 
 `TransactionHasher` provides the functions to calculate the hash of a transaction for signing.
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1072,11 +1072,11 @@ The `RPC` layer provides the functions to use the Node APIs. The `RPC` is a clas
 
 `Klay` provides JSON-RPC call with "klay" namespace.
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1177,11 +1177,11 @@ None
 
 `Net` provides JSON-RPC call with "net" namespace.
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1210,7 +1210,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 `Contract` is a class that allows users to easily interact with smart contracts on Klaytn. It can deploy a smart contract to Klaytn or execute a smart contract deployed on Klaytn.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -1220,7 +1220,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | events: Map&#60;String:[ContractEvent](#contractevent)&#62; | The events of the smart contract. When a contract receives an abi from the user, it parses the abi, makes events that can be fired into `ContractEvent`, and stores them into this variable. |
 | defaultSendOptions: SendOptions | An object that contains information to be used as default values when a user sends a transaction that changes the state of a smart contract. The values (`from`, `gas`, and `value`) can be optionally defined in SendOptions. When a user calls a method to send a transaction, the user can optionally define sendOptions. If the user defines sendOptions separately when calling the function, the parameter in the function call has higher priority. The conflicting attributes in this variable will be ignored in that case. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1236,7 +1236,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 `ContractMethod` is a class that contains abi information of a smart contract function.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -1246,7 +1246,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | signature: String | The [function signature](https://docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.contract#cf-function-signature-function-selector) (function selector). The first four bytes of the input data for specifying the function to be called (or executed). It is the first (left, high-order in big-endian) four bytes of the Keccak-256 (SHA-3) hash of the signature of the function. |
 | nextMethods: List&#60;ContractMethod&#62; | nextMethods stores functions with the same name implemented in a smart contract. If the parameter passed by the user is different from the input of this contractMethod, it traverses the contractMethods defined in nextMethods to find the contractMethod to be called. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1260,7 +1260,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 
 `ContractEvent` is a class that contains abi information of a smart contract event.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -1268,7 +1268,7 @@ deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all function
 | inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the event. In the list, each input of the event is defined as ContractIOType. This value is used to convert the parameter to a topic. |
 | signature: String | The event signature which is the sha3 hash of the event name including input parameter types. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -1276,7 +1276,7 @@ None
 
 `ContractIOType` is a class used when defining the input and output of the smart contract.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -1284,7 +1284,7 @@ None
 | type: String | The type of the value. |
 | indexed: Boolean | Whether indexed or not, the input values of the contract event are separately defined as indexed. If indexed is not separately used, there is no need to define this. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -1292,7 +1292,7 @@ None
 
 `SendOptions` is a class that defines values required when sending a transaction. When executing a method that triggers a transaction, the user can use it to define from, gas or value.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -1300,7 +1300,7 @@ None
 | gas: String | The maximum amount of transaction fee that the transaction is allowed to use. |
 | value: String | The value in peb to be transferred to the address of the smart contract by this transaction. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -1308,14 +1308,14 @@ None
 
 `ContractDeployParams` is a class that defines the byte code and constructor parameters required when deploying a smart contract.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | byteCode: String | The byte code of the contract. |
 | args: List&#60;any&#62; | The arguments that get passed to the constructor on deployment. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -1323,11 +1323,11 @@ None
 
 `ABI` provides the functions to encode/decode parameters with ABI.
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1348,11 +1348,11 @@ None
 
 `KIP7` is a class to easily interact with Klaytn's KIP-7 token contract. This is implemented by extending [Contract](#contract).
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1406,7 +1406,7 @@ None
 
 `KIP7DeployParams` is a class that defines the token informations required when deploying a KIP-7 token contract.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
@@ -1415,7 +1415,7 @@ None
 | decimals: int | The number of decimal places the token uses. |
 | initialSupply: BigInteger | The total amount of token to be supplied initially. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -1423,11 +1423,11 @@ None
 
 `KIP17` is a class to easily interact with Klaytn's KIP-17 token contract. This is implemented by extending [Contract](#contract).
 
-##### Variable description
+##### Variables
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1481,14 +1481,14 @@ None
 
 `KIP17DeployParams` is a class that defines the token informations required when deploying a KIP-17 token contract.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | name: String | The name of the token. |
 | symbol: String | The symbol of the token. |
 
-##### Method description
+##### Methods
 
 None
 
@@ -1504,13 +1504,13 @@ The Utils class provides basic utility functions required when using Caver, and 
 
 `Utils` provides the utility functions.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
 | klayUnit: KlayUnit | Unit of KLAY used in Klaytn. |
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
@@ -1537,7 +1537,7 @@ The Utils class provides basic utility functions required when using Caver, and 
 
 `KlayUnit` is defined as the [unit used in Klaytn](https://docs.klaytn.com/klaytn/design/klaytn-native-coin-klay#units-of-klay) as an enumerated type. Each unit defines the unit's `name` and `pebFactor`. `pebFactor` is used when converting the value to peb.
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
