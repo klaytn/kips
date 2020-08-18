@@ -136,7 +136,7 @@ None
 
 `AccountKeyLegacy` is a class representing [AccountKeyLegacy](https://docs.klaytn.com/klaytn/design/accounts#accountkeylegacy).
 
-##### Variable description
+##### Variables
 
 None
 
