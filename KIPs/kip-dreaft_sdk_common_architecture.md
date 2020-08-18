@@ -294,7 +294,7 @@ None
 | createWithAccountKeyRoleBased(address: String, roleBasedPubKeys: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): Account | Creates and returns an Account instance which has AccountKeyRoleBased as an accountKey. It throws an exception if the address string, public key strings or options are invalid. |
 | getRLPEncodingAccountKey(): String | Return RLP-encoded string of AccountKey in Account instance. |
 
-### Wallet Layer Class Diagram
+### Wallet Layer
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
 
