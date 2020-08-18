@@ -140,7 +140,7 @@ None
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
