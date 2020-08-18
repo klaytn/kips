@@ -233,7 +233,7 @@ None
 
 #### AccountKeyRoleBased
 
-`AccountKeyRoleBased` is a class representing [AccountKeyRoleBased](https://docs.klaytn.com/klaytn/design/accounts#accountkeyrolebased).
+`AccountKeyRoleBased` is a class representing [AccountKeyRoleBased](https://docs.klaytn.com/klaytn/design/accounts#accountkeyrolebased). It is used to set different key pairs to different roles in an account.
 
 ##### Variable description
 
