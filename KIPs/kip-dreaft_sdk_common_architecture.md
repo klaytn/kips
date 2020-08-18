@@ -63,6 +63,8 @@ With the common architecture, we want to achieve two goals:
 | Account | A data structure containing information like balance, nonce, public key(s), etc. Note that the public key(s) of the account can be changed in Klaytn because the public key(s) and the account address are decoupled. Please refer to [klaytn account] for more detail.  |
 | Account key | A data structure representing various Klaytn account key types. Please refer to [accountkey] for more detail. |
 | Keyring | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction. |
+| Keyring container | A data structure containing multiple keyrings. |
+| Wallet | A synonym of the keyring container. A wallet is a data structure containing multiple keyrings. |
 | [Transaction](https://docs.klaytn.com/klaytn/design/transactions#transactions-overview) | A data structure sent between nodes that changes the state of the blockchain. Klaytn provides [multiple transaction types] that empower transactions with new capabilities and optimizations for memory footprint and performance. |
 | [JSON-RPC](https://www.jsonrpc.org/specification) | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as data format. |
 | Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy a smart contract or execute a smart contract that has already been deployed to Klaytn through a transaction. |
