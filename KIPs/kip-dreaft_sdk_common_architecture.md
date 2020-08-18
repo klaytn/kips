@@ -171,7 +171,7 @@ None
 
 `AccountKeyFail` is a class representing [AccountKeyFail](https://docs.klaytn.com/klaytn/design/accounts#accountkeyfail).
 
-##### Variable description
+##### Variables
 
 None
 
