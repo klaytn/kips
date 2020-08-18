@@ -813,7 +813,7 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| account: Account | An [Account](#account) instance that contains the information needed to update your account. |
+| account: Account | An [Account](#account) instance that contains the information needed to update the given account. |
 
 ##### Method description
 
