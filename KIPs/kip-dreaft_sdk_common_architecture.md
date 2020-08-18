@@ -802,7 +802,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes an RLP-encoded FeeDelegatedValueTransferMemo string, a raw transaction, and returns a FeeDelegatedValueTransfer instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): Stirng | Returns an RLP-encoded FeeDelegatedValueTransferMemo string. It throws an exception if the variables required for encoding are not defined. |
+| getRLPEncoding(): Stirng | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedAccountUpdate
