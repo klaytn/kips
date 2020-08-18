@@ -763,7 +763,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ChainDataAnchoring | Decodes an RLP-encoded string of ChainDataAnchoring and returns a `ChainDataAnchoring` instance. It throws an exception if the decoding is failed. |
-| getRLPEncoding(): String | Returns an RLP-encoded ChainDataAnchoring string. It throws an exception if the variables required for encoding are not defined. |
+| getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
 #### FeeDelegatedValueTransfer
