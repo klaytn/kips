@@ -247,7 +247,7 @@ None
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): AccountKeyRoleBased | Decodes an RLP-encoded string of AccountKeyRoleBased and returns an `AccountKeyRoleBased` instance. It throws an exception if the decoding is failed. |
 | fromRoledPublicKeysAndOptions(pubArray: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role and the option that defines threshold and weight of each key. It throws an exception if the public key(s) for each role or options is invalid. |
-| fromRoledPublicKeysAndOptions(pubArray: List&#60;String[]&#62;): AccountKeyRoleBased | Creates an instance of AccountKeyRoleBased with public key strings for each role. This function assumes that all the values of the threshold and weights are set to be one. |
+| fromRoledPublicKeysAndOptions(pubArray: List&#60;String[]&#62;): AccountKeyRoleBased | Creates and returns an instance of AccountKeyRoleBased with public key strings for each role. This function assumes that all the values of the threshold and weights are set to be one. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyRoleBased. |
 
 #### AccountKeyDecoder
