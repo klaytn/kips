@@ -262,7 +262,7 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncodedKey: String): IAccountKey | Decodes an RLP-encoded string of any class that inherits `IAccountKey`. It throws an exception if the decoding is failed. |
+| decode(rlpEncodedKey: String): IAccountKey | Decodes an RLP-encoded string of any class that inherits `IAccountKey` and returns the corresponding account key class. This function is useful when decoding an RLP-encoded string of any account key types. It throws an exception if the decoding is failed. |
 
 #### Account
 
