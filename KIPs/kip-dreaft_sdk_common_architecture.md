@@ -114,7 +114,7 @@ An `Account` instance is injected into the `account` field of the AccountUpdate 
 
 Interface for AccountKey is defined as `IAccountKey`, and account key classes (`AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig` and `AccountKeyRoleBased`) implement IAccountKey.
 
-`WeightedMultiSigOptions` is provided for `AccountKeyWeightedMultiSig` where the threshold and the weight of each key are defined.
+`WeightedMultiSigOptions` is for `AccountKeyWeightedMultiSig` where the threshold and the weight of each key are defined.
 
 The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode function implemented in each AccountKey class.
 
