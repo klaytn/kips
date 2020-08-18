@@ -362,7 +362,7 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | encrypt(password: String): Object | Encrypts a Keyring instance with keystore v4 format. |
 | encryptV3(password: String): Object | Encrypts a Keyring instance in the keystore v3 format. |
 | encryptV3(password: String, options: Object): Object | Encrypts a Keyring instance with keystore v3 format. encryptV3 is implemented to throw exception by default in `AbstractKeyring`. In the case of `SingleKeyring` that can encrypt to keystore v3, encryptV3 function must be overridden. |
-| isDecoupled(): Boolean | Returns true if keyring has decoupled key. isDecoupled is implemented to return "false" by default in `AbstractKeyring`. In the case of SingleKeyring that can be used by coupled keyring, the isDecoupled function must be overridden. |
+| isDecoupled(): Boolean | Returns true if keyring has a decoupled key. |
 
 #### SingleKeyring
 
