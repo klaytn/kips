@@ -151,7 +151,7 @@ None
 
 `AccountKeyPublic` is a class representing [AccountKeyPublic](https://docs.klaytn.com/klaytn/design/accounts#accountkeypublic).
 
-##### Variable description
+##### Variables
 
 | Variable | Description |
 | ----------- | ----------- |
