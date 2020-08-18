@@ -134,7 +134,7 @@ None
 
 #### AccountKeyLegacy
 
-`AccountKeyLegacy` is a class representing [AccountKeyLegacy](https://docs.klaytn.com/klaytn/design/accounts#accountkeylegacy).
+`AccountKeyLegacy` is a class representing [AccountKeyLegacy](https://docs.klaytn.com/klaytn/design/accounts#accountkeylegacy). It is used for the account having an address derived from the corresponding key pair.
 
 ##### Variables
 
