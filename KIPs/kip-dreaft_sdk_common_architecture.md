@@ -126,7 +126,7 @@ The `AccountKeyDecoder` class decodes the RLP-encoded string using the decode fu
 
 None
 
-##### Method description
+##### Methods
 
 | Method | Description |
 | ----------- | ----------- |
