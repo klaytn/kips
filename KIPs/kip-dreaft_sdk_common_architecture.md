@@ -239,7 +239,7 @@ None
 
 | Variable | Description |
 | ----------- | ----------- |
-| accountKeys: List&#60;IAccountKey&#62; | A list of keys to be used for each role. |
+| accountKeys: List&#60;IAccountKey&#62; | A list of keys to be used for each role. An item of the list represents a role. |
 
 ##### Method description
 
