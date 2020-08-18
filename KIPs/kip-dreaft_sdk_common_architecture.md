@@ -273,7 +273,7 @@ None
 | Variable | Description |
 | ----------- | ----------- |
 | address: String | The address of an account to be updated. |
-| accountKey: IAccountKey | The new accountKey to be used in account. This can be an instance of [AccountKeyLegacy](#accountkeylegacy), [AccountKeyPublic](#accountkeypublic), [AccountKeyFail](#accountkeyfail), [AccountKeyWeightedMultiSig](#accountkeyweightedmultisig) or [AccountKeyRoleBased](#accountkeyrolebased). |
+| accountKey: IAccountKey | The new accountKey to be used in the given account. This can be an instance of [AccountKeyLegacy](#accountkeylegacy), [AccountKeyPublic](#accountkeypublic), [AccountKeyFail](#accountkeyfail), [AccountKeyWeightedMultiSig](#accountkeyweightedmultisig) and [AccountKeyRoleBased](#accountkeyrolebased). |
 
 ##### Method description
 
