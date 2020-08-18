@@ -163,7 +163,7 @@ None
 | ----------- | ----------- |
 | decode(rlpEncodedKey: String): AccountKeyPublic | Decodes an RLP-encoded string of AccountKeyPublic and returns an `AccountKeyPublic` instance. It throws an exception if the decoding is failed. |
 | fromXYPoint(x: String, y: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from x and y points. It throws an exception if the x and y points are invalid. |
-| fromPublicKey(publicKey: String): AccountKeyPublic | Creates an `AccountKeyPublic` instance from public key string. It throws an exception if the public key is invalid. |
+| fromPublicKey(publicKey: String): AccountKeyPublic | Creates and returns an `AccountKeyPublic` instance from public key string. It throws an exception if the public key is invalid. |
 | getXYPoint(): String[] | Returns the x and y points of the public key. |
 | getRLPEncoding(): String | Returns the RLP-encoded string of AccountKeyPublic. |
 
