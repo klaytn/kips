@@ -60,7 +60,7 @@ With the common architecture, we want to achieve two goals:
 
 | Term        | Description |
 | ----------- | ----------- |
-| Account | A data structure containing information like balance, nonce, public key(s), etc. Note that the public key(s) of the account can be changed in Klaytn because the public key(s) and the account address are decoupled. Please refer to [klaytn account] for more detail.  |
+| Account | A data structure representing a Klaytn Account. It contains information like balance, nonce, public key(s), etc. Note that the public key(s) of the account can be changed in Klaytn because the public key(s) and the account address are decoupled. Please refer to [klaytn account] for more detail.  |
 | Account key | A data structure representing various Klaytn account key types. Please refer to [accountkey] for more detail. |
 | Keyring | A data structure containing Klaytn's account address and private key(s). It is used to sign a transaction. |
 | Keyring container | A data structure containing multiple keyrings. |
