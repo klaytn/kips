@@ -203,7 +203,7 @@ None
 
 #### WeightedPublicKey
 
-`WeightedPublicKey` is a class for storing public key with weight.
+`WeightedPublicKey` is a class storing a public key with its weight. It is used for AccountKeyWeightedMultiSig.
 
 ##### Variable description
 
