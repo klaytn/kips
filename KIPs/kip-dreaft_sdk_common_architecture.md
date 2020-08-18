@@ -70,7 +70,7 @@ With the common architecture, we want to achieve two goals:
 | [JSON-RPC](https://www.jsonrpc.org/specification) | A stateless, light-weight remote procedure call (RPC) protocol. It uses JSON as a data format. |
 | Contract | A computer program or a transaction protocol which is intended to automatically execute, control or document legally relevant events and actions according to the terms of a contract or an agreement. You can deploy a smart contract or execute a smart contract that has already been deployed to Klaytn through a transaction. |
 | ABI | The Application Binary Interface(ABI) to communicate between two binary program modules. |
-| [KCT (Klaytn Compatible Token)](http://kips.klaytn.com/token) | A special type of smart contract that implements token specifications defined in [Klaytn Improvement Proposals](http://kips.klaytn.com/). |
+| [KCT (Klaytn Compatible Token)](http://kips.klaytn.com/token) | A special type of a smart contract that implements token specifications defined in [the KCT section of Klaytn Improvement Proposals](http://kips.klaytn.com/token). |
 
 ### Overview of the Common Architecture
 
