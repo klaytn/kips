@@ -184,7 +184,7 @@ None
 
 #### AccountKeyWeightedMultiSig
 
-`AccountKeyWeightedMultiSig` is a class representing [AccountKeyWeightedMultiSig](https://docs.klaytn.com/klaytn/design/accounts#accountkeyweightedmultisig).
+`AccountKeyWeightedMultiSig` is a class representing [AccountKeyWeightedMultiSig](https://docs.klaytn.com/klaytn/design/accounts#accountkeyweightedmultisig). It is an account key type containing a threshold and WeightedPublicKeys which contains a list whose item is composed of a public key and its weight.
 
 ##### Variable description
 
