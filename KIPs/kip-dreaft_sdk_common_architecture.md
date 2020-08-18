@@ -280,7 +280,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | create(address: String, publicKey: String): Account | Generates an Account instance with an address and a public key string. |
-| create(address: String, pubKeys: String[]): Account | Generates an Account instance with an address and public key strings. A default option with a threshold of 1 and a weight of 1 for each key will be used. |
+| create(address: String, pubKeys: String[]): Account | Generates an Account instance with an address and public key strings. A threshold of 1 and a weight of 1 for each key will be used as a default option. |
 | create(address: String, pubKeys: String[], options: WeightedMultiSigOptions): Account | Generates an Account instance with an address and public key strings and options that defines threshold and weight of each key. |
 | create(address: String, roleBasedPubKeys: List&#60;String[]&#62;): Account | Creates an Account instance with an array of public keys defined for each role. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
 | create(address: String, roleBasedPubKeys: List&#60;String[]&#62;, options: List&#60;WeightedMultiSigOptions&#62;): Account | Creates an Account instance with an array of public keys defined for each role and an array of options defined for each role. |
