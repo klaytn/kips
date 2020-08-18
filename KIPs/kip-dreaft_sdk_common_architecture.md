@@ -225,7 +225,7 @@ None
 | Variable | Description |
 | ----------- | ----------- |
 | threshold: int | A validation threshold. |
-| weighted: List&#60;int&#62; | A List of weights of public keys. |
+| weighted: List&#60;int&#62; | A list of weights of public keys. |
 
 ##### Method description
 
