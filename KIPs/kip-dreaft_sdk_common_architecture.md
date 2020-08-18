@@ -266,7 +266,7 @@ None
 
 #### Account
 
-`Account` is a class that contains information needed to update the AccountKey of the account in the Klaytn.
+`Account` is a class that represents a Klaytn account. It contains information needed to update the AccountKey of the account in the Klaytn.
 
 ##### Variable description
 
