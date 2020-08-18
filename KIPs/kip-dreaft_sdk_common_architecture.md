@@ -76,7 +76,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![0811All](https://user-images.githubusercontent.com/32922423/89860556-af63d700-dbde-11ea-815a-433aef0ae806.png)
+![finalWhole](https://user-images.githubusercontent.com/32922423/90474994-9076bf00-e161-11ea-966c-c820fffa21eb.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -298,7 +298,7 @@ None
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
 
-![0811Wallet](https://user-images.githubusercontent.com/32922423/89861019-c8b95300-dbdf-11ea-8aa6-30015a33100d.png)
+![finalWallet](https://user-images.githubusercontent.com/32922423/90474991-8c4aa180-e161-11ea-88fc-9262f931df06.png)
 
 In the Wallet layer, an abstract class `AbstractKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` are implemented by extending `AbstractKeyring`. The `AbstractKeyring` class defines abstract methods that Keyring classes must implement.
 
