@@ -685,7 +685,7 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| decode(rlpEncoded: String): AccountUpdate | Decodes an RLP-encoded AccountUpdate string, a raw transaction, and returns a AccountUpdate instance. It throws an exception if the decoding is failed. |
+| decode(rlpEncoded: String): AccountUpdate | Decodes an RLP-encoded string of AccountUpdate and returns a AccountUpdate instance. It throws an exception if the decoding is failed. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
