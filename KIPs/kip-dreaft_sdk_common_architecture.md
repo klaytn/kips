@@ -149,7 +149,7 @@ None
 
 #### AccountKeyPublic
 
-`AccountKeyPublic` is a class representing [AccountKeyPublic](https://docs.klaytn.com/klaytn/design/accounts#accountkeypublic).
+`AccountKeyPublic` is a class representing [AccountKeyPublic](https://docs.klaytn.com/klaytn/design/accounts#accountkeypublic). It is used for accounts having one public key.
 
 ##### Variables
 
