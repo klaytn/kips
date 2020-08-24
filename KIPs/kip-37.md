@@ -470,7 +470,7 @@ If the optional `KIP37Metadata_URI` extension is included:
 - The `uri` function MUST NOT be used to check for the existence of a token as it is possible for an implementation to return a valid string even if the token does not exist.
 
 ```solidity
-pragma solidity ^0.5.9;
+pragma solidity 0.5.6;
 
 /**
     Note: The KIP-13 identifier for this interface is 0x0e89341c.
