@@ -77,7 +77,7 @@ Below diagram shows the layers of the common architecture. Components belonging 
 
 ![layerDiagram](https://user-images.githubusercontent.com/32922423/85986440-355d0180-ba27-11ea-8475-afe7638e6ffb.png)
 
-The `KCT` layer allows you to interact with Klaytn compatible token (KCT) contracts (e.g. [KIP-7] or [KIP-17]). This is implemented by extending the `Contract` class in the `Contract` layer.
+The `KCT` layer allows you to interact with Klaytn compatible token (KCT) contracts (e.g., [KIP-7] or [KIP-17]). This is implemented by extending the `Contract` class in the `Contract` layer.
 
 The `Contract` layer allows you to interact with smart contracts on the Klaytn.
 
