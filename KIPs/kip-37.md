@@ -22,7 +22,7 @@ The `_id` argument contained in each function’s argument set indicates a speci
 
 ## Motivation
 
-Tokens standards like KIP-7 and KIP-17 require a separate contract to be deployed for each token type or collection. This places a lot of redundant bytecode on the Klaytn blockchain and limits certain functionality by the nature of separating each token contract into its own permissioned address. With the rise of blockchain games and platforms like Enjin Coin, game developers may be creating thousands of token types, and a new type of token standard is needed to support them. However, KIP-7 is not specific to games and many other applications can benefit from this flexibility.
+Tokens standards like KIP-7 and KIP-17 require a separate contract to be deployed for each token type or collection. This places a lot of redundant bytecode on the Klaytn blockchain and limits certain functionality by the nature of separating each token contract into its own permissioned address. With the rise of blockchain games and platforms like Enjin Coin, game developers may be creating thousands of token types, and a new type of token standard is needed to support them. However, KIP-37 is not specific to games and many other applications can benefit from this flexibility.
 
 New functionality is possible with this design such as transferring multiple token types at once, saving on transaction costs. Trading (escrow / atomic swaps) of multiple tokens can be built on top of this standard and it removes the need to “approve” individual token contracts separately. It is also easy to describe and mix multiple fungible or non-fungible token types in a single contract.
 
