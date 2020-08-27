@@ -251,7 +251,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 **_Scenario#3 :_** The receiver does not implement the necessary `KIP37TokenReceiver` interface function(s).
 
-- The transfer MUST be reverted with the one caveat below. - If the token(s) being sent are part of a hybrid implementation of another standard, that particular standard’s rules on sending to a contract MAY now be followed instead. See “Backwards Compatibility” section.
+- The transfer MUST be reverted with the one caveat below. - If the token(s) being sent are part of a hybrid implementation of another standard, that particular standard’s rules on sending to a contract MAY now be followed instead. See [Backwards Compatibility](#backwards-compatibility) section.
 
 **_Scenario#4 :_** The receiver implements the necessary `KIP37TokenReceiver` interface function(s) but returns an unknown value.
 
