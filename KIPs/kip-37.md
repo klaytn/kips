@@ -428,7 +428,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 - A mint/create operation is essentially a specialized transfer and MUST follow these rules:
   - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
-  - The "TransferSingle and TransferBatch event rules" MUST be followed as appropriate for the mint(s) (i.e. singles or batches) however the `_from` argument MUST be set to `0x0` (i.e. zero address) to flag the transfer as a mint to contract observers.
+  - The "TransferSingle and TransferBatch event rules" MUST be followed as appropriate for the mint(s) (i.e., singles or batches) however the `_from` argument MUST be set to `0x0` (i.e., zero address) to flag the transfer as a mint to contract observers.
     - **NOTE:** This includes tokens that are given an initial balance in the contract. The balance of the contract MUST also be able to be determined by events alone meaning initial contract balances (for e.g., in construction) MUST emit events to reflect those balances too.
 - A burn/destroy operation is essentially a specialized transfer and MUST follow these rules:
   - The "TransferSingle and TransferBatch event rules" MUST be followed as appropriate for the burn(s) (i.e. singles or batches) however the `_to` argument MUST be set to `0x0` (i.e. zero address) to flag the transfer as a burn to contract observers.
