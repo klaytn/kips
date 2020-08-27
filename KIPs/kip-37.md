@@ -488,7 +488,7 @@ interface KIP37Metadata_URI {
 
 #### KIP-37 Metadata URI JSON Schema
 
-This JSON schema is loosely based on the "KIP17 Metadata JSON Schema", but includes optional formatting to allow for ID substitution by clients. If the string `{id}` exists in any JSON value, it MUST be replaced with the actual token ID, by all client software that follows this standard.
+This JSON schema is loosely based on the "KIP-17 Metadata JSON Schema", but includes optional formatting to allow for ID substitution by clients. If the string `{id}` exists in any JSON value, it MUST be replaced with the actual token ID, by all client software that follows this standard.
 
 - The string format of the substituted hexadecimal ID MUST be lowercase alphanumeric: `[0-9a-f]` with no 0x prefix.
 - The string format of the substituted hexadecimal ID MUST be leading zero padded to 64 hex characters length if necessary.
