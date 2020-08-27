@@ -151,7 +151,7 @@ interface KIP37 /* is KIP13 */ {
 
 ### KIP-37 Token Receiver
 
-Smart contracts MUST implement all of the functions in the KIP37TokenReceiver interface to accept transfers. See “Safe Transfer Rules” for further detail.
+Smart contracts MUST implement all of the functions in the KIP37TokenReceiver interface to accept transfers. See [Safe Transfer Rules](#safe-transfer-rules) for further detail.
 
 Smart contracts MUST implement the KIP-13 supportsInterface function and signify support for the KIP37TokenReceiver interface to accept transfers. See “KIP37TokenReceiver KIP-13 rules” for further detail.
 
