@@ -643,7 +643,7 @@ fr.json:
 The function `setApprovalForAll` allows an operator to manage one's entire set of tokens on behalf of the approver.
 The counterpart `isApprovedForAll` provides introspection into any status set by `setApprovalForAll`.
 
-An owner SHOULD be assumed to always be able to operate on their own tokens regardless of approval status, so should SHOULD NOT have to call `setApprovalForAll` to approve themselves as an operator before they can operate on them.
+An owner SHOULD be assumed to always be able to operate on their own tokens regardless of approval status, so SHOULD NOT have to call `setApprovalForAll` to approve themselves as an operator before they can operate on them.
 
 ## Rationale
 
