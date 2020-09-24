@@ -331,8 +331,8 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The `_to` argument MUST be the address of the recipient whose balance is increased.
   - The `_id` argument MUST be the token type being transferred.
   - The `_value` argument MUST be the number of tokens the holder balance is decreased by and match what the recipient balance is increased by.
-  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
-  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
+  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#mintingcreating-and-burningdestroying-rules).
+  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#mintingcreating-and-burningdestroying-rules).
 - `TransferBatch` SHOULD be used to indicate multiple balance transfers have occurred between a `_from` and `_to` pair.
   - It MAY be emitted with a single element in the list to indicate a singular balance change in the transaction, but note that `TransferSingle` is designed for this to reduce gas consumption.
   - The `_operator` argument MUST be the address of an account/contract that is approved to make the transfer (SHOULD be msg.sender).
@@ -341,8 +341,8 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The `_ids` array argument MUST contain the ids of the tokens being transferred.
   - The `_values` array argument MUST contain the number of token to be transferred for each corresponding entry in `_ids`.
   - `_ids` and `_values` MUST have the same length.
-  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
-  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
+  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#mintingcreating-and-burningdestroying-rules).
+  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#mintingcreating-and-burningdestroying-rules).
 - The total value transferred from address `0x0` minus the total value transferred to `0x0` observed via the `TransferSingle` and `TransferBatch` events MAY be used by clients and exchanges to determine the “circulating supply” for a given token ID.
 - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
 - All `TransferSingle` and `TransferBatch` events MUST be emitted to reflect all the balance changes that have occurred before any call(s) to `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived`.
@@ -737,7 +737,7 @@ balanceOf(baseTokenFT, msg.sender); // Get balance of the fungible base token 54
 ```
 
 Note that 128 is an arbitrary number, an implementation MAY choose how they would like this split to occur as suitable for their use case. An observer of the contract would simply see events showing balance transfers and mints happening and MAY track the balances using that information alone.
-For an observer to be able to determine type (non-fungible or fungible) from an ID alone they would have to know the split ID bits format on a implementation by implementation basis.
+For an observer to be able to determine type (non-fungible or fungible) from an ID alone they would have to know the split ID bits format on an implementation by implementation basis.
 
 ##### Natural Non-Fungible tokens
 
