@@ -296,7 +296,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - i.e. an external viewer MUST still be able to query the balance via a standard function and it MUST be identical to the balance as determined by `TransferSingle` and `TransferBatch` events alone.
 - If the receiver is a contract the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hooks still need to be called on it and the return values respected the same as if a standard transfer function had been called.
   - However while the `safeTransferFrom` or `safeBatchTransferFrom` functions MUST revert if a receiving contract does not implement the KIP37TokenReceiver or ERC1155TokenReceiver interface, a non-standard function MAY proceed with the transfer.
-  - See [Implementation specific transfer API rules](#Implementation-specific-transfer-API-rules).
+  - See [Implementation specific transfer API rules](#implementation-specific-transfer-api-rules).
 
 #### Rules
 
@@ -306,7 +306,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 - MUST revert if `_to` is the zero address.
 - MUST revert if balance of holder for token `_id` is lower than the `_value` sent to the recipient.
 - MUST revert on any other error.
-- MUST emit the `TransferSingle` event to reflect the balance change (see [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) section).
+- MUST emit the `TransferSingle` event to reflect the balance change (see [TransferSingle and TransferBatch event rules](#transfersingle-and-transferbatch-event-rules) section).
 - After the above conditions are met, this function MUST check if `_to` is a smart contract (e.g. code size > 0). If so, it MUST call `onKIP37Received` or `onERC1155Received` on `_to` and act appropriately (see [onKIP37Received rules](#onkip37received-rules) section).
   - The `_data` argument provided by the sender for the transfer MUST be passed with its contents unaltered to the `onKIP37Received` or `onERC1155Received` hook function via its `_data` argument.
 
@@ -317,7 +317,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 - MUST revert if length of `_ids` is not the same as length of `_values`.
 - MUST revert if any of the balance(s) of the holder(s) for token(s) in `_ids` is lower than the respective amount(s) in `_values` sent to the recipient.
 - MUST revert on any other error.
-- MUST emit `TransferSingle` or `TransferBatch` event(s) such that all the balance changes are reflected (see [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) section).
+- MUST emit `TransferSingle` or `TransferBatch` event(s) such that all the balance changes are reflected (see [TransferSingle and TransferBatch event rules](#transfersingle-and-transferbatch-event-rules) section).
 - The balance changes and events MUST occur in the array order they were submitted (\_ids[0]/\_values[0] before \_ids[1]/\_values[1], etc).
 - After the above conditions are met, this function MUST check if `_to` is a smart contract (e.g. code size > 0). If so, it MUST call `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived` on `_to` and act appropriately (see [onKIP37Received rules](#onkip37received-rules) and [onKIP37BatchReceived rules](#onkip37batchreceived-rules) section).
   - The `_data` argument provided by the sender for the transfer MUST be passed with its contents unaltered to the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook function(s) via their `_data` argument.
@@ -331,8 +331,8 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The `_to` argument MUST be the address of the recipient whose balance is increased.
   - The `_id` argument MUST be the token type being transferred.
   - The `_value` argument MUST be the number of tokens the holder balance is decreased by and match what the recipient balance is increased by.
-  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
-  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
+  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
+  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
 - `TransferBatch` SHOULD be used to indicate multiple balance transfers have occurred between a `_from` and `_to` pair.
   - It MAY be emitted with a single element in the list to indicate a singular balance change in the transaction, but note that `TransferSingle` is designed for this to reduce gas consumption.
   - The `_operator` argument MUST be the address of an account/contract that is approved to make the transfer (SHOULD be msg.sender).
@@ -341,8 +341,8 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The `_ids` array argument MUST contain the ids of the tokens being transferred.
   - The `_values` array argument MUST contain the number of token to be transferred for each corresponding entry in `_ids`.
   - `_ids` and `_values` MUST have the same length.
-  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
-  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
+  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
+  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#minting/creating-and-burning/destroying-rules).
 - The total value transferred from address `0x0` minus the total value transferred to `0x0` observed via the `TransferSingle` and `TransferBatch` events MAY be used by clients and exchanges to determine the “circulating supply” for a given token ID.
 - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
 - All `TransferSingle` and `TransferBatch` events MUST be emitted to reflect all the balance changes that have occurred before any call(s) to `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived`.
@@ -428,13 +428,13 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 - A mint/create operation is essentially a specialized transfer and MUST follow these rules:
   - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
-  - The [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) MUST be followed as appropriate for the mint(s) (i.e., singles or batches) however the `_from` argument MUST be set to `0x0` (i.e., zero address) to flag the transfer as a mint to contract observers.
+  - The [TransferSingle and TransferBatch event rules](#transfersingle-and-transferbatch-event-rules) MUST be followed as appropriate for the mint(s) (i.e., singles or batches) however the `_from` argument MUST be set to `0x0` (i.e., zero address) to flag the transfer as a mint to contract observers.
     - **NOTE:** This includes tokens that are given an initial balance in the contract. The balance of the contract MUST also be able to be determined by events alone meaning initial contract balances (for e.g., in construction) MUST emit events to reflect those balances too.
 - A burn/destroy operation is essentially a specialized transfer and MUST follow these rules:
-  - The [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) MUST be followed as appropriate for the burn(s) (i.e. singles or batches) however the `_to` argument MUST be set to `0x0` (i.e. zero address) to flag the transfer as a burn to contract observers.
+  - The [TransferSingle and TransferBatch event rules](#transfersingle-and-transferbatch-event-rules) MUST be followed as appropriate for the burn(s) (i.e. singles or batches) however the `_to` argument MUST be set to `0x0` (i.e. zero address) to flag the transfer as a burn to contract observers.
   - When burning/destroying you do not have to actually transfer to `0x0` (that is impl specific), only the `_to` argument in the event MUST be set to `0x0` as above.
 - The total value transferred from address `0x0` minus the total value transferred to `0x0` observed via the `TransferSingle` and `TransferBatch` events MAY be used by clients and exchanges to determine the "circulating supply" for a given token ID.
-- As mentioned above mint/create and burn/destroy operations are specialized transfers and so will likely be accomplished with custom transfer functions rather than `safeTransferFrom` or `safeBatchTransferFrom`. If so the [Implementation specific transfer API rules](#Implementation-specific-transfer-API-rules) section would be appropriate.
+- As mentioned above mint/create and burn/destroy operations are specialized transfers and so will likely be accomplished with custom transfer functions rather than `safeTransferFrom` or `safeBatchTransferFrom`. If so the [Implementation specific transfer API rules](#implementation-specific-transfer-api-rules) section would be appropriate.
   - Even in a non-safe API and/or hybrid standards case the above event rules MUST still be adhered to when minting/creating or burning/destroying.
 - A contract MAY skip calling the `KIP37TokenReceiver` hook function(s) if the mint operation is transferring the token(s) to itself. In all other cases the `KIP37TokenReceiver` rules MUST be followed as appropriate for the implementation (i.e. safe, custom and/or hybrid).
 
