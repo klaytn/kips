@@ -735,7 +735,7 @@ balanceOf(baseTokenFT, msg.sender); // Get balance of the fungible base token 54
 ```
 
 Note that 128 is an arbitrary number, an implementation MAY choose how they would like this split to occur as suitable for their use case. An observer of the contract would simply see events showing balance transfers and mints happening and MAY track the balances using that information alone.
-For an observer to be able to determine type (non-fungible or fungible) from an ID alone they would have to know the split ID bits format on a implementation by implementation basis.
+For an observer to be able to determine type (non-fungible or fungible) from an ID alone they would have to know the split ID bits format on an implementation by implementation basis.
 
 ##### Natural Non-Fungible tokens
 
