@@ -249,38 +249,38 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 - `onKIP37Received` and `onKIP37BatchReceived` MUST NOT be called outside of a mint or transfer process.
 
-**_Scenario#3 :_** The receiver does not implement the necessary `KIP37TokenReceiver` interface function(s).
+**_Scenario#3 :_** The receiver does not implement the necessary `KIP37TokenReceiver` or `ERC1155TokenReceiver` interface function(s).
 
 - The transfer MUST be reverted with the one caveat below. - If the token(s) being sent are part of a hybrid implementation of another standard, that particular standard’s rules on sending to a contract MAY now be followed instead. See [Backwards Compatibility](#backwards-compatibility) section.
 
-**_Scenario#4 :_** The receiver implements the necessary `KIP37TokenReceiver` interface function(s) but returns an unknown value.
+**_Scenario#4 :_** The receiver implements the necessary `KIP37TokenReceiver` or `ERC1155TokenReceiver` interface function(s) but returns an unknown value.
 
 - The transfer MUST be reverted.
 
-**_Scenario#5 :_** The receiver implements the necessary `KIP37TokenReceiver` interface function(s) but throws an error.
+**_Scenario#5 :_** The receiver implements the necessary `KIP37TokenReceiver` or `ERC1155TokenReceiver` interface function(s) but throws an error.
 
 - The transfer MUST be reverted.
 
-**_Scenario#6 :_** The receiver implements the `KIP37TokenReceiver` interface and is the recipient of one and only one balance change (e.g. `safeTransferFrom` called).
+**_Scenario#6 :_** The receiver implements the `KIP37TokenReceiver` or `ERC1155TokenReceiver` interface and is the recipient of one and only one balance change (e.g. `safeTransferFrom` called).
 
-- The balances for the transfer MUST have been updated before the `KIP37TokenReceiver` hook is called on a recipient contract.
-- The transfer event MUST have been emitted to reflect the balance changes before the `KIP37TokenReceiver` hook is called on the recipient contract.
-- One of `onKIP37Received` or `onKIP37BatchReceived` MUST be called on the recipient contract.
-- The `onKIP37Received` hook SHOULD be called on the recipient contract and its rules followed.
-  - See “onKIP37Received rules” for further rules that MUST be followed.
-- The `onKIP37BatchReceived` hook MAY be called on the recipient contract and its rules followed.
-  - See “onKIP37BatchReceived rules” for further rules that MUST be followed.
+- The balances for the transfer MUST have been updated before the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook is called on a recipient contract.
+- The transfer event MUST have been emitted to reflect the balance changes before the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook is called on the recipient contract.
+- One of `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived` MUST be called on the recipient contract.
+- The `onKIP37Received` or `onERC1155Received` hook SHOULD be called on the recipient contract and its rules followed.
+  - See [onKIP37Received rules](#onkip37received-rules) for further rules that MUST be followed.
+- The `onKIP37BatchReceived` or `onERC1155BatchReceived` hook MAY be called on the recipient contract and its rules followed.
+  - See [onKIP37BatchReceived rules](#onkip37batchreceived-rules) for further rules that MUST be followed.
 
-**_Scenario#7 :_** The receiver implements the `KIP37TokenReceiver` interface and is the recipient of more than one balance change (e.g. `safeBatchTransferFrom` called).
+**_Scenario#7 :_** The receiver implements the `KIP37TokenReceiver` or `ERC1155TokenReceiver` interface and is the recipient of more than one balance change (e.g. `safeBatchTransferFrom` called).
 
-- All balance transfers that are referenced in a call to an `KIP37TokenReceiver` hook MUST be updated before the `KIP37TokenReceiver` hook is called on the recipient contract.
-- All transfer events MUST have been emitted to reflect current balance changes before an `KIP37TokenReceiver` hook is called on the recipient contract.
-- `onKIP37Received` or `onKIP37BatchReceived` MUST be called on the recipient as many times as necessary such that every balance change for the recipient in the scenario is accounted for.
-  - The return magic value for every hook call MUST be checked and acted upon as per “onKIP37Received rules” and “onKIP37BatchReceived rules”.
-- The `onKIP37BatchReceived` hook SHOULD be called on the recipient contract and its rules followed.
-  - See “onKIP37BatchReceived rules” for further rules that MUST be followed.
-- The `onKIP37Received` hook MAY be called on the recipient contract and its rules followed.
-  - See “onKIP37Received rules” for further rules that MUST be followed.
+- All balance transfers that are referenced in a call to an `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook MUST be updated before the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook is called on the recipient contract.
+- All transfer events MUST have been emitted to reflect current balance changes before an `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook is called on the recipient contract.
+- `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived` MUST be called on the recipient as many times as necessary such that every balance change for the recipient in the scenario is accounted for.
+  - The return magic value for every hook call MUST be checked and acted upon as per [onKIP37Received rules](#onkip37received-rules) and [onKIP37BatchReceived rules](#onkip37batchreceived-rules).
+- The `onKIP37BatchReceived` or `onERC1155BatchReceived` hook SHOULD be called on the recipient contract and its rules followed.
+  - See [onKIP37BatchReceived rules](#onkip37batchreceived-rules) for further rules that MUST be followed.
+- The `onKIP37Received` or `onERC1155Received` hook MAY be called on the recipient contract and its rules followed.
+  - See [onKIP37Received rules](#onkip37received-rules) for further rules that MUST be followed.
 
 **_Scenario#8 :_** You are the creator of a contract that implements the `KIP37TokenReceiver` interface and you forward the token(s) onto another address in one or both of `onKIP37Received` and `onKIP37BatchReceived`.
 
@@ -294,35 +294,35 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 - In this scenario all balance updates and events output rules are the same as if a standard transfer function had been called.
   - i.e. an external viewer MUST still be able to query the balance via a standard function and it MUST be identical to the balance as determined by `TransferSingle` and `TransferBatch` events alone.
-- If the receiver is a contract the `KIP37TokenReceiver` hooks still need to be called on it and the return values respected the same as if a standard transfer function had been called.
-  - However while the `safeTransferFrom` or `safeBatchTransferFrom` functions MUST revert if a receiving contract does not implement the KIP37TokenReceiver interface, a non-standard function MAY proceed with the transfer.
-  - See “Implementation specific transfer API rules”.
+- If the receiver is a contract the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hooks still need to be called on it and the return values respected the same as if a standard transfer function had been called.
+  - However while the `safeTransferFrom` or `safeBatchTransferFrom` functions MUST revert if a receiving contract does not implement the KIP37TokenReceiver or ERC1155TokenReceiver interface, a non-standard function MAY proceed with the transfer.
+  - See [Implementation specific transfer API rules](#Implementation-specific-transfer-API-rules).
 
 #### Rules
 
-**_safeTransferFrom rules:_**
+##### **_safeTransferFrom rules:_**
 
 - Caller must be approved to manage the tokens being transferred out of the `_from` account (see “Approval” section).
 - MUST revert if `_to` is the zero address.
 - MUST revert if balance of holder for token `_id` is lower than the `_value` sent to the recipient.
 - MUST revert on any other error.
-- MUST emit the `TransferSingle` event to reflect the balance change (see “TransferSingle and TransferBatch event rules” section).
-- After the above conditions are met, this function MUST check if `_to` is a smart contract (e.g. code size > 0). If so, it MUST call `onKIP37Received` on `_to` and act appropriately (see “onKIP37Received rules” section).
-  - The `_data` argument provided by the sender for the transfer MUST be passed with its contents unaltered to the `onKIP37Received` hook function via its `_data` argument.
+- MUST emit the `TransferSingle` event to reflect the balance change (see [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) section).
+- After the above conditions are met, this function MUST check if `_to` is a smart contract (e.g. code size > 0). If so, it MUST call `onKIP37Received` or `onERC1155Received` on `_to` and act appropriately (see [onKIP37Received rules](#onkip37received-rules) section).
+  - The `_data` argument provided by the sender for the transfer MUST be passed with its contents unaltered to the `onKIP37Received` or `onERC1155Received` hook function via its `_data` argument.
 
-**_safeBatchTransferFrom rules:_**
+##### **_safeBatchTransferFrom rules:_**
 
 - Caller must be approved to manage all the tokens being transferred out of the `_from` account (see “Approval” section).
 - MUST revert if `_to` is the zero address.
 - MUST revert if length of `_ids` is not the same as length of `_values`.
 - MUST revert if any of the balance(s) of the holder(s) for token(s) in `_ids` is lower than the respective amount(s) in `_values` sent to the recipient.
 - MUST revert on any other error.
-- MUST emit `TransferSingle` or `TransferBatch` event(s) such that all the balance changes are reflected (see “TransferSingle and TransferBatch event rules” section).
+- MUST emit `TransferSingle` or `TransferBatch` event(s) such that all the balance changes are reflected (see [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) section).
 - The balance changes and events MUST occur in the array order they were submitted (\_ids[0]/\_values[0] before \_ids[1]/\_values[1], etc).
-- After the above conditions are met, this function MUST check if `_to` is a smart contract (e.g. code size > 0). If so, it MUST call `onKIP37Received` or `onKIP37BatchReceived` on `_to` and act appropriately (see “onKIP37Received and onKIP37BatchReceived rules” section).
-  - The `_data` argument provided by the sender for the transfer MUST be passed with its contents unaltered to the `KIP37TokenReceiver` hook function(s) via their `_data` argument.
+- After the above conditions are met, this function MUST check if `_to` is a smart contract (e.g. code size > 0). If so, it MUST call `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived` on `_to` and act appropriately (see [onKIP37Received rules](#onkip37received-rules) and [onKIP37BatchReceived rules](#onkip37batchreceived-rules) section).
+  - The `_data` argument provided by the sender for the transfer MUST be passed with its contents unaltered to the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook function(s) via their `_data` argument.
 
-**_TransferSingle and TransferBatch event rules:_**
+##### **_TransferSingle and TransferBatch event rules:_**
 
 - `TransferSingle` SHOULD be used to indicate a single balance transfer has occurred between a `_from` and `_to` pair.
   - It MAY be emitted multiple times to indicate multiple balance changes in the transaction, but note that `TransferBatch` is designed for this to reduce gas consumption.
@@ -331,8 +331,8 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The `_to` argument MUST be the address of the recipient whose balance is increased.
   - The `_id` argument MUST be the token type being transferred.
   - The `_value` argument MUST be the number of tokens the holder balance is decreased by and match what the recipient balance is increased by.
-  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See “Minting/creating and burning/destroying rules”.
-  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See “Minting/creating and burning/destroying rules”.
+  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
+  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
 - `TransferBatch` SHOULD be used to indicate multiple balance transfers have occurred between a `_from` and `_to` pair.
   - It MAY be emitted with a single element in the list to indicate a singular balance change in the transaction, but note that `TransferSingle` is designed for this to reduce gas consumption.
   - The `_operator` argument MUST be the address of an account/contract that is approved to make the transfer (SHOULD be msg.sender).
@@ -341,14 +341,14 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The `_ids` array argument MUST contain the ids of the tokens being transferred.
   - The `_values` array argument MUST contain the number of token to be transferred for each corresponding entry in `_ids`.
   - `_ids` and `_values` MUST have the same length.
-  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See “Minting/creating and burning/destroying rules”.
-  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See “Minting/creating and burning/destroying rules”.
+  - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
+  - When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address). See [Minting/creating and burning/destroying rules](#Minting/creating-and-burning/destroying-rules).
 - The total value transferred from address `0x0` minus the total value transferred to `0x0` observed via the `TransferSingle` and `TransferBatch` events MAY be used by clients and exchanges to determine the “circulating supply” for a given token ID.
 - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
-- All `TransferSingle` and `TransferBatch` events MUST be emitted to reflect all the balance changes that have occurred before any call(s) to `onKIP37Received` or `onKIP37BatchReceived`.
+- All `TransferSingle` and `TransferBatch` events MUST be emitted to reflect all the balance changes that have occurred before any call(s) to `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived`.
   - To make sure event order is correct in the case of valid re-entry (e.g. if a receiver contract forwards tokens on receipt) state balance and events balance MUST match before calling an external contract.
 
-**_onKIP37Received rules:_**
+##### **_onKIP37Received rules:_**
 
 - The `_operator` argument MUST be the address of an account/contract that is approved to make the transfer (SHOULD be msg.sender).
 
@@ -368,7 +368,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The set of all calls to `onKIP37Received` and `onKIP37BatchReceived` describes all balance changes that occurred during the transaction in the order submitted.
 * A contract MAY skip calling the `onKIP37Received` hook function if the transfer operation is transferring the token to itself.
 
-**_onKIP37BatchReceived rules:_**
+##### **_onKIP37BatchReceived rules:_**
 
 - The `_operator` argument MUST be the address of an account/contract that is approved to make the transfer (SHOULD be msg.sender).
 
@@ -388,7 +388,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The set of all calls to `onKIP37Received` and `onKIP37BatchReceived` describes all balance changes that occurred during the transaction in the order submitted.
 * A contract MAY skip calling the `onKIP37BatchReceived` hook function if the transfer operation is transferring the token(s) to itself.
 
-**_KIP37TokenReceiver KIP-13 rules:_**
+##### **_KIP37TokenReceiver KIP-13 rules:_**
 
 - The implementation of the KIP-13 `supportsInterface` function SHOULD be as follows:
   ```solidity
@@ -403,7 +403,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - It MUST NOT consume more than 10,000 gas.
     - This keeps it below the KIP-13 requirement of 30,000 gas, reduces the gas reserve needs and minimises possible side-effects of gas exhaustion during the call.
 
-**_Implementation specific transfer API rules:_**
+##### **_Implementation specific transfer API rules:_**
 
 - If an implementation specific API function is used to transfer KIP-37 token(s) to a contract, the `safeTransferFrom` or `safeBatchTransferFrom` (as appropriate) rules MUST still be followed if the receiver implements the `KIP37TokenReceiver` interface. If it does not the non-standard implementation SHOULD revert but MAY proceed.
 - An example:
@@ -424,21 +424,23 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - The return values of the `KIP37TokenReceiver` hook functions that are called MUST be respected if they are implemented.
   - Only non-standard transfer functions MAY allow tokens to be sent to a recipient contract that does NOT implement the necessary `KIP37TokenReceiver` hook functions. `safeTransferFrom` and `safeBatchTransferFrom` MUST revert in that case (unless it is a hybrid standards implementation see "Backwards Compatibility").
 
-**_Minting/creating and burning/destroying rules:_**
+##### **_Minting/creating and burning/destroying rules:_**
 
 - A mint/create operation is essentially a specialized transfer and MUST follow these rules:
   - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
-  - The "TransferSingle and TransferBatch event rules" MUST be followed as appropriate for the mint(s) (i.e., singles or batches) however the `_from` argument MUST be set to `0x0` (i.e., zero address) to flag the transfer as a mint to contract observers.
+  - The [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) MUST be followed as appropriate for the mint(s) (i.e., singles or batches) however the `_from` argument MUST be set to `0x0` (i.e., zero address) to flag the transfer as a mint to contract observers.
     - **NOTE:** This includes tokens that are given an initial balance in the contract. The balance of the contract MUST also be able to be determined by events alone meaning initial contract balances (for e.g., in construction) MUST emit events to reflect those balances too.
 - A burn/destroy operation is essentially a specialized transfer and MUST follow these rules:
-  - The "TransferSingle and TransferBatch event rules" MUST be followed as appropriate for the burn(s) (i.e. singles or batches) however the `_to` argument MUST be set to `0x0` (i.e. zero address) to flag the transfer as a burn to contract observers.
+  - The [TransferSingle and TransferBatch event rules](#TransferSingle-and-TransferBatch-event-rules) MUST be followed as appropriate for the burn(s) (i.e. singles or batches) however the `_to` argument MUST be set to `0x0` (i.e. zero address) to flag the transfer as a burn to contract observers.
   - When burning/destroying you do not have to actually transfer to `0x0` (that is impl specific), only the `_to` argument in the event MUST be set to `0x0` as above.
 - The total value transferred from address `0x0` minus the total value transferred to `0x0` observed via the `TransferSingle` and `TransferBatch` events MAY be used by clients and exchanges to determine the "circulating supply" for a given token ID.
-- As mentioned above mint/create and burn/destroy operations are specialized transfers and so will likely be accomplished with custom transfer functions rather than `safeTransferFrom` or `safeBatchTransferFrom`. If so the "Implementation specific transfer API rules" section would be appropriate.
+- As mentioned above mint/create and burn/destroy operations are specialized transfers and so will likely be accomplished with custom transfer functions rather than `safeTransferFrom` or `safeBatchTransferFrom`. If so the [Implementation specific transfer API rules](#Implementation-specific-transfer-API-rules) section would be appropriate.
   - Even in a non-safe API and/or hybrid standards case the above event rules MUST still be adhered to when minting/creating or burning/destroying.
 - A contract MAY skip calling the `KIP37TokenReceiver` hook function(s) if the mint operation is transferring the token(s) to itself. In all other cases the `KIP37TokenReceiver` rules MUST be followed as appropriate for the implementation (i.e. safe, custom and/or hybrid).
 
-##### A solidity example of the keccak256 generated constants for the various magic values (these MAY be used by implementation):
+##### A solidity example
+
+- the keccak256 generated constants for the various magic values (these MAY be used by implementation):
 
 ```solidity
 bytes4 constant public KIP37_KIP13 = 0xd9b67a26; // KIP-13 identifier for the main token standard.
@@ -678,7 +680,7 @@ Restricting approval to a certain set of token IDs, quantities or other rules MA
 ## Backwards Compatibility
 
 There have been requirements during the design discussions to have this standard be compatible with existing standards when sending to contract addresses, specifically KIP-17 at time of writing.
-To cater for this scenario, there is some leeway with the revert logic should a contract not implement the `KIP37TokenReceiver` as per "Safe Transfer Rules" section above, specifically "Scenario#3 : The receiver does not implement the necessary `KIP37TokenReceiver` interface function(s)".
+To cater for this scenario, there is some leeway with the revert logic should a contract not implement the `KIP37TokenReceiver` as per [Safe Transfer Rules](#safe-transfer-rules) section above, specifically "Scenario#3 : The receiver does not implement the necessary `KIP37TokenReceiver` interface function(s)".
 
 Hence in a hybrid KIP-37 contract implementation an extra call MUST be made on the recipient contract and checked before any hook calls to `onKIP37Received` or `onKIP37BatchReceived` are made.
 Order of operation MUST therefore be:
@@ -735,7 +737,7 @@ balanceOf(baseTokenFT, msg.sender); // Get balance of the fungible base token 54
 ```
 
 Note that 128 is an arbitrary number, an implementation MAY choose how they would like this split to occur as suitable for their use case. An observer of the contract would simply see events showing balance transfers and mints happening and MAY track the balances using that information alone.
-For an observer to be able to determine type (non-fungible or fungible) from an ID alone they would have to know the split ID bits format on an implementation by implementation basis.
+For an observer to be able to determine type (non-fungible or fungible) from an ID alone they would have to know the split ID bits format on a implementation by implementation basis.
 
 ##### Natural Non-Fungible tokens
 
