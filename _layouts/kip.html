@@ -1,7 +1,6 @@
 ---
 layout: default
 ---
-
 <div class="home">
   <h1 class="page-heading">
     KIP {{ page.kip | xml_escape }}: {{ page.title | xml_escape }}
@@ -38,7 +37,5 @@ layout: default
       <tr><th>Resolution</th><td><a href="{{page.resolution | uri_escape }}">{{ page.resolution | xml_escape }}</a></td></tr>
     {% endif %}
   </table>
-
   {{ content }}
-
 </div>
