@@ -1,8 +1,8 @@
-## Klaytn Improvement Proposals (KIPs)
+## Klaytn Improvement Proposals (KIPs):
 
 Klaytn Improvement Proposals (KIPs) describe standards for the Klaytn platform, including core protocol specifications, client APIs, and contract standards.
 
-## Contributing
+## Contributing:
 
  1. Review [KIP-1](KIPs/kip-1.md).
  2. Fork the repository by clicking "Fork" in the top right.
@@ -20,7 +20,7 @@ When you believe your KIP is mature and ready to progress past the draft phase, 
  - Open a PR changing the state of your KIP to 'Last Call'. An editor will review your draft and see if there is a rough consensus to move forward. If there are significant issues with the KIP - they may close the PR and request that you fix the issues in the draft before trying again.
  - Before moving to 'Last Call', a reference implementation of the KIP should be provided. 
 
-## KIP Status Terms
+## KIP Status Terms:
 
 * **Draft** - a KIP that is undergoing rapid iteration and changes.
 * **Last Call** - a KIP that is done with its initial iteration and ready for review by a wide audience for two weeks.
