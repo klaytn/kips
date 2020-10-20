@@ -678,6 +678,7 @@ pragma solidity 0.5.6;
 interface IKIP37Mintable {
     /// @notice Creates a new token type and assings _initialSupply to minter
     /// @dev Throws if `msg.sender` is not allowed to create
+    ///   Throws if the token id is already used.
     /// @param _id The token id to create.
     /// @param _initialSupply The amount of tokens being minted.
     /// @param _uri The token URI of the created token.
