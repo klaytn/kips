@@ -149,6 +149,25 @@ interface KIP37 /* is KIP13 */ {
 }
 ```
 
+### Differences from ERC-1155
+This section describes the differences between KIP-37 and ERC-1155. 
+
+- KIP-37 also supports the wallet interface of ERC-1155 (`IERC1155TokenReceiver`) to be compliant with ERC-1155.
+- More optional extensions are defined (minting extension, burning extension, and pausing extension).
+
+### KIP-1155 Identifiers
+<!-- The below table shows KIP-13 identifiers for interfaces defined in this proposal.
+
+|Interface|KIP-13 Identifier|
+|---|---|
+|[IKIP17](#Specification)|0xd9b67a26|
+|[IKIP37TokenReceiver](#kip-37-token-receiver)|0x7cc2d017|
+|[IERC1155TokenReceiver](#kip-37-token-receiver)|0x4e2312e0|
+|[IKIP37Metadata](#metadata-extensions)|0x0e89341c|
+|[IKIP37Mintable](#minting-extension)|0x84aec3b9|
+|[IKIP37Burnable](#burning-extension)|0x9e094e9e|
+|[IKIP37Pausable](#pausing-extension)|0xe8ffdb7| -->
+
 ### KIP-37 Token Receiver
 
 Smart contracts MUST implement all of the functions in the KIP37TokenReceiver interface to accept transfers. See [Safe Transfer Rules](#safe-transfer-rules) for further detail.
@@ -466,7 +485,6 @@ If the optional `KIP37Metadata_URI` extension is included:
 
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x0e89341c` is passed through the `interfaceID` argument.
 - _Changes_ to the URI MUST emit the `URI` event if the change can be expressed with an event (i.e. it isn't dynamic/programmatic).
-  - An implementation MAY emit the `URI` event during a mint operation but it is NOT mandatory. An observer MAY fetch the metadata uri at mint time from the `uri` function if it was not emitted.
 - The `uri` function SHOULD be used to retrieve values if no event was emitted.
 - The `uri` function MUST return the same value as the latest event for an `_id` if it was emitted.
 - The `uri` function MUST NOT be used to check for the existence of a token as it is possible for an implementation to return a valid string even if the token does not exist.
@@ -637,6 +655,134 @@ fr.json:
 {
   "name": "Espace Publicitaire",
   "description": "Chaque jeton représente un espace publicitaire unique dans la ville."
+}
+```
+
+### Minting Extension
+
+The **minting extension** is OPTIONAL for KIP-37 smart contracts. This allows your contract to create and mint a new token.
+
+The optional `KIP37Mintable` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
+
+If the optional `KIP37Mintable` extension is included:
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x84aec3b9` is passed through the `interfaceID` argument.
+- The `create` function is used to create new token allocated with new token id.
+  - An implementation MUST emit the `URI` event during a mint operation if the created token has it's own metadata. Also an observer MAY fetch the metadata uri at mint time from the `uri` function.
+- When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting-creating and burning-destroying rules](#minting-creating-and-burning-destroying-rules).
+
+```solidity
+pragma solidity 0.5.6;
+
+/// @title KIP-37 Multi Token Standard, optional minting extension
+///  Note: the KIP-13 identifier for this interface is 0x84aec3b9.
+interface IKIP37Mintable {
+    /// @notice Creates a new token type and assings _initialSupply to minter
+    /// @dev Throws if `msg.sender` is not allowed to create
+    /// @param _id The token id to create.
+    /// @param _initialSupply The amount of tokens being minted.
+    /// @param _uri The token URI of the created token.
+    /// @return A boolean that indicates if the operation was successful.
+    function create(
+        uint256 _id,
+        uint256 _initialSupply,
+        string calldata _uri
+    ) external returns (bool);
+
+    /// @notice Batch mint tokens. Assign directly to _to[].
+    /// @dev Throws if `msg.sender` is not allowed to mint
+    /// @param _id The token id to mint.
+    /// @param _to The list of addresses that will receive the minted tokens.
+    /// @param _quantities The list of quantities of tokens being minted.
+    function mint(
+        uint256 _id,
+        address[] calldata _to,
+        uint256[] calldata _quantities
+    ) external;
+}
+```
+
+### Burning Extension
+
+The **burning extension** is OPTIONAL for KIP-37 smart contracts. This allows your contract to burn tokens.
+
+The optional `KIP37Burnable` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
+
+If the optional `KIP37Burnable` extension is included:
+- The KIP-13 `KIP37Burnable` function MUST return the constant value `true` if `0x9e094e9e` is passed through the `interfaceID` argument.
+- When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting-creating and burning-destroying rules](#minting-creating-and-burning-destroying-rules).
+
+```solidity
+pragma solidity 0.5.6;
+
+/// @title KIP-37 Multi Token Standard, optional burning extension
+///  Note: the KIP-13 identifier for this interface is 0x9e094e9e.
+interface IKIP37Burnable {
+    /// @notice Burns specific KIP37 tokens.
+    /// @dev Throws if `msg.sender` is not allowed to burn the token
+    /// @param _account The account that owns tokens.
+    /// @param _id The token id to burn.
+    /// @param _value The token amount to burn.
+    function burn(
+        address _account,
+        uint256 _id,
+        uint256 _value
+    ) external;
+
+    /// @notice Burns multiple KIP37 tokens.
+    /// @dev Throws if `msg.sender` is not allowed to burn the tokens
+    /// @param _account The account that owns tokens.
+    /// @param _ids The list of the token ids to burn.
+    /// @param _values The list of the token amounts to burn.
+    function burnBatch(
+        address _account,
+        uint256[] calldata _ids,
+        uint256[] calldata _values
+    ) external;
+}
+```
+
+### Pausing Extension
+
+The **pausing extension** is OPTIONAL for KIP-37 smart contracts. This allows your contract or specific token to be suspended from transferring.
+
+The optional `KIP37Pausable` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
+
+If the optional `KIP37Pausable` extension is included:
+- The KIP-13 `KIP37Pausable` function MUST return the constant value `true` if `0xe8ffdb7` is passed through the `interfaceID` argument.
+
+```solidity
+pragma solidity 0.5.6;
+
+/// @title KIP-37 Multi Token Standard, optional pausing extension
+///  Note: the KIP-13 identifier for this interface is 0xe8ffdb7.
+interface IKIP37Pausable {
+    /// @notice Check whether the contract is paused
+    /// @return True if the contract is paused, false otherwise
+    function paused() external view returns (bool);
+
+    /// @notice Pause actions related to transfer and approve
+    /// @dev Throws if `msg.sender` is not allowed to pause.
+    ///   Throws if the contract is paused.
+    function pause() external;
+
+    /// @notice Resume from the paused state of the contract
+    /// @dev Throws if `msg.sender` is not allowed to unpause.
+    ///   Throws if the contract is not paused.
+    function unpause() external;
+
+    /// @notice Check whether the specific token is paused
+    /// @return True if the specific token is paused, false otherwise
+    function paused(uint256 _id) external view returns (bool);
+
+    /// @notice Pause actions related to transfer and approve of the specific token
+    /// @dev Throws if `msg.sender` is not allowed to pause.
+    ///   Throws if the specific token is paused.
+    function pause(uint256 _id) external;
+
+    /// @notice Resume from the paused state of the specific token
+    /// @dev Throws if `msg.sender` is not allowed to unpause.
+    ///   Throws if the specific token is not paused.
+    function unpause(uint256 _id) external;
 }
 ```
 
