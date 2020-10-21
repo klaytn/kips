@@ -34,7 +34,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Smart contracts implementing the KIP-37 standard MUST implement all of the functions in the KIP37 interface.
 
-Smart contracts implementing the KIP-37 standard MUST implement the KIP-13 supportsInterface function and MUST return the constant value true if 0xd9b67a26 is passed through the interfaceID argument.
+Smart contracts implementing the KIP-37 standard MUST implement the KIP-13 supportsInterface function and MUST return the constant value true if 0xce086315 is passed through the interfaceID argument.
 
 ```solidity
 pragma solidity 0.5.6;
@@ -42,7 +42,7 @@ pragma solidity 0.5.6;
 /**
     @title KIP-37 Multi Token Standard
     @dev See https://kips.klaytn.com/KIPs/kip-37
-    Note: The KIP-13 identifier for this interface is 0xd9b67a26.
+    Note: The KIP-13 identifier for this interface is 0xce086315.
  */
 interface KIP37 /* is KIP13 */ {
     /**
@@ -146,21 +146,30 @@ interface KIP37 /* is KIP13 */ {
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address _owner, address _operator) external view returns (bool);
+
+    /**
+        @notice Get the supply of the token type requested.
+        @param _id      ID of the token
+        @return         The supply of the token type requested
+    */
+    function individualSupply(uint256 _id) external view returns (uint256);
 }
 ```
 
 ### Differences from ERC-1155
-This section describes the differences between KIP-37 and ERC-1155. 
+
+This section describes the differences between KIP-37 and ERC-1155.
 
 - KIP-37 also supports the wallet interface of ERC-1155 (`IERC1155TokenReceiver`) to be compliant with ERC-1155.
 - More optional extensions are defined (minting extension, burning extension, and pausing extension).
 
 ### KIP-1155 Identifiers
+
 <!-- The below table shows KIP-13 identifiers for interfaces defined in this proposal.
 
 |Interface|KIP-13 Identifier|
 |---|---|
-|[IKIP17](#Specification)|0xd9b67a26|
+|[IKIP17](#Specification)|0xce086315|
 |[IKIP37TokenReceiver](#kip-37-token-receiver)|0x7cc2d017|
 |[IERC1155TokenReceiver](#kip-37-token-receiver)|0x4e2312e0|
 |[IKIP37Metadata](#metadata-extensions)|0x0e89341c|
@@ -462,7 +471,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 - the keccak256 generated constants for the various magic values (these MAY be used by implementation):
 
 ```solidity
-bytes4 constant public KIP37_KIP13 = 0xd9b67a26; // KIP-13 identifier for the main token standard.
+bytes4 constant public KIP37_KIP13 = 0xce086315; // KIP-13 identifier for the main token standard.
 bytes4 constant public KIP37_KIP13_TOKENRECEIVER = 0x7cc2d017; // KIP-13 identifier for the `KIP37TokenReceiver` support (i.e. `bytes4(keccak256("onKIP37Received(address,address,uint256,uint256,bytes)")) ^ bytes4(keccak256("onKIP37BatchReceived(address,address,uint256[],uint256[],bytes)"))`).
 bytes4 constant public KIP37_ACCEPTED = 0xe78b3325; // Return value from `onKIP37Received` call if a contract accepts receipt (i.e `bytes4(keccak256("onKIP37Received(address,address,uint256,uint256,bytes)"))`).
 bytes4 constant public KIP37_BATCH_ACCEPTED = 0x9b49e332; // Return value from `onKIP37BatchReceived` call if a contract accepts receipt (i.e `bytes4(keccak256("onKIP37BatchReceived(address,address,uint256[],uint256[],bytes)"))`).
@@ -665,6 +674,7 @@ The **minting extension** is OPTIONAL for KIP-37 smart contracts. This allows yo
 The optional `KIP37Mintable` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
 
 If the optional `KIP37Mintable` extension is included:
+
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x84aec3b9` is passed through the `interfaceID` argument.
 - The `create` function is used to create new token allocated with new token id.
   - An implementation MUST emit the `URI` event during a mint operation if the created token has it's own metadata. Also an observer MAY fetch the metadata uri at mint time from the `uri` function.
@@ -709,6 +719,7 @@ The **burning extension** is OPTIONAL for KIP-37 smart contracts. This allows yo
 The optional `KIP37Burnable` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
 
 If the optional `KIP37Burnable` extension is included:
+
 - The KIP-13 `KIP37Burnable` function MUST return the constant value `true` if `0x9e094e9e` is passed through the `interfaceID` argument.
 - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting-creating and burning-destroying rules](#minting-creating-and-burning-destroying-rules).
 
@@ -749,6 +760,7 @@ The **pausing extension** is OPTIONAL for KIP-37 smart contracts. This allows yo
 The optional `KIP37Pausable` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
 
 If the optional `KIP37Pausable` extension is included:
+
 - The KIP-13 `KIP37Pausable` function MUST return the constant value `true` if `0xe8ffdb7` is passed through the `interfaceID` argument.
 
 ```solidity
