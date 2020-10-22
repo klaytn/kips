@@ -494,6 +494,7 @@ If the optional `KIP37Metadata_URI` extension is included:
 
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x0e89341c` is passed through the `interfaceID` argument.
 - _Changes_ to the URI MUST emit the `URI` event if the change can be expressed with an event (i.e. it isn't dynamic/programmatic).
+  - An implementation MAY emit the `URI` event during a mint operation but it is NOT mandatory. An observer MAY fetch the metadata uri at mint time from the `uri` function if it was not emitted.
 - The `uri` function SHOULD be used to retrieve values if no event was emitted.
 - The `uri` function MUST return the same value as the latest event for an `_id` if it was emitted.
 - The `uri` function MUST NOT be used to check for the existence of a token as it is possible for an implementation to return a valid string even if the token does not exist.
@@ -677,7 +678,7 @@ If the optional `KIP37Mintable` extension is included:
 
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x84aec3b9` is passed through the `interfaceID` argument.
 - The `create` function is used to create new token allocated with new token id.
-  - An implementation MUST emit the `URI` event during a mint operation if the created token has it's own metadata. Also an observer MAY fetch the metadata uri at mint time from the `uri` function.
+  - An implementation MUST emit the `URI` event during a create operation if the created token has it's own metadata.
 - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting-creating and burning-destroying rules](#minting-creating-and-burning-destroying-rules).
 
 ```solidity
