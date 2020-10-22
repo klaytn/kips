@@ -701,7 +701,8 @@ interface IKIP37Mintable {
     ) external returns (bool);
 
     /// @notice Batch mint tokens. Assign directly to _to[].
-    /// @dev Throws if `msg.sender` is not allowed to mint
+    /// @dev Throws if `msg.sender` is not allowed to mint.
+    ///   MUST emit an event `TransferSingle` or `TransferBatch`.
     /// @param _id The token id to mint.
     /// @param _to The list of addresses that will receive the minted tokens.
     /// @param _quantities The list of quantities of tokens being minted.
