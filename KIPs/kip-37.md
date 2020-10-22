@@ -688,7 +688,7 @@ pragma solidity 0.5.6;
 ///  Note: the KIP-13 identifier for this interface is 0x84aec3b9.
 interface IKIP37Mintable {
     /// @notice Creates a new token type and assigns _initialSupply to the minter.
-    /// @dev Throws if `msg.sender` is not allowed to create
+    /// @dev Throws if `msg.sender` is not allowed to create.
     ///   Throws if the token id is already used.
     /// @param _id The token id to create.
     /// @param _initialSupply The amount of tokens being minted.
