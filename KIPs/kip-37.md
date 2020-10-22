@@ -169,7 +169,7 @@ This section describes the differences between KIP-37 and ERC-1155.
 
 |Interface|KIP-13 Identifier|
 |---|---|
-|[IKIP17](#Specification)|0xce086315|
+|[IKIP37](#Specification)|0xce086315|
 |[IKIP37TokenReceiver](#kip-37-token-receiver)|0x7cc2d017|
 |[IERC1155TokenReceiver](#kip-37-token-receiver)|0x4e2312e0|
 |[IKIP37Metadata](#metadata-extensions)|0x0e89341c|
