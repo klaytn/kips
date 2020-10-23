@@ -776,7 +776,7 @@ interface IKIP37Pausable {
     /// @return True if the contract is paused, false otherwise
     function paused() external view returns (bool);
 
-    /// @notice Pause actions related to transfer and approve
+    /// @notice Pauses actions related to transfer and approve in the contract.
     /// @dev Throws if `msg.sender` is not allowed to pause.
     ///   Throws if the contract is paused.
     function pause() external;
