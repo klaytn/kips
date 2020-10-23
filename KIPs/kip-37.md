@@ -764,7 +764,7 @@ The optional `KIP37Pausable` extension can be identified with the (KIP-13 Standa
 
 If the optional `KIP37Pausable` extension is included:
 
-- The KIP-13 `KIP37Pausable` function MUST return the constant value `true` if `0xe8ffdb7` is passed through the `interfaceID` argument.
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0xe8ffdb7` is passed through the `interfaceID` argument.
 
 ```solidity
 pragma solidity 0.5.6;
