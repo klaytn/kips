@@ -786,7 +786,7 @@ interface IKIP37Pausable {
     ///   Throws if the contract is not paused.
     function unpause() external;
 
-    /// @notice Check whether the specific token is paused
+    /// @notice Checks whether the specific token is paused.
     /// @return True if the specific token is paused, false otherwise
     function paused(uint256 _id) external view returns (bool);
 
