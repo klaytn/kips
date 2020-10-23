@@ -772,7 +772,7 @@ pragma solidity 0.5.6;
 /// @title KIP-37 Multi Token Standard, optional pausing extension
 ///  Note: the KIP-13 identifier for this interface is 0xe8ffdb7.
 interface IKIP37Pausable {
-    /// @notice Check whether the contract is paused
+    /// @notice Checks whether the whole contract is paused.
     /// @return True if the contract is paused, false otherwise.
     function paused() external view returns (bool);
 
