@@ -773,7 +773,7 @@ pragma solidity 0.5.6;
 ///  Note: the KIP-13 identifier for this interface is 0xe8ffdb7.
 interface IKIP37Pausable {
     /// @notice Check whether the contract is paused
-    /// @return True if the contract is paused, false otherwise
+    /// @return True if the contract is paused, false otherwise.
     function paused() external view returns (bool);
 
     /// @notice Pauses actions related to transfer and approve in the contract.
