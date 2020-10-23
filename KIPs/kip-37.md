@@ -845,7 +845,7 @@ There have been requirements during the design discussions to have this standard
 To cater for this scenario, there is some leeway with the revert logic should a contract not implement the `KIP37TokenReceiver` as per [Safe Transfer Rules](#safe-transfer-rules) section above, specifically "Scenario#3 : The receiver does not implement the necessary `KIP37TokenReceiver` interface function(s)".
 
 Hence in a hybrid KIP-37 contract implementation an extra call MUST be made on the recipient contract and checked before any hook calls to `onKIP37Received` or `onKIP37BatchReceived` are made.
-Order of operation MUST therefore be:
+The order of operation MUST therefore be:
 
 1. The implementation MUST call the function `supportsInterface(0x7cc2d017)` on the recipient contract, providing at least 10,000 gas.
 2. If the function call succeeds and the return value is the constant value `true` the implementation proceeds as a regular KIP-37 implementation, with the call(s) to the `onKIP37Received` or `onKIP37BatchReceived` hooks and rules associated.
