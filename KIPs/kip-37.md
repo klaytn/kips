@@ -164,7 +164,7 @@ This section describes the differences between KIP-37 and ERC-1155.
 - More optional extensions are defined (minting extension, burning extension, and pausing extension).
 - `individualSupply` is added to obtain the total number of minted tokens for each token id.
 
-### KIP-1155 Identifiers
+### KIP-13 Identifiers
 
 <!-- The below table shows KIP-13 identifiers for interfaces defined in this proposal.
 
