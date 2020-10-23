@@ -176,7 +176,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 |[IKIP37Metadata](#metadata-extensions)|0x0e89341c|
 |[IKIP37Mintable](#minting-extension)|0x84aec3b9|
 |[IKIP37Burnable](#burning-extension)|0x9e094e9e|
-|[IKIP37Pausable](#pausing-extension)|0xe8ffdb7| -->
+|[IKIP37Pausable](#pausing-extension)|0xe8ffdb7|
 
 ### KIP-37 Token Receiver
 
