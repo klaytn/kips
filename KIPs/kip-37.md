@@ -166,7 +166,7 @@ This section describes the differences between KIP-37 and ERC-1155.
 
 ### KIP-13 Identifiers
 
-<!-- The below table shows KIP-13 identifiers for interfaces defined in this proposal.
+The below table shows KIP-13 identifiers for interfaces defined in this proposal.
 
 |Interface|KIP-13 Identifier|
 |---|---|
