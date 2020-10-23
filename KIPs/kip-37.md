@@ -781,7 +781,7 @@ interface IKIP37Pausable {
     ///   Throws if the contract is paused.
     function pause() external;
 
-    /// @notice Resume from the paused state of the contract
+    /// @notice Resumes from the paused state of the contract.
     /// @dev Throws if `msg.sender` is not allowed to unpause.
     ///   Throws if the contract is not paused.
     function unpause() external;
