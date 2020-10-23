@@ -795,7 +795,7 @@ interface IKIP37Pausable {
     ///   Throws if the specific token is paused.
     function pause(uint256 _id) external;
 
-    /// @notice Resume from the paused state of the specific token
+    /// @notice Resumes from the paused state of the specific token.
     /// @dev Throws if `msg.sender` is not allowed to unpause.
     ///   Throws if the specific token is not paused.
     function unpause(uint256 _id) external;
