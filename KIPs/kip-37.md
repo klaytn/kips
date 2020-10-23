@@ -465,7 +465,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 - The total value transferred from address `0x0` minus the total value transferred to `0x0` observed via the `TransferSingle` and `TransferBatch` events MAY be used by clients and exchanges to determine the "circulating supply" for a given token ID.
 - As mentioned above mint/create and burn/destroy operations are specialized transfers and so will likely be accomplished with custom transfer functions rather than `safeTransferFrom` or `safeBatchTransferFrom`. If so the [Implementation specific transfer API rules](#implementation-specific-transfer-api-rules) section would be appropriate.
   - Even in a non-safe API and/or hybrid standards case the above event rules MUST still be adhered to when minting/creating or burning/destroying.
-- A contract MAY skip calling the `KIP37TokenReceiver` hook function(s) if the mint operation is transferring the token(s) to itself. In all other cases the `KIP37TokenReceiver` rules MUST be followed as appropriate for the implementation (i.e. safe, custom and/or hybrid).
+- A contract MAY skip calling the `KIP37TokenReceiver` hook function(s) if the mint operation is transferring the token(s) to itself. In all other cases the `KIP37TokenReceiver` rules MUST be followed as appropriate for the implementation (i.e., safe, custom and/or hybrid).
 
 ##### A solidity example
 
