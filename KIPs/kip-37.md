@@ -744,7 +744,8 @@ interface IKIP37Burnable {
     ) external;
 
     /// @notice Burns multiple KIP37 tokens.
-    /// @dev Throws if `msg.sender` is not allowed to burn the tokens
+    /// @dev Throws if `msg.sender` is not allowed to burn the tokens.
+    ///   Throws if `_account` does not have tokens to be burnt.
     /// @param _account The account that owns tokens.
     /// @param _ids The list of the token ids to burn.
     /// @param _values The list of the token amounts to burn.
