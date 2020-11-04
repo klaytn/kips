@@ -164,7 +164,7 @@ This section describes the differences between KIP-37 and ERC-1155.
 
 - KIP-37 also supports the wallet interface of ERC-1155 (`IERC1155TokenReceiver`) to be compliant with ERC-1155.
 - More optional extensions are defined (minting extension, burning extension, and pausing extension).
-- `individualSupply` is added to obtain the total number of minted tokens for each token id.
+- `individualSupply` is added to obtain the amount of tokens in existence for each token id.
 
 ### KIP-13 Identifiers
 
