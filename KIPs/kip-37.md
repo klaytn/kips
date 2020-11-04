@@ -701,7 +701,7 @@ interface IKIP37Mintable {
         string calldata _uri
     ) external returns (bool);
 
-    /// @notice Batch mint tokens. Assign directly to _to[].
+    /// @notice Mints tokens in a batch and assigns the tokens according to the variables `_to` and `_quantities`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
     ///   MUST emit an event `TransferSingle` or `TransferBatch`.
     /// @param _id The token id to mint.
