@@ -738,7 +738,8 @@ pragma solidity 0.5.6;
 ///  Note: the KIP-13 identifier for this interface is 0x9e094e9e.
 interface IKIP37Burnable {
     /// @notice Burns specific KIP37 tokens.
-    /// @dev Throws if `msg.sender` is not allowed to burn the token
+    /// @dev Throws if `msg.sender` is not allowed to burn the token.
+    ///   Throws if `_account` does not have `_value` tokens for `_id`.
     /// @param _account The account that owns tokens.
     /// @param _id The token id to burn.
     /// @param _value The token amount to burn.
