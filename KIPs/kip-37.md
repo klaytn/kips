@@ -32,6 +32,8 @@ This document is heavily derived from [ERC-1155](https://eips.ethereum.org/EIPS/
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
+### KIP37 Interface
+
 Smart contracts implementing the KIP-37 standard MUST implement all of the functions in the KIP37 interface.
 
 Smart contracts implementing the KIP-37 standard MUST implement the KIP-13 supportsInterface function and MUST return the constant value true if 0xce086315 is passed through the interfaceID argument.
