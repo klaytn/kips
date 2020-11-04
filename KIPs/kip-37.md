@@ -457,6 +457,8 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 ##### **_Minting-creating and burning-destroying rules:_**
 
+- 'create' means creating a new kind of token by assigning a new token ID.
+- 'mint' means issuing additional tokens that have already been created.
 - A mint/create operation is essentially a specialized transfer and MUST follow these rules:
   - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
   - The [TransferSingle and TransferBatch event rules](#transfersingle-and-transferbatch-event-rules) MUST be followed as appropriate for the mint(s) (i.e., singles or batches) however the `_from` argument MUST be set to `0x0` (i.e., zero address) to flag the transfer as a mint to contract observers.
