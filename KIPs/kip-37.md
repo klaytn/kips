@@ -744,7 +744,8 @@ interface IKIP37Burnable {
     ) external;
 
     /// @notice Burns multiple KIP37 tokens.
-    /// @dev Throws if `msg.sender` is not allowed to burn the tokens
+    /// @dev Throws if `msg.sender` is not allowed to burn the tokens.
+    ///   Throws if `_account` does not have tokens to be burnt.
     /// @param _account The account that owns tokens.
     /// @param _ids The list of the token ids to burn.
     /// @param _values The list of the token amounts to burn.
@@ -764,7 +765,7 @@ The optional `KIP37Pausable` extension can be identified with the (KIP-13 Standa
 
 If the optional `KIP37Pausable` extension is included:
 
-- The KIP-13 `KIP37Pausable` function MUST return the constant value `true` if `0xe8ffdb7` is passed through the `interfaceID` argument.
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0xe8ffdb7` is passed through the `interfaceID` argument.
 
 ```solidity
 pragma solidity 0.5.6;
@@ -772,21 +773,21 @@ pragma solidity 0.5.6;
 /// @title KIP-37 Multi Token Standard, optional pausing extension
 ///  Note: the KIP-13 identifier for this interface is 0xe8ffdb7.
 interface IKIP37Pausable {
-    /// @notice Check whether the contract is paused
-    /// @return True if the contract is paused, false otherwise
+    /// @notice Checks whether the whole contract is paused.
+    /// @return True if the contract is paused, false otherwise.
     function paused() external view returns (bool);
 
-    /// @notice Pause actions related to transfer and approve
+    /// @notice Pauses actions related to transfer and approve in the contract.
     /// @dev Throws if `msg.sender` is not allowed to pause.
     ///   Throws if the contract is paused.
     function pause() external;
 
-    /// @notice Resume from the paused state of the contract
+    /// @notice Resumes from the paused state of the contract.
     /// @dev Throws if `msg.sender` is not allowed to unpause.
     ///   Throws if the contract is not paused.
     function unpause() external;
 
-    /// @notice Check whether the specific token is paused
+    /// @notice Checks whether the specific token is paused.
     /// @return True if the specific token is paused, false otherwise
     function paused(uint256 _id) external view returns (bool);
 
