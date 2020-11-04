@@ -499,6 +499,7 @@ If the optional `KIP37Metadata_URI` extension is included:
 
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x0e89341c` is passed through the `interfaceID` argument.
 - _Changes_ to the URI MUST emit the `URI` event if the change can be expressed with an event (i.e. it isn't dynamic/programmatic).
+  - An implementation MUST emit the `URI` event during a creation operation if `URI` of the new token type should be propagated to observers.
   - An implementation MAY emit the `URI` event during a mint operation but it is NOT mandatory. An observer MAY fetch the metadata uri at mint time from the `uri` function if it was not emitted.
 - The `uri` function SHOULD be used to retrieve values if no event was emitted.
 - The `uri` function MUST return the same value as the latest event for an `_id` if it was emitted.
