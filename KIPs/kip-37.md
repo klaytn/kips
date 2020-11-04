@@ -671,7 +671,7 @@ fr.json:
 
 ### Minting Extension
 
-The **minting extension** is OPTIONAL for KIP-37 smart contracts. This allows your contract to create and mint a new token.
+The **minting extension** is OPTIONAL for KIP-37 smart contracts. This allows your contract to create and mint a new token. Here, 'create' means creating a new kind of token by assigning a new token ID, and 'mint' means issuing additional tokens that have already been created.
 
 The optional `KIP37Mintable` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
 
