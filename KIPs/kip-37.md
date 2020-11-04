@@ -469,7 +469,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
   - Even in a non-safe API and/or hybrid standards case the above event rules MUST still be adhered to when minting/creating or burning/destroying.
 - A contract MAY skip calling the `KIP37TokenReceiver` hook function(s) if the mint operation is transferring the token(s) to itself. In all other cases the `KIP37TokenReceiver` rules MUST be followed as appropriate for the implementation (i.e., safe, custom and/or hybrid).
 
-##### A solidity example
+##### magic value calculation
 
 - the keccak256 generated constants for the various magic values (these MAY be used by implementation):
 
