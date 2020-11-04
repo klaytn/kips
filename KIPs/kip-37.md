@@ -489,7 +489,7 @@ The URI value allows for ID substitution by clients. If the string `{id}` exists
 
 Example of such a URI: `https://token-cdn-domain/{id}.json` would be replaced with `https://token-cdn-domain/000000000000000000000000000000000000000000000000000000000004cce0.json` if the client is referring to token ID 314592/0x4CCE0.
 
-#### Metadata Extensions
+#### Metadata Extension
 
 The optional `KIP37Metadata_URI` extension can be identified with the (KIP-13 Standard Interface Detection)[https://kips.klaytn.com/KIPs/kip-13].
 
