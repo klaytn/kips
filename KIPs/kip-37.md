@@ -563,6 +563,7 @@ An example of an KIP-37 Metadata JSON file follows. The properties array propose
 ```json
 {
   "name": "Asset Name",
+  "decimals": 18,
   "description": "Lorem ipsum...",
   "image": "https://s3.amazonaws.com/your-bucket/images/{id}.png",
   "properties": {
