@@ -725,7 +725,7 @@ The optional `KIP37Burnable` extension can be identified with the (KIP-13 Standa
 
 If the optional `KIP37Burnable` extension is included, the following features MUST be implemented:
 
-- The KIP-13 `KIP37Burnable` function MUST return the constant value `true` if `0x9e094e9e` is passed through the `interfaceID` argument.
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x9e094e9e` is passed through the `interfaceID` argument.
 - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting-creating and burning-destroying rules](#minting-creating-and-burning-destroying-rules).
 
 ```solidity
