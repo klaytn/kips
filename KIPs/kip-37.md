@@ -150,7 +150,7 @@ interface KIP37 /* is KIP13 */ {
     function isApprovedForAll(address _owner, address _operator) external view returns (bool);
 
     /**
-        @notice Get the supply of the token type requested.
+        @notice Get the total supply of the token type requested.
         @param _id      ID of the token
         @return         The supply of the token type requested
     */
