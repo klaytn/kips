@@ -268,7 +268,7 @@ interface ERC1155TokenReceiver {
 
 ### Safe Transfer Rules
 
-To be more explicit about how the standard `safeTransferFrom` and `safeBatchTransferFrom` functions MUST operate with respect to the KIP37TokenReceiver hook functions, a list of scenarios and rules follows.
+To be more explicit about how the standard `safeTransferFrom` and `safeBatchTransferFrom` functions MUST operate with respect to the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook functions, a list of scenarios and rules follows.
 
 #### Scenarios
 
