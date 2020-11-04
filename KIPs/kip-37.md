@@ -36,7 +36,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Smart contracts implementing the KIP-37 standard MUST implement all of the functions in the KIP37 interface.
 
-Smart contracts implementing the KIP-37 standard MUST implement the KIP-13 supportsInterface function and MUST return the constant value true if 0xce086315 is passed through the interfaceID argument.
+Smart contracts implementing the KIP-37 standard MUST implement the KIP-13 supportsInterface function and MUST return the constant value true if 0x6433ca1f is passed through the interfaceID argument.
 
 ```solidity
 pragma solidity 0.5.6;
@@ -44,7 +44,7 @@ pragma solidity 0.5.6;
 /**
     @title KIP-37 Multi Token Standard
     @dev See https://kips.klaytn.com/KIPs/kip-37
-    Note: The KIP-13 identifier for this interface is 0xce086315.
+    Note: The KIP-13 identifier for this interface is 0x6433ca1f.
  */
 interface KIP37 /* is KIP13 */ {
     /**
@@ -154,7 +154,7 @@ interface KIP37 /* is KIP13 */ {
         @param _id      ID of the token
         @return         The supply of the token type requested
     */
-    function individualSupply(uint256 _id) external view returns (uint256);
+    function totalSupply(uint256 _id) external view returns (uint256);
 }
 ```
 
@@ -164,7 +164,7 @@ This section describes the differences between KIP-37 and ERC-1155.
 
 - KIP-37 also supports the wallet interface of ERC-1155 (`IERC1155TokenReceiver`) to be compliant with ERC-1155.
 - More optional extensions are defined (minting extension, burning extension, and pausing extension).
-- `individualSupply` is added to obtain the amount of tokens in existence for each token id.
+- `totalSupply` is added to obtain the amount of tokens in existence for each token id.
 
 ### KIP-13 Identifiers
 
@@ -172,7 +172,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 
 |Interface|KIP-13 Identifier|
 |---|---|
-|[IKIP37](#kip37-interface)|0xce086315|
+|[IKIP37](#kip37-interface)|0x6433ca1f|
 |[IKIP37TokenReceiver](#kip-37-token-receiver)|0x7cc2d017|
 |[IERC1155TokenReceiver](#kip-37-token-receiver)|0x4e2312e0|
 |[IKIP37Metadata](#metadata-extension)|0x0e89341c|
@@ -476,7 +476,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 - the keccak256 generated constants for the various magic values (these MAY be used by implementation):
 
 ```solidity
-bytes4 constant public KIP37_KIP13 = 0xce086315; // KIP-13 identifier for the main token standard.
+bytes4 constant public KIP37_KIP13 = 0x6433ca1f; // KIP-13 identifier for the main token standard.
 bytes4 constant public KIP37_KIP13_TOKENRECEIVER = 0x7cc2d017; // KIP-13 identifier for the `KIP37TokenReceiver` support (i.e. `bytes4(keccak256("onKIP37Received(address,address,uint256,uint256,bytes)")) ^ bytes4(keccak256("onKIP37BatchReceived(address,address,uint256[],uint256[],bytes)"))`).
 bytes4 constant public KIP37_ACCEPTED = 0xe78b3325; // Return value from `onKIP37Received` call if a contract accepts receipt (i.e `bytes4(keccak256("onKIP37Received(address,address,uint256,uint256,bytes)"))`).
 bytes4 constant public KIP37_BATCH_ACCEPTED = 0x9b49e332; // Return value from `onKIP37BatchReceived` call if a contract accepts receipt (i.e `bytes4(keccak256("onKIP37BatchReceived(address,address,uint256[],uint256[],bytes)"))`).
