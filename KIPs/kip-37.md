@@ -863,7 +863,7 @@ The order of operation MUST therefore be:
 
 1. The implementation MUST call the function `supportsInterface(0x7cc2d017)` on the recipient contract, providing at least 10,000 gas.
 2. If the function call succeeds and the return value is the constant value `true` the implementation proceeds as a regular KIP-37 implementation, with the call(s) to the `onKIP37Received` or `onKIP37BatchReceived` hooks and rules associated.
-3. If the function call fails or the return value is NOT the constant value `true` the implementation can assume the recipient contract is not an `KIP37TokenReceiver` and follow its other standard's rules for transfers.
+3. If the function call fails or the return value is NOT the constant value `true` the implementation can assume the recipient contract is not a `KIP37TokenReceiver` and follow its other standard's rules for transfers.
 
 ## Usage
 
