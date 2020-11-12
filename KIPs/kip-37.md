@@ -687,7 +687,7 @@ The optional `KIP37Mintable` extension can be identified with the (KIP-13 Standa
 If the optional `KIP37Mintable` extension is included:
 
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x84aec3b9` is passed through the `interfaceID` argument.
-- The `create` function is used to create new token allocated with new token id.
+- The `create` function is used to create a new token allocated with a new token id.
   - An implementation MUST emit the `URI` event during a create operation if the created token has its own metadata.
 - When creating tokens, the total supply of the token ID must be increased by initial supply.
 - When minting tokens, the total supply of the token ID must be increased by minted quantity.
