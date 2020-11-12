@@ -804,7 +804,7 @@ interface IKIP37Pausable {
     /// @return True if the specific token is paused, false otherwise
     function paused(uint256 _id) external view returns (bool);
 
-    /// @notice Pauses actions related to transfer and approve of the specific token.
+    /// @notice Pauses actions related to transfer and approval of the specific token.
     /// @dev Throws if `msg.sender` is not allowed to pause.
     ///   Throws if the specific token is paused.
     function pause(uint256 _id) external;
