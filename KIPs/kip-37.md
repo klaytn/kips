@@ -561,7 +561,7 @@ This JSON schema is loosely based on the "KIP-17 Metadata JSON Schema", but incl
 }
 ```
 
-An example of an KIP-37 Metadata JSON file follows. The properties array proposes some SUGGESTED formatting for token-specific display properties and metadata.
+An example of a KIP-37 Metadata JSON file follows. The properties array proposes some SUGGESTED formatting for token-specific display properties and metadata.
 
 ```json
 {
