@@ -65,7 +65,7 @@ interface KIP37 /* is KIP13 */ {
         The `_from` argument MUST be the address of the holder whose balance is decreased.
         The `_to` argument MUST be the address of the recipient whose balance is increased.
         The `_ids` argument MUST be the list of tokens being transferred.
-        The `_values` argument MUST be the list of number of tokens (matching the list and order of tokens specified in _ids) the holder balance is decreased by and match what the recipient balance is increased by.
+        The `_values` argument MUST be the list of the number of tokens (matching the list and order of tokens specified in _ids) the holder balance is decreased by and match what the recipient balance is increased by.
         When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address).
         When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. zero address).
     */
