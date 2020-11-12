@@ -305,7 +305,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 **_Scenario#7 :_** The receiver implements the `KIP37TokenReceiver` or `ERC1155TokenReceiver` interface and is the recipient of more than one balance change (e.g. `safeBatchTransferFrom` called).
 
 - All balance transfers that are referenced in a call to an `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook MUST be updated before the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook is called on the recipient contract.
-- All transfer events MUST have been emitted to reflect current balance changes before an `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook is called on the recipient contract.
+- All transfer events MUST have been emitted to reflect current balance changes before a `KIP37TokenReceiver` or `ERC1155TokenReceiver` hook is called on the recipient contract.
 - `onKIP37Received`, `onKIP37BatchReceived`, `onERC1155Received` or `onERC1155BatchReceived` MUST be called on the recipient as many times as necessary such that every balance change for the recipient in the scenario is accounted for.
   - The return magic value for every hook call MUST be checked and acted upon as per [onKIP37Received rules](#onkip37received-rules) and [onKIP37BatchReceived rules](#onkip37batchreceived-rules).
 - The `onKIP37BatchReceived` or `onERC1155BatchReceived` hook SHOULD be called on the recipient contract and its rules followed.
