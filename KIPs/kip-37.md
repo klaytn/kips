@@ -345,7 +345,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 - Caller must be approved to manage all the tokens being transferred out of the `_from` account (see “Approval” section).
 - MUST revert if `_to` is the zero address.
-- MUST revert if length of `_ids` is not the same as length of `_values`.
+- MUST revert if the length of `_ids` is not the same as the length of `_values`.
 - MUST revert if any of the balance(s) of the holder(s) for token(s) in `_ids` is lower than the respective amount(s) in `_values` sent to the recipient.
 - MUST revert on any other error.
 - MUST emit `TransferSingle` or `TransferBatch` event(s) such that all the balance changes are reflected (see [TransferSingle and TransferBatch event rules](#transfersingle-and-transferbatch-event-rules) section).
