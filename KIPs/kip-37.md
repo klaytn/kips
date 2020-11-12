@@ -195,7 +195,7 @@ pragma solidity 0.5.6;
 interface KIP37TokenReceiver {
     /**
         @notice Handle the receipt of a single KIP37 token type.
-        @dev An KIP37-compliant smart contract MUST call this function on the token recipient contract, at the end of a `safeTransferFrom` after the balance has been updated.
+        @dev A KIP37-compliant smart contract MUST call this function on the token recipient contract, at the end of a `safeTransferFrom` after the balance has been updated.
         This function MUST return `bytes4(keccak256("onKIP37Received(address,address,uint256,uint256,bytes)"))` (i.e. 0xe78b3325) if it accepts the transfer.
         This function MUST revert if it rejects the transfer.
         Return of any other value than the prescribed keccak256 generated value MUST result in the transaction being reverted by the caller.
