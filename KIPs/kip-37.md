@@ -459,6 +459,9 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 - 'create' means creating a new kind of token by assigning a new token ID.
 - 'mint' means issuing additional tokens that have already been created.
+- When creating tokens, the total supply of the token ID must be increased by initial supply.
+- When minting tokens, the total supply of the token ID must be increased by minted quantity.
+- When burning tokens, the total supply of the token ID must be decreased by burned quantity.
 - A mint/create operation is essentially a specialized transfer and MUST follow these rules:
   - To broadcast the existence of a token ID with no initial balance, the contract SHOULD emit the `TransferSingle` event from `0x0` to `0x0`, with the token creator as `_operator`, and a `_value` of 0.
   - The [TransferSingle and TransferBatch event rules](#transfersingle-and-transferbatch-event-rules) MUST be followed as appropriate for the mint(s) (i.e., singles or batches) however the `_from` argument MUST be set to `0x0` (i.e., zero address) to flag the transfer as a mint to contract observers.
@@ -686,6 +689,8 @@ If the optional `KIP37Mintable` extension is included:
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x84aec3b9` is passed through the `interfaceID` argument.
 - The `create` function is used to create new token allocated with new token id.
   - An implementation MUST emit the `URI` event during a create operation if the created token has it's own metadata.
+- When creating tokens, the total supply of the token ID must be increased by initial supply.
+- When minting tokens, the total supply of the token ID must be increased by minted quantity.
 - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting-creating and burning-destroying rules](#minting-creating-and-burning-destroying-rules).
 
 ```solidity
@@ -730,6 +735,7 @@ The optional `KIP37Burnable` extension can be identified with the (KIP-13 Standa
 If the optional `KIP37Burnable` extension is included, the following features MUST be implemented:
 
 - The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x9e094e9e` is passed through the `interfaceID` argument.
+- When burning tokens, the total supply of the token ID must be decreased by burned quantity.
 - When minting/creating tokens, the `_from` argument MUST be set to `0x0` (i.e. zero address). See [Minting-creating and burning-destroying rules](#minting-creating-and-burning-destroying-rules).
 
 ```solidity
