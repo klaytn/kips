@@ -103,7 +103,7 @@ interface KIP37 /* is KIP13 */ {
         @notice Transfers `_values` amount(s) of `_ids` from the `_from` address to the `_to` address specified (with safety call).
         @dev Caller must be approved to manage the tokens being transferred out of the `_from` account (see "Approval" section of the standard).
         MUST revert if `_to` is the zero address.
-        MUST revert if length of `_ids` is not the same as length of `_values`.
+        MUST revert if the length of `_ids` is not the same as the length of `_values`.
         MUST revert if any of the balance(s) of the holder(s) for token(s) in `_ids` is lower than the respective amount(s) in `_values` sent to the recipient.
         MUST revert on any other error.
         MUST emit `TransferSingle` or `TransferBatch` event(s) such that all the balance changes are reflected (see "Safe Transfer Rules" section of the standard).
