@@ -210,7 +210,7 @@ interface KIP37TokenReceiver {
 
     /**
         @notice Handle the receipt of multiple KIP37 token types.
-        @dev An KIP37-compliant smart contract MUST call this function on the token recipient contract, at the end of a `safeBatchTransferFrom` after the balances have been updated.
+        @dev A KIP37-compliant smart contract MUST call this function on the token recipient contract, at the end of a `safeBatchTransferFrom` after the balances have been updated.
         This function MUST return `bytes4(keccak256("onKIP37BatchReceived(address,address,uint256[],uint256[],bytes)"))` (i.e. 0x9b49e332) if it accepts the transfer(s).
         This function MUST revert if it rejects the transfer(s).
         Return of any other value than the prescribed keccak256 generated value MUST result in the transaction being reverted by the caller.
