@@ -323,7 +323,7 @@ To be more explicit about how the standard `safeTransferFrom` and `safeBatchTran
 
 **_Scenario#9 :_** You are transferring tokens via a non-standard API call i.e. an implementation specific API and NOT `safeTransferFrom` or `safeBatchTransferFrom`.
 
-- In this scenario all balance updates and events output rules are the same as if a standard transfer function had been called.
+- In this scenario, all balance updates and events output rules are the same as if a standard transfer function had been called.
   - i.e. an external viewer MUST still be able to query the balance via a standard function and it MUST be identical to the balance as determined by `TransferSingle` and `TransferBatch` events alone.
 - If the receiver is a contract the `KIP37TokenReceiver` or `ERC1155TokenReceiver` hooks still need to be called on it and the return values respected the same as if a standard transfer function had been called.
   - However while the `safeTransferFrom` or `safeBatchTransferFrom` functions MUST revert if a receiving contract does not implement the KIP37TokenReceiver or ERC1155TokenReceiver interface, a non-standard function MAY proceed with the transfer.
