@@ -176,7 +176,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 | [IKIP37TokenReceiver](#kip-37-token-receiver)   | 0x7cc2d017        |
 | [IERC1155TokenReceiver](#kip-37-token-receiver) | 0x4e2312e0        |
 | [IKIP37Metadata](#metadata-extension)           | 0x0e89341c        |
-| [IKIP37Mintable](#minting-extension)            | 0x84aec3b9        |
+| [IKIP37Mintable](#minting-extension)            | 0xdc25b845        |
 | [IKIP37Burnable](#burning-extension)            | 0x9e094e9e        |
 | [IKIP37Pausable](#pausing-extension)            | 0x0e8ffdb7        |
 
@@ -686,7 +686,7 @@ The optional `KIP37Mintable` extension can be identified with the (KIP-13 Standa
 
 If the optional `KIP37Mintable` extension is included:
 
-- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x84aec3b9` is passed through the `interfaceID` argument.
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0xdc25b845` is passed through the `interfaceID` argument.
 - The `create` function is used to create a new token allocated with a new token id.
   - An implementation MUST emit the `URI` event during a create operation if the created token has its own metadata.
 - When creating tokens, the total supply of the token ID must be increased by initial supply.
@@ -697,7 +697,7 @@ If the optional `KIP37Mintable` extension is included:
 pragma solidity 0.5.6;
 
 /// @title KIP-37 Multi Token Standard, optional minting extension
-///  Note: the KIP-13 identifier for this interface is 0x84aec3b9.
+///  Note: the KIP-13 identifier for this interface is 0xdc25b845.
 interface IKIP37Mintable {
     /// @notice Creates a new token type and assigns _initialSupply to the minter.
     /// @dev Throws if `msg.sender` is not allowed to create.
