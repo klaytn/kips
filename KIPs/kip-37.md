@@ -717,7 +717,7 @@ interface IKIP37Mintable {
     ///   MUST emit an event `TransferSingle`.
     /// @param _id The token id to mint.
     /// @param _to The address that will receive the minted tokens.
-    /// @param _quantity The quantity of token being minted.
+    /// @param _quantity The quantity of tokens being minted.
     function mint(
         uint256 _id,
         address _to,
