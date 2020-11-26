@@ -724,7 +724,7 @@ interface IKIP37Mintable {
         uint256 _quantity
     ) external;
 
-    /// @notice Mints tokens in a batch and assigns the tokens according to the variables `_to` and `_quantities`.
+    /// @notice Mints tokens in a batch and assigns the tokens according to the variables `_toList` and `_quantities`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
     ///   MUST emit an event `TransferSingle` or `TransferBatch`.
     /// @param _id The token id to mint.
