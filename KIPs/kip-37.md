@@ -726,7 +726,7 @@ interface IKIP37Mintable {
 
     /// @notice Mints tokens in a batch and assigns the tokens according to the variables `_toList` and `_quantities`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
-    ///   MUST emit an event `TransferSingle` or `TransferBatch`.
+    ///   MUST emit one or more `TransferSingle`events or a single `TransferBatch` event.
     /// @param _id The token id to mint.
     /// @param _toList The list of addresses that will receive the minted tokens.
     /// @param _quantities The list of quantities of tokens being minted.
