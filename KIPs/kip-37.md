@@ -712,7 +712,7 @@ interface IKIP37Mintable {
         string calldata _uri
     ) external returns (bool);
 
-    /// @notice Mints token and assigns the token according to the variables `_to` and `_quantity`.
+    /// @notice Mints tokens of the specific token type `_id` and assigns the tokens according to the variables `_to` and `_quantity`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
     ///   MUST emit an event `TransferSingle`.
     /// @param _id The token id to mint.
