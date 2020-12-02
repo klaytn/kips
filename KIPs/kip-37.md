@@ -176,7 +176,7 @@ The below table shows KIP-13 identifiers for interfaces defined in this proposal
 | [IKIP37TokenReceiver](#kip-37-token-receiver)   | 0x7cc2d017        |
 | [IERC1155TokenReceiver](#kip-37-token-receiver) | 0x4e2312e0        |
 | [IKIP37Metadata](#metadata-extension)           | 0x0e89341c        |
-| [IKIP37Mintable](#minting-extension)            | 0xdc25b845        |
+| [IKIP37Mintable](#minting-extension)            | 0xdfd9d9ec        |
 | [IKIP37Burnable](#burning-extension)            | 0x9e094e9e        |
 | [IKIP37Pausable](#pausing-extension)            | 0x0e8ffdb7        |
 
@@ -686,7 +686,7 @@ The optional `KIP37Mintable` extension can be identified with the (KIP-13 Standa
 
 If the optional `KIP37Mintable` extension is included:
 
-- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0xdc25b845` is passed through the `interfaceID` argument.
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0xdfd9d9ec` is passed through the `interfaceID` argument.
 - The `create` function is used to create a new token allocated with a new token id.
   - An implementation MUST emit the `URI` event during a create operation if the created token has its own metadata.
 - When creating tokens, the total supply of the token ID must be increased by initial supply.
@@ -697,7 +697,7 @@ If the optional `KIP37Mintable` extension is included:
 pragma solidity 0.5.6;
 
 /// @title KIP-37 Multi Token Standard, optional minting extension
-///  Note: the KIP-13 identifier for this interface is 0xdc25b845.
+///  Note: the KIP-13 identifier for this interface is 0xdfd9d9ec.
 interface IKIP37Mintable {
     /// @notice Creates a new token type and assigns _initialSupply to the minter.
     /// @dev Throws if `msg.sender` is not allowed to create.
@@ -712,28 +712,42 @@ interface IKIP37Mintable {
         string calldata _uri
     ) external returns (bool);
 
-    /// @notice Mints tokens of the specific token type `_id` and assigns the tokens according to the variables `_to` and `_quantity`.
+    /// @notice Mints tokens of the specific token type `_id` and assigns the tokens according to the variables `_to` and `_value`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
     ///   MUST emit an event `TransferSingle`.
     /// @param _id The token id to mint.
     /// @param _to The address that will receive the minted tokens.
-    /// @param _quantity The quantity of tokens being minted.
+    /// @param _value The quantity of tokens being minted.
     function mint(
         uint256 _id,
         address _to,
-        uint256 _quantity
+        uint256 _value
     ) external;
 
-    /// @notice Mints tokens of the specific token type `_id` in a batch and assigns the tokens according to the variables `_toList` and `_quantities`.
+    /// @notice Mints tokens of the specific token type `_id` in a batch and assigns the tokens according to the variables `_toList` and `_values`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
-    ///   MUST emit one or more `TransferSingle` events or a single `TransferBatch` event.
+    ///   MUST emit one or more `TransferSingle` events.
+    ///   MUST revert if the length of `_toList` is not the same as the length of `_values`.
     /// @param _id The token id to mint.
     /// @param _toList The list of addresses that will receive the minted tokens.
-    /// @param _quantities The list of quantities of tokens being minted.
-    function mintBatch(
+    /// @param _values The list of quantities of tokens being minted.
+    function mint(
         uint256 _id,
         address[] calldata _toList,
-        uint256[] calldata _quantities
+        uint256[] calldata _values
+    ) external;
+
+    /// @notice Mints multiple KIP37 tokens of the specific token types `_ids` in a batch and assigns the tokens according to the variables `_to` and `_values`.
+    /// @dev Throws if `msg.sender` is not allowed to mint.
+    ///   MUST emit one or more `TransferSingle` events or a single `TransferBatch` event.
+    ///   MUST revert if the length of `_ids` is not the same as the length of `_values`.
+    /// @param _to The address that will receive the minted tokens.
+    /// @param _ids The list of the token ids to mint.
+    /// @param _values The list of quantities of tokens being minted.
+    function mintBatch(
+        address _to,
+        uint256[] calldata _ids,
+        uint256[] calldata _values
     ) external;
 }
 ```
