@@ -170,15 +170,15 @@ This section describes the differences between KIP-37 and ERC-1155.
 
 The below table shows KIP-13 identifiers for interfaces defined in this proposal.
 
-|Interface|KIP-13 Identifier|
-|---|---|
-|[IKIP37](#kip37-interface)|0x6433ca1f|
-|[IKIP37TokenReceiver](#kip-37-token-receiver)|0x7cc2d017|
-|[IERC1155TokenReceiver](#kip-37-token-receiver)|0x4e2312e0|
-|[IKIP37Metadata](#metadata-extension)|0x0e89341c|
-|[IKIP37Mintable](#minting-extension)|0x84aec3b9|
-|[IKIP37Burnable](#burning-extension)|0x9e094e9e|
-|[IKIP37Pausable](#pausing-extension)|0xe8ffdb7|
+| Interface                                       | KIP-13 Identifier |
+| ----------------------------------------------- | ----------------- |
+| [IKIP37](#kip37-interface)                      | 0x6433ca1f        |
+| [IKIP37TokenReceiver](#kip-37-token-receiver)   | 0x7cc2d017        |
+| [IERC1155TokenReceiver](#kip-37-token-receiver) | 0x4e2312e0        |
+| [IKIP37Metadata](#metadata-extension)           | 0x0e89341c        |
+| [IKIP37Mintable](#minting-extension)            | 0xdfd9d9ec        |
+| [IKIP37Burnable](#burning-extension)            | 0x9e094e9e        |
+| [IKIP37Pausable](#pausing-extension)            | 0x0e8ffdb7        |
 
 ### KIP-37 Token Receiver
 
@@ -686,7 +686,7 @@ The optional `KIP37Mintable` extension can be identified with the (KIP-13 Standa
 
 If the optional `KIP37Mintable` extension is included:
 
-- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x84aec3b9` is passed through the `interfaceID` argument.
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0xdfd9d9ec` is passed through the `interfaceID` argument.
 - The `create` function is used to create a new token allocated with a new token id.
   - An implementation MUST emit the `URI` event during a create operation if the created token has its own metadata.
 - When creating tokens, the total supply of the token ID must be increased by initial supply.
@@ -697,7 +697,7 @@ If the optional `KIP37Mintable` extension is included:
 pragma solidity 0.5.6;
 
 /// @title KIP-37 Multi Token Standard, optional minting extension
-///  Note: the KIP-13 identifier for this interface is 0x84aec3b9.
+///  Note: the KIP-13 identifier for this interface is 0xdfd9d9ec.
 interface IKIP37Mintable {
     /// @notice Creates a new token type and assigns _initialSupply to the minter.
     /// @dev Throws if `msg.sender` is not allowed to create.
@@ -712,16 +712,42 @@ interface IKIP37Mintable {
         string calldata _uri
     ) external returns (bool);
 
-    /// @notice Mints tokens in a batch and assigns the tokens according to the variables `_to` and `_quantities`.
+    /// @notice Mints tokens of the specific token type `_id` and assigns the tokens according to the variables `_to` and `_value`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
-    ///   MUST emit an event `TransferSingle` or `TransferBatch`.
+    ///   MUST emit an event `TransferSingle`.
     /// @param _id The token id to mint.
-    /// @param _to The list of addresses that will receive the minted tokens.
-    /// @param _quantities The list of quantities of tokens being minted.
+    /// @param _to The address that will receive the minted tokens.
+    /// @param _value The quantity of tokens being minted.
     function mint(
         uint256 _id,
-        address[] calldata _to,
-        uint256[] calldata _quantities
+        address _to,
+        uint256 _value
+    ) external;
+
+    /// @notice Mints tokens of the specific token type `_id` in a batch and assigns the tokens according to the variables `_toList` and `_values`.
+    /// @dev Throws if `msg.sender` is not allowed to mint.
+    ///   MUST emit one or more `TransferSingle` events.
+    ///   MUST revert if the length of `_toList` is not the same as the length of `_values`.
+    /// @param _id The token id to mint.
+    /// @param _toList The list of addresses that will receive the minted tokens.
+    /// @param _values The list of quantities of tokens being minted.
+    function mint(
+        uint256 _id,
+        address[] calldata _toList,
+        uint256[] calldata _values
+    ) external;
+
+    /// @notice Mints multiple KIP-37 tokens of the specific token types `_ids` in a batch and assigns the tokens according to the variables `_to` and `_values`.
+    /// @dev Throws if `msg.sender` is not allowed to mint.
+    ///   MUST emit one or more `TransferSingle` events or a single `TransferBatch` event.
+    ///   MUST revert if the length of `_ids` is not the same as the length of `_values`.
+    /// @param _to The address that will receive the minted tokens.
+    /// @param _ids The list of the token ids to mint.
+    /// @param _values The list of quantities of tokens being minted.
+    function mintBatch(
+        address _to,
+        uint256[] calldata _ids,
+        uint256[] calldata _values
     ) external;
 }
 ```
@@ -778,13 +804,13 @@ The optional `KIP37Pausable` extension can be identified with the (KIP-13 Standa
 
 If the optional `KIP37Pausable` extension is included:
 
-- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0xe8ffdb7` is passed through the `interfaceID` argument.
+- The KIP-13 `supportsInterface` function MUST return the constant value `true` if `0x0e8ffdb7` is passed through the `interfaceID` argument.
 
 ```solidity
 pragma solidity 0.5.6;
 
 /// @title KIP-37 Multi Token Standard, optional pausing extension
-///  Note: the KIP-13 identifier for this interface is 0xe8ffdb7.
+///  Note: the KIP-13 identifier for this interface is 0x0e8ffdb7.
 interface IKIP37Pausable {
     /// @notice Checks whether the whole contract is paused.
     /// @return True if the contract is paused, false otherwise.
