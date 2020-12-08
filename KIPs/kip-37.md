@@ -737,7 +737,7 @@ interface IKIP37Mintable {
         uint256[] calldata _values
     ) external;
 
-    /// @notice Mints multiple KIP37 tokens of the specific token types `_ids` in a batch and assigns the tokens according to the variables `_to` and `_values`.
+    /// @notice Mints multiple KIP-37 tokens of the specific token types `_ids` in a batch and assigns the tokens according to the variables `_to` and `_values`.
     /// @dev Throws if `msg.sender` is not allowed to mint.
     ///   MUST emit one or more `TransferSingle` events or a single `TransferBatch` event.
     ///   MUST revert if the length of `_ids` is not the same as the length of `_values`.
