@@ -69,7 +69,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![finalWhole](https://user-images.githubusercontent.com/32922423/90474994-9076bf00-e161-11ea-966c-c820fffa21eb.png)
+![WIP](https://user-images.githubusercontent.com/32922423/106078095-27569700-6156-11eb-84dd-4147606e5b85.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -99,7 +99,7 @@ In the next chapter, each layer is described in detail.
 
 The `Account` layer provides functionality related to updating the [AccountKey] of the Klaytn account.
 
-![0811Account](https://user-images.githubusercontent.com/32922423/89860635-e508c000-dbde-11ea-8c2f-b755212f3556.png)
+![accountLayer](https://user-images.githubusercontent.com/32922423/106078110-2de50e80-6156-11eb-8030-04fdc0c34696.png)
 
 `Account` is a class that represents a Klaytn account. It contains information needed to update the [AccountKey] of the account in the Klaytn. It has `address` and `accountKey` as member variables. The `accountKey` can be an instance of `AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig`, and `AccountKeyRoleBased` depending on the key.
 
