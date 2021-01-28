@@ -69,7 +69,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![finalWhole](https://user-images.githubusercontent.com/32922423/90474994-9076bf00-e161-11ea-966c-c820fffa21eb.png)
+![whole](https://user-images.githubusercontent.com/32922423/106080346-35a6b200-615a-11eb-96be-44fffd382c81.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -99,7 +99,7 @@ In the next chapter, each layer is described in detail.
 
 The `Account` layer provides functionality related to updating the [AccountKey] of the Klaytn account.
 
-![0811Account](https://user-images.githubusercontent.com/32922423/89860635-e508c000-dbde-11ea-8c2f-b755212f3556.png)
+![accountLayer](https://user-images.githubusercontent.com/32922423/106078110-2de50e80-6156-11eb-8030-04fdc0c34696.png)
 
 `Account` is a class that represents a Klaytn account. It contains information needed to update the [AccountKey] of the account in the Klaytn. It has `address` and `accountKey` as member variables. The `accountKey` can be an instance of `AccountKeyLegacy`, `AccountKeyPublic`, `AccountKeyFail`, `AccountKeyWeightedMultiSig`, and `AccountKeyRoleBased` depending on the key.
 
@@ -1187,7 +1187,7 @@ None
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e., [KIP-7] or [KIP-17]) on Klaytn.
 
-![0811Contract](https://user-images.githubusercontent.com/32922423/89860622-de7a4880-dbde-11ea-9986-3af7ae595150.png)
+![contractkctabi](https://user-images.githubusercontent.com/32922423/106080502-7dc5d480-615a-11eb-8af9-3a6fbc93d0d3.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. If you have the byte code and constructor parameters, you can use the `Contract` instance to deploy the smart contract to Klaytn. The class can process the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
