@@ -69,7 +69,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![whole](https://user-images.githubusercontent.com/32922423/106080346-35a6b200-615a-11eb-96be-44fffd382c81.png)
+![whole](https://user-images.githubusercontent.com/32922423/106681260-7f344880-6603-11eb-84f1-8c96733acfb5.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -1489,7 +1489,7 @@ None
 
 The Utils layer provides utility functions.
 
-![0811Utils](https://user-images.githubusercontent.com/32922423/89860605-d4f0e080-dbde-11ea-86e3-8d77d66ebb4a.png)
+![utils](https://user-images.githubusercontent.com/32922423/106681271-85c2c000-6603-11eb-9e17-db218c1c9bb3.png)
 
 The Utils class provides basic utility functions required when using Caver, and it also provides converting functions based on `KlayUnit`.
 
@@ -1523,8 +1523,8 @@ The Utils class provides basic utility functions required when using Caver, and 
 | convertToPeb(num: String, unit: KlayUnit): String | Converts any KLAY value into peb. |
 | convertFromPeb(num: String, unit: String): String | Converts any KLAY value from peb. |
 | convertFromPeb(num: String, unit: KlayUnit): String | Converts any KLAY value from peb. |
-| recover(message: String, signature: KlaySignatureData): String | Recovers the Klaytn address that was used to sign the given data. |
-| recover(message: String, signature: KlaySignatureData, preFixed: Boolean): String | Recovers the Klaytn address that was used to sign the given data. |
+| recover(message: String, signature: SignatureData): String | Recovers the Klaytn address that was used to sign the given data. |
+| recover(message: String, signature: SignatureData, preFixed: Boolean): String | Recovers the Klaytn address that was used to sign the given data. |
 
 #### KlayUnit
 
