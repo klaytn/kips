@@ -69,7 +69,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![whole](https://user-images.githubusercontent.com/32922423/106681260-7f344880-6603-11eb-84f1-8c96733acfb5.png)
+![whole_20210217](https://user-images.githubusercontent.com/32922423/108157902-2a2a2380-7127-11eb-814f-b166f2983e9f.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -291,7 +291,7 @@ None
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
 
-![finalWallet](https://user-images.githubusercontent.com/32922423/90474991-8c4aa180-e161-11ea-88fc-9262f931df06.png)
+![walletLayer_20210217](https://user-images.githubusercontent.com/32922423/108157894-25fe0600-7127-11eb-8916-1f498f357574.png)
 
 In the Wallet layer, an abstract class `AbstractKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` are implemented by extending `AbstractKeyring`. The `AbstractKeyring` class defines abstract methods that Keyring classes must implement.
 
@@ -307,7 +307,9 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `Keystore` is a class that contains encrypted keyring. The internally defined value differs depending on the keystore version, see [KIP-3](./kip-3.md).
 
-`KeyringContainer` is an "in-memory wallet" class that manages keyring instances. It manages the keyring instances based on their addresses.
+In the wallet layer, an interface called `IWallet` is defined, and this interface is an interface of `Wallet` that stores data used when signing a transaction.
+
+`KeyringContainer` is an "in-memory wallet" class that implements `IWallet` and manages keyring instances. It manages the keyring instances based on their addresses.
 
 #### PrivateKey
 
@@ -372,7 +374,8 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | Method | Description |
 | ----------- | ----------- |
 | getPublicKey(): String | Returns the public key string. |
-| getKeyByRole(role): PrivateKey | Returns the keys specified by the role. SingleKeyring always returns the same key. |
+| getPublicKey(compressed: Boolean): String | Returns the compressed public key string if compressed is true. It returns the uncompressed public key string otherwise. |
+| getKeyByRole(role: int): PrivateKey | Returns the keys specified by the role. SingleKeyring always returns the same key. |
 | toAccount(): Account | Returns an Account instance. |
 
 #### MultipleKeyring
@@ -390,7 +393,8 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | Method | Description |
 | ----------- | ----------- |
 | getPublicKey(): List&#60;String&#62; | Returns the public key strings. |
-| getKeyByRole(role): List&#60;PrivateKey&#62; | Returns the keys specified by the role. |
+| getPublicKey(compressed: Boolean): String | Returns the compressed public key strings if compressed is true. It returns the uncompressed public key strings otherwise. |
+| getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the keys specified by the role. |
 | toAccount(): Account | Returns an Account instance. A default option with a threshold of 1 and a weight of 1 for each key will be used. |
 | toAccount(options: WeightedMultiSigOptions): Account | Returns an Account instance with the given options. It throws an exception if the options is invalid. |
 
@@ -410,7 +414,8 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | Method | Description |
 | ----------- | ----------- |
 | getPublicKey(): List&#60;List&#60;String&#62;&#62; | Returns the public key strings for all roles. |
-| getKeyByRole(role): List&#60;PrivateKey&#62; | Returns the private keys for all roles. |
+| getPublicKey(compressed: Boolean): String | Returns the compressed public key strings for all roles if compressed is true. It returns the uncompressed public key strings otherwise. |
+| getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the private keys for all roles. |
 | toAccount(): Account | Returns an Account instance. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
 | toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an Account instance with the given options. It throws an exception if the options is invalid. |
 
@@ -476,9 +481,28 @@ None
 | createWithRoleBasedKey(address: String, roleBasedKeys: List&#60;String[]&#62;): RoleBasedKeyring | Creates a RoleBasedKeyring instance from an address and a 2D array of which each array element contains keys defined for each role. It throws an exception if the address string or the private key strings are invalid. |
 | decrypt(keystore: Object, password: String): Keyring | Decrypts a keystore v3 or v4 JSON and returns the decrypted keyring instance. It throws an exception if the decryption is failed. |
 
+#### IWallet
+
+`IWallet` is the interface of Wallet that manages data used when signing transactions. All Wallet classes must implement `IWallet`.
+Caver has a `KeyringContainer` instance that implements `IWallet`, and if it is a Wallet class that implements `IWallet` interface, it can be used in Caver instead of `KeyringContainer`.
+
+##### Variables
+
+None
+
+##### Methods
+
+| Method | Description |
+| ----------- | ----------- |
+| generate(num: int): List<String> | Generates `num` SingleKeyring instances and stores them in the `Wallet` instance. |
+| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the account associated with the given address in the `Wallet` instance. It throws an exception if the account to be used for signing cannot be found in the `Wallet` instance or if `address` is different from the sender address of `transaction`. |
+| signAsFeePayer(address: String, transaction: AbstractFeeDelegatedTransaction): AbstractFeeDelegatedTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the account associated with the given address in the `Wallet` instance. It throws an exception if the account to be used for signing cannot be found in the `Wallet` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| isExisted(address: String): Boolean | Returns whether the account corresponding to the address exists. |
+| remove(address: String): Boolean | Deletes an account associated with the given address from the `Wallet` instance. |
+
 #### KeyringContainer
 
-`KeyringContainer` is a class that contains SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances based on the address.
+`KeyringContainer` is a class that contains SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances based on the address. `KeyringContainer` must implement the `IWallet` interface, and manages SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances inside.
 
 ##### Variables
 
@@ -498,17 +522,14 @@ None
 | newKeyring(address: String, roleBasedPrivateKeyArray: List&#60;List&#60;String&#62;&#62;): AbstractKeyring | Creates a `RoleBasedKeyring` instance with given parameters and adds it to the `KeyringContainer` instance. It returns the newly added keyring instance. It throws an exception if the address string or private key strings are invalid. |
 | updateKeyring(keyring: AbstractKeyring): AbstractKeyring | Replaces the keyring instance having the same address with the given keyring in the parameter. It throws an exception if the matching keyring is not found. |
 | getKeyring(address: String): AbstractKeyring | Returns the keyring instance corresponding to the address. |
-| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if `address` is different from the sender address of `transaction`. |
 | sign(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at the index in the keyring. It throws an exception if the matched keyring cannot be found in the `KeyringContainer` instance or if `address` is different from the sender address of `transaction`. |
 | sign(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if `address` is different from the sender address of `transaction`. |
 | sign(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a sender of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if `address` is different from the sender address of `transaction`. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring associated with the given address in  the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
-| signAsFeePayer(address: String, transaction: AbstractTransaction, index: int, hasher: Function): AbstractTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| signAsFeePayer(address: String, transaction: AbstractFeeDelegatedTransaction, index: int): AbstractFeeDelegatedTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring associated with the given address in  the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| signAsFeePayer(address: String, transaction: AbstractFeeDelegatedTransaction, hasher: Function): AbstractFeeDelegatedTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| signAsFeePayer(address: String, transaction: AbstractFeeDelegatedTransaction, index: int, hasher: Function): AbstractFeeDelegatedTransaction | Signs the transaction as a fee payer of the transaction and appends a signature in the transaction object using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. When obtaining the transaction hash, `hasher` is used. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
 | signMessage(address: String, data: String, role: int): MessageSigned | Signs the message with the Klaytn-specific prefix using the keyring associated with the given address in the `KeyringContainer` instance. This method will use all the private keys in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
 | signMessage(address: String, data: String, role: int, index: int): MessageSigned | Signs the message with Klaytn-specific prefix using the keyring associated with the given address in the `KeyringContainer` instance. This method uses the private key at `index` in the keyring. It throws an exception if the keyring to be used for signing cannot be found in the `KeyringContainer` instance. |
-| remove(address: String): Boolean | Deletes the keyring associated with the given address from the `KeyringContainer` instance. |
 
 ### Transaction Layer
 
