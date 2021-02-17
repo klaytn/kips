@@ -69,7 +69,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![whole_20210217](https://user-images.githubusercontent.com/32922423/108157902-2a2a2380-7127-11eb-814f-b166f2983e9f.png)
+![whole_20210217_1](https://user-images.githubusercontent.com/32922423/108161010-82fcba80-712d-11eb-94c6-fc1332caf993.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -1208,7 +1208,7 @@ None
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e., [KIP-7] or [KIP-17]) on Klaytn.
 
-![contractkctabi](https://user-images.githubusercontent.com/32922423/106080502-7dc5d480-615a-11eb-8af9-3a6fbc93d0d3.png)
+![contractkctabi_20210217](https://user-images.githubusercontent.com/32922423/108161007-8132f700-712d-11eb-99af-1b0680775650.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. If you have the byte code and constructor parameters, you can use the `Contract` instance to deploy the smart contract to Klaytn. The class can process the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -1478,8 +1478,8 @@ None
 | renounceMinter(sendParam: SendOptions): Object | Renounces the right to mint tokens. Only a minter address can renounce the minting right. The transaction is formed based on `sendParam`. |
 | mint(to: String, tokenId: BigInteger): Object | Creates a token and assigns it to the given account `to`. This method increases the total supply of the contract. |
 | mint(to: String, tokenId: BigInteger, sendParam: SendOptions): Object | Creates a token and assigns it to the given account `to`. This method increases the total supply of the contract. The transaction is formed based on `sendParam`. |
-| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String): Object | Creates a token with the given uri and assigns it to the given account `to`. This method increases the total supply of the contract. |
-| mintWithTokenURI(to: String, tokenId: BigInteger, toeknURI: String, sendParam: SendOptions): Object | jCreates a token with the given uri and assigns it to the given account `to`. This method increases the total supply of the contract. The transaction is formed based on `sendParam`. |
+| mintWithTokenURI(to: String, tokenId: BigInteger, tokenURI: String): Object | Creates a token with the given uri and assigns it to the given account `to`. This method increases the total supply of the contract. |
+| mintWithTokenURI(to: String, tokenId: BigInteger, tokenURI: String, sendParam: SendOptions): Object | jCreates a token with the given uri and assigns it to the given account `to`. This method increases the total supply of the contract. The transaction is formed based on `sendParam`. |
 | burn(tokenId: BigInteger): Object | Destroys the token of the given token id. |
 | burn(tokenId: BigInteger, sendParam: SendOptions): Object | Destroys the token of the given token id. The transaction is formed based on `sendParam`. |
 | pause(): Object | Suspends functions related to sending tokens. |
