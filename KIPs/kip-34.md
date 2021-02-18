@@ -393,8 +393,8 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | Method | Description |
 | ----------- | ----------- |
 | getPublicKey(): List&#60;String&#62; | Returns the public key strings. |
-| getPublicKey(compressed: Boolean): String | Returns the compressed public key strings if compressed is true. It returns the uncompressed public key strings otherwise. |
-| getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the keys specified by the role. |
+| getPublicKey(compressed: Boolean): List&#60;String&#62; | Returns the compressed public key strings if compressed is true. It returns the uncompressed public key strings otherwise. |
+| getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the keys specified by the role. MultipleKeyring returns the same keys since it does not have role. |
 | toAccount(): Account | Returns an Account instance. A default option with a threshold of 1 and a weight of 1 for each key will be used. |
 | toAccount(options: WeightedMultiSigOptions): Account | Returns an Account instance with the given options. It throws an exception if the options is invalid. |
 
@@ -414,8 +414,8 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 | Method | Description |
 | ----------- | ----------- |
 | getPublicKey(): List&#60;List&#60;String&#62;&#62; | Returns the public key strings for all roles. |
-| getPublicKey(compressed: Boolean): String | Returns the compressed public key strings for all roles if compressed is true. It returns the uncompressed public key strings otherwise. |
-| getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the private keys for all roles. |
+| getPublicKey(compressed: Boolean): List&#60;List&#60;String&#62;&#62; | Returns the compressed public key strings for all roles if compressed is true. It returns the uncompressed public key strings otherwise. |
+| getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the private keys of the given role. |
 | toAccount(): Account | Returns an Account instance. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
 | toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an Account instance with the given options. It throws an exception if the options is invalid. |
 
@@ -483,8 +483,8 @@ None
 
 #### IWallet
 
-`IWallet` is the interface of Wallet that manages data used when signing transactions. All Wallet classes must implement `IWallet`.
-Caver has a `KeyringContainer` instance that implements `IWallet`, and if it is a Wallet class that implements `IWallet` interface, it can be used in Caver instead of `KeyringContainer`.
+`IWallet` is an interface that contains common functions related to signing a transaction.. All Wallet classes must implement `IWallet`.
+Caver has a class `KeyringContainer` that implements `IWallet`. If it is a class that implements `IWallet` interface, it can be used instead of `KeyringContainer` to sign a transaction.
 
 ##### Variables
 
@@ -502,7 +502,7 @@ None
 
 #### KeyringContainer
 
-`KeyringContainer` is a class that contains SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances based on the address. `KeyringContainer` must implement the `IWallet` interface, and manages SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances inside.
+`KeyringContainer` is a class that can contain SingleKeyring, MultipleKeyring, and RoleBasedKeyring instances based on the address. `KeyringContainer` implements `IWallet`.
 
 ##### Variables
 
@@ -1220,7 +1220,7 @@ deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions 
 The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all functions defined in [KIP-17] and provides them as class methods.
 
-In the future, for [KCT](http://kips.klaytn.com/token) that are additionally defined in [KIP](http://kips.klaytn.com), APIs that support the newly added KCT will be implemented in Caver. For the KCT added to KIP, please refer to [here](http://kips.klaytn.com/token).
+More token standards defined in [KCT](http://kips.klaytn.com/token) can be implemented here. For other KCT implementations can be found in the SDK references ([caver-js](https://docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct), [caver-java](https://javadoc.io/doc/com.klaytn.caver/core/latest/index.html)).
 
 #### Contract
 
