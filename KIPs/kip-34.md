@@ -1220,6 +1220,8 @@ deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions 
 The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all functions defined in [KIP-17] and provides them as class methods.
 
+In the future, for [KCT](http://kips.klaytn.com/token) that are additionally defined in [KIP](http://kips.klaytn.com), APIs that support the newly added KCT will be implemented in Caver. For the KCT added to KIP, please refer to [here](http://kips.klaytn.com/token).
+
 #### Contract
 
 `Contract` is a class that allows users to easily interact with smart contracts on Klaytn. It can deploy a smart contract to Klaytn or execute a smart contract deployed on Klaytn.
