@@ -307,7 +307,7 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 
 `Keystore` is a class that contains encrypted keyring. The internally defined value differs depending on the keystore version, see [KIP-3](./kip-3.md).
 
-In the wallet layer, an interface called `IWallet` is defined, and this interface is an interface of `Wallet` that stores data used when signing a transaction.
+`IWallet` is an interface that contains common functions related to signing a transaction.
 
 `KeyringContainer` is an "in-memory wallet" class that implements `IWallet` and manages keyring instances. It manages the keyring instances based on their addresses.
 
@@ -494,11 +494,11 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| generate(num: int): List<String> | Generates `num` SingleKeyring instances and stores them in the `Wallet` instance. |
-| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the account associated with the given address in the `Wallet` instance. It throws an exception if the account to be used for signing cannot be found in the `Wallet` instance or if `address` is different from the sender address of `transaction`. |
-| signAsFeePayer(address: String, transaction: AbstractFeeDelegatedTransaction): AbstractFeeDelegatedTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the account associated with the given address in the `Wallet` instance. It throws an exception if the account to be used for signing cannot be found in the `Wallet` instance or if the address received as a parameter and the fee payer of the actual transaction do not match. |
+| generate(num: int): List<String> | Generates `num` SingleKeyring instances and stores them in the wallet. |
+| sign(address: String, transaction: AbstractTransaction): AbstractTransaction | Signs the transaction as a sender of the transaction and appends signatures in the transaction object using the account associated with the given address in the wallet. It throws an exception if the account to be used for signing cannot be found in the wallet or if `address` is different from the sender address of `transaction`. |
+| signAsFeePayer(address: String, transaction: AbstractFeeDelegatedTransaction): AbstractFeeDelegatedTransaction | Signs the transaction as a fee payer of the transaction and appends signatures in the transaction object using the account associated with the given address in the wallet. It throws an exception if the account to be used for signing cannot be found in the wallet or if the address received as a parameter and the fee payer of the actual transaction do not match. |
 | isExisted(address: String): Boolean | Returns whether the account corresponding to the address exists. |
-| remove(address: String): Boolean | Deletes an account associated with the given address from the `Wallet` instance. |
+| remove(address: String): Boolean | Deletes an account associated with the given address from the wallet. |
 
 #### KeyringContainer
 
