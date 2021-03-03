@@ -483,7 +483,7 @@ None
 
 #### IWallet
 
-`IWallet` is an interface that contains common functions related to signing a transaction.. All Wallet classes must implement `IWallet`.
+`IWallet` is an interface that contains common functions related to signing a transaction. All Wallet classes must implement `IWallet`.
 Caver has a class `KeyringContainer` that implements `IWallet`. If it is a class that implements `IWallet` interface, it can be used instead of `KeyringContainer` to sign a transaction.
 
 ##### Variables
