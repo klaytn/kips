@@ -378,7 +378,7 @@ None
 | toAccount(): Account | Returns an Account instance. |
 | sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. |
 | sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. |
-| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key that the SingleKeyring instance has and returns the signatures. |
+| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. |
 | sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. |
 | signMessage(message: String, role: int): MessageSigned | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. |
 | signMessage(message: String, role: int, index: int): MessageSigned | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. |
