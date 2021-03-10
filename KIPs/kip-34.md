@@ -293,7 +293,7 @@ The `Wallet` layer allows the user to sign a message or a transaction through th
 
 ![walletLayer_withIKeyring](https://user-images.githubusercontent.com/32922423/108327646-ff1aff00-720e-11eb-8278-94cb9386ee9a.png)
 
-In the Wallet layer, an interface `IKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` are implemented by implementing `IKeyring`. The `IKeyring` interface defines methods that Keyring classes must implement.
+In the Wallet layer, an interface `IKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` implements `IKeyring`. The `IKeyring` interface defines methods that Keyring classes must implement.
 
 `SingleKeyring` is a class that uses only one private key, and `MultipleKeyring` is a class that uses multiple private keys. `RoleBasedKeyring` is a class that uses different private key(s) for each role, and the `keys` member variable is a 2D array in which keys to be used for each role are defined.
 
