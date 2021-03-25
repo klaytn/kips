@@ -28,11 +28,11 @@ because of so heavy block generation makes heavy block overhead itself.
 Thus, It is one of big barrier for expand Klaytn ECO. 
 It means that whose hope to participates on Klyatn , they needs to spend many money for spend high performance node instance fees or high cost hw.
 
-Also, beginner or no technition , it is hard to join the networks, even though they have good willings on klaytn.
+Also, beginner or no technition , it is hard to join the networks, even though they have good willings on Klaytn.
 
 So, it will finally blocking the Every nodes participates on Klaytn networks.
 TX and Block increases remained nodes will very small (except klaytn organization and closed partners).
-It will hazardous states on Klaytn blockchain networks, even though Klyan stance semi-public network or almost private domain network.
+It will hazardous states on Klaytn blockchain networks, even though Klaytn stance semi-public network or almost private domain network.
 
 ## Abstract
 
@@ -128,10 +128,18 @@ Pseudo Code of KIP-55 consensus.
 
 ```
 
+## Validator Economic Model and Motivation to Validator
+
+Validators are responsible to expand ECO or promote Klaytn networks, and securing networks.
+If they just funding but no activities increase network usability, finally they loose there funds values.
+This model of consensus forces to validators more active, more promotes use of Klaytn networks, for get a more TX mining rewards and Block Rewards.
+If there's TX has very low, their Block Rewards to decrease to 1/30.
+"No TX mining action!, No Rewards"
 
 ## History
 
-1. First Draft :: reference ideation and suggestion links [Forum Topic #790](https://forum.klaytn.com/t/topic/790)
+1. 21/03/25 :: First Draft :: reference ideation and suggestion links [Forum Topic #790](https://forum.klaytn.com/t/topic/790)
+2. 21/03/26 :: Fix Typo :: Adds Validator Economic model **[No TxMining Activity, No Rewards]**
 
 ## Copyright
 
