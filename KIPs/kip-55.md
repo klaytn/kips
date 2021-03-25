@@ -130,16 +130,16 @@ Pseudo Code of KIP-55 consensus.
 
 ## Validator Economic Model and Motivation to Validator
 
-Validators are responsible to expand ECO or promote Klaytn networks, and securing networks.
+**Validators are responsible to expand ECO or promote Klaytn networks, and securing networks.**
 If they just funding but no activities increase network usability, finally they loose there funds values.
-This model of consensus forces to validators more active, more promotes use of Klaytn networks, for get a more TX mining rewards and Block Rewards.
-If there's TX has very low, their Block Rewards to decrease to 1/30.
-"No TX mining action!, No Rewards"
+This model of consensus **forces to validators more active, more promotes use of Klaytn networks, for get a more TX mining rewards and Block Rewards.**
+If there **TXs are very low, their Block Rewards to decrease to 1/30.**
+***"No TX mining action!, No Rewards"***
 
 ## History
 
 1. 21/03/25 :: First Draft :: reference ideation and suggestion links [Forum Topic #790](https://forum.klaytn.com/t/topic/790)
-2. 21/03/26 :: Fix Typo :: Adds Validator Economic model **[No TxMining Activity, No Rewards]**
+2. 21/03/26 :: Fix Typo :: Adds Validator Economic model ***[No TxMining Activity, No Rewards]***
 
 ## Copyright
 
