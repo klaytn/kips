@@ -1,6 +1,6 @@
 ---
-kip: 1000
-title: Klyatn Block generation consensus change proposals
+kip: 55
+title: Klaytn Block generation consensus change proposals
 author: KT Ahn "안씨아저씨" <trustfarm.info@gmail.com>
 status: Draft
 type: Core
@@ -52,7 +52,7 @@ I also tried to sync latest Klaytn EndPoint Node, very longer time spend, compar
 2. if there's no TX , not generates block.
 3. if there's atleast 1 TX generates block within deadline time.
 
-Pseudo Code of KIP-1000 consensus.
+Pseudo Code of KIP-55 consensus.
 `C` language Style
 
 ```
