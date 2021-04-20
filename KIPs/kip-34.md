@@ -709,7 +709,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ValueTransfer | Decodes an RLP-encoded string of ValueTransfer and returns a `ValueTransfer` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): ValueTransfer | Creates an instance of ValueTransfer. |
+| create(tx: Object): ValueTransfer | Creates an instance of `ValueTransfer`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -730,7 +730,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ValueTransferMemo | Decodes an RLP-encoded string of ValueTransferMemo and returns a `ValueTransferMemo` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): ValueTransferMemo | Creates an instance of ValueTransferMemo. |
+| create(tx: Object): ValueTransferMemo | Creates an instance of `ValueTransferMemo`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -749,7 +749,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): AccountUpdate | Decodes an RLP-encoded string of AccountUpdate and returns an AccountUpdate instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): AccountUpdate | Creates an instance of AccountUpdate. |
+| create(tx: Object): AccountUpdate | Creates an instance of `AccountUpdate`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -772,7 +772,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): SmartContractDeploy | Decodes an RLP-encoded string of SmartContractDeploy and returns a `SmartContractDeploy` instance. |
-| create(tx: Object): SmartContractDeploy | Creates an instance of SmartContractDeploy. |
+| create(tx: Object): SmartContractDeploy | Creates an instance of `SmartContractDeploy`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -793,7 +793,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): SmartContractExecution | Decodes an RLP-encoded string of SmartContractExecution and returns a `SmartContractExecution` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): SmartContractExecution | Creates an instance of SmartContractExecution. |
+| create(tx: Object): SmartContractExecution | Creates an instance of `SmartContractExecution`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -810,7 +810,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): Cancel | Decodes an RLP-encoded string of Cancel and returns a `Cancel` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): Cancel | Creates an instance of Cancel. |
+| create(tx: Object): Cancel | Creates an instance of `Cancel`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -829,7 +829,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ChainDataAnchoring | Decodes an RLP-encoded string of ChainDataAnchoring and returns a `ChainDataAnchoring` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): ChainDataAnchoring | Creates an instance of ChainDataAnchoring. |
+| create(tx: Object): ChainDataAnchoring | Creates an instance of `ChainDataAnchoring`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -849,7 +849,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransfer | Decodes an RLP-encoded string of FeeDelegatedValueTransfer and returns a `FeeDelegatedValueTransfer` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedValueTransfer | Creates an instance of FeeDelegatedValueTransfer. |
+| create(tx: Object): FeeDelegatedValueTransfer | Creates an instance of `FeeDelegatedValueTransfer`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -870,7 +870,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes an RLP-encoded string of FeeDelegatedValueTransferMemo and returns a `FeeDelegatedValueTransfer` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedValueTransferMemo | Creates an instance of FeeDelegatedValueTransferMemo. |
+| create(tx: Object): FeeDelegatedValueTransferMemo | Creates an instance of `FeeDelegatedValueTransferMemo`. |
 | getRLPEncoding(): Stirng | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -889,7 +889,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes an RLP-encoded string of FeeDelegatedAccountUpdate and returns a `FeeDelegatedAccountUpdate` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedAccountUpdate | Creates an instance of FeeDelegatedAccountUpdate. |
+| create(tx: Object): FeeDelegatedAccountUpdate | Creates an instance of `FeeDelegatedAccountUpdate`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -912,7 +912,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes an RLP-encoded string of FeeDelegatedSmartContractDeploy and returns a `FeeDelegatedSmartContractDeploy` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedSmartContractDeploy | Creates an instance of FeeDelegatedSmartContractDeploy. |
+| create(tx: Object): FeeDelegatedSmartContractDeploy | Creates an instance of `FeeDelegatedSmartContractDeploy`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -933,7 +933,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes an RLP-encoded string of FeeDelegatedSmartContractExecution and returns a `FeeDelegatedSmartContractExecution` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedSmartContractExecution | Creates an instance of FeeDelegatedSmartContractExecution. |
+| create(tx: Object): FeeDelegatedSmartContractExecution | Creates an instance of `FeeDelegatedSmartContractExecution`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -950,7 +950,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedCancel | Decodes an RLP-encoded string of FeeDelegatedCancel and returns a `FeeDelegatedCancel` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedCancel | Creates an instance of FeeDelegatedCancel. |
+| create(tx: Object): FeeDelegatedCancel | Creates an instance of `FeeDelegatedCancel`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -969,7 +969,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes an RLP-encoded string of FeeDelegatedChainDataAnchoring and returns a `FeeDelegatedChainDataAnchoring` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedChainDataAnchoring | Creates an instance of FeeDelegatedChainDataAnchoring. |
+| create(tx: Object): FeeDelegatedChainDataAnchoring | Creates an instance of `FeeDelegatedChainDataAnchoring`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -989,7 +989,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes an RLP-encoded string of FeeDelegatedValueTransferWithRatio and returns a `FeeDelegatedValueTransferWithRatio` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedValueTransferWithRatio | Creates an instance of FeeDelegatedValueTransferWithRatio. |
+| create(tx: Object): FeeDelegatedValueTransferWithRatio | Creates an instance of `FeeDelegatedValueTransferWithRatio`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1010,7 +1010,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes an RLP-encoded string of FeeDelegatedValueTransferMemoWithRatio and returns a `FeeDelegatedValueTransferMemoWithRatio` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedValueTransferMemoWithRatio | Creates an instance of FeeDelegatedValueTransferMemoWithRatio. |
+| create(tx: Object): FeeDelegatedValueTransferMemoWithRatio | Creates an instance of `FeeDelegatedValueTransferMemoWithRatio`. |
 | getRLPEncoding(): Stirng | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1029,7 +1029,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes an RLP-encoded string of FeeDelegatedAccountUpdateWithRatio and returns a `FeeDelegatedAccountUpdateWithRatio` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedAccountUpdateWithRatio | Creates an instance of FeeDelegatedAccountUpdateWithRatio. |
+| create(tx: Object): FeeDelegatedAccountUpdateWithRatio | Creates an instance of `FeeDelegatedAccountUpdateWithRatio`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1052,7 +1052,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes an RLP-encoded string of FeeDelegatedSmartContractDeployWithRatio and returns a `FeeDelegatedSmartContractDeployWithRatio` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedSmartContractDeployWithRatio | Creates an instance of FeeDelegatedSmartContractDeployWithRatio. |
+| create(tx: Object): FeeDelegatedSmartContractDeployWithRatio | Creates an instance of `FeeDelegatedSmartContractDeployWithRatio`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1073,7 +1073,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes an RLP-encoded string of FeeDelegatedSmartContractExecutionWithRatio and returns a `FeeDelegatedSmartContractExecutionWithRatio` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedSmartContractExecutionWithRatio | Creates an instance of FeeDelegatedSmartContractExecutionWithRatio. |
+| create(tx: Object): FeeDelegatedSmartContractExecutionWithRatio | Creates an instance of `FeeDelegatedSmartContractExecutionWithRatio`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1090,7 +1090,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes an RLP-encoded string of FeeDelegatedCancelWithRatio and returns a `FeeDelegatedCancelWithRatio` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedCancelWithRatio | Creates an instance of FeeDelegatedCancelWithRatio. |
+| create(tx: Object): FeeDelegatedCancelWithRatio | Creates an instance of `FeeDelegatedCancelWithRatio`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1109,7 +1109,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes an RLP-encoded string of FeeDelegatedChainDataAnchoringWithRatio and returns a `FeeDelegatedChainDataAnchoringWithRatio` instance. It throws an exception if the decoding is failed. |
-| create(tx: Object): FeeDelegatedChainDataAnchoringWithRatio | Creates an instance of FeeDelegatedChainDataAnchoringWithRatio. |
+| create(tx: Object): FeeDelegatedChainDataAnchoringWithRatio | Creates an instance of `FeeDelegatedChainDataAnchoringWithRatio`. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
