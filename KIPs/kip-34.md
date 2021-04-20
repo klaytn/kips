@@ -69,7 +69,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![20210326_whole (2)](https://user-images.githubusercontent.com/32922423/112578041-e7035480-8e38-11eb-96a4-401a3f91eead.png)
+![whole (1)](https://user-images.githubusercontent.com/32922423/115336530-5ec76380-a1da-11eb-9783-22107aafdb8e.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -580,7 +580,7 @@ None
 
 The `Transaction` layer provides classes related to Klaytn transactions.
 
-![0811Transaction](https://user-images.githubusercontent.com/32922423/89860534-a410ab80-dbde-11ea-9bc1-a69991482d25.png)
+![transactionlayer](https://user-images.githubusercontent.com/32922423/115336537-60912700-a1da-11eb-9abc-45c44abd0bb4.png)
 
 Abstract classes (`AbstractTransaction`, `AbstractFeeDelegatedTransaction` and `AbstractFeeDelegatedWithRatioTrasnaction`) are defined in the Transaction layer to declare common attributes and methods.
 
@@ -612,6 +612,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the `decode`
 
 | Method | Description |
 | ----------- | ----------- |
+| create(tx: Object): AbstractTransaction | Creates an instance of transaction. It is defined as an abstract method, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
 | getRLPEncoding(): String | Returns an RLP-encoded transaction string. It is defined as an abstract method, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. For example, in the case of value transfer transactions, if SigRLP is `encode([encode([type, nonce, gasPrice, gas, to, value, from]), chainid, 0, 0])`, among them, the RLP-encoded values of the transaction required for signing is `encode([type, nonce, gasPrice, gas, to, value, from])`. This function is used in getRLPEncodingForSignature or getRLPEncodingForFeePayerSignature function. It is defined as an abstract method, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
 | sign(keyString: String): AbstractTransaction | Signs the transaction as a sender with the private key (or KlaytnWalletKey) and appends signatures to the transaction object. |
@@ -686,6 +687,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): LegacyTransaction | Decodes an RLP-encoded string of LegacyTransaction and returns a `LegacyTransaction` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): LegacyTransaction | Creates an instance of LegacyTransaction. |
 | appendSignatures(sig: SignatureData): void | Appends signature to the transaction. LegacyTransaction can only have one signature. It throws an exception if the transaction instance has a signature already. |
 | appendSignatures(sig: List&#60;SignatureData&#62;): void | Appends signature to the transaction. LegacyTransaction can only have one signature. It throws an exception if multiple signatures are given. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
@@ -707,6 +709,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ValueTransfer | Decodes an RLP-encoded string of ValueTransfer and returns a `ValueTransfer` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): ValueTransfer | Creates an instance of ValueTransfer. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -727,6 +730,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ValueTransferMemo | Decodes an RLP-encoded string of ValueTransferMemo and returns a `ValueTransferMemo` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): ValueTransferMemo | Creates an instance of ValueTransferMemo. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -745,6 +749,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): AccountUpdate | Decodes an RLP-encoded string of AccountUpdate and returns an AccountUpdate instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): AccountUpdate | Creates an instance of AccountUpdate. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -767,6 +772,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): SmartContractDeploy | Decodes an RLP-encoded string of SmartContractDeploy and returns a `SmartContractDeploy` instance. |
+| create(tx: Object): SmartContractDeploy | Creates an instance of SmartContractDeploy. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -787,6 +793,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): SmartContractExecution | Decodes an RLP-encoded string of SmartContractExecution and returns a `SmartContractExecution` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): SmartContractExecution | Creates an instance of SmartContractExecution. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -803,6 +810,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): Cancel | Decodes an RLP-encoded string of Cancel and returns a `Cancel` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): Cancel | Creates an instance of Cancel. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -821,6 +829,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): ChainDataAnchoring | Decodes an RLP-encoded string of ChainDataAnchoring and returns a `ChainDataAnchoring` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): ChainDataAnchoring | Creates an instance of ChainDataAnchoring. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -840,6 +849,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransfer | Decodes an RLP-encoded string of FeeDelegatedValueTransfer and returns a `FeeDelegatedValueTransfer` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedValueTransfer | Creates an instance of FeeDelegatedValueTransfer. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -860,6 +870,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferMemo | Decodes an RLP-encoded string of FeeDelegatedValueTransferMemo and returns a `FeeDelegatedValueTransfer` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedValueTransferMemo | Creates an instance of FeeDelegatedValueTransferMemo. |
 | getRLPEncoding(): Stirng | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -878,6 +889,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedAccountUpdate | Decodes an RLP-encoded string of FeeDelegatedAccountUpdate and returns a `FeeDelegatedAccountUpdate` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedAccountUpdate | Creates an instance of FeeDelegatedAccountUpdate. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -900,6 +912,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractDeploy | Decodes an RLP-encoded string of FeeDelegatedSmartContractDeploy and returns a `FeeDelegatedSmartContractDeploy` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedSmartContractDeploy | Creates an instance of FeeDelegatedSmartContractDeploy. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -920,6 +933,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractExecution | Decodes an RLP-encoded string of FeeDelegatedSmartContractExecution and returns a `FeeDelegatedSmartContractExecution` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedSmartContractExecution | Creates an instance of FeeDelegatedSmartContractExecution. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -936,6 +950,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedCancel | Decodes an RLP-encoded string of FeeDelegatedCancel and returns a `FeeDelegatedCancel` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedCancel | Creates an instance of FeeDelegatedCancel. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -954,6 +969,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedChainDataAnchoring | Decodes an RLP-encoded string of FeeDelegatedChainDataAnchoring and returns a `FeeDelegatedChainDataAnchoring` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedChainDataAnchoring | Creates an instance of FeeDelegatedChainDataAnchoring. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -973,6 +989,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferWithRatio | Decodes an RLP-encoded string of FeeDelegatedValueTransferWithRatio and returns a `FeeDelegatedValueTransferWithRatio` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedValueTransferWithRatio | Creates an instance of FeeDelegatedValueTransferWithRatio. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -993,6 +1010,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedValueTransferMemoWithRatio | Decodes an RLP-encoded string of FeeDelegatedValueTransferMemoWithRatio and returns a `FeeDelegatedValueTransferMemoWithRatio` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedValueTransferMemoWithRatio | Creates an instance of FeeDelegatedValueTransferMemoWithRatio. |
 | getRLPEncoding(): Stirng | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1011,6 +1029,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedAccountUpdateWithRatio | Decodes an RLP-encoded string of FeeDelegatedAccountUpdateWithRatio and returns a `FeeDelegatedAccountUpdateWithRatio` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedAccountUpdateWithRatio | Creates an instance of FeeDelegatedAccountUpdateWithRatio. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1033,6 +1052,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractDeployWithRatio | Decodes an RLP-encoded string of FeeDelegatedSmartContractDeployWithRatio and returns a `FeeDelegatedSmartContractDeployWithRatio` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedSmartContractDeployWithRatio | Creates an instance of FeeDelegatedSmartContractDeployWithRatio. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1053,6 +1073,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedSmartContractExecutionWithRatio | Decodes an RLP-encoded string of FeeDelegatedSmartContractExecutionWithRatio and returns a `FeeDelegatedSmartContractExecutionWithRatio` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedSmartContractExecutionWithRatio | Creates an instance of FeeDelegatedSmartContractExecutionWithRatio. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1069,6 +1090,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedCancelWithRatio | Decodes an RLP-encoded string of FeeDelegatedCancelWithRatio and returns a `FeeDelegatedCancelWithRatio` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedCancelWithRatio | Creates an instance of FeeDelegatedCancelWithRatio. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1087,6 +1109,7 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | decode(rlpEncoded: String): FeeDelegatedChainDataAnchoringWithRatio | Decodes an RLP-encoded string of FeeDelegatedChainDataAnchoringWithRatio and returns a `FeeDelegatedChainDataAnchoringWithRatio` instance. It throws an exception if the decoding is failed. |
+| create(tx: Object): FeeDelegatedChainDataAnchoringWithRatio | Creates an instance of FeeDelegatedChainDataAnchoringWithRatio. |
 | getRLPEncoding(): String | Returns an RLP-encoded string of the transaction instance. It throws an exception if the variables required for encoding are not defined. |
 | getCommonRLPEncodingForSignature(): String | Encodes the values needed to sign the transaction and returns the RLP-encoded string. It throws an exception if the variables required for encoding are not defined. |
 
@@ -1253,7 +1276,7 @@ None
 
 The `Contract` layer provides the functions to interact with smart contracts on Klaytn. This Contract layer uses the function of the `ABI` layer that provides the functions to encode and decode parameters with the ABI (Application Binary Interface). `KCT` is a layer that provides the functions to interact with KCT token contracts (i.e., [KIP-7] or [KIP-17]) on Klaytn.
 
-![contractkctabi_20210217](https://user-images.githubusercontent.com/32922423/108161007-8132f700-712d-11eb-99af-1b0680775650.png)
+![contractkctabi](https://user-images.githubusercontent.com/32922423/115336517-5a02af80-a1da-11eb-8d82-ea6ec32b6bfc.png)
 
 The `Contract` class makes it easy to interact with smart contracts based on ABI. If you have the byte code and constructor parameters, you can use the `Contract` instance to deploy the smart contract to Klaytn. The class can process the ABI so that the user can easily call the smart contract function through a member variable called `methods`.
 
@@ -1285,6 +1308,8 @@ More token standards defined in [KCT](http://kips.klaytn.com/token) can be imple
 
 | Method | Description |
 | ----------- | ----------- |
+| create(String abi): Contract | Creates an instance of Contract. |
+| create(String abi, String contractAddress): Contract | Creates an instance of Contract with deployed address. |
 | deploy(deployParam: [ContractDeployParams](#contractdeployparams), options: SendOptions): Contract | Deploys the contract to Klaytn. |
 | once(event: String, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
 | once(event: String, options: Object, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. The options object should define `filter` or `topics`. |
@@ -1418,6 +1443,8 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | deploy(tokenInfo: [KIP7DeployParams](#kip7deployparams), deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn. |
+| create(): KIP7 | Creates an instance of KIP7. |
+| create(String contractAddress): KIP7 | Creates an instance of KIP7 with deployed address. |
 | clone(): KIP7 | Clones the current KIP7 instance. |
 | clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and sets the address of the new instance to `tokenAddress` . |
 | supportInterface(interfaceid: String): Boolean | Returns true if this contract implements the interface defined by `interfaceId`. |
@@ -1493,6 +1520,8 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | deploy(tokenInfo: KIP17DeployParams, deployer: String): KIP17 | Deploys the KIP-17 token contract to Klaytn. |
+| create(): KIP17 | Creates an instance of KIP17. |
+| create(String contractAddress): KIP17 | Creates an instance of KIP17 with deployed address. |
 | clone(): KIP17 | Clones the current KIP17 instance. |
 | clone(tokenAddress: String): KIP17 | Clones the current KIP17 instance and sets address of the new contract instance to `tokenAddress` . |
 | supportInterface(interfaceId: String): Boolean | Returns true if this contract implements the interface defined by `interfaceId`. |
