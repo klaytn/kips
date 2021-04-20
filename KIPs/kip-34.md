@@ -612,7 +612,7 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the `decode`
 
 | Method | Description |
 | ----------- | ----------- |
-| create(tx: Object): AbstractTransaction | Creates an instance of transaction. It is defined as an abstract method, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
+| create(tx: Object): AbstractTransaction | Creates an instance of `AbstractTransaction`. It is defined as an abstract method, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
 | getRLPEncoding(): String | Returns an RLP-encoded transaction string. It is defined as an abstract method, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
 | getCommonRLPEncodingForSignature(): String | Encodes and returns the values needed to sign each transaction. For example, in the case of value transfer transactions, if SigRLP is `encode([encode([type, nonce, gasPrice, gas, to, value, from]), chainid, 0, 0])`, among them, the RLP-encoded values of the transaction required for signing is `encode([type, nonce, gasPrice, gas, to, value, from])`. This function is used in getRLPEncodingForSignature or getRLPEncodingForFeePayerSignature function. It is defined as an abstract method, and must be implemented in all transaction classes that extend `AbstractTransaction`. |
 | sign(keyString: String): AbstractTransaction | Signs the transaction as a sender with the private key (or KlaytnWalletKey) and appends signatures to the transaction object. |
@@ -1308,8 +1308,8 @@ More token standards defined in [KCT](http://kips.klaytn.com/token) can be imple
 
 | Method | Description |
 | ----------- | ----------- |
-| create(String abi): Contract | Creates an instance of Contract. |
-| create(String abi, String contractAddress): Contract | Creates an instance of Contract with deployed address. |
+| create(String abi): Contract | Creates an instance of `Contract`. |
+| create(String abi, String contractAddress): Contract | Creates an instance of `Contract` with the given deployed address. |
 | deploy(deployParam: [ContractDeployParams](#contractdeployparams), options: SendOptions): Contract | Deploys the contract to Klaytn. |
 | once(event: String, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. |
 | once(event: String, options: Object, callback: Function): void | Subscribes to an event and unsubscribes immediately after the first event or error. The options object should define `filter` or `topics`. |
@@ -1443,8 +1443,8 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | deploy(tokenInfo: [KIP7DeployParams](#kip7deployparams), deployer: String): KIP7 | Deploys the KIP-7 token contract to the Klaytn. |
-| create(): KIP7 | Creates an instance of KIP7. |
-| create(String contractAddress): KIP7 | Creates an instance of KIP7 with deployed address. |
+| create(): KIP7 | Creates an instance of `KIP7`. |
+| create(String contractAddress): KIP7 | Creates an instance of `KIP7` with the given deployed address. |
 | clone(): KIP7 | Clones the current KIP7 instance. |
 | clone(tokenAddress: address): KIP7 | Clones the current KIP7 instance and sets the address of the new instance to `tokenAddress` . |
 | supportInterface(interfaceid: String): Boolean | Returns true if this contract implements the interface defined by `interfaceId`. |
@@ -1520,8 +1520,8 @@ None
 | Method | Description |
 | ----------- | ----------- |
 | deploy(tokenInfo: KIP17DeployParams, deployer: String): KIP17 | Deploys the KIP-17 token contract to Klaytn. |
-| create(): KIP17 | Creates an instance of KIP17. |
-| create(String contractAddress): KIP17 | Creates an instance of KIP17 with deployed address. |
+| create(): KIP17 | Creates an instance of `KIP17`. |
+| create(String contractAddress): KIP17 | Creates an instance of `KIP17` with the given deployed address. |
 | clone(): KIP17 | Clones the current KIP17 instance. |
 | clone(tokenAddress: String): KIP17 | Clones the current KIP17 instance and sets address of the new contract instance to `tokenAddress` . |
 | supportInterface(interfaceId: String): Boolean | Returns true if this contract implements the interface defined by `interfaceId`. |
