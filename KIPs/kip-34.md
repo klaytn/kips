@@ -69,7 +69,7 @@ With the common architecture, we want to achieve two goals:
 
 This is the overview of the common architecture of Klaytn SDK.
 
-![whole (1)](https://user-images.githubusercontent.com/32922423/115336530-5ec76380-a1da-11eb-9783-22107aafdb8e.png)
+![whole_20210426 (1)](https://user-images.githubusercontent.com/32922423/116016566-f5cb6a00-a677-11eb-9bd3-8d30450711c5.png)
 
 ### Layer Diagram of the Common Architecture
 
@@ -291,7 +291,7 @@ None
 
 The `Wallet` layer allows the user to sign a message or a transaction through the Caver with a [Klaytn account].
 
-![20210326_walletLayer (2)](https://user-images.githubusercontent.com/32922423/112578033-e10d7380-8e38-11eb-9a46-c2d29fae3cb6.png)
+![walletLayer_20210426](https://user-images.githubusercontent.com/32922423/116016574-fb28b480-a677-11eb-9579-31547b332b0b.png)
 
 In the Wallet layer, an interface `IKeyring` is defined, and `SingleKeyring`, `MultipleKeyring` and `RoleBasedKeyring` implements `IKeyring`. The `IKeyring` interface defines methods that Keyring classes must implement.
 
@@ -325,8 +325,8 @@ Each keyring class uses the `PrivateKey` class, which has one private key as a m
 
 | Method | Description |
 | ----------- | ----------- |
-| sign(txHash: String, chainId: String): SignatureData | Signs the transaction based on the transaction hash and chain id and returns the signature. |
-| sign(txHash: String, chainId: int): SignatureData | Signs the transaction based on the transaction hash and chain id and returns the signature. |
+| sign(txSigHash: String, chainId: String): SignatureData | Signs the transaction based on the transaction hash and chain id and returns the signature. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: int): SignatureData | Signs the transaction based on the transaction hash and chain id and returns the signature. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
 | signMessage(messageHash: String): SignatureData | Signs the message with the Klaytn-specific prefix and returns the signature. |
 | getPublicKey(compressed: Boolean): String | Returns the compressed public key string if compressed is true. It returns the uncompressed public key string otherwise. |
 | getDerivedAddress(): String | Returns the derived address from the private key string. |
@@ -343,10 +343,10 @@ None
 
 | Method | Description |
 | ----------- | ----------- |
-| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. |
-| sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using the key(s) specified by the role and the index, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. |
-| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role and returns the signatures. Keyring classes below implement `IAccountKey`, so this function must be implemented. |
-| sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. |
+| sign(txSigHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using the key(s) specified by the role and the index, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role and returns the signatures. Keyring classes below implement `IAccountKey`, so this function must be implemented. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
 | signMessage(message: String, role: int): MessageSigned | Signs the transaction using the key(s) specified by the role, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. |
 | signMessage(message: String, role: int, index: int): MessageSigned | Signs the transaction using the key(s) specified by the role and the index, and it returns the signature. Keyring classes below implement `IAccountKey`, so this function must be implemented. |
 | encrypt(password: String): Object | Encrypts a Keyring instance in the keystore v4 format. Keyring classes below implement `IAccountKey`, so this function must be implemented. |
@@ -376,10 +376,10 @@ None
 | getPublicKey(compressed: Boolean): String | Returns the compressed public key string if compressed is true. It returns the uncompressed public key string otherwise. |
 | getKeyByRole(role: int): PrivateKey | Returns the keys specified by the role. SingleKeyring always returns the same key. |
 | toAccount(): Account | Returns an Account instance. |
-| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. |
-| sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. |
-| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. |
-| sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. |
+| sign(txSigHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
 | signMessage(message: String, role: int): MessageSigned | Signs the transaction using the key that the SingleKeyring instance has, and it returns the signature. |
 | signMessage(message: String, role: int, index: int): MessageSigned | Signs the transaction using a key that the SingleKeyring instance has and the index, and it returns the signature. In the case of SingleKeyring, only one private key is managed, so if the index is greater than 0, an error should be returned. |
 | encrypt(password: String): Object | Encrypts a SingleKeyring instance in the keystore v4 format. |
@@ -410,10 +410,10 @@ None
 | getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the keys specified by the role. MultipleKeyring returns the same keys since it does not have role. |
 | toAccount(): Account | Returns an Account instance. A default option with a threshold of 1 and a weight of 1 for each key will be used. |
 | toAccount(options: WeightedMultiSigOptions): Account | Returns an Account instance with the given options. It throws an exception if the options is invalid. |
-| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the keys that the MultipleKeyring instance has, and it returns the signature. |
-| sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key that the MultipleKeyring instance has and the index, and it returns the signature. In the case of MultipleKeyring, the index must be smaller than the length of the private keys that MultipleKeyring has. |
-| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the keys that the MultipleKeyring instance has and returns the signatures. |
-| sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key that the MultipleKeyring instance has and the index, and it returns the signature. In the case of MultipleKeyring, the index must be smaller than the length of the private keys that MultipleKeyring has. |
+| sign(txSigHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the keys that the MultipleKeyring instance has, and it returns the signature. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key that the MultipleKeyring instance has and the index, and it returns the signature. In the case of MultipleKeyring, the index must be smaller than the length of the private keys that MultipleKeyring has. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the keys that the MultipleKeyring instance has and returns the signatures. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key that the MultipleKeyring instance has and the index, and it returns the signature. In the case of MultipleKeyring, the index must be smaller than the length of the private keys that MultipleKeyring has. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
 | signMessage(message: String, role: int): MessageSigned | Signs the transaction using the keys that the MultipleKeyring instance has, and it returns the signature. |
 | signMessage(message: String, role: int, index: int): MessageSigned | Signs the transaction using a key that the MultipleKeyring instance has and the index, and it returns the signature. In the case of MultipleKeyring, the index must be smaller than the length of the private keys that MultipleKeyring has. |
 | encrypt(password: String): Object | Encrypts a MultipleKeyring instance in the keystore v4 format. |
@@ -445,10 +445,10 @@ None
 | getKeyByRole(role: int): List&#60;PrivateKey&#62; | Returns the private keys of the given role. |
 | toAccount(): Account | Returns an Account instance. A default option with a threshold of 1 and a weight of 1 for each key will be used for each role. |
 | toAccount(options: List&#60;WeightedMultiSigOptions&#62;): Account | Returns an Account instance with the given options. It throws an exception if the options is invalid. |
-| sign(txHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role, and it returns the signature. |
-| sign(txHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. In the case of RoleBasedKeyring, the index must be smaller than the length of the private keys defined in the role to be used for signing. |
-| sign(txHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role and returns the signatures. |
-| sign(txHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. In the case of RoleBasedKeyring, the index must be smaller than the length of the private keys defined in the role to be used for signing. |
+| sign(txSigHash: String, chainId: int, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role, and it returns the signature. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: int, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. In the case of RoleBasedKeyring, the index must be smaller than the length of the private keys defined in the role to be used for signing. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int): List&#60;SignatureData&#62; | Signs the transaction using the key(s) specified by the role and returns the signatures. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
+| sign(txSigHash: String, chainId: String, role: int, index: int): SignatureData | Signs the transaction using a key specified by the role and the index, and it returns the signature. In the case of RoleBasedKeyring, the index must be smaller than the length of the private keys defined in the role to be used for signing. Details of txSigHash are described in [Klaytn Docs](https://docs.klaytn.com/klaytn/design/transactions/basic#rlp-encoding-for-signature-1). |
 | signMessage(message: String, role: int): MessageSigned | Signs the transaction using the key(s) specified by the role, and it returns the signature. |
 | signMessage(message: String, role: int, index: int): MessageSigned | Signs the transaction using a key specified by the role and the index, and it returns the signature. In the case of RoleBasedKeyring, the index must be smaller than the length of the private keys defined in the role to be used for signing. |
 | encrypt(password: String): Object | Encrypts a RoleBasedKeyring instance in the keystore v4 format. |
