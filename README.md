@@ -22,10 +22,10 @@ When you believe your KIP is mature and ready to progress past the draft phase, 
 
 ## KIP Status Terms
 
-* **Draft** - a KIP that is undergoing rapid iteration and changes.
-* **Last Call** - a KIP that is done with its initial iteration and ready for review by a wide audience for two weeks.
-* **Accepted** - a KIP that has been in 'Last Call' for at least 2 weeks, any technical changes that were requested have been addressed by the author, and finally get approved by the Klaytn core developers. 
-* **Final** - a KIP that has been released as a standard specification. If a Core KIP is in 'Final', its implementation has been included in at least one Klaytn client.
+* **Draft** : a KIP that is undergoing rapid iteration and changes.
+* **Last Call** : a KIP that is done with its initial iteration and ready for review by a wide audience for two weeks.
+* **Accepted** : a KIP that has been in 'Last Call' for at least 2 weeks, any technical changes that were requested have been addressed by the author, and finally get approved by the Klaytn core developers. 
+* **Final** : a KIP that has been released as a standard specification. If a Core KIP is in 'Final', its implementation has been included in at least one Klaytn client.
 
 
 {% include types_lastcall.html %} 
