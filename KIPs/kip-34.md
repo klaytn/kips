@@ -602,11 +602,11 @@ The `TransactionDecoder` class decodes the RLP-encoded string using the `decode`
 | ----------- | ----------- |
 | type: String | The type string of the transaction. |
 | from: String | The address of the sender. |
-| nonce: String | A value used to uniquely identify a sender’s transaction. If omitted when creating a transaction, [klay_getTransactionCount](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/account#klay_gettransactioncount) will be used to set an appropriate nonce. |
+| nonce: String | A value used to uniquely identify a sender’s transaction. If omitted when creating a transaction, [klay_getTransactionCount](https://docs.klaytn.com/dapp/json-rpc/api-references/klay/account#klay_gettransactioncount) will be used to set an appropriate nonce. |
 | gas: String | The maximum amount of the transaction fee allowed to use. |
-| gasPrice: String | A multiplier to get how much the sender will pay in KLAY. If omitted when creating a transaction, [klay_gasPrice](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/config#klay_gasprice) will be used to set this value. |
+| gasPrice: String | A multiplier to get how much the sender will pay in KLAY. If omitted when creating a transaction, [klay_gasPrice](https://docs.klaytn.com/dapp/json-rpc/api-references/klay/config#klay_gasprice) will be used to set this value. |
 | signatures: List<SignatureData> | An array of signatures. The result of signing the transaction is appended to these signatures. When appending a signature, duplicate signatures are not appended. |
-| chainId: String | The chain id of the Klaytn network. If omitted when creating a transaction, [klay_chainID](https://docs.klaytn.com/bapp/json-rpc/api-references/klay/config#klay_chainid) will be used to set this value. |
+| chainId: String | The chain id of the Klaytn network. If omitted when creating a transaction, [klay_chainID](https://docs.klaytn.com/dapp/json-rpc/api-references/klay/config#klay_chainid) will be used to set this value. |
 
 ##### Methods
 
@@ -1288,7 +1288,7 @@ deploy and execute [KIP-7] token contracts on Klaytn. `KIP7` maps all functions 
 The `KIP17` class provides the functions to interact with [KIP-17] token contracts on Klaytn. This class allows users to easily
 deploy and execute [KIP-17] token contracts on Klaytn. `KIP17` maps all functions defined in [KIP-17] and provides them as class methods.
 
-More token standards defined in [KCT](http://kips.klaytn.com/token) can be implemented here. For other KCT implementations can be found in the SDK references ([caver-js](https://docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct), [caver-java](https://javadoc.io/doc/com.klaytn.caver/core/latest/index.html)).
+More token standards defined in [KCT](http://kips.klaytn.com/token) can be implemented here. For other KCT implementations can be found in the SDK references ([caver-js](https://docs.klaytn.com/dapp/sdk/caver-js/api-references/caver.kct), [caver-java](https://javadoc.io/doc/com.klaytn.caver/core/latest/index.html)).
 
 #### Contract
 
@@ -1329,7 +1329,7 @@ More token standards defined in [KCT](http://kips.klaytn.com/token) can be imple
 | name: String | The name of the function in a smart contract. |
 | inputs: List&#60;[ContractIOType](#contractiotype)&#62; | The input values of the function. In the list, each parameter of the function is defined as ContractIOType. When the `call` or `send` function is called, this is used to encode the parameter to create the input field of a transaction. |
 | outputs: List&#60;[ContractIOType](#contractiotype)&#62; | The output values of the function. This is used to decode the value returned as the result of executing the function. |
-| signature: String | The [function signature](https://docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.contract#cf-function-signature-function-selector) (function selector). The first four bytes of the input data for specifying the function to be called (or executed). It is the first (left, high-order in big-endian) four bytes of the Keccak-256 (SHA-3) hash of the signature of the function. |
+| signature: String | The [function signature](https://docs.klaytn.com/dapp/sdk/caver-js/api-references/caver.contract#cf-function-signature-function-selector) (function selector). The first four bytes of the input data for specifying the function to be called (or executed). It is the first (left, high-order in big-endian) four bytes of the Keccak-256 (SHA-3) hash of the signature of the function. |
 | nextMethods: List&#60;ContractMethod&#62; | nextMethods stores functions with the same name implemented in a smart contract. If the parameter passed by the user is different from the input of this contractMethod, it traverses the contractMethods defined in nextMethods to find the contractMethod to be called. |
 
 ##### Methods
