@@ -1705,10 +1705,10 @@ Copyright and related rights waived via [CC0](https://creativecommons.org/public
 [klaytn design - transactions]: https://docs.klaytn.com/klaytn/design/transactions
 [kip-7]: ./kip-7.md
 [kip-17]: ./kip-17.md
-[klay]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
-[klay namespace of the node api]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay
-[net]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
-[net namespace of the node api]: https://docs.klaytn.com/bapp/json-rpc/api-references/network
-[json-rpc apis]: https://docs.klaytn.com/bapp/json-rpc/api-references
-[klay_logs]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay/filter#klay_getlogs
-[klay_call]: https://docs.klaytn.com/bapp/json-rpc/api-references/klay/transaction#klay_call
+[klay]: https://docs.klaytn.com/dapp/json-rpc/api-references/klay
+[klay namespace of the node api]: https://docs.klaytn.com/dapp/json-rpc/api-references/klay
+[net]: https://docs.klaytn.com/dapp/json-rpc/api-references/network
+[net namespace of the node api]: https://docs.klaytn.com/dapp/json-rpc/api-references/network
+[json-rpc apis]: https://docs.klaytn.com/dapp/json-rpc/api-references
+[klay_logs]: https://docs.klaytn.com/dapp/json-rpc/api-references/klay/filter#klay_getlogs
+[klay_call]: https://docs.klaytn.com/dapp/json-rpc/api-references/klay/transaction#klay_call
