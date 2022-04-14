@@ -42,7 +42,7 @@ Transactions under a dynamic gas fee policy consist of `base_fee`, which are dyn
 When a consensus node creates a block, if the `gas_used` of parent_block exceeds `gas_target`, `base_fee` would go up. On the other hand, if the `gas_used` is lower than `gas_target`, the `base_fee` would be reduced. This process would be repeated until the `base_fee` doesn’t exceed `lower_bound` or `upper_bound`. The block proposer would receive a part of the transaction feeds included in the block, and the rest would be burned.
 
 
-```
+```python
 from asyncio.windows_events import NULL
 from typing import Union, Dict, Sequence, List, Tuple, Literal
 from dataclasses import dataclass, field
