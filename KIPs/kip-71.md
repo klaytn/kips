@@ -17,7 +17,7 @@ A dynamic gas fee pricing mechanism based on network usage, that includes fixed-
 
 ## Abstract
 <!--A short (~200 word) description of the technical issue being addressed.-->
-There is a base fee per gas in protocol, which can move up or down each block according to a formula which is a function of gas used in parent block and gas target. The algorithm results in the base fee per gas increasing when blocks are above the gas target, and decreasing when blocks are below the gas target. It repeats until base fee reachs lower bound fee or upper bound fee. The base fee per gas is partially burned. Transactions specify the maximum fee per gas they are willing to pay total. The transaction will always pay the base fee per gas of the block it was included in.
+There is a base fee per gas in protocol, which can move up or down for each block according to a formula which is a function of the gas used in the parent block and the gas target. The algorithm results in the base fee per gas increasing when the gas used in the previous block is above the gas target, and decreasing when the gas used in the previous block is below the gas target. It repeats until base fee reaches the lower bound fee or the upper bound fee. The base fee per gas is partially burned. Transactions specify the maximum fee per gas they are willing to pay in total. The transaction will always pay the base fee per gas of the block it was included in.
  
 
 ## Motivation
