@@ -1,7 +1,7 @@
 ---
 kip: 71
-title: Dynamic gas fee pricing mechanism
-author: Woojin Lee (jared) <jared.fi@krustuniverse.com>, Junghyun Colin Kim <colin.kim@groundx.xyz>
+title: Dynamic Gas Fee Pricing Mechanism
+author: Woojin Lee (jared) <jared.fi@krustuniverse.com>, Junghyun Colin Kim <colin.klaytn@krustuniverse.com>
 discussions-to: https://forum.klaytn.com/t/en-new-transaction-fee-mechanism-dynamic-gas-price-proposal/4844 
 status: Draft
 type: Standards Track
