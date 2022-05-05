@@ -41,6 +41,7 @@ Transactions under a dynamic gas fee policy consist of `base_fee`, which are dyn
 
 When a consensus node creates a block, if the `gas_used` of the parent block exceeds `gas_target`, `base_fee` would go up. On the other hand, if the `gas_used` is lower than `gas_target`, the `base_fee` would be reduced. This process would be repeated until the `base_fee` doesn’t exceed `lower_bound` or `upper_bound`. The block proposer would receive a part of the fee of transactions included in the block, and the rest would be burned.
 
+_Note: // is integer division, round down._
 
 ```python
 from asyncio.windows_events import NULL
@@ -186,44 +187,48 @@ class Account:
 	vm_version: int = 0
 
 INITIAL_FORK_BLOCK_NUMBER = 107806544 # TBD
-BASE_FEE_DELTA_REDUCING_DENOMINATOR = 64 # TBD
-LOWER_BOUND_BASE_FEE = 2000000000 # TBD, 20ston
-UPPER_BOUND_BASE_FEE = 2000000000000 # TBD, 2000ston
-GAS_TARGET = 30000000 # TBD
-BURN_RATIO = 0.5 # TBD
+BASE_FEE_DELTA_REDUCING_DENOMINATOR = 36 # Max basefee change: 5% per block 
+LOWER_BOUND_BASE_FEE = 2500000000 # 25ston
+UPPER_BOUND_BASE_FEE = 750000000000 # 750ston
+GAS_TARGET = 30000000 
+BLOCK_GAS_LIMIT = 84000000 # implicit block gas limit to enforce the max basefee change rate
+BURN_RATIO = 0.5 
+CN_DISTRIBUTION_RATIO = 0.34 # set by governance
+KGF_DISTRIBUTION_RATIO = 0.54 # set by governance
+KIR_DISTRIBUTION_RATIO = 0.12 # set by governance
 
 class World(ABC):
 	def validate_block(self, block: Block) -> None:
-		
+
+		parent_base_fee_per_gas = self.parent(block).base_fee_per_gas
+		transactions = self.transactions(block)
+
+		if parent_gas_used > BLOCK_GAS_LIMIT:
+			parent_gas_used = BLOCK_GAS_LIMIT
+		else:
+			parent_gas_used = self.parent(block).gas_used
+
 		# check if the base fee is correct
 		if INITIAL_FORK_BLOCK_NUMBER == block.number:
 			expected_base_fee_per_gas = LOWER_BOUND_BASE_FEE
 
-		else: 
-			parent_base_fee_per_gas = self.parent(block).base_fee_per_gas
-			parent_gas_used = self.parent(block).gas_used
-			transactions = self.transactions(block)
+		elif parent_gas_used == GAS_TARGET:
+			expected_base_fee_per_gas = parent_base_fee_per_gas
 
-			# check if the base fee is in the range
-			if parent_base_fee_per_gas < LOWER_BOUND_BASE_FEE:
+		elif parent_gas_used > GAS_TARGET:
+			gas_used_delta = parent_gas_used - GAS_TARGET
+			base_fee_per_gas_delta = max(parent_base_fee_per_gas * gas_used_delta // GAS_TARGET // BASE_FEE_DELTA_REDUCING_DENOMINATOR, 1)
+			expected_base_fee_per_gas = parent_base_fee_per_gas + base_fee_per_gas_delta
+			if expected_base_fee_per_gas > UPPER_BOUND_BASE_FEE:
+				expected_base_fee_per_gas = UPPER_BOUND_BASE_FEE
+			
+		else:
+			gas_used_delta = GAS_TARGET - parent_gas_used
+			base_fee_per_gas_delta = parent_base_fee_per_gas * gas_used_delta // GAS_TARGET // BASE_FEE_DELTA_REDUCING_DENOMINATOR
+			expected_base_fee_per_gas = parent_base_fee_per_gas - base_fee_per_gas_delta
+			if expected_base_fee_per_gas < LOWER_BOUND_BASE_FEE:
 				expected_base_fee_per_gas = LOWER_BOUND_BASE_FEE
 
-			elif parent_base_fee_per_gas > UPPER_BOUND_BASE_FEE:
-				expected_base_fee_per_gas = UPPER_BOUND_BASE_FEE
-
-			else: 
-				# check if the base fee is correct
-				if parent_gas_used == GAS_TARGET:
-					expected_base_fee_per_gas = parent_base_fee_per_gas
-				elif parent_gas_used > GAS_TARGET:
-					gas_used_delta = parent_gas_used - GAS_TARGET
-					base_fee_per_gas_delta = max(parent_base_fee_per_gas * gas_used_delta // GAS_TARGET // BASE_FEE_DELTA_REDUCING_DENOMINATOR, 1)
-					expected_base_fee_per_gas = parent_base_fee_per_gas + base_fee_per_gas_delta
-				else:
-					gas_used_delta = GAS_TARGET - parent_gas_used
-					base_fee_per_gas_delta = parent_base_fee_per_gas * gas_used_delta // GAS_TARGET // BASE_FEE_DELTA_REDUCING_DENOMINATOR
-					expected_base_fee_per_gas = parent_base_fee_per_gas - base_fee_per_gas_delta
-		
 		assert expected_base_fee_per_gas == block.base_fee_per_gas, 'invalid block: base fee not correct'
 
 		# execute transactions and do gas accounting
@@ -259,8 +264,10 @@ class World(ABC):
 			# signer gets refunded for unused gas
 			signer.balance += gas_refund * block.base_fee_per_gas
 
-			# miner only receives some propotion of the base fee(basefee burned)
-			self.account(block.proposer).balance += gas_used * block.base_fee_per_gas * BURN_RATIO
+			# CN and KGF, KIR account only receives some propotion of the base fee(basefee burned)
+			self.account(block.proposer).balance += gas_used * block.base_fee_per_gas * BURN_RATIO * CN_DISTRIBUTION_RATIO
+			self.account(kgf_address).balance += gas_used * block.base_fee_per_gas * BURN_RATIO * KGF_DISTRIBUTION_RATIO
+			self.account(kir_address).balance += gas_used * block.base_fee_per_gas * BURN_RATIO * KIR_DISTRIBUTION_RATIO
 
 		# check if the block spent too much gas transactions
 		assert cumulative_transaction_gas_used == block.gas_used, 'invalid block: gas_used does not equal total gas used in all transactions'
@@ -369,9 +376,8 @@ But it may give rise to the following changes:
 
 ## Backwards Compatibility
 
-* This implementation will not break backward compatibility.
-* But to use this feature, you must use another transaction type which will be implemented with this KIP.
 * All previous transaction types will remain the same.
+* Setting fixed gas price to send transactions will still work and be included in blocks, but those transactions will be not included in the block if a `base_fee` is higher than the gas price.
 
 
 ## Reference
