@@ -54,7 +54,7 @@ from abc import ABC, abstractmethod
 # only 3 transaction types are defined here for sake of simplicity.
 @dataclass
 class TxTypeLegacyTransaction:
-	value: int = 0
+    value: int = 0
     to: int = 0
     input: bytes = bytes()
 	v: int = 0
