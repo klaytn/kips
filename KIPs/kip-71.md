@@ -188,7 +188,7 @@ class Account:
 
 INITIAL_FORK_BLOCK_NUMBER = 107806544 # TBD
 BASE_FEE_DELTA_REDUCING_DENOMINATOR = 36 # Max basefee change: 5% per block 
-LOWER_BOUND_BASE_FEE = 2500000000 # 25ston
+LOWER_BOUND_BASE_FEE = 25000000000 # 25ston
 UPPER_BOUND_BASE_FEE = 750000000000 # 750ston
 GAS_TARGET = 30000000 
 BLOCK_GAS_LIMIT = 84000000 # implicit block gas limit to enforce the max basefee change rate
