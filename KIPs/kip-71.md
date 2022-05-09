@@ -55,18 +55,18 @@ from abc import ABC, abstractmethod
 @dataclass
 class TxTypeLegacyTransaction:
 	value: int = 0
-    to: int = 0
-    input: bytes = bytes()
+	to: int = 0
+	input: bytes = bytes()
 	v: int = 0
 	r: int = 0
 	s: int = 0
-    nonce: int = 0
+	nonce: int = 0
 	gas: int = 0
-    gas_price: int = 0
+	gas_price: int = 0
 
 @dataclass
 class TxTypeFeeDelegatedSmartContractExecution:
-    type: int = 0x09
+	type: int = 0x09
 	nonce: int = 0
 	gas_price: int = 0
 	gas: int = 0
@@ -80,7 +80,7 @@ class TxTypeFeeDelegatedSmartContractExecution:
 
 @dataclass
 class TxTypeFeeDelegatedSmartContractExecutionWithRatio:
-    type: int = 0x32
+	type: int = 0x32
 	nonce: int = 0
 	gas_price: int = 0
 	gas: int = 0
