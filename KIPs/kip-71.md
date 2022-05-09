@@ -202,11 +202,10 @@ class World(ABC):
 
 		parent_base_fee_per_gas = self.parent(block).base_fee_per_gas
 		transactions = self.transactions(block)
+		parent_gas_used = self.parent(block).gas_used
 
 		if parent_gas_used > BLOCK_GAS_LIMIT:
 			parent_gas_used = BLOCK_GAS_LIMIT
-		else:
-			parent_gas_used = self.parent(block).gas_used
 
 		# check if the base fee is correct
 		if INITIAL_FORK_BLOCK_NUMBER == block.number:
