@@ -3,7 +3,7 @@ kip: 37
 title: Token Standard
 author: Kyungkoo Kai Kim <kai.kim@groundx.xyz>
 discussions-to: https://github.com/klaytn/kips/issues/37
-status: Draft
+status: Last Call
 type: Standards Track
 category: KCT
 created: 2020-08-19
