@@ -261,7 +261,7 @@ class World(ABC):
 			gas_refund = transaction.gas_limit - gas_used
 			cumulative_transaction_gas_used += gas_used
 			# signer gets refunded for unused gas
-			signer.balance += gas_refund * block.base_fee_per_gas
+			fee_payer.balance += gas_refund * block.base_fee_per_gas
 
 			# CN and KGF, KIR account only receives some propotion of the base fee(basefee burned)
 			self.account(block.proposer).balance += gas_used * block.base_fee_per_gas * BURN_RATIO * CN_DISTRIBUTION_RATIO
