@@ -241,7 +241,7 @@ class World(ABC):
 
 			
 			signer.balance -= transaction.amount
-			assert signer.balance >= 0, 'invalid transaction: signer does not have enough ETH to cover attached value'
+			assert signer.balance >= 0, 'invalid transaction: signer does not have enough KLAY to cover attached value'
 			
 			# TODO: fee delegation transaction accounting
 			# the signer must be able to afford the transaction
