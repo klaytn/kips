@@ -245,7 +245,7 @@ class World(ABC):
 			
 			# TODO: fee delegation transaction accounting
 			# the signer must be able to afford the transaction
-			assert signer.balance >= transaction.gas_limit * transaction.max_fee_per_gas
+			assert fee_payer.balance >= transaction.gas_limit * transaction.max_fee_per_gas
 
 			# ensure that the user was willing to at least pay the base fee
 			assert transaction.max_fee_per_gas >= block.base_fee_per_gas
