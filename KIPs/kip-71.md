@@ -255,7 +255,7 @@ class World(ABC):
 			
 
 			fee_payer.balance -= transaction.gas_limit * block.base_fee_per_gas
-			assert signer.balance >= 0, 'invalid transaction: signer does not have enough ETH to cover gas'
+			assert fee_payer.balance >= 0, 'invalid transaction: signer does not have enough KLAY to cover gas'
 
 			gas_used = self.execute_transaction(transaction, block.base_fee_per_gas)
 			gas_refund = transaction.gas_limit - gas_used
