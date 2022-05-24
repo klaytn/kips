@@ -254,7 +254,7 @@ class World(ABC):
 			assert transaction.max_fee_per_gas < 2**256
 			
 
-			signer.balance -= transaction.gas_limit * block.base_fee_per_gas
+			fee_payer.balance -= transaction.gas_limit * block.base_fee_per_gas
 			assert signer.balance >= 0, 'invalid transaction: signer does not have enough ETH to cover gas'
 
 			gas_used = self.execute_transaction(transaction, block.base_fee_per_gas)
