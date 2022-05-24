@@ -35,7 +35,7 @@ A burn mechanism is needed to be introduced on Klaytn while solving the above pr
 (This proposal only deals with dynamic fee policy, and a FIFO (First In First Out) transaction priority algorithm is already implemented. See https://github.com/klaytn/klaytn/pull/1282 and https://github.com/klaytn/klaytn/pull/1309)
 
 ## Specification
-This specification derived heavily from Ethereum's [ERC-1559](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) written by Vitalik Buterin (@vbuterin), Eric Conner (@econoar), Rick Dudley (@AFDudley), Matthew Slipper (@mslipper), Ian Norden (@i-norden), Abdelhamid Bakhta (@abdelhamidbakhta).
+This specification derived heavily from Ethereum's [ERC-1559](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) written by Vitalik Buterin (@vbuterin), Eric Conner (@econoar), Rick Dudley (@AFDudley), Matthew Slipper (@mslipper), Ian Norden (@i-norden), and Abdelhamid Bakhta (@abdelhamidbakhta).
 
 Transactions under a dynamic gas fee policy consist of `base_fee`, which are dynamically controlled according to the network congestion status. Network congestion is measured by `gas_used` which is the gas usage by blocks created on Klaytn. `base_fee` changes every block.
 
