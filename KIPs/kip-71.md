@@ -37,9 +37,9 @@ A burn mechanism is needed to be introduced on Klaytn while solving the above pr
 ## Specification
 This specification derived heavily from Ethereum's [ERC-1559](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) written by Vitalik Buterin (@vbuterin), Eric Conner (@econoar), Rick Dudley (@AFDudley), Matthew Slipper (@mslipper), Ian Norden (@i-norden), and Abdelhamid Bakhta (@abdelhamidbakhta).
 
-Transactions under a dynamic gas fee policy consist of `base_fee`, which are dynamically controlled according to the network congestion status. Network congestion is measured by `gas_used` which is the gas usage by blocks created on Klaytn. `base_fee` changes every block.
+Transactions under a dynamic gas fee policy consist of `base_fee_per_gas`, which are dynamically controlled according to the network congestion status. Network congestion is measured by `gas_used` which is the gas usage by blocks created on Klaytn. `base_fee_per_gas` changes every block.
 
-When a consensus node creates a block, if the `gas_used` of the parent block exceeds `gas_target`, `base_fee` would go up. On the other hand, if the `gas_used` is lower than `gas_target`, the `base_fee` would be reduced. This process would be repeated until the `base_fee` doesn’t exceed `lower_bound` or `upper_bound`. The block proposer would receive a part of the fee of transactions included in the block, and the rest would be burned.
+When a consensus node creates a block, if the `gas_used` of the parent block exceeds `gas_target`, `base_fee_per_gas` would go up. On the other hand, if the `gas_used` is lower than `gas_target`, the `base_fee_per_gas` would be reduced. This process would be repeated until the `base_fee_per_gas` doesn’t exceed `lower_bound` or `upper_bound`. The block proposer would receive a part of the fee of transactions included in the block, and the rest would be burned.
 
 _Note: // is integer division, round down._
 
@@ -187,12 +187,12 @@ class Account:
 	vm_version: int = 0
 
 INITIAL_FORK_BLOCK_NUMBER = 107806544 # TBD
-BASE_FEE_DELTA_REDUCING_DENOMINATOR = 36 # Max basefee change: 5% per block 
-LOWER_BOUND_BASE_FEE = 25000000000 # 25ston
-UPPER_BOUND_BASE_FEE = 750000000000 # 750 ston
+BASE_FEE_DELTA_REDUCING_DENOMINATOR = 20 # To set max basefee change at 5% per block. Can be changed later by governance.
+LOWER_BOUND_BASE_FEE = 25000000000 # 25 ston, can be changed later by governance.
+UPPER_BOUND_BASE_FEE = 750000000000 # 750 ston, can be changed later by governance.
 GAS_TARGET = 30000000 
-BLOCK_GAS_LIMIT = 84000000 # implicit block gas limit to enforce the max basefee change rate
-BURN_RATIO = 0.5 
+MAX_BLOCK_GAS_USED_FOR_BASE_FEE = 60000000 # implicit block gas limit to enforce the max basefee change rate
+BURN_RATIO = 0.5 # cannot be changed by governance.
 CN_DISTRIBUTION_RATIO = 0.34 # set by governance
 KGF_DISTRIBUTION_RATIO = 0.54 # set by governance
 KIR_DISTRIBUTION_RATIO = 0.12 # set by governance
@@ -204,8 +204,8 @@ class World(ABC):
 		transactions = self.transactions(block)
 		parent_gas_used = self.parent(block).gas_used
 
-		if parent_gas_used > BLOCK_GAS_LIMIT:
-			parent_gas_used = BLOCK_GAS_LIMIT
+		if parent_gas_used > MAX_BLOCK_GAS_USED_FOR_BASE_FEE:
+			parent_gas_used = MAX_BLOCK_GAS_USED_FOR_BASE_FEE
 
 		# check if the base fee is correct
 		if INITIAL_FORK_BLOCK_NUMBER == block.number:
