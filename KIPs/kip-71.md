@@ -137,7 +137,6 @@ EthereumTransactions = Union[TxTypeEthereumDynamicFee, TxTypeEthereumAccessList]
 
 Transaction = Union[TxTypeLegacyTransaction, TxTypeFeeDelegatedSmartContractExecution, TxTypeFeeDelegatedSmartContractExecutionWithRatio, EthereumTransactions]
 
-# TODO: transaction accounting part
 @dataclass
 class NormalizedTransaction:
 	signer_address: int = 0
