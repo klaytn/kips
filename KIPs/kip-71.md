@@ -242,7 +242,7 @@ class World(ABC):
 			signer.balance -= transaction.amount
 			assert signer.balance >= 0, 'invalid transaction: signer does not have enough KLAY to cover attached value'
 			
-			# TODO: fee delegation transaction accounting
+			# fee delegation transaction accounting is needed 
 			# the signer must be able to afford the transaction
 			assert fee_payer.balance >= transaction.gas_limit * transaction.max_fee_per_gas
 
