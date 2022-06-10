@@ -270,7 +270,7 @@ class World(ABC):
 		# check if the block spent too much gas transactions
 		assert cumulative_transaction_gas_used == block.gas_used, 'invalid block: gas_used does not equal total gas used in all transactions'
 
-		# TODO: verify account balances match block's account balances (via state root comparison)
+
 		# TODO: validate the rest of the block
 
 	def normalize_transaction(self, transaction: Transaction, signer_address: int) -> NormalizedTransaction:
