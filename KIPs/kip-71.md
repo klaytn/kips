@@ -41,6 +41,7 @@ Transactions under a dynamic gas fee policy consist of `base_fee_per_gas`, which
 
 When a consensus node creates a block, if the `gas_used` of the parent block exceeds `gas_target`, `base_fee_per_gas` would go up. On the other hand, if the `gas_used` is lower than `gas_target`, the `base_fee_per_gas` would be reduced. This process would be repeated until the `base_fee_per_gas` doesn’t exceed `lower_bound` or `upper_bound`. The block proposer would receive a part of the fee of transactions included in the block, and the rest would be burned.
 
+The below shows pseudo code of this proposal.
 _Note: // is integer division, round down._
 
 ```python
