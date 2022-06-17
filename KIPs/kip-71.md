@@ -376,7 +376,7 @@ But it may give rise to the following changes:
 ## Backwards Compatibility
 
 * All previous transaction types will remain the same.
-* Setting fixed gas price to send transactions will still work and be included in blocks, but those transactions will be not included in the block if a `base_fee` is higher than the gas price.
+* Setting fixed gas price to send transactions will still work and be included in blocks, but those transactions will be not included in the block if a `base_fee_per_gas` is higher than the gas price.
 
 
 ## Reference
