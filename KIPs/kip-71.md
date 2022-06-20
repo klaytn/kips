@@ -238,7 +238,6 @@ class World(ABC):
 			transaction = self.normalize_transaction(unnormalized_transaction, signer_address)
 			signer = self.account(signer_address)
 
-			
 			signer.balance -= transaction.amount
 			assert signer.balance >= 0, 'invalid transaction: signer does not have enough KLAY to cover attached value'
 			
