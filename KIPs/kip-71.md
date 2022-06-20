@@ -260,6 +260,7 @@ class World(ABC):
 			gas_used = self.execute_transaction(transaction, block.base_fee_per_gas)
 			gas_refund = transaction.gas_limit - gas_used
 			cumulative_transaction_gas_used += gas_used
+
 			# signer gets refunded for unused gas
 			fee_payer.balance += gas_refund * block.base_fee_per_gas
 
