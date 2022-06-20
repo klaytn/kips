@@ -252,7 +252,6 @@ class World(ABC):
 
 			# Prevent impossibly large numbers
 			assert transaction.max_fee_per_gas < 2**256
-			
 
 			fee_payer.balance -= transaction.gas_limit * block.base_fee_per_gas
 			assert fee_payer.balance >= 0, 'invalid transaction: signer does not have enough KLAY to cover gas'
