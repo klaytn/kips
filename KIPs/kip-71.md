@@ -236,7 +236,6 @@ class World(ABC):
 			# Note: this validates transaction signature and chain ID which must happen before we normalize below since normalized transactions don't include signature or chain ID
 			signer_address = self.validate_and_recover_signer_address(unnormalized_transaction)
 			transaction = self.normalize_transaction(unnormalized_transaction, signer_address)
-
 			signer = self.account(signer_address)
 
 			
