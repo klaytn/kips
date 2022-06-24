@@ -358,7 +358,6 @@ class World(ABC):
 	def account(self, address: int) -> Account: pass
 ```
 
-
 ## Expected Effect
 
 The proposed dynamic gas price mechanism is expected to solve the following problems.
@@ -374,7 +373,6 @@ But it may give rise to the following changes:
 
 * All previous transaction types will remain the same.
 * Setting fixed gas price to send transactions will still work and be included in blocks, but those transactions will be not included in the block if a `base_fee_per_gas` is higher than the gas price.
-
 
 ## Reference
 - https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md
