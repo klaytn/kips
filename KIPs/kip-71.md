@@ -213,7 +213,7 @@ class World(ABC):
 
 		# if UPPER_BOUND_BASE_FEE ix not a even number, make it even by subtracting 1
 		if upper_bound_base_fee & 0x1:
-			upper_bound_base_fee += 1
+			upper_bound_base_fee -= 1
 
 		if parent_gas_used > MAX_BLOCK_GAS_USED_FOR_BASE_FEE:
 			parent_gas_used = MAX_BLOCK_GAS_USED_FOR_BASE_FEE
