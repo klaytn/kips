@@ -204,12 +204,23 @@ class World(ABC):
 		transactions = self.transactions(block)
 		parent_gas_used = self.parent(block).gas_used
 
+		lower_bound_base_fee = LOWER_BOUND_BASE_FEE
+		upper_bound_base_fee = UPPER_BOUND_BASE_FEE
+
+		# if LOWER_BOUND_BASE_FEE is not a even number, make it even by adding 1
+		if lower_bound_base_fee & 0x1:
+			lower_bound_base_fee += 1
+
+		# if UPPER_BOUND_BASE_FEE ix not a even number, make it even by subtracting 1
+		if upper_bound_base_fee & 0x1:
+			upper_bound_base_fee -= 1
+
 		if parent_gas_used > MAX_BLOCK_GAS_USED_FOR_BASE_FEE:
 			parent_gas_used = MAX_BLOCK_GAS_USED_FOR_BASE_FEE
 
 		# check if the base fee is correct
 		if INITIAL_FORK_BLOCK_NUMBER == block.number:
-			expected_base_fee_per_gas = LOWER_BOUND_BASE_FEE
+			expected_base_fee_per_gas = lower_bound_base_fee
 
 		elif parent_gas_used == GAS_TARGET:
 			expected_base_fee_per_gas = parent_base_fee_per_gas
@@ -218,15 +229,20 @@ class World(ABC):
 			gas_used_delta = parent_gas_used - GAS_TARGET
 			base_fee_per_gas_delta = max(parent_base_fee_per_gas * gas_used_delta // GAS_TARGET // BASE_FEE_DELTA_REDUCING_DENOMINATOR, 1)
 			expected_base_fee_per_gas = parent_base_fee_per_gas + base_fee_per_gas_delta
-			if expected_base_fee_per_gas > UPPER_BOUND_BASE_FEE:
-				expected_base_fee_per_gas = UPPER_BOUND_BASE_FEE
+			if expected_base_fee_per_gas > upper_bound_base_fee:
+				expected_base_fee_per_gas = upper_bound_base_fee
 			
 		else:
 			gas_used_delta = GAS_TARGET - parent_gas_used
 			base_fee_per_gas_delta = parent_base_fee_per_gas * gas_used_delta // GAS_TARGET // BASE_FEE_DELTA_REDUCING_DENOMINATOR
 			expected_base_fee_per_gas = parent_base_fee_per_gas - base_fee_per_gas_delta
-			if expected_base_fee_per_gas < LOWER_BOUND_BASE_FEE:
-				expected_base_fee_per_gas = LOWER_BOUND_BASE_FEE
+			if expected_base_fee_per_gas < lower_bound_base_fee:
+				expected_base_fee_per_gas = lower_bound_base_fee
+
+		# Make it a even number by subtracting 1
+		# Since the lower bound is even number at this moment, we are sure that the value will not be lower than the lower bound.
+		if expected_base_fee_per_gas & 0x1:
+			expected_base_fee_per_gas -= 1
 
 		assert expected_base_fee_per_gas == block.base_fee_per_gas, 'invalid block: base fee not correct'
 
