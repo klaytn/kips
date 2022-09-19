@@ -23,7 +23,7 @@ To enhance individual voting power and promote ultimate decentralization, we aim
 
 The Klaytn governance voting system is designed based on the following fundamental premises. 
 - We believe Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem. 
-- We assumed that participants will be more likely to make a decision that is beneficial to the Klaytn ecosystem if they hold more KLAY. This is based on the premise that the growth of Klaytn’s ecosystem is correlated to the rise in the value of KLAY. 
+- We assumed that participants are more likely to make a decision that is beneficial to the Klaytn ecosystem if they hold more KLAY. This is based on the premise that the growth of Klaytn’s ecosystem is correlated with the rise in the value of KLAY. 
 - The governance system should be able to manage the situations in which a particular entity makes an arbitrary decision. This is because the entity may weaken the sustainability of the entire network. 
 - The act of voting and the gain of voting power is different. 
 
