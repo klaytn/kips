@@ -50,13 +50,13 @@ A proposal is in one of the following states.
 - Expired: Executor has not queued or executed within respective timeouts.
 
 
-![proposal state diagram](../assets/kip-101/proposal_state_diagram.png)
+![proposal state diagram](../assets/kip-81/proposal_state_diagram.png)
 
 For a proposal to pass, two quorum conditions must be satisfied. The first condition is the turnout. Either the number of voters exceeds 1/3 of all voters, or the sum of casted votes exceeds 1/3 of all eligible votes. The second condition is supported. The yes votes must exceed the half of casted votes.
 The amounts of votes are calculated from the amounts of stakes KLAY. GC members stake their KLAY by locking in a special smart contract called CnStakingContract. Each GC must deploy at least one CnStakingContract and deposit KLAY there. The official addresses of CnStakingContract are managed in another special smart contract called AddressBook.
 Each GC member can appoint a voter account that will cast votes on behalf of the KLAYs in its CnStakingContracts. The voter account is necessary because CnStakingContract itself cannot send transactions to cast votes.
 
-![gc voting structure](../assets/kip-101/gc_voting_structure.png)
+![gc voting structure](../assets/kip-81/gc_voting_structure.png)
   
 Staked balances and voter accounts are tracked in a new special smart contract named StakingTracker. StakingTracker stores the voter list and their voting powers for each voting period. CnStakingContract must notify StakingTracker to recognize any balance changes. Below is an example of StakingTracker contract interface.
 ```solidity
