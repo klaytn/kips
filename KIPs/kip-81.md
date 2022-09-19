@@ -1,5 +1,5 @@
 ---
-kip: 101
+kip: 81
 title: Changing GC Voting Method
 author: Yeriel<yeriel.lee@krustuniverse.com>, Daniel<daniel.cc@krustuniverse.com>, Aidan<aidan.kwon@krustuniverse.com>, Ollie<ollie.j@krustuniverse.com>, Eddie<eddie.kim0@krustuniverse.com>
 discussion-to: https://govforum.klaytn.foundation/t/discussion-changing-gc-voting-method/19
