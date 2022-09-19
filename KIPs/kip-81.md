@@ -11,7 +11,7 @@ created: 2022-09-19
 
 
 ## Simple Summary
-Introducing a new governance voting method based on the staking amount and implementation of the governance portal, Klaytn Square 
+Introducing a new governance voting method based on staking amount and the implementation of the governance portal, Klaytn Square 
  
 ## Abstract
 Klaytn introduces a stake-based governance model that provides voting power to governance participants. Currently, one Governance Council (GC) member can cast one vote. The new method will introduce a voting right that will be exercised based on the staking amount with a maximum cap to prevent a certain entity from making an arbitrary decision. This model ultimately enables each member to gather support from Klaytn communities in line with their preference. The new system aims to give responsibility and obligation to the Governance Council members to vote.
