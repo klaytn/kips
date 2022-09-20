@@ -54,7 +54,7 @@ A proposal is in one of the following states.
 
 For a proposal to pass, two quorum conditions must be satisfied. The first condition is the turnout. Either the number of voters exceeds 1/3 of all voters, or the sum of casted votes exceeds 1/3 of all eligible votes. The second condition is supported. The yes votes must exceed the half of casted votes.
 The amount of votes are calculated from the amount of stakes KLAY. GC members stake their KLAY by locking in a special smart contract called CnStakingContract. Each member must deploy at least one CnStakingContract and deposit KLAY there. The official addresses of CnStakingContract are managed in another special smart contract called AddressBook.
-Each GC member can appoint a voter account that will cast votes on behalf of the KLAYs in its CnStakingContracts. The voter account is necessary because CnStakingContract itself cannot send transactions to cast votes.
+Each GC member can appoint a voter account that will cast votes on behalf of the KLAY in its CnStakingContracts. The voter account is necessary because CnStakingContract itself cannot send transactions to cast votes.
 
 ![gc voting structure](../assets/kip-81/gc_voting_structure.png)
   
