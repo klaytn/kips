@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      actions: write
+      pull-requests: write
 
     steps:
       - name: Checkout the code
