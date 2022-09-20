@@ -32,7 +32,7 @@ Therefore, the GC member will receive 1 vote per a certain amount of staked KLAY
 The foundation will provide `votingDelay` (initial configuration: 7 days)  of the notice period and ‘votingPeriod’ of the voting period (initial configuration: 7 days). The list of eligible voters is finalized at the start of the notice period. The qualified electors and voting power of those will be counted at the start of the voting period. The foundation or GC can freely propose and discuss on the forum. Once the discussion is held on the forum, the foundation will put the topic to a vote on the governance portal. 
 The newly implemented governance portal includes the following functions: 
 - Ability to propose and vote on a variety of opinions
-- Information about Governance Councils who are working together for the Klaytn ecosystem
+- Information about Governance Council members who are working together for the Klaytn ecosystem
 
 The Klaytn governance voting system will be conducted on smart contracts. The contract design is influenced by Compound Finance and OpenZeppelin. The accounts interacting with the contracts can have proposer, voter, or executor roles.
 A proposer submits and initiates governance proposals. The voting timeline starts with the submission of proposals to the voting contract. A proposal describes the changes to be made on the Klaytn blockchain.
