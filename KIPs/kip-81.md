@@ -107,10 +107,10 @@ interface IStakingTracker {
 
 ## Expected Effect
 The proposed GC Voting method is expected to produce the following changes:
-- All members in Klaytn ecosystem grow together with credibility 
-- Providing obligation and authority to GC motivates active participation in governance voting activities and the KLAY staking 
-- Anyone can easily view the proposals and voting status through the governance portal. It encourages holders to participate and give responsibility and authority to GCs.
-- The Klaytn network can take a step closer to transparency and decentralized networks.
+- All members in the Klaytn ecosystem grow together with credibility 
+- Entrusting obligation and authority to GC members motivates active participation in governance voting activities and KLAY staking 
+- Anyone can easily view the proposals and voting status through the governance portal. It encourages holders to participate and give responsibility and authority to the GC members.
+- The Klaytn network can take a step closer to transparency and decentralization.
  
 ## Backward Compatibility
 n/a
