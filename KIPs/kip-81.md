@@ -1,6 +1,6 @@
 ---
 kip: 81
-title: Changing GC Voting Methods
+title: Implementing the on-chain governance voting method  
 author: Yeriel<yeriel.lee@krustuniverse.com>, Daniel<daniel.cc@krustuniverse.com>, Aidan<aidan.kwon@krustuniverse.com>, Ollie<ollie.j@krustuniverse.com>, Eddie<eddie.kim0@krustuniverse.com>
 discussion-to: https://govforum.klaytn.foundation/t/discussion-changing-gc-voting-method/19
 status: Draft
@@ -11,33 +11,45 @@ created: 2022-09-19
 
 
 ## Simple Summary
-Introducing a new governance voting method based on staking amount and the implementation of the governance portal, Klaytn Square 
+Introducing a new governance voting method based on the staking amount and implementation of the Klaytn Square, a governance portal
  
 ## Abstract
-Klaytn introduces a stake-based governance model that provides voting power to governance participants. Currently, one Governance Council (GC) member can cast one vote. The new method will introduce a voting right that will be exercised based on the staking amount with a maximum cap to prevent a certain entity from making an arbitrary decision. This model ultimately enables each member to gather support from Klaytn communities in line with their preference. The new system aims to give responsibility and obligation to the Governance Council members to vote.
+Klaytn introduces a stake-based governance model that provides voting power to governance participants. Currently, one vote per Governance Council(GC) member was cast. The new method will introduce the voting right that will be exercised based on the staking amount with the maximum cap to prevent an entity from making an arbitrary decision. The voting agenda is determined through discussion on the Klaytn Governance Forum, and the topic will be presented and voted on at the newly launched Governance Portal, Klaytn Square. This voting mechanism aims to provide responsibility and obligation of voting to Governance Councils.  
 
 ## Motivation
-To enhance individual voting power and promote ultimate decentralization, we aim to accomplish an equal proposer selection structure. With the change of the voting method, GC members who share the same interest and values as Klaytn can gain more power and influence by staking and locking up more KLAY.
+The new on-chain voting mechanism discloses GC’s opinion transparently through the public forum and the portal, allowing anyone to view the result. Through Klaytn Governance Forum, non-GC members can also participate in the conversation about governance agenda. This change provides more power and influence to GC members who share the same interest and values as that of Klaytn by staking and locking up more KLAYs. Moreover, this method ultimately promotes decentralization. 
 
 ## Specification
+Klaytn Governance Forum allows the general public, developers and governance councils to freely propose and discuss on Klaytn governance items. Once Klaytn Square, the governance portal, opens, the on-chain voting will be executed based on the discussion held in this forum.
+
+![voting process diagram](../assets/kip-81/voting_process_diagram.png)
+
+The foundation will provide 7 days of notice period for voting, providing a time to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period. 
 
 The Klaytn governance voting system is designed based on the following fundamental premises. 
-- We believe Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem. 
-- We assumed that participants are more likely to make a decision that is beneficial to the Klaytn ecosystem if they hold more KLAY. This is based on the premise that the growth of Klaytn’s ecosystem is correlated with the rise in the value of KLAY. 
+- Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem. 
+- Participants are more likely to make a decision that is beneficial to the Klaytn ecosystem if they hold more KLAY. This is based on the premise that the growth of Klaytn’s ecosystem is correlated with the rise in the value of KLAY. 
 - The governance system should be able to manage the situations in which a particular entity makes an arbitrary decision. This is because the entity may weaken the sustainability of the entire network. 
 - The act of voting and the gain of voting power is different. 
 
 Governance Council members can exercise the right to vote based on the staking amount. Currently, each GC member receives at least 1 voting right regardless of the number of KLAY they hold. Recognizing a tendency that the member with more KLAY makes a decision that benefits the Klaytn ecosystem in the long run, we are granting a higher voting power to members with more KLAY. Yet, to prevent a particular subject from making an arbitrary decision, we are placing a cap on the voting power one can receive. 
-Therefore, the GC member will receive 1 vote per a certain amount of staked KLAY (initial configuration: 500 million KLAY). The maximum number of votes a GC member can own is one less than the total number of members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. The 1 KLAY: 1 vote structure prevents the tragedy of the commons and potential monopolies by limiting the maximum number of votes cast. 
+
+Therefore, the GC will receive 1 vote per a certain amount of staked KLAY (initial configuration: 500 million KLAY). The maximum number of votes a governance council can own is one less than the total number of governance council members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. The 500M KLAY: 1 vote with cap structure prevents the tragedy of the commons and prevents potential monopolies by limiting the maximum number of votes cast. 
+
 The foundation will provide `votingDelay` (initial configuration: 7 days)  of the notice period and ‘votingPeriod’ of the voting period (initial configuration: 7 days). The list of eligible voters is finalized at the start of the notice period. The qualified electors and voting power of those will be counted at the start of the voting period. The foundation or GC can freely propose and discuss on the forum. Once the discussion is held on the forum, the foundation will put the topic to a vote on the governance portal. 
+
 The newly implemented governance portal includes the following functions: 
 - Ability to propose and vote on a variety of opinions
 - Information about Governance Council members who are working together for the Klaytn ecosystem
 
 The Klaytn governance voting system will be conducted on smart contracts. The contract design is influenced by Compound Finance and OpenZeppelin. The accounts interacting with the contracts can have proposer, voter, or executor roles.
+
 A proposer submits and initiates governance proposals. The voting timeline starts with the submission of proposals to the voting contract. A proposal describes the changes to be made on the Klaytn blockchain.
+
 A proposal not only contains textual descriptions of the change, but it may also include  specifications of attached transactions, or actions. The actions are executed on behalf of a voting contract after the proposal passes. The actions extend the impact of proposals from simply gathering opinions to automatically implementing changes on the blockchain.
+
 A voter casts votes on the proposal during the voting period. A voter can vote for yes, no, or abstain with all the votes assigned to the voter. The list of voters for each proposal is determined at the proposal submission. The number of votes is determined by the amount of staked KLAYs at the start of the voting period.
+
 An executor triggers the execution of attached transactions in passed proposals. The execution is subdivided into two steps. First, the executor queues the transactions. After a set amount of delay, the executor can send the transactions. Execution delay here gives enough time for the community to recognize the upcoming change and perform a final check about the transaction.
 A proposal is in one of the following states.
 - Pending: Proposer submitted the proposal but voting has not started. The pending state lasts for votingDelay, or 7 days. This state is also called the notice period.
@@ -48,7 +60,6 @@ A proposal is in one of the following states.
 - Queued: An executor has queued the actions. An executor cannot trigger the actions while a certain duration of execDelay, or 2 days.
 - Executed: An executor has triggered the actions after the execution delay. The executor shall trigger the actions before a set timeout of execTimeout, or 7 days. The execTimeout starts at the end of execDelay.
 - Expired: Executor has not queued or executed within respective timeouts.
-
 
 ![proposal state diagram](../assets/kip-81/proposal_state_diagram.png)
 
