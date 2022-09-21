@@ -83,7 +83,6 @@ interface IStakingTracker {
     address[] nodeIds;
     mapping(address => address) stakingToNodeId;
 
-
     // Balances and voting powers of each nodes.
     // Updated by notifyStake() and notifyWithdraw().
     mapping(address => uint256) nodeBalances;
