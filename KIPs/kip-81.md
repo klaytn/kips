@@ -52,7 +52,7 @@ A voter casts votes on the proposal during the voting period. A voter can vote f
 
 An executor triggers the execution of attached transactions in passed proposals. The execution is subdivided into two steps. First, the executor queues the transactions. After a set amount of delay, the executor can send the transactions. Execution delay here gives enough time for the community to recognize the upcoming change and perform a final check about the transaction.
 A proposal is in one of the following states.
-- Pending: Proposer submitted the proposal but voting has not started. The pending state lasts for votingDelay, or 7 days. This state is also called the notice period.
+- Pending: Proposer submitted the proposal but voting has not started. The pending state lasts for `votingDelay` (a.k.a. the notice period, 7 days for initial configuration). 
 - Active: Ongoing voting. Voters can cast their votes. The active state lasts for votingPeriod, or 7 days. This state is also called the voting period.
 - Canceled: Proposer has canceled the proposal before execution. Any further interaction is prohibited.
 - Passed: Voting finalized and quorum reached. Executor shall queue the actions before a set timeout of queueTimeout, or 7 days. If the proposal contains no actions, any further interaction is prohibited. Otherwise, the proposal can proceed to Queued and Executed states.
