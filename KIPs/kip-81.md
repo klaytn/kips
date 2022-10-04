@@ -125,7 +125,7 @@ A proposal is in one of the following states.
 - **Pending**: Proposer submitted the proposal but voting has not started. The pending state lasts for `votingDelay`. This state is also called the **notice period**.
 - **Active**: Ongoing voting. Voters can cast their votes. The active state lasts for `votingPeriod`. This state is also called the **voting period**.
 - **Canceled**: Proposer has canceled the proposal before execution. Any further interaction is prohibited.
-- **Passed**: Voting finalized and quorum reached. Executor shall queue the actions before a set timeout of `queueTimeout`. If the proposal contains no actions, any further interaction is prohibited. Otherwise, the proposal can proceed to Queued and Executed states.
+- **Passed**: Voting finalized and quorum reached. An executor shall queue the actions before a set timeout of `queueTimeout`. If the proposal contains no actions, any further interaction is prohibited. Otherwise, the proposal can proceed to Queued and Executed states.
 - **Failed**: Voting finalized but has not reached quorum. Any further interaction is prohibited.
 - **Queued**: An executor has queued the actions. An executor cannot trigger the actions while a certain duration of `execDelay`.
 - **Executed**: An executor has triggered the actions after the execution delay. The executor shall trigger the actions before a set timeout of `execTimeout`. The `execTimeout` starts at the end of `execDelay`.
@@ -234,14 +234,12 @@ interface IStakingTracker {
     address[] nodeIds;
     mapping(address => address) stakingToNodeId;
 
-
     // Balances and voting powers of each nodes.
     // Updated by notifyStake().
     mapping(address => uint256) stakingBalances;
     mapping(address => uint256) nodeBalances;
     mapping(address => uint256) votingPowers;
     uint256 totalVotes;
-
 
     // Appointed voters list
     // Updated by appointVoter().
