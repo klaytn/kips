@@ -48,6 +48,8 @@ The Klaytn node will be updated according to the new reward policy. The CN porti
 During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: // is integer division, round down.
 
 ```python
+FORK_BLOCK_NUMBER = 100000000 # TBD
+
 # Network configurations related to reward distribution.
 # Corresponds to Klaytn's reward.rewardConfig struct.
 class RewardConfig:
@@ -58,7 +60,7 @@ class RewardConfig:
     KgfRatio: int = 54 
     KirRatio: int = 12
     TotalRatio: int = CnRatio + KgfRatio + KirRatio 
-    # comes from a new parameter
+    # comes from a new parameter "reward.kip82ratio"
     CnMintedBasicRatio: int = 20
     CnMintedStakeRatio: int = 80
     CnMintedTotalRatio: int = CnMintedBasicRatio + CnMintedStakeRatio
@@ -69,7 +71,6 @@ class StakingInfo:
     KIRAddr: string = ""
     PoCAddr: string = ""
     Nodes: List[ConsolidatedNode] = []
-
 
 # Staking information merged under the same CN.
 # Sometimes a node would register multiple NodeAddrs
@@ -92,7 +93,26 @@ class ConsolidatedNode:
 # - reward_config is a RewardConfig instance.    
 # - staking_info is a StakingInfo instance.
 def distribute_block_reward(state, header, total_tx_fee, config, staking_info):
+    if header.number <= FORK_BLOCK_NUMBER:
+        do_distribute(state, header, total_tx_fee, config, staking_info)
+    else:
+        do_distribute_kip82(state, header, total_tx_fee, config, staking_info)
 
+def do_distribute(state, header, total_tx_fee, config, staking_info):
+    # Split minting resource and fee resource alltogether
+    amount = config.MintingAmount + total_tx_fee
+
+    cn_reward = amount * config.CnRatio // config.TotalRatio
+    kgf_reward = amount * config.KgfRatio // config.TotalRatio
+    kir_reward = amount * config.KirRatio // config.TotalRatio
+    remaining = amount - cn_reward - stake_reward - kgf_reward - kir_reward
+
+    state.AddBalance(header.RewardBase, basic_reward)
+    state.AddBalance(staking_info.KgfAddr, kgf_reward)
+    state.AddBalance(staking_info.KirAddr, kir_reward)
+    return (cn_reward, kgf_reward, kir_reward, remaining)
+
+def do_distribute_kip82(state, header, total_tx_fee, config, staking_info):
     basic_reward, stake_reward, kgf_reward, kir_reward, split_remaining = split_reward(total_tx_fee, config)
 
     shares, share_remaining = calc_stake_shares(stake_reward, config, staking_info)
@@ -106,7 +126,7 @@ def distribute_block_reward(state, header, total_tx_fee, config, staking_info):
     for reward_addr, reward_amount in shares:
         state.AddBalance(reward_addr, reward_amount)
 
-# Split block rewards into (basic, stake, kgf, kir, remaining).
+# Split block rewards into (basic, stake, kgf, kir, remaining), after fork.
 def split_reward(total_tx_fee, config):
 
     # Split minting resource
@@ -119,7 +139,6 @@ def split_reward(total_tx_fee, config):
     # Split CN portion
     basic_reward = cn_reward * config.CnMintedBasicRatio // config.CnMintedTotalRatio
     stake_reward = cn_reward * config.CnMintedStakeRatio // config.CnMintedTotalRatio
-
 
     remaining = minted - basic_reward - stake_reward - kgf_reward - kir_reward
     # Calculate fee resource
