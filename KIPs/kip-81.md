@@ -2,7 +2,7 @@
 kip: 81
 title: Implementing the on-chain governance voting method  
 author: Yeriel<yeriel.lee@krustuniverse.com>, Daniel<daniel.cc@krustuniverse.com>, Aidan<aidan.kwon@krustuniverse.com>, Ollie<ollie.j@krustuniverse.com>, Eddie<eddie.kim0@krustuniverse.com>
-discussion-to: https://govforum.klaytn.foundation/t/discussion-changing-gc-voting-method/19
+discussion-to: https://govforum.klaytn.foundation/t/proposal-implementing-the-on-chain-governance-voting-method/18
 status: Draft
 type: Standards Track 
 category: Core
