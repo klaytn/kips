@@ -21,11 +21,14 @@ The new on-chain voting mechanism discloses GC’s opinion transparently through
 
 ## Specification
 Klaytn Governance Forum allows the general public, developers and governance councils to freely propose and discuss on Klaytn governance items. Once Klaytn Square, the governance portal, opens, the on-chain voting will be executed based on the discussion held in this forum.
+
 The newly implemented governance portal includes the following functions:
 - Ability to propose and vote on a variety of opinions
 - Information about Governance Councils who are working together for the Klaytn ecosystem
 
 ![voting process diagram](../assets/kip-81/voting_process_diagram.png)
+
+The foundation will provide 7 days of notice period for voting, providing a time to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period. 
 
 The Klaytn governance voting system is designed based on the following fundamental premises. 
 - Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem. 
@@ -36,6 +39,8 @@ The Klaytn governance voting system is designed based on the following fundament
 The Governance Council can exercise the right to vote based on the staking amount. Currently, each GC member receives at least 1 voting right regardless of the number of KLAY they hold. Recognizing a tendency that the member with more KLAY makes a decision that benefits the Klaytn ecosystem in the long run, we are granting a higher voting power to members with more KLAY. Yet, to prevent a particular subject from making an arbitrary decision, we are placing a cap on the voting power one can receive.
 
 Therefore, the GC will receive 1 vote per a certain amount of staked KLAY (initial configuration: 5 million KLAY). The maximum number of votes a governance council can own is one less than the total number of governance council members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. The 5 M KLAY: 1 vote with cap structure prevents the tragedy of the commons and prevents potential monopolies by limiting the maximum number of votes cast.
+
+### Smart Contract Specification
 
 The foundation will provide `votingDelay` (initial configuration: 7 days)  of the notice period and ‘votingPeriod’ of the voting period (initial configuration: 7 days). The list of eligible voters is finalized at the start of the notice period. The qualified electors and voting power of those will be counted at the start of the voting period. The foundation or GC can freely propose and discuss on the forum. Once the discussion is held on the forum, the foundation will put the topic to a vote on the governance portal. 
 
@@ -118,13 +123,15 @@ interface IStakingTracker {
 
 ## Expected Effect
 The proposed GC Voting method is expected to produce the following changes:
-- All members in the Klaytn ecosystem grow together with credibility 
-- Entrusting obligation and authority to GC members motivates active participation in governance voting activities and KLAY staking 
-- Anyone can easily view the proposals and voting status through the governance portal. It encourages holders to participate and give responsibility and authority to the GC members.
-- The Klaytn network can take a step closer to transparency and decentralization.
+- All members in Klaytn ecosystem grow together with credibility 
+- Providing obligation and authority to GC motivates active participation in governance voting activities and the KLAY staking 
+- Anyone can easily view the proposals and voting status through the governance portal. It encourages holders to participate and give responsibility and authority to GCs.
+- The Klaytn network can take a step closer to transparency and decentralized networks.
  
 ## Backward Compatibility
-n/a
+- Existing CnStaking contract balances will not be accounted for voting power calculation. To be eligible for governance voting, GCs must deploy new CnStakingV2 contracts and move their staked KLAYs.
+- However, proposer selection is not affected by the change, so GCs can still participate in consensus before migrating to CnStakingV2.
+
   
 ## Reference
 n/a 
