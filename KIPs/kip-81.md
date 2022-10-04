@@ -21,20 +21,21 @@ The new on-chain voting mechanism discloses GC’s opinion transparently through
 
 ## Specification
 Klaytn Governance Forum allows the general public, developers and governance councils to freely propose and discuss on Klaytn governance items. Once Klaytn Square, the governance portal, opens, the on-chain voting will be executed based on the discussion held in this forum.
+The newly implemented governance portal includes the following functions:
+- Ability to propose and vote on a variety of opinions
+- Information about Governance Councils who are working together for the Klaytn ecosystem
 
 ![voting process diagram](../assets/kip-81/voting_process_diagram.png)
 
-The foundation will provide 7 days of notice period for voting, providing a time to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period. 
-
 The Klaytn governance voting system is designed based on the following fundamental premises. 
 - Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem. 
-- Participants are more likely to make a decision that is beneficial to the Klaytn ecosystem if they hold more KLAY. This is based on the premise that the growth of Klaytn’s ecosystem is correlated with the rise in the value of KLAY. 
+- Participants will be more likely to make a decision that is beneficial to the Klaytn ecosystem if they hold more KLAY. This is based on the premise that the growth of Klaytn’s ecosystem is correlated to the rise in the value of KLAY.
 - The governance system should be able to manage the situations in which a particular entity makes an arbitrary decision. This is because the entity may weaken the sustainability of the entire network. 
-- The act of voting and the gain of voting power is different. 
+- The act of voting and the gain of voting power is different.
 
-Governance Council members can exercise the right to vote based on the staking amount. Currently, each GC member receives at least 1 voting right regardless of the number of KLAY they hold. Recognizing a tendency that the member with more KLAY makes a decision that benefits the Klaytn ecosystem in the long run, we are granting a higher voting power to members with more KLAY. Yet, to prevent a particular subject from making an arbitrary decision, we are placing a cap on the voting power one can receive. 
+The Governance Council can exercise the right to vote based on the staking amount. Currently, each GC member receives at least 1 voting right regardless of the number of KLAY they hold. Recognizing a tendency that the member with more KLAY makes a decision that benefits the Klaytn ecosystem in the long run, we are granting a higher voting power to members with more KLAY. Yet, to prevent a particular subject from making an arbitrary decision, we are placing a cap on the voting power one can receive.
 
-Therefore, the GC will receive 1 vote per a certain amount of staked KLAY (initial configuration: 500 million KLAY). The maximum number of votes a governance council can own is one less than the total number of governance council members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. The 500M KLAY: 1 vote with cap structure prevents the tragedy of the commons and prevents potential monopolies by limiting the maximum number of votes cast. 
+Therefore, the GC will receive 1 vote per a certain amount of staked KLAY (initial configuration: 5 million KLAY). The maximum number of votes a governance council can own is one less than the total number of governance council members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. The 5 M KLAY: 1 vote with cap structure prevents the tragedy of the commons and prevents potential monopolies by limiting the maximum number of votes cast.
 
 The foundation will provide `votingDelay` (initial configuration: 7 days)  of the notice period and ‘votingPeriod’ of the voting period (initial configuration: 7 days). The list of eligible voters is finalized at the start of the notice period. The qualified electors and voting power of those will be counted at the start of the voting period. The foundation or GC can freely propose and discuss on the forum. Once the discussion is held on the forum, the foundation will put the topic to a vote on the governance portal. 
 
