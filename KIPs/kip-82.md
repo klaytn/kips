@@ -159,7 +159,7 @@ The proposed GC reward mechanism is expected to produce the following changes:
 - The total circulation reduces.
  
 ## Backward Compatibility
-n/a
+Klaytn nodes must be upgraded before FORK_BLOCK_NUMBER to correctly produce or verify blocks.
   
 ## Reference
 n/a 
