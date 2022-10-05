@@ -17,18 +17,20 @@ Introducing a new governance voting method based on the staking amount and imple
 Klaytn introduces a stake-based governance model that provides voting power to governance participants. Currently, one vote per Governance Council(GC) member was cast. The new method will introduce the voting right that will be exercised based on the staking amount with the maximum cap to prevent an entity from making an arbitrary decision. The voting agenda is determined through discussion on the Klaytn Governance Forum, and the topic will be presented and voted on at the newly launched Governance Portal, Klaytn Square. This voting mechanism aims to provide responsibility and obligation of voting to Governance Councils.  
 
 ## Motivation
-The new on-chain voting mechanism discloses GC’s opinion transparently through the public forum and the portal, allowing anyone to view the result. Through Klaytn Governance Forum, non-GC members can also participate in the conversation about governance agenda. This change provides more power and influence to GC members who share the same interest and values as that of Klaytn by staking and locking up more KLAYs. Moreover, this method ultimately promotes decentralization. 
+The new on-chain voting mechanism discloses GC’s opinion transparently through the portal, allowing anyone to view the result. The governance agenda discussed in Klaytn Governance Forum will be voted on the governance portal, Klaytn Square. Since the voting power is calculated based on the staking amount, this voting process provides more power to GC members who share the same interest as Klaytn by staking and locking up more KLAYs.
 
 ## Specification
-Klaytn Governance Forum allows the general public, developers and governance councils to freely propose and discuss on Klaytn governance items. Once Klaytn Square, the governance portal, opens, the on-chain voting will be executed based on the discussion held in this forum.
+Klaytn Governance Forum is to freely propose and discuss Klaytn governance items. Once Klaytn Square, the governance portal, opens, the on-chain voting will be executed based on the discussion held in this forum.
 
-The newly implemented governance portal includes the following functions:
-- Ability to propose and vote on a variety of opinions
-- Information about Governance Councils who are working together for the Klaytn ecosystem
+Klaytn Square includes the following functions: 
+- Ability to vote on a governance agenda and view the voting process 
+- Information about Governance Councils: description, contract address, notice, and staking status, staking and reward history
+- View the history of governance agenda and Governance Councils
+
 
 ![voting process diagram](../assets/kip-81/voting_process_diagram.png)
 
-The foundation will provide 7 days of notice period for voting, providing a time to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period. 
+The foundation will provide 7 days of preparation period for voting, providing a time for GC to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period. 
 
 The Klaytn governance voting system is designed based on the following fundamental premises. 
 - Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem. 
