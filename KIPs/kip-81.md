@@ -49,7 +49,7 @@ The Klaytn on-chain governance voting will be conducted on smart contracts. Ther
 - **AddressBook**: An [existing contract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/reward/contract/AddressBook.sol) that holds the list of GC nodes, their staking contract and reward recipient addresses.
 - **CnStakingV2**: An updated version of the [existing CnStakingContract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol). V2 adds the balance notification and voter account appointing features.
 - **StakingTracker**: A new contract that tracks voting-related information from AddressBook and CnStakingV2 contracts. Accumulated information is served to Voting contract.
-- **Voting**: A new contract that oversees the on-chain voting process. Voting contract stores proposals, record votes, and send transactions.
+- **Voting**: A new contract that oversees the on-chain voting process. Voting contract stores proposals, records votes, and sends transactions.
 
 Below digram shows relationships between contracts and accounts.
 
