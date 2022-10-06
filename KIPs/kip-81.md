@@ -138,7 +138,7 @@ A proposal is in one of the following states.
 A proposal passes when a combination of the following conditions are met.
 - *CountQuorum*: At least 1/3 of all eligible voters cast vote
 - *PowerQuorum*: At least 1/3 of all eligible voting powers cast vote
-- *SupportRate*: Yes votes is more than half of casted votes
+- *SupportRate*: Yes votes are more than half of casted votes
 - **Pass** = (CountQuorum **or** PowerQuorum) **and** SupportRate
 
 #### AddressBook contract
