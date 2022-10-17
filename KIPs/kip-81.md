@@ -257,9 +257,9 @@ abstract contract StakingTracker {
 
 A voting contract can utilize StakingTracker as follows.
 
-1. When a governance proposal is submitted, the voting contract calls createTracker() to finalize eligible GC nodes list and evaluate voting powers.
-2. During the tracking period, GCs stake or unstake their KLAYs from their CnStakingV2 contracts. The CnStakingV2 contracts will then call refreshStake() to notify balance change.
-3. GCs may change their voter account in their CnStakingV2 contracts. The CnStakingV2 contracts will then call refreshVoter() to notify voter account change.
+1. When a governance proposal is submitted, the voting contract calls `createTracker()` to finalize eligible GC nodes list and evaluate voting powers.
+2. During the tracking period, GCs stake or unstake their KLAYs from their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshStake()` to notify balance change.
+3. GCs may change their voter account in their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshVoter()` to notify voter account change.
 4. After the tracking period, the voting powers are frozen. The voting contract use StakingTracker getters to process votes casted by voter accounts.
 
 #### Example implementation
@@ -421,23 +421,30 @@ While GCs hold their voting rights from staked KLAYs, a special secretariat acco
 
 #### Voting steps
 
-When a governance proposal is submitted, it enters a 7 days of preparation period where GCs can adjust their voting powers by staking or unstaking KLAYs. Voter lists (i.e. GCs) are finalized at the moment of proposal submission. However, voting powers are finalized at the end of preparation period.
+Under the default timing settings, a typical governance proposal is handeled as follows.
 
-A 7 days of voting period immediately follows after preparation period. If there are enough Yes votes, the transactions can be queued within 7 days after voting ends. The transaction is delayed by 2 days to be executable. After the delay, the transaction can be executed within 7 days.
+1. When a governance proposal is submitted, it enters a 7 days of preparation period where GCs can adjust their voting powers by staking or unstaking KLAYs. Voter lists (i.e. GCs) are finalized at the moment of proposal submission. However, voting powers are finalized at the end of preparation period.
+2. A 7 days of voting period immediately follows after preparation period.
+3. If there are enough Yes votes, the transactions can be queued within 7 days after voting ends.
+4. The transaction is delayed by 2 days to be executable. This delay gives the ecosystem enough time to adjust to then change and perform final review about transactions.
+5. After the delay, the transaction can be executed within 7 days.
 
 The proposer of a proposal can cancel it any time prior to execution. If a passed transaction is not queued or executed within the timeout, the proposal automatically expires.
 
 ![voting steps](../assets/kip-81/voting_steps.png)
 
-These timeline is dictated by several timing parameters below.
+#### Timing settings
 
-| Name              | Meaning                                                         | Value     |
-|----------------   |--------------------------------------------------------------   |--------   |
-| `votingDelay`     | Delay from proposal submission to voting start                  | 7 days    |
-| `votingPeriod`    | Duration of the voting                                          | 7 days    |
-| `queueTimeout`    | Grace period to queue() passed proposals.                       | 7 days    |
-| `execDelay`       | A minimum delay before a queued transaction can be executed.    | 2 days    |
-| `execTimeout`     | Grace period to execute() queued proposals since `execDelay`.   | 7 days    |
+Proposal timeline is dictated by several timing settings below. The settings are expressed in
+block numbers. The number of days in below table is calculated based on 1 block/sec assumption.
+
+| Name           | Meaning                                                      | Default Value   |
+|----------------|--------------------------------------------------------------|-----------------|
+| `votingDelay`  | Delay from proposal submission to voting start               | 604800 (7 days) |
+| `votingPeriod` | Duration of the voting                                       | 604800 (7 days) |
+| `queueTimeout` | Grace period to queue() passed proposals                     | 604800 (7 days) |
+| `execDelay`    | A minimum delay before a queued transaction can be executed  | 172800 (2 days) |
+| `execTimeout`  | Grace period to execute() queued proposals since `execDelay` | 604800 (7 days) |
 
 #### Quorum
 
@@ -462,6 +469,8 @@ interface Voting {
         uint256 votes;
     }
 
+    // events
+
     /// @dev Emitted when a proposal is created
     /// @param signatures  Array of empty strings; for compatibility with OpenZeppelin
     event ProposalCreated(
@@ -484,9 +493,12 @@ interface Voting {
     event VoteCast(address indexed voter, uint256 proposalId,
                    uint8 choice, uint256 votes, string reason);
 
+    // mutator functions
+
     /// @dev Create a Proposal
     /// If secretariat is null, any GC with at least 1 vote can propose.
     /// Otherwise only secretariat can propose.
+    /// Default timing parameters are used.
     function propose(
         string description,
         address[] targets,
@@ -506,21 +518,41 @@ interface Voting {
 
     /// @dev Queue a passed proposal
     /// The proposal must be in Passed state
+    /// Current block must be before `queueDeadline` of this proposal
     /// If secretariat is null, any GC with at least 1 vote can queue.
     /// Otherwise only secretariat can queue.
     function queue(uint256 proposalId) external;
 
     /// @dev Execute a queued proposal
-    /// If secretariat is null, any GC with at least 1 vote can queue.
-    /// Otherwise only secretariat can queue
+	/// The proposal must be in Queued state
+    /// Current block must be after `eta` and before `execDeadline` of this proposal
+    /// If secretariat is null, any GC with at least 1 vote can execute.
+    /// Otherwise only secretariat can execute.
     function execute(uint256 proposalId) external;
 
     /// @dev Set secretariat account
     /// Must be called by address(this), i.e. via governance proposal.
     function updateSecretariat(address _new) external;
 
+    // getter functions
+
     /// @dev The secretariat account
     function secretariat() external view returns(address);
+
+    /// @dev Delay from proposal submission to voting start in block numbers
+    function votingDelay() external view returns(uint256);
+
+    /// @dev Duration of the voting in block numbers
+    function votingPeriod() external view returns(uint256);
+
+    /// @dev Grace period to queue() passed proposals in block numbers
+    function queueTimeout() external view returns(uint256);
+
+    /// @dev A minimum delay before a queued transaction can be executed in block numbers
+    function execDelay() external view returns(uint256);
+
+    /// @dev Grace period to execute() queued proposals since `execDelay` in block numbers
+    function execTimeout() external view returns(uint256);
 
     /// @dev State of a proposal
     function state(uint256 proposalId) external view returns (ProposalState);
