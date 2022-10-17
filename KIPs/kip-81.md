@@ -189,13 +189,13 @@ abstract contract StakingTracker {
         uint256 trackEnd;
 
         // List of eligible nodes and their staking addresses.
-        // Initialized by crateTracker().
+        // Initialized by createTracker().
         address[] nodeIds;
         mapping(address => address) rewardToNodeId;
         mapping(address => address) stakingToNodeId;
 
         // Balances and voting powers.
-        // Initialized by crateTracker() and updated by refreshStake().
+        // Initialized by createTracker() and updated by refreshStake().
         mapping(address => uint256) stakingBalances;
         mapping(address => uint256) nodeBalances;
         mapping(address => uint256) nodeVotes;
@@ -203,7 +203,7 @@ abstract contract StakingTracker {
         uint256 eligibleNodes;
     }
 
-    // Tracker objects. Added by createdTracker().
+    // Tracker objects. Added by createTracker().
     mapping(uint256 => Tracker) private trackers; // trackerId => Tracker
     uint256[] private allTrackerIds;
 
@@ -705,8 +705,8 @@ The proposed GC Voting method is expected to produce the following changes:
 ## Backward Compatibility
 
 - GCs should deploy new CnStakingV2 contracts and move their staked KLAYs. Existing CnStaking contract balances are excluded from voting power calculation.
-- However, block validator selection is not affected by the change, so GCs can still participate in consensus until migrating to CnStakingV2.
-  
+- However, block validator selection is not affected by the change, so GCs can still participate in consensus before migrating to CnStakingV2.
+
 ## Reference
 n/a 
   
