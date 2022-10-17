@@ -1,10 +1,10 @@
 ---
 kip: 81
-title: Implementing the on-chain governance voting method  
+title: Implementing the on-chain governance voting method
 author: Yeri<yeriel.lee@krustuniverse.com>, Daniel<daniel.cc@krustuniverse.com>, Aidan<aidan.kwon@krustuniverse.com>, Ollie<ollie.j@krustuniverse.com>, Eddie<eddie.kim0@krustuniverse.com>
 discussion-to: https://govforum.klaytn.foundation/t/proposal-implementing-the-on-chain-governance-voting-method/18
 status: Draft
-type: Standards Track 
+type: Standards Track
 category: Core
 created: 2022-09-19
 ---
@@ -12,9 +12,9 @@ created: 2022-09-19
 
 ## Simple Summary
 Introducing a new governance voting method based on the staking amount and implementation of the Klaytn Square, a governance portal
- 
+
 ## Abstract
-Klaytn introduces a stake-based governance model that provides voting power to governance participants. Currently, one vote per Governance Council(GC) member was cast. The new method will introduce the voting right that will be exercised based on the staking amount with the maximum cap to prevent an entity from making an arbitrary decision. The voting agenda is determined through discussion on the Klaytn Governance Forum, and the topic will be presented and voted on at the newly launched Governance Portal, Klaytn Square. This voting mechanism aims to provide responsibility and obligation of voting to Governance Councils.  
+Klaytn introduces a stake-based governance model that provides voting power to governance participants. Currently, one vote per Governance Council(GC) member was cast. The new method will introduce the voting right that will be exercised based on the staking amount with the maximum cap to prevent an entity from making an arbitrary decision. The voting agenda is determined through discussion on the Klaytn Governance Forum, and the topic will be presented and voted on at the newly launched Governance Portal, Klaytn Square. This voting mechanism aims to provide responsibility and obligation of voting to Governance Councils.
 
 ## Motivation
 The new on-chain voting mechanism discloses GC’s opinion transparently through the portal, allowing anyone to view the result. The governance agenda discussed in Klaytn Governance Forum will be voted on the governance portal, Klaytn Square. Since the voting power is calculated based on the staking amount, this voting process provides more power to GC members who share the same interest as Klaytn by staking and locking up more KLAYs.
@@ -22,19 +22,19 @@ The new on-chain voting mechanism discloses GC’s opinion transparently through
 ## Specification
 Klaytn Governance Forum is to freely propose and discuss Klaytn governance items. Once Klaytn Square, the governance portal, opens, the on-chain voting will be executed based on the discussion held in this forum.
 
-Klaytn Square includes the following functions: 
-- Ability to vote on a governance agenda and view the voting process 
+Klaytn Square includes the following functions:
+- Ability to vote on a governance agenda and view the voting process
 - Information about Governance Councils: description, contract address, notice, and staking status, staking and reward history
 - View the history of governance agenda and Governance Councils
 
 ![voting process diagram](../assets/kip-81/voting_process_diagram.png)
 
-The foundation will provide 7 days of preparation period for voting, providing a time for GC to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period. 
+The foundation will provide 7 days of preparation period for voting, providing a time for GC to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period.
 
-The Klaytn governance voting system is designed based on the following fundamental premises. 
-- Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem. 
+The Klaytn governance voting system is designed based on the following fundamental premises.
+- Klaytn’s major decision-making process should reflect the opinions of as many participants as possible from the ecosystem.
 - Participants will be more likely to make a decision that is beneficial to the Klaytn ecosystem if they hold more KLAY. This is based on the premise that the growth of Klaytn’s ecosystem is correlated to the rise in the value of KLAY.
-- The governance system should be able to manage the situations in which a particular entity makes an arbitrary decision. This is because the entity may weaken the sustainability of the entire network. 
+- The governance system should be able to manage the situations in which a particular entity makes an arbitrary decision. This is because the entity may weaken the sustainability of the entire network.
 - The act of voting and the gain of voting power is different.
 
 The Governance Council can exercise the right to vote based on the staking amount. Currently, each GC member receives at least 1 voting right regardless of the number of KLAY they hold. Recognizing a tendency that the member with more KLAY makes a decision that benefits the Klaytn ecosystem in the long run, we are granting a higher voting power to members with more KLAY. Yet, to prevent a particular subject from making an arbitrary decision, we are placing a cap on the voting power one can receive.
@@ -524,7 +524,7 @@ interface Voting {
     function queue(uint256 proposalId) external;
 
     /// @dev Execute a queued proposal
-	/// The proposal must be in Queued state
+    /// The proposal must be in Queued state
     /// Current block must be after `eta` and before `execDeadline` of this proposal
     /// If secretariat is null, any GC with at least 1 vote can execute.
     /// Otherwise only secretariat can execute.
@@ -712,7 +712,7 @@ abstract contract Voting {
 
 The transactions in a passed proposal are executed in a order they appear in the `propose()` function arguments.  Each transaction is sent to `targets[i]`, carrying `values[i]` of KLAYs, with `calldatas[i]` as input data. Below is an example of `execute()` function.
 
-```
+```solidity
 abstract contract Voting {
     struct Proposal {
         address[] targets;
@@ -755,18 +755,18 @@ Proposal transactions expires if they are not queued or executed within deadline
 ## Expected Effect
 
 The proposed GC Voting method is expected to produce the following changes:
-- All members in Klaytn ecosystem grow together with credibility 
-- Providing obligation and authority to GC motivates active participation in governance voting activities and the KLAY staking 
+- All members in Klaytn ecosystem grow together with credibility
+- Providing obligation and authority to GC motivates active participation in governance voting activities and the KLAY staking
 - Anyone can easily view the proposals and voting status through the governance portal. It encourages holders to participate and give responsibility and authority to GCs.
 - The Klaytn network can take a step closer to transparency and decentralized networks.
- 
+
 ## Backward Compatibility
 
 - GCs should deploy new CnStakingV2 contracts and move their staked KLAYs. Existing CnStaking contract balances are excluded from voting power calculation.
 - However, block validator selection is not affected by the change, so GCs can still participate in consensus before migrating to CnStakingV2.
 
 ## Reference
-n/a 
-  
-## Copyright 
+n/a
+
+## Copyright
 n/a
