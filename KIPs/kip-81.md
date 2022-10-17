@@ -708,6 +708,32 @@ abstract contract Voting {
 }
 ```
 
+#### Executing transactions
+
+The transactions in a passed proposal are executed in a order they appear in the `propose()` function arguments.  Each transaction is sent to `targets[i]`, carrying `values[i]` of KLAYs, with `calldatas[i]` as input data. Below is an example of `execute()` function.
+
+```
+abstract contract Voting {
+    struct Proposal {
+        address[] targets;
+        uint256[] values;
+        bytes[] calldatas;
+
+    }
+    mapping(uint256 => Proposal) proposals;
+
+    function execute(uint256 proposalId) external {
+        Proposal storage p = proposals[proposalId];
+
+        for (uint256 i = 0; i < p.targets.length; i++) {
+            (bool success, bytes memory result) =
+                    p.targets[i].call{value: p.values[i]}(p.calldatas[i]);
+            require(success, "Transaction failed");
+        }
+    }
+}
+```
+
 ## Rationale
 
 #### CnStakingV2 and StakingTracker instead of standard ERC20Votes
