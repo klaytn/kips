@@ -184,4 +184,4 @@ Klaytn nodes must be upgraded before FORK_BLOCK_NUMBER to correctly produce or v
 n/a 
   
 ## Copyright 
-n/a
+Copyright and related rights waived via CC0<https://creativecommons.org/publicdomain/zero/1.0/>.
