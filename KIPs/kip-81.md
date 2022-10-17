@@ -174,7 +174,7 @@ abstract contract CnStakingV2 {
 StakingTracker collects voting related data of each GC.
 
 - Staking amounts and voting powers \
-Stored separately in Tracker struct for each tracking period. During the tracking period voting powers can change, but becomes immutable after the period ends. The tracker struct is first created in `createTracker()`, and updated by `refreshStake()`
+Stored separately in `Tracker` structs. Each `Tracker` struct can be updated between `trackStart` and `trackEnd` blocks, but becomes immutable afterwards, essentially freezing the voting powers. A `Tracker` struct is first created in `createTracker()`, and updated by `refreshStake()`
 
 - Each GC’s voter accounts \
 Stored in global mappings, and can be updated any time. Voter account mappings are updated by `refreshVoter()`
@@ -258,9 +258,9 @@ abstract contract StakingTracker {
 A voting contract can utilize StakingTracker as follows.
 
 1. When a governance proposal is submitted, the voting contract calls `createTracker()` to finalize eligible GC nodes list and evaluate voting powers.
-2. During the tracking period, GCs stake or unstake their KLAYs from their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshStake()` to notify balance change.
+2. Before `trackEnd` block, GCs stake or unstake their KLAYs from their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshStake()` to notify balance change.
 3. GCs may change their voter account in their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshVoter()` to notify voter account change.
-4. After the tracking period, the voting powers are frozen. The voting contract use StakingTracker getters to process votes casted by voter accounts.
+4. After `trackEnd` block, the voting powers are frozen. The voting contract use StakingTracker getters to process votes casted by voter accounts.
 
 #### Example implementation
 
