@@ -769,4 +769,5 @@ The proposed GC Voting method is expected to produce the following changes:
 n/a
 
 ## Copyright
-n/a
+Copyright and related rights waived via CC0<https://creativecommons.org/publicdomain/zero/1.0/>.
+
