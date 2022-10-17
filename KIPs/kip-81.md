@@ -27,7 +27,6 @@ Klaytn Square includes the following functions:
 - Information about Governance Councils: description, contract address, notice, and staking status, staking and reward history
 - View the history of governance agenda and Governance Councils
 
-
 ![voting process diagram](../assets/kip-81/voting_process_diagram.png)
 
 The foundation will provide 7 days of preparation period for voting, providing a time for GC to adjust the staking amount. With the start of the voting, the foundation will announce the list of GC members and their voting power. GC will have 7 days of the voting period. 
@@ -42,281 +41,661 @@ The Governance Council can exercise the right to vote based on the staking amoun
 
 Therefore, the GC will receive 1 vote per a certain amount of staked KLAY (initial configuration: 5 million KLAY). The maximum number of votes a governance council can own is one less than the total number of governance council members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. The 5 M KLAY: 1 vote with cap structure prevents potential monopolies by limiting the maximum number of votes cast.
 
-### Smart Contract Specification
+### Smart Contracts Overview
 
-The Klaytn on-chain governance voting will be conducted on smart contracts. There are several contracts involved in on-chain governance.
+The Klaytn on-chain governance voting will be conducted on smart contracts. Several contracts and accounts interact together in the process. Below diagram shows the relationship between contracts and acounts.
 
-- **AddressBook**: An [existing contract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/reward/contract/AddressBook.sol) that holds the list of GC nodes, their staking contract and reward recipient addresses.
-- **CnStakingV2**: An updated version of the [existing CnStakingContract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol). V2 adds the balance notification and voter account appointing features.
-- **StakingTracker**: A new contract that tracks voting-related information from AddressBook and CnStakingV2 contracts. Accumulated information is served to Voting contract.
-- **Voting**: A new contract that oversees the on-chain voting process. Voting contract stores proposals, records votes, and sends transactions.
+- Contracts
+  - **AddressBook**: An existing contract that stores the list of GC nodes, their staking contracts, and their reward recipient addresses.
+  - **CnStakingV2**: An updated version of existing CnStakingContract. GCs stake their KLAYs to earn rights to validate blocks and cast on-chain votes.
+  - **StakingTracker**: A new contract that tracks voting related data from AddressBook and CnStakingV2 contracts.
+  - **Voting**: A new contract that processes the on-chain voting. It stores governance proposals, count votes, and send approved transactions.
+- Accounts
+  - **AddressBook admins**: A set of accounts controlled by the Foundation which can manage list of GCs in the AddressBook.
+  - **CnStaking admins**: A set of accounts controlled by each GC which can manage the staked KLAYs and its voter account. Every CnStakingV2 contract can have different set of admins.
+  - **Voter account**: An account controlled by each GC which can cast on-chain votes. But this account cannot withdraw KLAYs from CnStakingV2 contracts.
+  - **Secretariat account**: An account controlled by the Foundation which can propose and execute on-chain governance proposals.
 
-Below digram shows relationships between contracts and accounts.
+![contracts and accounts](../assets/kip-81/smart_contract_relation.png)
 
-![smart contract relation](../assets/kip-81/smart_contract_relation.png)
+### AdressBook
 
-From here, the contracts and accounts are explained.
-
-#### Voting contract
-
-The Voting contract is where voting happens. In the Voting contract, governance proposals are stored, casted votes are accumulated, and on-chain transactions are sent. The accounts interacting with the Voting contract are classified into proposer, voter, or executor roles. Its design is influenced by [Compound Finance](https://github.com/compound-finance/compound-protocol) and [OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/api/governance).
-
-The Voting contract revolves around proposals. A proposal describes the changes to be made on the Klaytn blockchain. A proposal not only contains textual descriptions of the change, but it may also include specifications of several on-chain transactions, or actions. The actions are executed on behalf of a voting contract after the proposal passes. The actions allow governance voting to enforce changes on the blockchain.
+In Cypress mainnet and Baobab testnet, an [AddressBook contract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/reward/contract/AddressBook.sol) is deployed at address `0x0000000000000000000000000000000000000400`. For the purpose of Voting, following function of the AddressBook is used.
 
 ```solidity
-abstract contract Voting {
-  struct Proposal {
-    string description;  // human readable description
-    address[] targets;   // 0 or more transactions
-    uint256[] values;
-    bytes[] calldatas;
-  }
+interface IAddressBook {
+    /// @dev Returns all addresses in the AddressBook.
+    ///
+    /// Each GC's addresses are stored in the same index of the three arrays.
+    /// i.e. GC[i] is described in (nodeIds[i], stakingContracts[i], rewardAddresses[i])
+    /// However, a GC may operate multiple staking contracts. In this case,
+    /// the GC occupies multiple indices with the same reward address.
+    ///
+    /// @return nodeIds           GC consensus node address list
+    /// @return stakingContracts  GC staking contract address list
+    /// @return rewardAddresses   GC reward recipient address list
+    /// @return pocAddress        PoC(KGF) recipient address
+    /// @return kirAddress        KIR recepient address
+    function getAllAddressInfo() external view returns(
+        address[] memory nodeIds,
+        address[] memory stakingContracts,
+        address[] memory rewardAddresses,
+        address pocAddress,
+        address kirAddress);
 }
 ```
 
-A proposer can submit governance proposals by calling `propose()` function. The voting timeline starts with the submission of proposals to the voting contract. A proposer can also cancel a proposal she has submitted, if the proposal had not been executed yet.
+### CnStakingV2
 
-A voter casts votes on behalf of one of the GCs. The vote choice is one of yes, no, or abstain.
+CnStakingV2 is an upgraded version of CnStakingContract. The CnStakingContract has been serving the purpose of locking GC stakes. V2 will add two new features related to StakingTracker, which will be described later.
 
-An executor triggers the execution of attached transactions in passed proposals. The execution is subdivided into two steps. First, the executor queues the transactions. After a set amount of delay, the executor can send the transactions. Execution delay here gives enough time for the community to recognize the upcoming change and perform a final check about the transaction.
+- Whenever its KLAY balance changes, V2 notifies the StakingTracker.
+- V2 stores a voter account address, and notifies the StakingTracker whenever it changes. The voter account can be changed by its admins.
 
-There will be a secretariat account stored in the Voting contract. The account is initially managed by the Klaytn Foundation, and later it can be replaced by governance voting. The secretariat has the proposer and executor role.
+To support the new features, following functions are added.
 
 ```solidity
-abstract contract Voting {
+abstract contract CnStakingV2 {
+    event UpdateStakingTracker(address stakingTracker);
+    event UpdateVoterAddress(address voterAddress);
 
-  function propose(
-    string description, address[] targets, uint256[] values, bytes[] calldatas)
-    virtual returns (uint256 proposalId);
-  function cancel(uint256 proposalId) virtual;
+    IStakingTracker public stakingTracker;
+    address public voterAddress;
 
-  enum VoteChoice{ Unknown, Yes, No, Abstain };
-  function castVote(uint256 proposalId, uint32 choice) virtual;
+    /// @dev Set the initial stakingTracker address
+    /// Emits an UpdateStakingTracker event.
+    /// This function only works before contract initialization
+    function setStakingTracker(address _tracker) external beforeInit;
 
-  function queue(uint256 proposalId) virtual onlyExecutor;
-  function execute(uint256 proposalId) virtual onlyExecutor;
+    /// @dev Update the StakingTracker address this contract points to
+    function submitUpdateStakingTracker(address _tracker) external;
+    function updateStakingTracker(address _tracker) external onlyMultisigTx;
+
+    /// @dev Update the voter address of this GC
+    function submitUpdateVoterAddress(address _addr) external;
+    function updateVoterAddress(address _addr) external onlyMultisigTx;
 }
 ```
 
+#### Notifying changes to StakingTracker
 
-Following timing parameters influence the Voting contract.
-
-| Name              | Meaning                                                                                   | Value     |
-|----------------   |----------------------------------------------------------------------------------------   |--------   |
-| `votingDelay`     | Delay from proposal submission to voting start. Equals to the length of Pending state.    | 7 days    |
-| `votingPeriod`    | Duration of the voting. Equals the length of Active state.                                | 7 days    |
-| `queueTimeout`    | Grace period given to executors for queue() passed proposals.                             | 7 days    |
-| `execDelay`       | A minimum delay before a queued transaction can be executed.                              | 2 days    |
-| `execTimeout`     | Grace period given to executors for execute() queued proposals after `execDelay`.         | 7 days    |
-
-For each proposal, several important block numbers are determined.
-
-| Name              | Meaning                                                                                                                                                                   |
-|-----------------  |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `proposedBlock`   | The block number where `propose()` was called.                                                                                                                            |
-| `startBlock`      | Voting start block `proposedBlock + votingDelay`.                                                                                                                         |
-| `endBlock`        | Voting end block `startBlock + votingPeriod`. An executor should queue transactions in the proposal before `endBlock + queueTimeout`, otherwise the proposal expires.     |
-| `queuedBlock`     | The block number where `queue()` was called. An executor should trigger the transaction after `queuedBlock + execDelay`, before `queuedBlock + execDelay + execTimeout`.  |
-
-The timings are illustrated in below diagram.
-
-![proposal timing](../assets/kip-81/proposal_timing.png)
-
-A proposal is in one of the following states.
-
-- **Pending**: Proposer submitted the proposal but voting has not started. The pending state lasts for `votingDelay`. This state is also called the **notice period**.
-- **Active**: Ongoing voting. Voters can cast their votes. The active state lasts for `votingPeriod`. This state is also called the **voting period**.
-- **Canceled**: Proposer has canceled the proposal before execution. Any further interaction is prohibited.
-- **Passed**: Voting finalized and a quorum reached. An executor shall queue the actions before a set timeout of `queueTimeout`. If the proposal contains no actions, any further interaction is prohibited. Otherwise, the proposal can proceed to Queued and Executed states.
-- **Failed**: Voting finalized but has not reached a quorum. Any further interaction is prohibited.
-- **Queued**: An executor has queued the actions. An executor cannot trigger the actions while a certain duration of `execDelay`.
-- **Executed**: An executor has triggered the actions after the execution delay. The executor shall trigger the actions before a set timeout of `execTimeout`. The `execTimeout` starts at the end of `execDelay`.
-- **Expired**: Executor has not queued or executed within respective timeouts.
-
-![proposal state diagram](../assets/kip-81/proposal_state_diagram.png)
-
-A proposal passes when a combination of the following conditions are met.
-- *CountQuorum*: At least 1/3 of all eligible voters cast vote
-- *PowerQuorum*: At least 1/3 of all eligible voting powers cast vote
-- *SupportRate*: Yes votes are more than half of casted votes
-- **Pass** = (CountQuorum **or** PowerQuorum) **and** SupportRate
-
-#### AddressBook contract
-
-This contract has been deployed on the Cypress mainnet and Baobab testnet since their genesis at address `0x0000000000000000000000000000000000000400`. This contract will be used as-is.
-
-#### CnStakingV2
-
-Originally CnStakingContract served as a KLAY storing account with withdrawal lockup. For the purpose of governance voting, two new features are added on top of [existing code](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol).
-
-Whenever its balance changes, the change shall be notified to the StakingTracker contract. To implement the notification, CnStakingV2 must call StakingTracker contract at functions related to staking and withdrawing. The StakingTracker is described in later section.
+To notify balance and voter account changes to StakingTracker contract, CnStakingV2 contract shall call the StakingTracker whenever after every change. For example,
 
 ```solidity
-contract CnStakingV2 {
-  IStakingTracker stakingTracker;
-
-  function depositLockupStakingAndInit() payable beforeInit() {
-    // ...
-    stakingTracker.notifyStake();
-    // ...
-  }
-  function stakeKlay() payable {
-    // ...
-    stakingTracker.notifyStake();
-    // ...
-  }
-  function () payable { // fallback
-    // ...
-    stakingTracker.notifyStake();
-    // ...
-  }
-
-  function withdrawLockupStaking(address _to, uint256 _value) {
-    // ...
-    _to.transfer(_value);
-    stakingTracker.notifyStake();
-    // ...
-  }
-  function withdrawApprovedStaking(uint256 _approvedWithdrawalId) {
-    // ...
-    _to.transfer(_value);
-    stakingTracker.notifyStake();
-    // ...
-  }
+abstract contract CnStakingV2 {
+    function depositLockupStakingAndInit() payable beforeInit() {
+        // ...
+        stakingTracker.refreshStake(address(this));
+    }
+    function stakeKlay() payable {
+        // ...
+        stakingTracker.refreshStake(address(this));
+    }
+    function withdrawLockupStaking(address _to, uint256 _value) {
+        // ...
+        _to.transfer(_value);
+        stakingTracker.refreshStake(address(this));
+    }
+    function withdrawApprovedStaking(uint256 _approvedWithdrawalId) {
+        // ...
+        _to.transfer(_value);
+        stakingTracker.refreshStake(address(this));
+    }
+    function updateVoterAddress(address _addr) {
+        // ...
+        voterAddress = _addr;
+        stakingTracker.refreshVoter(address(this));
+    }
 }
-```
 
-In addition to balance notification, CnStakingV2 can appoint an address as the GC's voter account. The voter account can vote on behalf of this GC's all voting powers. The appointing happens through the existing multisig facility.
-
-```solidity
-contract CnStakingV2 {
-
-  function submitAppointVoter(address _voter) external
-  afterInit()
-  onlyAdmin(msg.sender) {
-    uint256 id = requestCount;
-    submitRequest(id, Functions.AppointVoter, bytes32(_voter), 0, 0);
-    confirmRequest(id, Functions.AppointVoter, bytes32(_voter), 0, 0);
-  }
-  function appointVoter(address _voter) external
-  onlyMultisigTx() {
-    stakingTracker.appointVoter(_voter);
-  }
-}
-```
-The new CnStakingV2 contract will have version number 2 so other contracts can distinguish from the old version.
-```solidity
-contract CnStakingV2 {
-  uint256 constant public VERSION = 2;
-}
-```
-
-#### StakingTracker contract
-
-Each GC stake its KLAYs in its own contracts. Even one GC is allowed to have multiple CnStaking contracts, in which case its stake amount must be added up. Because stake amounts are scattered across multiple contract accounts, it is not trivial to calculate their voting powers.
-
-The StakingTracker contract is introduced to record GC stake amounts at a central location. To host a voting, following data are needed.
-
-- Number of eligible GCs: to calculate the maximum votes, and the turnout quorum condition.
-- Total eligible votes: to calculate the turnout quorum.
-- Per-GC votes: to process voting requests (i.e. calls to Voting contract).
-- Per-GC voting accounts: to process voting requests (i.e. calls to Voting contract).
-
-The data are collected on a per-proposal basis. For each proposal, a Tracker data structure is created and updated until a specified block.
-
-```solidity
 interface IStakingTracker {
-  struct Tracker {
-    // this struct is updated only if trackStart <= block.number < trackEnd.
-    uint64 trackStart; // when this Tracker is created
-    uint64 trackEnd;   // specified by createTracker(), voting startBlock.
+    /// @dev Re-evaluate Tracker contents related to the staking contract
+    /// @param staking  The CnStaking contract address
+    function refreshStake(address staking) external;
 
-    // List of eligible nodes and their staking contracts.
-    // Determined at createTracker() and won’t change.
-    address[] nodeIds;
-    mapping(address => address) stakingToNodeId;
-
-    // Balances and voting powers of each nodes.
-    // Updated by notifyStake().
-    mapping(address => uint256) stakingBalances;
-    mapping(address => uint256) nodeBalances;
-    mapping(address => uint256) votingPowers;
-    uint256 totalVotes;
-
-    // Appointed voters list
-    // Updated by appointVoter().
-    mapping(address => address) nodeIdToVoter;
-    mapping(address => address) voterToNodeId;
-  }
+    /// @dev Update a GC's voter address from given address
+    /// @param staking  The CnStaking contract address
+    function refreshVoter(address staking) external;
+}
 ```
 
-When a proposal is submitted to the Voting contract, the Voting contract shall call the `createTracker()` to crate a tracker that lasts until the proposal's voting start block. Until the voting start block, CnStakingV2 can call `notifyStake()` and  `appointVoter()` to update relevant trackers. Below is an exmaple StakingTracker implementation.
+#### Version identifier
+
+To distinguish the CnStakingContract and CnStakingV2 contracts, V2 will have VERSION value 2.
+
+```solidity
+abstract contract CnStakingV2 {
+    uint256 constant public VERSION = 2;
+}
+```
+
+### StakingTracker
+
+StakingTracker collects voting related data of each GC.
+
+- Staking amounts and voting powers \
+Stored separately in Tracker struct for each tracking period. During the tracking period voting powers can change, but becomes immutable after the period ends. The tracker struct is first created in `createTracker()`, and updated by `refreshStake()`
+
+- Each GC’s voter accounts \
+Stored in global mappings, and can be updated any time. Voter account mappings are updated by `refreshVoter()`
+
+#### Contract interface
 
 ```solidity
 abstract contract StakingTracker {
-  mapping(uint64 => Tracker) trackers; // trackerId => Tracker
-  uint64[] allTrackers;  // all trackers
-  uint64[] liveTrackers; // un-expired (block.number < trackEnd) trackers
-  const uint256 MIN_STAKE = 5000000e18;
+    struct Tracker {
+        // Tracker is only updated if trackStart <= block.number < trackEnd.
+        uint256 trackStart;
+        uint256 trackEnd;
 
-  // Called by Voting at proposal(), to finalize eligible GCs list.
-  function createTracker(uint256 _trackEnd) public returns (uint trackerId) {
-    // - Create a Tracker struct
-    // - Populate nodeIds and stakingToNodeId from the AddressBook.
-    //   Only those who staked at least MIN_STAKE are recorded. 
-    // - Populate nodeBalances, votingPowers, and totalVotes from
-    //   the KLAY balances of CnStakingV2 contracts
-    // - Populate nodeIdToVoter and voterToNodeId from
-    //   the last Tracker (last element of allTrackers), if any.
-  }
+        // List of eligible nodes and their staking addresses.
+        // Initialized by crateTracker().
+        address[] nodeIds;
+        mapping(address => address) rewardToNodeId;
+        mapping(address => address) stakingToNodeId;
 
-  // Called by CnStakingV2 whenever its balance changes.
-  function notifyStake() public {
-    for (uint i=0; i < liveTrackers.length; i++) {
-      if (block.number >= trackers[i].trackEnd) {
-        deleteArrayElem(liveTrackers, i);
-        continue;
-      }
-      address nodeId = trackers[i].stakingToNodeId[msg.sender];
-      if (nodeId == address(0)) {
-        continue;
-      }
-      uint256 oldStakingBalance = trackers[i].stakingBalances[msg.sender];
-      uint256 newStakingBalance = msg.sender.balance;
-      trackers[i].stakingBalances[msg.sender] = newStakingBalance;
-      trackers[i].nodeBalances[nodeId] += (newStakingBalance - oldStakingBalance);
-
-      uint256 numGCs = trackers[i].nodeIds.length;
-      uint256 balance = trackers[i].nodeBalances[nodeId];
-      uint256 oldVotes = trackers[i].votingPowers[nodeId];
-      uint256 newVotes = min(numGCs - 1, balance / MIN_STAKE);
-      trackers[i].votingPowers[nodeId] = newVotes;
-      trackers[i].totalVotes += (newVotes - oldVotes);
+        // Balances and voting powers.
+        // Initialized by crateTracker() and updated by refreshStake().
+        mapping(address => uint256) stakingBalances;
+        mapping(address => uint256) nodeBalances;
+        mapping(address => uint256) nodeVotes;
+        uint256 totalVotes;
+        uint256 eligibleNodes;
     }
-  }
 
-  // Called by CnStakingV2 to change voter account.
-  function appointVoter(address _voter) public {
-    for (uint i=0; i < liveTrackers.length; i++) {
-      if (block.number >= trackers[i].trackEnd) {
-        deleteArrayElem(liveTrackers, i);
-        continue;
-      }
-      address nodeId = trackers[i].stakingToNodeId[msg.sender];
-      if (nodeId == address(0)) {
-        continue;
-      }
-      uint256 oldVoter = trackers[i].nodeIdToVoter[nodeId];
-      uint256 newVoter = _voter;
-      trackers[i].voterToNodeId[oldVoter] = address(0);
-      trackers[i].voterToNodeId[newVoter] = nodeId;
-      trackers[i].nodeIdToVoter[nodeId] = newvoter;
-    }
-  }
+    // Tracker objects. Added by createdTracker().
+    mapping(uint256 => Tracker) private trackers; // trackerId => Tracker
+    uint256[] private allTrackerIds;
+
+    // 1-to-1 mapping between nodeId and voter account.
+    // Updated by refreshVoter().
+    mapping(address => address) private nodeIdToVoter; // nodeId => voterAddr
+    mapping(address => address) private voterToNodeId; // voterAddr => nodeId
+
+    /// @dev Creates a new Tracker and populate initial values from AddressBook
+    function createTracker(uint256 trackStart, uint256 trackEnd)
+        external returns(uint256 trackerId);
+
+    /// @dev Re-evaluate Tracker contents related to the staking contract
+    /// Anyone can call this function, but `staking` must be a staking contract
+    /// registered to the AddressBook.
+    function refreshStake(address staking) external;
+
+    /// @dev Re-evaluate voter account mapping related to the staking contract
+    /// Anyone can call this function, but `staking` must be a staking contract
+    /// registered to the AddressBook.
+    function refreshVoter(address staking) external;
+
+    /// @dev Return integer fields of a tracker
+    function getTrackerSummary(uint256 trackerId) external view returns(
+        uint256 trackStart,
+        uint256 trackEnd,
+        uint256 numNodes,
+        uint256 totalVotes,
+        uint256 eligibleNodes);
+
+    /// @dev Return balances and votes of all nodes stored in a tracker
+    function getAllTrackedNodes(uint256 trackerId) external view returns(
+        address[] memory nodeIds,
+        uint256[] memory nodeBalances,
+        uint256[] memory nodeVotes);
+
+    /// @dev Return the balance and votes of a specified node
+    function getTrackedNode(uint256 trackerId, address nodeId) external view returns(
+        uint256 nodeBalance,
+        uint256 nodeVotes);
+
+    /// @dev Find the node who owns the given voter account
+    function getNodeFromVoter(address voter) external view returns(address nodeId);
+
+    /// @dev Find the voter account of the given node
+    function getVoterFromNode(address nodeId) external view returns(address voter);
 }
 ```
 
+#### Usage
+
+A voting contract can utilize StakingTracker as follows.
+
+1. When a governance proposal is submitted, the voting contract calls createTracker() to finalize eligible GC nodes list and evaluate voting powers.
+2. During the tracking period, GCs stake or unstake their KLAYs from their CnStakingV2 contracts. The CnStakingV2 contracts will then call refreshStake() to notify balance change.
+3. GCs may change their voter account in their CnStakingV2 contracts. The CnStakingV2 contracts will then call refreshVoter() to notify voter account change.
+4. After the tracking period, the voting powers are frozen. The voting contract use StakingTracker getters to process votes casted by voter accounts.
+
+#### Example implementation
+
+Below is an example implementation of `createTracker()`, `refreshStake()`, and `refreshVoter()` functions.
+
+```solidity
+abstract contract StakingTracker {
+    function createTracker(uint256 trackStart, uint256 trackEnd)
+        external override returns(uint256 trackerId)
+    {
+        trackerId = allTrackerIds.length + 1;
+        allTrackerIds.push(trackerId);
+
+        Tracker storage tracker = trackers[trackerId];
+        tracker.trackStart = trackStart;
+        tracker.trackEnd = trackEnd;
+        populateFromAddressBook(tracker);
+        calcAllVotes(tracker);
+        return trackerId;
+    }
+
+    function populateFromAddressBook(Tracker storage tracker) private {
+        (address[] memory nodeIds,
+         address[] memory stakingContracts,
+         address[] memory rewardAddrs, , ) = IAddressBook(ADDRESS_BOOK_ADDRESS()).getAllAddressInfo();
+
+        // Group staking contracts by common reward address
+        for (uint256 i = 0; i < nodeIds.length; i++) {
+            address n = nodeIds[i];
+            address s = stakingContracts[i];
+            address r = rewardAddrs[i];
+            if (tracker.rewardToNodeId[r] == address(0)) { // fresh rewardAddr
+                tracker.nodeIds.push(n);
+                tracker.rewardToNodeId[r] = n;
+            } else { // previously appeared rewardAddr
+                n = tracker.rewardToNodeId[r];
+            }
+            tracker.stakingToNodeId[s] = n;
+            tracker.stakingBalances[s] = s.balance;
+            tracker.nodeBalances[n] += s.balance;
+        }
+    }
+
+    function calcAllVotes(Tracker storage tracker) private {
+        tracker.totalVotes = 0;
+        tracker.eligibleNodes = 0;
+        for (uint256 i = 0; i < tracker.nodeIds.length; i++) {
+            if (isNodeEligible(trackerId, tracker.nodeIds[i])) {
+                tracker.eligibleNodes ++;
+            }
+        }
+        for (uint256 i = 0; i < tracker.nodeIds.length; i++) {
+            address nodeId = tracker.nodeIds[i];
+            uint256 votes = calcVotes(tracker.eligibleNodes, tracker.nodeBalances[nodeId]);
+            tracker.nodeVotes[nodeId] = votes;
+            tracker.totalVotes += votes;
+        }
+    }
+
+    function calcVotes(uint256 eligibleNodes, uint256 balance) private view returns(uint256) {
+        uint256 voteCap = 1;
+        if (eligibleNodes > 1) {
+            voteCap = eligibleNodes - 1;
+        }
+        uint256 votes = balance / MIN_STAKE();
+        if (votes > voteCap) {
+            votes = voteCap;
+        }
+        return votes;
+    }
+
+    function refreshStake(address staking) external override {
+        for (uint256 i = 0; i < allTrackerIds.length; i++) {
+            uint256 trackerId = liveTrackerIds[i];
+            Tracker storage tracker = trackers[trackerId];
+            if (tracker.trackStart <= block.number && block.number < tracker.trackEnd) {
+                updateTracker(tracker, staking);
+            }
+        }
+    }
+
+    function updateTracker(Tracker storage tracker, address staking) private {
+        // Check that `staking` is valid GC contract
+        address nodeId = tracker.stakingToNodeId[staking];
+        if (nodeId == address(0)) {
+            return;
+        }
+
+        // Update balance
+        uint256 oldBalance = tracker.stakingBalances[staking];
+        uint256 newBalance = msg.sender.balance;
+        tracker.stakingBalances[staking] = newBalance;
+        tracker.nodeBalances[nodeId] -= oldBalance;
+        tracker.nodeBalances[nodeId] += newBalance;
+        uint256 nodeBalance = tracker.nodeBalances[nodeId];
+
+        // Update votes
+        uint256 oldVotes = tracker.nodeVotes[nodeId];
+        uint256 newVotes = calcVotes(tracker.eligibleNodes, nodeBalance);
+        tracker.nodeVotes[nodeId] = newVotes;
+        tracker.totalVotes -= oldVotes;
+        tracker.totalVotes += newVotes;
+    }
+
+    function refreshVoter(address staking) external {
+        address nodeId = resolveStakingFromAddressBook(staking);
+        require(nodeId != address(0), "not a staking contract");
+
+        // Unlink existing two-way mapping
+        address oldVoter = nodeIdToVoter[nodeId];
+        if (oldVoter != address(0)) {
+            voterToNodeId[oldVoter] = address(0);
+            nodeIdToVoter[nodeId] = address(0);
+        }
+        // Create new mapping
+        address newVoter = ICnStakingV2(staking).getVoterAddress();
+        if (newVoter != address(0)) {
+            require(voterToNodeId[newVoter] == address(0),
+                    "Voter address already taken");
+            voterToNodeId[newVoter] = nodeId;
+            nodeIdToVoter[nodeId] = newVoter;
+        }
+    }
+
+    function resolveStakingFromAddressBook(address staking)
+        private view returns(address)
+    {
+        (address[] memory nodeIds,
+         address[] memory stakingContracts,
+         address[] memory rewardAddrs, , ) = IAddressBook(ADDRESS_BOOK_ADDRESS()).getAllAddressInfo();
+
+        address rewardAddr;
+        for (uint256 i = 0; i < nodeIds.length; i++) {
+            if (stakingContracts[i] == staking) {
+                rewardAddr = rewardAddrs[i];
+                break;
+            }
+        }
+        if (rewardAddr != address(0)) {
+            return address(0);
+        }
+        for (uint256 i = 0; i < nodeIds.length; i++) {
+            if (rewardAddrs[i] == rewardAddr) {
+                return nodeIds[i];
+            }
+        }
+        return address(0);
+    }
+```
+
+### Voting
+
+The Voting contract operates the on-chain governance votes. Voting contract, stores governance proposals, counts casted votes, and send on-chain transactions. Its design is influenced by [Compound Finance](https://docs.compound.finance/v2/governance/) and [OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/api/governance).
+
+A proposal contains textual descriptions and optionally on-chain transactions. The transactions are executed on behalf of the voting contract if the proposal receives enough votes.
+
+While GCs hold their voting rights from staked KLAYs, a special secretariat account manages the overall on-chain governance process. Governance proposals can be submitted by the secretariat account, or any GC if the secretariat account is not set. The secretariat account can be updated by on-chain governance.
+
+#### Voting steps
+
+When a governance proposal is submitted, it enters a 7 days of preparation period where GCs can adjust their voting powers by staking or unstaking KLAYs. Voter lists (i.e. GCs) are finalized at the moment of proposal submission. However, voting powers are finalized at the end of preparation period.
+
+A 7 days of voting period immediately follows after preparation period. If there are enough Yes votes, the transactions can be queued within 7 days after voting ends. The transaction is delayed by 2 days to be executable. After the delay, the transaction can be executed within 7 days.
+
+The proposer of a proposal can cancel it any time prior to execution. If a passed transaction is not queued or executed within the timeout, the proposal automatically expires.
+
+![voting steps](../assets/kip-81/voting_steps.png)
+
+These timeline is dictated by several timing parameters below.
+
+| Name              | Meaning                                                         | Value     |
+|----------------   |--------------------------------------------------------------   |--------   |
+| `votingDelay`     | Delay from proposal submission to voting start                  | 7 days    |
+| `votingPeriod`    | Duration of the voting                                          | 7 days    |
+| `queueTimeout`    | Grace period to queue() passed proposals.                       | 7 days    |
+| `execDelay`       | A minimum delay before a queued transaction can be executed.    | 2 days    |
+| `execTimeout`     | Grace period to execute() queued proposals since `execDelay`.   | 7 days    |
+
+#### Quorum
+
+A proposal passes when a combination of the following conditions are met.
+
+- `CountQuorum` = At least 1/3 of all eligible voters cast vote
+- `PowerQuorum` = At least 1/3 of all eligible voting powers cast vote
+- `MajorityYes` = Yes votes is more than half of casted votes
+- `Pass = (CountQuorum or PowerQuorum) and MajorityYes`
+
+#### Contract interface
+
+```solidity
+interface Voting {
+    enum ProposalState { Pending, Active, Canceled, Failed, Passed,
+                         Queued, Expired, Executed }
+    enum VoteChoice { No, Yes, Abstain }
+
+    struct Receipt {
+        bool hasVoted;
+        uint8 choice;
+        uint256 votes;
+    }
+
+    /// @dev Emitted when a proposal is created
+    /// @param signatures  Array of empty strings; for compatibility with OpenZeppelin
+    event ProposalCreated(
+        uint256 proposalId, address proposer,
+        address[] targets, uint256[] values, string[] signatures, bytes[] calldatas,
+        uint256 voteStart, uint256 voteEnd, string description);
+
+    /// @dev Emitted when a proposal is canceled
+    event ProposalCanceled(uint256 proposalId);
+
+    /// @dev Emitted when a proposal is queued
+    /// @param eta  The block number where transaction becomes executable.
+    event ProposalQueued(uint256 proposalId, uint256 eta);
+
+    /// @dev Emitted when a proposal is executed
+    event ProposalExecuted(uint256 proposalId);
+
+    /// @dev Emitted when a vote is cast
+    /// @param reason  An empty string; for compatibility with OpenZeppelin
+    event VoteCast(address indexed voter, uint256 proposalId,
+                   uint8 choice, uint256 votes, string reason);
+
+    /// @dev Create a Proposal
+    /// If secretariat is null, any GC with at least 1 vote can propose.
+    /// Otherwise only secretariat can propose.
+    function propose(
+        string description,
+        address[] targets,
+        uint256[] values,
+        bytes[] calldatas) external returns (uint256 proposalId);
+
+    /// @dev Cancel a proposal
+    /// The proposal must be in one of Pending, Active, Passed, Failed, Queued
+    /// states. Only the proposer of the proposal can cancel the proposal.
+    function cancel(uint256 proposalId) external;
+
+    /// @dev Cast a vote to a proposal
+    /// The proposal must be in Active state
+    /// A same voter can call this function again to change choice.
+    /// choice must be one of VoteChoice.
+    function castVote(uint256 proposalId, uint8 choice) external;
+
+    /// @dev Queue a passed proposal
+    /// The proposal must be in Passed state
+    /// If secretariat is null, any GC with at least 1 vote can queue.
+    /// Otherwise only secretariat can queue.
+    function queue(uint256 proposalId) external;
+
+    /// @dev Execute a queued proposal
+    /// If secretariat is null, any GC with at least 1 vote can queue.
+    /// Otherwise only secretariat can queue
+    function execute(uint256 proposalId) external;
+
+    /// @dev Set secretariat account
+    /// Must be called by address(this), i.e. via governance proposal.
+    function updateSecretariat(address _new) external;
+
+    /// @dev The secretariat account
+    function secretariat() external view returns(address);
+
+    /// @dev State of a proposal
+    function state(uint256 proposalId) external view returns (ProposalState);
+
+    /// @dev Check if a proposal is passed
+    function checkQuorum(uint256 proposalId) external view returns(bool);
+
+    /// @dev General contents of a proposal
+    function getProposalContent(uint256 proposalId) external view returns(
+        uint256 id,
+        address proposer,
+        string memory description
+    );
+
+    /// @dev Transactions in a proposal
+    /// @return signatures  Array of empty strings; for compatibility with OpenZeppelin
+    function function getActions(uint256 proposalId) external view returns(
+        address[] memory targets,
+        uint256[] memory values,
+        string[] memory signatures,
+        bytes[] memory calldatas
+    );
+
+    /// @dev Timing and state related properties of a proposal
+    function getProposalSchedule(uint256 proposalId) external view returns(
+        uint256 voteStart,      // propose()d block + votingDelay
+        uint256 voteEnd,        // voteStart + votingPeriod
+        uint256 queueDeadline,  // voteEnd + queueTimeout
+        uint256 eta,            // queue()d block + execDelay
+        uint256 execDeadline,   // queue()d block + execDelay + execTimeout
+        bool canceled,          // true if successfully cancel()ed
+        bool queued,            // true if successfully queue()d
+        bool executed           // true if successfully execute()d
+    );
+
+    /// @dev Vote counting related properties of a proposal
+    function getProposalTally(uint256 proposalId) external view returns(
+        uint256 totalYes,
+        uint256 totalNo,
+        uint256 totalAbstain,
+        uint256 quorumCount,      // required number of voters
+        uint256 quorumPower,      // required number of voting powers
+        address[] memory voters,  // list of nodeIds who voted
+    )
+
+    /// @dev Individual vote receipt
+    function getReceipt(uint256 proposalId, address voter)
+        external view returns(Receipt memory);
+}
+```
+
+#### Fetching votes from StakingTracker
+
+Calculating votes require information from StakingTracker contract. The Voting contract shall utilize the getters to find voting powers of each voters as well as quorum conditions. Below is an example implementation of `castVote()` and `checkQuorum()` functions.
+
+```solidity
+abstract contract Voting {
+    struct Proposal {
+        uint256 trackerId;  // StakingTracker trackerId created in propose()
+        uint256 totalYes;
+        uint256 totalNo;
+        uint256 totalAbstain;
+        address[] voters;
+        mapping(address => Receipt) receipts;
+    }
+    mapping(uint256 => Proposal) proposals;
+    IStakingTracker stakingTracker;
+
+    function castVote(uint256 proposalId, uint8 choice) external {
+        Proposal storage p = proposals[proposalId];
+
+        address nodeId = stakingTracker.getNodeFromVoter(msg.sender);
+        ( , uint256 votes) = stakingTracker.getTrackedNode(p.trackerId, nodeId);
+
+        // Revoke vote if exists
+        if (p.receipts[nodeId].hasVoted) {
+            uint8 oldChoice = p.receipts[nodeId].choice;
+            if (oldChoice == VoteChoice.Yes) { p.totalYes -= votes; }
+            if (oldChoice == VoteChoice.No) { p.totalNo -= votes; }
+            if (oldChoice == VoteChoice.Abstain) { p.totalAbstain -= votes; }
+        }
+        // Record new vote
+        p.receipts[nodeId].hasVoted = true;
+        p.receipts[nodeId].choice = choice;
+        p.receipts[nodeId].votes = votes;
+        if (choice == VoteChoice.Yes) { p.totalYes += votes; }
+        if (choice == VoteChoice.No) { p.totalNo += votes; }
+        if (choice == VoteChoice.Abstain) { p.totalAbstain += votes; }
+        if (!p.receipts[nodeId].hasVoted) { p.voters.push(nodeId); }
+    }
+
+    function checkQuorum(uint256 proposalId) external view returns(bool) {
+        Proposal storage p = proposals[proposalId];
+
+        ( , , , uint256 totalVotes, uint256 eligibleNodes) =
+            stakingTracker.getTrackerSummary(p.trackerId);
+
+        bool countQuorum = (p.voters.length >= (eligibleNodes / 3));
+        bool powerQuorum = ((p.totalYes + p.totalNo + p.totalAbstain) > (totalVotes / 3));
+        bool majorityYes = (p.totalYes > (p.totalNo + p.totalAbstain));
+        return ((countQuorum || powerQuorum) && majorityYes);
+    }
+}
+```
+
+#### Determining state
+
+The state of a proposal can be determined from stored variables, vote counts and current block number. Below is an example implementation of `state()` function.
+
+```solidity
+abstract contract Voting {
+    struct Proposal {
+        uint256 voteStart;      // propose()d block + votingDelay
+        uint256 voteEnd;        // voteStart + votingPeriod
+        uint256 queueDeadline;  // voteEnd + queueTimeout
+        uint256 eta;            // queue()d block + execDelay
+        uint256 execDeadline;   // queue()d block + execDelay + execTimeout
+        bool canceled;          // true if successfully cancel()ed
+        bool queued;            // true if successfully queue()d
+        bool executed;          // true if successfully execute()d
+    }
+    mapping(uint256 => Proposal) proposals;
+
+    function state(uint256 proposalId) external view returns (ProposalState) {
+        Proposal storage p = proposals[proposalId];
+
+        if (p.executed) {
+            return ProposalState.Executed;
+        } else if (p.canceled) {
+            return ProposalState.Canceled;
+        } else if (block.number < p.voteStart) {
+            return ProposalState.Pending;
+        } else if (block.number <= p.voteEnd) {
+            return ProposalState.Active;
+        } else if (!checkQuorum(proposalId)) {
+            return ProposalState.Failed;
+        }
+
+        if (!p.queued) {
+            if (block.number <= p.queueDeadline) {
+                return ProposalState.Passed;
+            } else {
+                return ProposalState.Expired;
+            }
+        } else {
+            if (block.number <= p.execDeadline) {
+                return ProposalState.Queued;
+            } else {
+                return ProposalState.Expired;
+            }
+        }
+    }
+}
+```
+
+## Rationale
+
+#### CnStakingV2 and StakingTracker instead of standard ERC20Votes
+
+It is common for DAOs to manage their governance tokens in a [ERC20Votes](https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Votes) contract. However new contracts CnStakingV2 and StakingTracker were used to manage staked KLAYs. Using the new contracts provides better compatibility with ecosystem Dapps like public staking services. It also does not break the existing block validator selection algorithm that depends on AddressBook.
+
+#### StakingTracker refreshStake and refreshVoting has no access control
+
+Another desion options was to restrict those funtions to only CnStakingV2 contracts. But those functions are publicly open to allow GCs to gradually migrate from CnStakingContract to CnStakingV2 contracts. Old CnStakingContract does not notify StakingTracker about its balance change, in which case manually calling `refreshStake()` can notify the change.
+
+#### Separate voter account
+
+In security standpoint, it is safer to have separate accounts for different roles. Existing CnStakingV2 admins take financial roles - withdrawing staked KLAYs - and the voter account take voting role only.
+
+#### Proposals have expired state
+
+Proposal transactions expires if they are not queued or executed within deadline. This guarantees the timeliness of the transactions. If a proposal was left unexecuted for a long time, the proposal might be irrelevant anymore and require a fresh proposal.
+
 ## Expected Effect
+
 The proposed GC Voting method is expected to produce the following changes:
 - All members in Klaytn ecosystem grow together with credibility 
 - Providing obligation and authority to GC motivates active participation in governance voting activities and the KLAY staking 
@@ -324,9 +703,9 @@ The proposed GC Voting method is expected to produce the following changes:
 - The Klaytn network can take a step closer to transparency and decentralized networks.
  
 ## Backward Compatibility
-- GCs must deploy new CnStakingV2 contracts and move their staked KLAYs. Existing CnStaking contract balances are excluded from voting power calculation.
-- However, proposer selection is not affected by the change, so GCs can still participate in consensus until migrating to CnStakingV2.
 
+- GCs should deploy new CnStakingV2 contracts and move their staked KLAYs. Existing CnStaking contract balances are excluded from voting power calculation.
+- However, block validator selection is not affected by the change, so GCs can still participate in consensus until migrating to CnStakingV2.
   
 ## Reference
 n/a 
