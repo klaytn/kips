@@ -413,7 +413,7 @@ abstract contract StakingTracker {
 
 ### Voting
 
-The Voting contract operates the on-chain governance votes. Voting contract, stores governance proposals, counts casted votes, and send on-chain transactions. Its design is influenced by [Compound Finance](https://docs.compound.finance/v2/governance/) and [OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/api/governance).
+The Voting contract operates the on-chain governance votes. The Voting contract stores governance proposals, counts casted votes, and sends on-chain transactions. Its design is influenced by [Compound Finance](https://docs.compound.finance/v2/governance/) and [OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/api/governance).
 
 A proposal contains textual descriptions and optionally on-chain transactions. The transactions are executed on behalf of the voting contract if the proposal receives enough votes.
 
