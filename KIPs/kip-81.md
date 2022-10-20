@@ -171,7 +171,7 @@ abstract contract CnStakingV2 {
 
 ### StakingTracker
 
-StakingTracker collects voting related data of each GC.
+StakingTracker collects voting related data of each GC member.
 
 - Staking amounts and voting powers \
 Stored separately in `Tracker` structs. Each `Tracker` struct can be updated between `trackStart` and `trackEnd` blocks, but becomes immutable afterwards, essentially freezing the voting powers. A `Tracker` struct is first created in `createTracker()`, and updated by `refreshStake()`.
