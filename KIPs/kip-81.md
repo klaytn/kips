@@ -49,7 +49,7 @@ The Klaytn on-chain governance voting will be conducted on smart contracts. Seve
   - **AddressBook**: An existing contract that stores the list of GC nodes, their staking contracts, and their reward recipient addresses.
   - **CnStakingV2**: An updated version of existing CnStakingContract. GCs stake their KLAYs to earn rights to validate blocks and cast on-chain votes.
   - **StakingTracker**: A new contract that tracks voting related data from AddressBook and CnStakingV2 contracts.
-  - **Voting**: A new contract that processes the on-chain voting. It stores governance proposals, count votes, and send approved transactions.
+  - **Voting**: A new contract that processes the on-chain voting. It stores governance proposals, counts votes, and sends approved transactions.
 - Accounts
   - **AddressBook admins**: A set of accounts controlled by the Foundation which can manage list of GCs in the AddressBook.
   - **CnStaking admins**: A set of accounts controlled by each GC which can manage the staked KLAYs and its voter account. Every CnStakingV2 contract can have different set of admins.
