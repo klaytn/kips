@@ -452,7 +452,7 @@ A proposal passes when a combination of the following conditions are met.
 
 - `CountQuorum` = At least 1/3 of all eligible voters cast vote
 - `PowerQuorum` = At least 1/3 of all eligible voting powers cast vote
-- `MajorityYes` = Yes votes is more than half of casted votes
+- `MajorityYes` = Yes votes are more than half of casted votes
 - `PassCondition = (CountQuorum or PowerQuorum) and MajorityYes`
 
 #### Contract interface
