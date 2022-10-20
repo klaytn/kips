@@ -424,7 +424,7 @@ While GCs hold their voting rights from staked KLAYs, a special secretariat acco
 Under the default timing settings, a typical governance proposal is handeled as follows.
 
 1. When a governance proposal is submitted, it enters a 7 days of preparation period where GCs can adjust their voting powers by staking or unstaking KLAYs. Voter lists (i.e. GCs) are finalized at the moment of proposal submission. However, voting powers are finalized at the end of preparation period.
-2. A 7 days of voting period immediately follows after preparation period.
+2. A 7-day voting period immediately follows after the preparation period.
 3. If there are enough Yes votes, the transactions can be queued within 7 days after voting ends.
 4. The transaction is delayed by 2 days to be executable. This delay gives the ecosystem enough time to adjust to then change and perform final review about transactions.
 5. After the delay, the transaction can be executed within 7 days.
