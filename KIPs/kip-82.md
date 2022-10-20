@@ -43,6 +43,8 @@ If the amount of gas fee that is provided as a basic reward does not exceed a ce
 
 To reduce the KLAY supply amount due to inflation, the gas fee will be burned. 
 
+### Klaytn node update
+
 The Klaytn node will be updated according to the new reward policy. The CN portion is further splitted into basic reward and staked reward. The staked reward is then distributed among CNs proportional to their staking shares. Their shares are calculated proportionally to their stake amounts except for the minimum staking amount.
 
 During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: // is integer division, round down.
@@ -168,7 +170,42 @@ def calc_stake_shares(stake_reward, config, staking_info):
     return (shares, remaining)
 ```
 
-The update is expected to increase the amount of per-block state changes by number of GCs. The increase should be reasonable since the amount is much smaller than Klaytn's transaction processing capability.
+The update is expected to increase the amount of per-block state changes by number of GCs. The increase should be reasonable since the amount is significantly smaller than Klaytn's transaction processing capability.
+
+### Reward RPC
+
+A new JSON-RPC method is added to provide historic reward distribution details.
+
+- Name: `klay_getRewards`
+- Description: Returns a breakdown of reward distribution at specified block. If the parameter is not set, returns a breakdown of reward distribution at the lastest block.
+- Parameters
+  1. `QUANTITY | TAG` - (optional) integer or hexadecimal block number, or the string "earlist" or "latest".
+- Returns
+  - `DATA`
+    - `minted`: The amount minted
+    - `fee`: Total tx fee spent
+    - `burnt`: The amount burnt
+    - `rewards`: A mapping from reward recipient address to reward amount
+- Example
+  ```
+  // Request
+  curl -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0", "method":"klay_getRewards", "params":["0x5f5e100"],"id":1}' https://api.baobab.klaytn.net:8651
+  // Response
+  {
+    "jsonrpc":"2.0",
+    "id":1,
+    "result":{
+      "minted": "9600000000000000000",
+      "fee": "4616950000000000",
+      "burnt": "2308475000000000",
+      "rewards": {
+        "0x99fb17d324fa0e07f23b49d09028ac0919414db6": "3264784881500000000",
+        "0x2bcf9d3e4a846015e7e3152a614c684de16f37c6": "5185246576500000000",
+        "0x716f89d9bc333286c79db4ebb05516897c8d208a": "1152277017000000000"
+      }
+    }
+  }
+  ```
 
 ## Expected Effect
 The proposed GC reward mechanism is expected to produce the following changes:
