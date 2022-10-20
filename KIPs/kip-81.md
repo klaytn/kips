@@ -421,7 +421,7 @@ While GCs hold their voting rights from staked KLAYs, a special secretariat acco
 
 #### Voting steps
 
-Under the default timing settings, a typical governance proposal is handeled as follows.
+Under the default timing settings, a typical governance proposal is handled as follows.
 
 1. When a governance proposal is submitted, it enters a 7 days of preparation period where GCs can adjust their voting powers by staking or unstaking KLAYs. Voter lists (i.e. GCs) are finalized at the moment of proposal submission. However, voting powers are finalized at the end of preparation period.
 2. A 7-day voting period immediately follows after the preparation period.
