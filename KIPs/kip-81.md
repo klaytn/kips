@@ -43,7 +43,7 @@ Therefore, the GC will receive 1 vote per a certain amount of staked KLAY (initi
 
 ### Smart Contracts Overview
 
-The Klaytn on-chain governance voting will be conducted on smart contracts. Several contracts and accounts interact together in the process. Below diagram shows the relationship between contracts and acounts.
+The Klaytn on-chain governance voting will be conducted on smart contracts. Several contracts and accounts interact together in the process. Below diagram shows the relationship between contracts and accounts.
 
 - Contracts
   - **AddressBook**: An existing contract that stores the list of GC nodes, their staking contracts, and their reward recipient addresses.
