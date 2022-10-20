@@ -177,7 +177,7 @@ StakingTracker collects voting related data of each GC.
 Stored separately in `Tracker` structs. Each `Tracker` struct can be updated between `trackStart` and `trackEnd` blocks, but becomes immutable afterwards, essentially freezing the voting powers. A `Tracker` struct is first created in `createTracker()`, and updated by `refreshStake()`
 
 - Each GC’s voter accounts \
-Stored in global mappings, and can be updated any time. Voter account mappings are updated by `refreshVoter()`
+Stored in global mappings, and can be updated any time. Voter account mappings are updated by `refreshVoter()`.
 
 #### Contract interface
 
