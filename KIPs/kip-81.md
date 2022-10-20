@@ -260,7 +260,7 @@ A voting contract can utilize StakingTracker as follows.
 1. When a governance proposal is submitted, the voting contract calls `createTracker()` to finalize eligible GC nodes list and evaluate voting powers.
 2. Before `trackEnd` block, GCs stake or unstake their KLAYs from their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshStake()` to notify the balance change.
 3. GCs may change their voter account in their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshVoter()` to notify voter account change.
-4. After `trackEnd` block, the voting powers are frozen. The voting contract use StakingTracker getters to process votes casted by voter accounts.
+4. After `trackEnd` block, the voting powers are frozen. The voting contract uses StakingTracker getters to process votes casted by voter accounts.
 
 #### Example implementation
 
