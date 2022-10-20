@@ -153,7 +153,7 @@ interface IStakingTracker {
     /// @param staking  The CnStaking contract address
     function refreshStake(address staking) external;
 
-    /// @dev Update a GC's voter address from given address
+    /// @dev Update a GC's voter address from the given address
     /// @param staking  The CnStaking contract address
     function refreshVoter(address staking) external;
 }
