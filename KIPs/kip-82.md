@@ -32,7 +32,7 @@ Node operators will also be compensated with the staking for enhancing network s
 
 Of the 300 million KLAYs that are minted annually, only 100 million go to GC, and 20% and 80% of the distribution is from this 100 million. The renewal separates GC reward into two groups: basic reward and staked reward. The basic reward is compensating for node operation by providing 20% of GC reward and 100% of gas fee resources from transactions. The staked reward provides only the rest of 80% of the minting resource based on the total stake amount.
 
-![gc reward allocation](../assets/kip-n/gc_reward_allocation.png)
+![gc reward allocation](../assets/kip-82/gc_reward_allocation.png)
 
 After the Magma hard fork, Klaytn has been burning the first half of the gas fee based on the KIP-71 proposal while the second half is distributed. The remaining second half is distributed into GC reward, Klaytn Improvement Reserve (KIR) and Klaytn Growth Fund (KGF).
 
