@@ -50,19 +50,34 @@ The Klaytn node will be updated according to the new reward policy. The CN porti
 During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: // is integer division, round down.
 
 ```python
-FORK_BLOCK_NUMBER = 100000000 # TBD
+from collections import defaultdict
+
+MAGMA_BLOCK_NUMBER = 99841497
+FORK_BLOCK_NUMBER = 120000000 # TBD
+
+# Block header. Only relevant fields are shown here.
+class Header:
+    Number: int = 0   # Block number
+    GasUsed: int = 0  # Total gas spent in the block
+    BaseFee: int = 0  # Base fee per gas at the block
+    RewardBase: string = "" # Reward recipient address of the block proposer
 
 # Network configurations related to reward distribution.
 # Corresponds to Klaytn's reward.rewardConfig struct.
 class RewardConfig:
-    # comes from the "reward.mintingamount" parameter
-    MintingAmount: int = 9600000000000000000
-    # comes from the "reward.ratio" parameter
-    CnRatio: int = 34       
-    KgfRatio: int = 54 
+    UnitPrice: int = 25000000000              # "governance.unitprice" parameter (in peb)
+    MintingAmount: int = 9600000000000000000  # "reward.mintingamount" parameter (in peb)
+    MinimumStake: int = 5000000               # "reward.minimumstake" parameter (in KLAY)
+    DeferredTxFee: bool = true    # "reward.deferredtxfee" parameter
+    UseKIP82: bool = true         # "reward.usekip82" parameter (new)
+
+    # "reward.ratio" parameter (e.g. "34/54/12")
+    CnRatio: int = 34
+    KgfRatio: int = 54
     KirRatio: int = 12
-    TotalRatio: int = CnRatio + KgfRatio + KirRatio 
-    # comes from a new parameter "reward.kip82ratio"
+    TotalRatio: int = CnRatio + KgfRatio + KirRatio
+
+    # "reward.kip82ratio" parameter (e.g. "20/80") (new)
     CnMintedBasicRatio: int = 20
     CnMintedStakeRatio: int = 80
     CnMintedTotalRatio: int = CnMintedBasicRatio + CnMintedStakeRatio
@@ -71,7 +86,7 @@ class RewardConfig:
 # Corresponds to Klaytn's reward.StakingInfo struct.
 class StakingInfo:
     KIRAddr: string = ""
-    PoCAddr: string = ""
+    KGFAddr: string = ""
     Nodes: List[ConsolidatedNode] = []
 
 # Staking information merged under the same CN.
@@ -82,92 +97,173 @@ class StakingInfo:
 class ConsolidatedNode:
     NodeAddrs: List[string] = []
     StakingAddrs: List[string] = []
-    RewardAddr: string = ""
-    StakingAmount: int = 0
+    RewardAddr: string = "" # The common reward address of the CN
+    StakingAmount: int = 0  # Total staking amount across StakingAddrs (in KLAY)
+
+# Reward disribution details.
+class RewardSpec:
+    Minted: int = 0   # The amount minted
+    Fee: int = 0      # Total tx fee spent
+    Burnt: int = 0    # The amount burnt
+    Proposer: int = 0    # The amount allocated to the block proposer
+    Stakers: int = 0  # Total amount allocated to stakers
+    Kgf: int = 0      # The amount allocated to KGF
+    Kir: int = 0      # The amount allocated to KIR
+    Rewards: Dict[string, int] = {}  # Mapping from reward recipient to amounts
 
 # Distributes a given block's reward to CNs and KGF/KIR funds.
-# corresponds to Klaytn's reward.RewardDistributor.distributeBlockReward().
+# corresponds to Klaytn's reward.RewardDistributor.DistributeBlockReward().
 #
 # - state is the StateDB to apply the rewards.
-# - header is the block's header.
-# - total_tx_fee is total block gas fee before Magma,
-#       and half of the total block gas fee after Magma.
-# - reward_config is a RewardConfig instance.    
+# - header is a Header instance.
+# - config is a RewardConfig instance.
 # - staking_info is a StakingInfo instance.
-def distribute_block_reward(state, header, total_tx_fee, config, staking_info):
-    if header.number <= FORK_BLOCK_NUMBER:
-        do_distribute(state, header, total_tx_fee, config, staking_info)
-    else:
-        do_distribute_kip82(state, header, total_tx_fee, config, staking_info)
+def distribute_block_reward(state, header, config, staking_info):
+    spec = calc_deferred_reward(header, config, staking_info)
 
-def do_distribute(state, header, total_tx_fee, config, staking_info):
-    # Split minting resource and fee resource alltogether
-    amount = config.MintingAmount + total_tx_fee
+    for addr, amount in spec.Rewrads:
+        state.AddBalance(addr, amount)
 
-    cn_reward = amount * config.CnRatio // config.TotalRatio
-    kgf_reward = amount * config.KgfRatio // config.TotalRatio
-    kir_reward = amount * config.KirRatio // config.TotalRatio
-    remaining = amount - cn_reward - stake_reward - kgf_reward - kir_reward
-
-    state.AddBalance(header.RewardBase, basic_reward)
-    state.AddBalance(staking_info.KgfAddr, kgf_reward)
-    state.AddBalance(staking_info.KirAddr, kir_reward)
-    return (cn_reward, kgf_reward, kir_reward, remaining)
-
-def do_distribute_kip82(state, header, total_tx_fee, config, staking_info):
-    basic_reward, stake_reward, kgf_reward, kir_reward, split_remaining = split_reward(total_tx_fee, config)
-
-    shares, share_remaining = calc_stake_shares(stake_reward, config, staking_info)
-
-    kgf_reward += split_remaining
-    kgf_reward += share_remaining
-
-    state.AddBalance(header.RewardBase, basic_reward)
-    state.AddBalance(staking_info.KgfAddr, kgf_reward)
-    state.AddBalance(staking_info.KirAddr, kir_reward)
-    for reward_addr, reward_amount in shares:
-        state.AddBalance(reward_addr, reward_amount)
-
-# Split block rewards into (basic, stake, kgf, kir, remaining), after fork.
-def split_reward(total_tx_fee, config):
-
-    # Split minting resource
+# Calculates the deferred rewards, which are determined at the end of block processing.
+# Used in reward distribution.
+# Returns a RewardSpec.
+def calc_deferred_reward(header, config, staking_info):
     minted = config.MintingAmount
+    fee, burnt = calc_fee_resource(header, config)
 
-    cn_reward = minted * config.CnRatio // config.TotalRatio
-    kgf_reward = minted * config.KgfRatio // config.TotalRatio
-    kir_reward = minted * config.KirRatio // config.TotalRatio
+    proposer, stakers, kgf, kir, split_rem = split_reward(header, config, minted, fee)
+    shares, share_rem = calc_stake_shares(config, staking_info, stakers)
 
-    # Split CN portion
-    basic_reward = cn_reward * config.CnMintedBasicRatio // config.CnMintedTotalRatio
-    stake_reward = cn_reward * config.CnMintedStakeRatio // config.CnMintedTotalRatio
+    kgf += split_rem
+    kgf += share_rem
 
-    remaining = minted - basic_reward - stake_reward - kgf_reward - kir_reward
-    # Calculate fee resource
-    fee_resource = total_tx_fee  # After magma, half of block gas fee.
-    if fee_resource > minted_basic_reward:
-        basic_reward = fee_resource
+    spec = RewardSpec()
+    spec.Minted = minted
+    spec.Fee = fee
+    spec.Burnt = burnt
+    spec.Proposer = proposer
+    spec.Stakers = stakers
+    spec.Kgf = kgf
+    spec.Kir = kir
 
-    return (basic_reward, stake_reward, kgf_reward, kir_reward, remaining)
+    spec.Rewards = defaultdict(int)
+    spec.Rewards[header.RewardBase] += proposer
+    # If KGF address is not set, proposer gets the portion.
+    if staking_info.KGFAddr is None:
+        spec.Rewards[header.RewardBase] += kgf
+    else:
+        spec.Rewards[staking_info.KGFAddr] += kgf
+    # If KIR address is not set, proposer gets the portion.
+    if staking_info.KIRAddr is None:
+        spec.Rewards[header.RewardBase] += kir
+    else:
+        spec.Rewards[staking_info.KIRAddr] += kir
+
+    for reward_addr, reward_amount in shares:
+        spec.Rewards[reward_addr] += reward_amount
+    return spec
+
+# Returns (fee, burnt_fee)
+def calc_fee_resource(header, config):
+    # If not DeferredTxFee, fees are already added to the proposer during TX execution,
+    # therefore no fees to distribute here at the end of block processing.
+    if not config.DeferredTxFee:
+        return (0, 0)
+
+    # Start with total block gas fee
+    if header.Number >= MAGMA_BLOCK_NUMBER:
+        fee = header.GasUsed * header.BaseFee
+    else:
+        fee = header.GasUsed * config.UnitPrice
+
+    burnt = 0
+
+    # Since Magma, burn half of gas
+    if header.number >= MAGMA_BLOCK_NUMBER:
+        half_fee = fee / 2
+        fee -= half_fee
+        burnt += half_fee
+
+    # If KIP-82 is enabled, burn fees up to BasicReward
+    if header.number >= FORK_BLOCK_NUMBER and config.UseKIP82:
+        minted = config.MintingAmount
+        cn_minted = minted * config.CnRatio // config.TotalRatio
+        basic_reward = cn_minted * config.CnMintedBasicRatio // config.CnMintedTotalRatio
+        if fee < basic_reward:
+            burnt_kip82 = fee
+        else:
+            burnt_kip82 = basic_reward
+
+        fee -= burnt_kip82
+        burnt += burnt_kip82
+
+    return (fee, burnt)
+
+# Returns (proposer, stakers, kgf, kir, remaining) amounts
+def split_reward(header, config, minted, fee):
+    if header.number >= FORK_BLOCK_NUMBER and config.UseKIP82:
+        resource = minted
+
+        cn = resource * config.CnRatio // config.TotalRatio
+        kgf = resource * config.KgfRatio // config.TotalRatio
+        kir = resource * config.KirRatio // config.TotalRatio
+
+        cn_basic = cn * config.CnMintedBasicRatio // config.CnMintedTotalRatio
+        cn_stake = cn * config.CnMintedStakeRatio // config.CnMintedTotalRatio
+
+        remaining = resource - kgf - kir - cn_basic - cn_stake
+        return (cn_basic + fee, cn_stake, kgf, kir, remaining)
+    else:
+        resource = minted + fee
+
+        cn = resource * config.CnRatio // config.TotalRatio
+        kgf = resource * config.KgfRatio // config.TotalRatio
+        kir = resource * config.KirRatio // config.TotalRatio
+
+        remaining = resource - kgf - kir - cn
+        return (cn, 0, kgf, kir, remaining)
 
 # Distribute stake_reward among staked CNs
 # Returns a mapping from each reward address to their reward shares,
-# and the remaining amount.
-def calc_stake_shares(stake_reward, config, staking_info):
+# and remaining amount.
+def calc_stake_shares(config, staking_info, stake_reward):
+    if stake_reward == 0:
+        return ({}, 0)
+
+    min_stake = config.MinimumStake * 1e18
     total_stakes = 0
     for node in staking_info.Nodes:
-        if node.StakingAmount > config.MinimumStake:
-            total_stakes += node.StakingAmount - config.MinimumStake
+        if node.StakingAmount > min_stake:
+            total_stakes += (node.StakingAmount - config.MinimumStake)
 
     shares = {}
     remaining = stake_reward
     for node in staking_info.Nodes:
-        if node.StakingAmount > config.MinimumStake:
-            reward_amount = stake_reward * (node.StakingAmount - config.MinimumStake) // total_stakes
+        if node.StakingAmount > min_stake:
+            effective_stake = node.StakingAmount - min_stake
+            reward_amount = stake_reward * effective_stake // total_stakes
             remaining -= reward_amount
             shares[node.RewardAddr] = reward_amount
 
     return (shares, remaining)
+
+# Unlike calc_deferred_reward, this function calculates the actual reward amounts
+# paid in this block. Used in klay_getReward RPC
+# Retruns a RewardSpec.
+def calc_actual_reward(header, config, staking_info):
+    spec = calc_deferred_reward(header, config, staking_info)
+
+    # If not DeferredTxFee, include block gas fee because they were ignored in
+    # calc_deferred_reward.
+    if not config.DeferredTxFee:
+        if header.number >= MAGMA_BLOCK_NUMBER:
+            block_fee += header.GasUsed * header.BaseFee
+        else:
+            block_fee += header.GasUsed * config.UnitPrice
+        spec.Proposer += block_fee
+        spec.Rewards[header.RewardBase] += block_fee
+
+    return spec
 ```
 
 The update is expected to increase the amount of per-block state changes by number of GCs. The increase should be reasonable since the amount is significantly smaller than Klaytn's transaction processing capability.
@@ -177,14 +273,20 @@ The update is expected to increase the amount of per-block state changes by numb
 A new JSON-RPC method is added to provide historic reward distribution details.
 
 - Name: `klay_getRewards`
-- Description: Returns a breakdown of reward distribution at specified block. If the parameter is not set, returns a breakdown of reward distribution at the lastest block.
+- Description: Returns allocation details of reward distribution at specified block. If the parameter is not set, returns a breakdown of reward distribution at the lastest block.
 - Parameters
   1. `QUANTITY | TAG` - (optional) integer or hexadecimal block number, or the string "earlist" or "latest".
 - Returns
   - `DATA`
-    - `minted`: The amount minted
-    - `fee`: Total tx fee spent
-    - `burnt`: The amount burnt
+    - `source`
+      - `minted`: The amount minted
+      - `fee`: Total tx fee spent
+      - `burnt`: The amount burnt
+    - `output`
+      - `proposer`: The amount block proposer receives
+      - `stakers`: Total amount stakers receive
+      - `kgf`: The amount KGF receives
+      - `kir`: The amount KIR receives
     - `rewards`: A mapping from reward recipient address to reward amount
 - Example
   ```
@@ -195,9 +297,17 @@ A new JSON-RPC method is added to provide historic reward distribution details.
     "jsonrpc":"2.0",
     "id":1,
     "result":{
-      "minted": "9600000000000000000",
-      "fee": "4616950000000000",
-      "burnt": "2308475000000000",
+      "source": {
+        "minted": "9600000000000000000",
+        "fee": "4616950000000000",
+        "burnt": "2308475000000000",
+      },
+      "output": {
+        "proposer": "3264784881500000000",
+        "stakers": "0",
+        "kgf": "5185246576500000000",
+        "kir": "1152277017000000000"
+      },
       "rewards": {
         "0x99fb17d324fa0e07f23b49d09028ac0919414db6": "3264784881500000000",
         "0x2bcf9d3e4a846015e7e3152a614c684de16f37c6": "5185246576500000000",
