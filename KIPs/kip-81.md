@@ -51,10 +51,10 @@ The Klaytn on-chain governance voting will be conducted on smart contracts. Seve
   - **StakingTracker**: A new contract that tracks voting related data from AddressBook and CnStakingV2 contracts.
   - **Voting**: A new contract that processes the on-chain voting. It stores governance proposals, counts votes, and sends approved transactions.
 - Accounts
-  - **AddressBook admins**: A set of accounts controlled by the Foundation which can manage list of GCs in the AddressBook.
-  - **CnStaking admins**: A set of accounts controlled by each GC which can manage the staked KLAYs and its voter account. Every CnStakingV2 contract can have different set of admins.
-  - **Voter account**: An account controlled by each GC which can cast on-chain votes. But this account cannot withdraw KLAYs from CnStakingV2 contracts.
-  - **Secretariat account**: An account controlled by the Foundation which can propose and execute on-chain governance proposals.
+  - **AddressBook admins**: A set of accounts controlled by the Foundation which can manage list of GCs in the AddressBook. AddressBook admin is managed in the AddressBook contract.
+  - **CnStaking admins**: A set of accounts controlled by each GC which can manage the staked KLAYs and its voter account. CnStaking admins are managed in the respective CnStakingV2 contracts. Note that every CnStakingV2 contract have different set of admins.
+  - **Voter account**: An account controlled by each GC which can cast on-chain votes. But this account cannot withdraw KLAYs from CnStakingV2 contracts. Voter account is appointed at CnStakingV2 contracts of the respective GC member.
+  - **Secretariat account**: An account controlled by the Foundation which can propose and execute on-chain governance proposals. Secretariat account is managed in the Voting contract.
 
 ![contracts and accounts](../assets/kip-81/smart_contract_relation.png)
 
