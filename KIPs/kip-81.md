@@ -87,12 +87,12 @@ interface IAddressBook {
 
 ### CnStakingV2
 
-CnStakingV2 is an upgraded version of CnStakingContract. The CnStakingContract has been serving the purpose of locking GC stakes. V2 will add two new features related to StakingTracker, which will be described later.
+CnStakingV2 is an upgraded version of [CnStakingContract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol). The CnStakingContract has been serving the purpose of locking GC stakes. V2 will add two new features related to StakingTracker, which will be described later.
 
 - Whenever its KLAY balance changes, V2 notifies the StakingTracker.
 - V2 stores a voter account address, and notifies the StakingTracker whenever it changes. The voter account can be changed by its admins.
 
-To support the new features, following functions are added.
+To support the new features, following functions are added. The function `setStakingTracker` is only callable before contract [initialization](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol#L237). Functions `updateStakingTracker` and `updateVoterAddress` are invoked upon approval of CnStaking admins using the existing [CnStaking multisig facility](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol#L597).
 
 ```solidity
 abstract contract CnStakingV2 {
@@ -108,10 +108,12 @@ abstract contract CnStakingV2 {
     function setStakingTracker(address _tracker) external beforeInit;
 
     /// @dev Update the StakingTracker address this contract points to
+    /// Emits an UpdateStakingTracker event.
     function submitUpdateStakingTracker(address _tracker) external;
     function updateStakingTracker(address _tracker) external onlyMultisigTx;
 
     /// @dev Update the voter address of this GC
+    /// Emits an UpdateVoterAddress event.
     function submitUpdateVoterAddress(address _addr) external;
     function updateVoterAddress(address _addr) external onlyMultisigTx;
 }
