@@ -192,17 +192,20 @@ abstract contract StakingTracker {
 
         // List of eligible nodes and their staking addresses.
         // Initialized by createTracker().
-        address[] nodeIds;
-        mapping(address => address) rewardToNodeId;
-        mapping(address => address) stakingToNodeId;
+        // Note that even if a GC member's stake falls below MIN_STAKE,
+        // eligibleNodes is not updated accordingly. The eligibleNodes denotes
+        // the number of eligible nodes at the initial recording (i.e. createTracker()).
+        address[] nodeIds; // Representative nodeIds of all GC members
+        mapping(address => address) rewardToNodeId;  // reward address to representative nodeId
+        mapping(address => address) stakingToNodeId; // staking contract to representative nodeId
+        uint256 eligibleNodes; // number of GC members with at least 1 vote
 
         // Balances and voting powers.
         // Initialized by createTracker() and updated by refreshStake().
-        mapping(address => uint256) stakingBalances;
-        mapping(address => uint256) nodeBalances;
-        mapping(address => uint256) nodeVotes;
-        uint256 totalVotes;
-        uint256 eligibleNodes;
+        mapping(address => uint256) stakingBalances; // staking contract balance
+        mapping(address => uint256) nodeBalances;    // total staking balance of a GC member
+        mapping(address => uint256) nodeVotes;       // voting powers of a GC member
+        uint256 totalVotes;                          // total voting powers of all GC members
     }
 
     // Tracker objects. Added by createTracker().
@@ -213,6 +216,9 @@ abstract contract StakingTracker {
     // Updated by refreshVoter().
     mapping(address => address) private nodeIdToVoter; // nodeId => voterAddr
     mapping(address => address) private voterToNodeId; // voterAddr => nodeId
+
+    // Minimum staking amount to have 1 vote
+    function MIN_STAKE() external view returns(uint256);
 
     /// @dev Creates a new Tracker and populate initial values from AddressBook
     function createTracker(uint256 trackStart, uint256 trackEnd)
@@ -226,6 +232,7 @@ abstract contract StakingTracker {
     /// @dev Re-evaluate voter account mapping related to the staking contract
     /// Anyone can call this function, but `staking` must be a staking contract
     /// registered to the AddressBook.
+    /// Note that two different nodes cannot appoint the same voter address.
     function refreshVoter(address staking) external;
 
     /// @dev Return integer fields of a tracker
@@ -287,7 +294,8 @@ abstract contract StakingTracker {
     function populateFromAddressBook(Tracker storage tracker) private {
         (address[] memory nodeIds,
          address[] memory stakingContracts,
-         address[] memory rewardAddrs, , ) = IAddressBook(ADDRESS_BOOK_ADDRESS()).getAllAddressInfo();
+         address[] memory rewardAddrs, , ) =
+            IAddressBook(ADDRESS_BOOK_ADDRESS()).getAllAddressInfo();
 
         // Group staking contracts by common reward address
         for (uint256 i = 0; i < nodeIds.length; i++) {
@@ -307,16 +315,20 @@ abstract contract StakingTracker {
     }
 
     function calcAllVotes(Tracker storage tracker) private {
-        tracker.totalVotes = 0;
-        tracker.eligibleNodes = 0;
+        uint256 eligibleNodes = 0;
         for (uint256 i = 0; i < tracker.nodeIds.length; i++) {
             if (isNodeEligible(trackerId, tracker.nodeIds[i])) {
-                tracker.eligibleNodes ++;
+                eligibleNodes ++;
             }
         }
+
+        tracker.eligibleNodes = eligibleNodes;
+        tracker.totalVotes = 0;
+
         for (uint256 i = 0; i < tracker.nodeIds.length; i++) {
             address nodeId = tracker.nodeIds[i];
-            uint256 votes = calcVotes(tracker.eligibleNodes, tracker.nodeBalances[nodeId]);
+            uint256 nodeBalance = tracker.nodeBalances[nodeId];
+            uint256 votes = calcVotes(tracker.eligibleNodes, nodeBalance);
             tracker.nodeVotes[nodeId] = votes;
             tracker.totalVotes += votes;
         }
@@ -336,7 +348,7 @@ abstract contract StakingTracker {
 
     function refreshStake(address staking) external override {
         for (uint256 i = 0; i < allTrackerIds.length; i++) {
-            uint256 trackerId = liveTrackerIds[i];
+            uint256 trackerId = allTrackerIds[i];
             Tracker storage tracker = trackers[trackerId];
             if (tracker.trackStart <= block.number && block.number < tracker.trackEnd) {
                 updateTracker(tracker, staking);
@@ -392,7 +404,8 @@ abstract contract StakingTracker {
     {
         (address[] memory nodeIds,
          address[] memory stakingContracts,
-         address[] memory rewardAddrs, , ) = IAddressBook(ADDRESS_BOOK_ADDRESS()).getAllAddressInfo();
+         address[] memory rewardAddrs, , ) =
+            IAddressBook(ADDRESS_BOOK_ADDRESS()).getAllAddressInfo();
 
         address rewardAddr;
         for (uint256 i = 0; i < nodeIds.length; i++) {
@@ -400,9 +413,6 @@ abstract contract StakingTracker {
                 rewardAddr = rewardAddrs[i];
                 break;
             }
-        }
-        if (rewardAddr != address(0)) {
-            return address(0);
         }
         for (uint256 i = 0; i < nodeIds.length; i++) {
             if (rewardAddrs[i] == rewardAddr) {
