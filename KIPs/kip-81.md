@@ -618,7 +618,7 @@ interface Voting {
 
 #### Fetching votes from StakingTracker
 
-Calculating votes require information from StakingTracker contract. The Voting contract shall utilize the getters to find voting powers of each voters as well as quorum conditions. Below is an example implementation of `castVote()` and `checkQuorum()` functions.
+Calculating votes requires information from StakingTracker contract. The Voting contract shall utilize the getters to find voting powers of each voters as well as quorum conditions. Below is an example implementation of `castVote()` and `checkQuorum()` functions.
 
 ```solidity
 abstract contract Voting {
