@@ -756,7 +756,7 @@ Another desion options was to restrict those funtions to only CnStakingV2 contra
 
 #### Separate voter account
 
-In security standpoint, it is safer to have separate accounts for different roles. Existing CnStakingV2 admins take financial roles - withdrawing staked KLAYs - and the voter account take voting role only.
+In security standpoint, it is safer to have separate accounts for different roles. Existing CnStakingV2 admins take financial roles - withdrawing staked KLAYs - and the voter account takes voting role only.
 
 #### Proposals have expired state
 
