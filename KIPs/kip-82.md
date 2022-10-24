@@ -34,7 +34,7 @@ As of September 21st, 2022, of the 300 million KLAY that is minted annually, onl
 
 ![gc reward allocation](../assets/kip-82/gc_reward_allocation.png)
 
-After the Magma hard fork, Klaytn has been burning the first half of the gas fee based on the KIP-71 proposal while the second half is distributed. The remaining second half is distributed into GC reward, Klaytn Improvement Reserve (KIR) and Klaytn Growth Fund (KGF).
+After the Magma hard fork, Klaytn has been burning the first half of the gas fee based on [the KIP-71 proposal](https://kips.klaytn.foundation/KIPs/kip-71) while the second half is distributed. The second half is distributed into GC reward, Klaytn Improvement Reserve (KIR) and Klaytn Growth Fund (KGF).
 
 The renewal will include a change of gas fee as follows.
 
