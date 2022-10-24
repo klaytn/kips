@@ -22,15 +22,18 @@ Klaytn has been compensating GC with block creation rewards based on the quantit
 - Associate GC reward with the growth of the Klaytn ecosystem
 
 ## Specification
+
 Block generation is rewarded for the node operations that are serving as public goods in the Klaytn network. CN and PN are in charge of block creation and propagation while EN is in charge of blockchain data inquiry based on an individual's needs. The infrastructure cost remains similar, enabling some fixed benefits. Therefore, fixed compensation will be equivalent to the sum of the transaction fee and an additional block compensation, which can be both inflationary and deflationary.
 
 The block proposal method will be based on equal selection regardless of the staking amount. The current model provides a block generation reward based on staking amount and the Gini-coefficient. Until now, the Gini coefficient was utilized to alleviate the chance of an entity with more staking amount being selected as a block proposer. As this model provided a fairly equal chance to every participant, each node was promised a certain amount of rewards.
 
-In the new method, the reward for node operation is required since the staking amount is not considered in the proposal selection process. Therefore, 20 percent of the total reward amount will be placed as a node operation reward.
+In the new method, the reward for node operation is required since the staking amount is not considered in the block proposer selection. Therefore, a certain percentage of the total reward amount will be placed as a node operation reward.
 
 Node operators will also be compensated with the staking for enhancing network stability from an economic standpoint. The opportunity cost incurred from staking is rewarded based on inflation. In this system, inflation provides a tax-like common effect. Public users can also participate and receive rewards through the GC-run public staking program.
 
 As of September 21st, 2022, of the 300 million KLAY that is minted annually, only 100 million KLAY goes to GC, and 20% and 80% of the distribution is from this 100 million KLAY. The renewal separates GC reward into two groups: basic reward and staked reward. The basic reward is compensating for node operation by providing 20% of GC reward and 100% of gas fee resources from transactions. The staked reward provides only the rest of 80% of the minting resource based on the total stake amount.
+
+The relative ratio of 20% and 80% is a tentative value to be used in the Cypress mainnet. However, this ratio is defined as a governance paramter GC members can change the ratio through the governance process.
 
 ![gc reward allocation](../assets/kip-82/gc_reward_allocation.png)
 
@@ -45,9 +48,16 @@ To reduce the KLAY supply amount due to inflation, the gas fee will be burnt.
 
 ### Klaytn node update
 
-The Klaytn node will be updated according to the new reward policy. The CN portion is further splitted into basic reward and staked reward. The staked reward is then distributed among CNs proportional to their staking shares. Their shares are calculated proportionally to their stake amounts except for the minimum staking amount.
+The Klaytn node will be updated according to the new reward policy. The CN portion is further split into basic reward and staked reward. The staked reward is then distributed among CNs proportional to their staking shares. Their shares are calculated proportionally to their stake amounts except for the minimum staking amount.
 
-During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: // is integer division, round down.
+Two new governance parameters fine control the new reward distribution algorithm. The default values below will be used in the Cypress mainnet. The parameters can be updated by the existing governance mechanism.
+
+| Name                | Type   | Meaning                                              | Default Value |
+|---------------------|--------|------------------------------------------------------|---------------|
+| `reward.usekip82`   | bool   | Whether the new algorithm is used or not             | false         |
+| `reward.kip82ratio` | string | The relative ratio between basic and staking rewards | "20/80"       |
+
+During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: `//` is round down integer division.
 
 ```python
 from collections import defaultdict
