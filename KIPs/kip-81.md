@@ -516,8 +516,8 @@ interface Voting {
         bytes[] calldatas) external returns (uint256 proposalId);
 
     /// @dev Cancel a proposal
-    /// The proposal must be in one of Pending, Active, Passed, Failed, Queued
-    /// states. Only the proposer of the proposal can cancel the proposal.
+    /// The proposal must be in one of Pending, Active, Passed, or Queued state.
+    /// Only the proposer of the proposal can cancel the proposal.
     function cancel(uint256 proposalId) external;
 
     /// @dev Cast a vote to a proposal
