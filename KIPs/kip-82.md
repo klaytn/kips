@@ -39,9 +39,9 @@ After the Magma hard fork, Klaytn has been burning the first half of the gas fee
 The renewal will include a change of gas fee as follows.
 
 In addition to changing the reward structure, this renewal will include burning the gas fee that is provided as GC’s basic reward. The KGF and KIR portion will be excluded from the gas fee.
-If the amount of gas fee that is provided as a basic reward does not exceed a certain level, all of them will be burned. The threshold amount is 20% of minting provided as a basic reward. If the gas fee exceeds this amount, 20% will be incinerated and the additional amount will be distributed to GC.
+If the amount of gas fee that is provided as a basic reward does not exceed a certain level, all of them will be burnt. The threshold amount is 20% of minting provided as a basic reward. If the gas fee exceeds this amount, 20% will be incinerated and the additional amount will be distributed to GC.
 
-To reduce the KLAY supply amount due to inflation, the gas fee will be burned.
+To reduce the KLAY supply amount due to inflation, the gas fee will be burnt.
 
 ### Klaytn node update
 
