@@ -131,7 +131,7 @@ class RewardSpec:
 def distribute_block_reward(state, header, config, staking_info):
     spec = calc_deferred_reward(header, config, staking_info)
 
-    for addr, amount in spec.Rewrads:
+    for addr, amount in spec.Rewards:
         state.AddBalance(addr, amount)
 
 # Calculates the deferred rewards, which are determined at the end of block processing.
