@@ -41,24 +41,24 @@ Recognizing a tendency that the member with more KLAY makes a decision that bene
 
 ### Smart Contracts Overview
 
-The Klaytn on-chain governance voting will be conducted on smart contracts. Several contracts and accounts interact together in the process. Below diagram shows the relationship between contracts and accounts.
+The Klaytn on-chain governance voting will be conducted on smart contracts. Several contracts and accounts interact together in the process. The below diagram shows the relationship between contracts and accounts.
 
 - Contracts
   - **AddressBook**: An existing contract that stores the list of GC nodes, their staking contracts, and their reward recipient addresses.
-  - **CnStakingV2**: An updated version of existing CnStakingContract. GCs stake their KLAYs to earn rights to validate blocks and cast on-chain votes.
-  - **StakingTracker**: A new contract that tracks voting related data from AddressBook and CnStakingV2 contracts.
+  - **CnStakingV2**: An updated version of the existing CnStakingContract. GCs stake their KLAYs to earn rights to validate blocks and cast on-chain votes.
+  - **StakingTracker**: A new contract that tracks voting-related data from AddressBook and CnStakingV2 contracts.
   - **Voting**: A new contract that processes the on-chain voting. It stores governance proposals, counts votes, and sends approved transactions.
 - Accounts
-  - **AddressBook admins**: A set of accounts controlled by the Foundation which can manage list of GCs in the AddressBook. AddressBook admin is managed in the AddressBook contract.
-  - **CnStaking admins**: A set of accounts controlled by each GC which can manage the staked KLAYs and its voter account. CnStaking admins are managed in the respective CnStakingV2 contracts. Note that every CnStakingV2 contract have different set of admins.
-  - **Voter account**: An account controlled by each GC which can cast on-chain votes. But this account cannot withdraw KLAYs from CnStakingV2 contracts. Voter account is appointed at CnStakingV2 contracts of the respective GC member.
-  - **Secretariat account**: An account controlled by the Foundation which can propose and execute on-chain governance proposals. Secretariat account is managed in the Voting contract.
+  - **AddressBook admins**: A set of accounts controlled by the Foundation which can manage the list of GCs in the AddressBook. AddressBook admin is managed in the AddressBook contract.
+  - **CnStaking admins**: A set of accounts controlled by each GC that can manage the staked KLAYs and its voter account. CnStaking admins are managed in the respective CnStakingV2 contracts. Note that every CnStakingV2 contract has a different set of admins.
+  - **Voter account**: An account controlled by each GC that can cast on-chain votes. But this account cannot withdraw KLAYs from CnStakingV2 contracts. Voter account is appointed at CnStakingV2 contracts of the respective GC member.
+  - **Secretariat account**: An account controlled by the Foundation which can propose and execute on-chain governance proposals. The secretariat account is managed in the Voting contract.
 
 ![contracts and accounts](../assets/kip-81/smart_contract_relation.png)
 
 ### AdressBook
 
-In Cypress mainnet and Baobab testnet, an [AddressBook contract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/reward/contract/AddressBook.sol) is deployed at address `0x0000000000000000000000000000000000000400`. For the purpose of Voting, following function of the AddressBook is used.
+In Cypress mainnet and Baobab testnet, an [AddressBook contract](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/reward/contract/AddressBook.sol) is deployed at address `0x0000000000000000000000000000000000000400`. For the purpose of Voting, the following function of the AddressBook is used.
 
 ```solidity
 interface IAddressBook {
@@ -90,7 +90,7 @@ CnStakingV2 is an upgraded version of [CnStakingContract](https://github.com/kla
 - Whenever its KLAY balance changes, V2 notifies the StakingTracker.
 - V2 stores a voter account address, and notifies the StakingTracker whenever it changes. The voter account can be changed by its admins.
 
-To support the new features, following functions are added. The function `setStakingTracker` is only callable before contract [initialization](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol#L237). Functions `updateStakingTracker` and `updateVoterAddress` are invoked upon approval of CnStaking admins using the existing [CnStaking multisig facility](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol#L597).
+To support the new features, the following functions are added. The function `setStakingTracker` is only callable before contract [initialization](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol#L237). Functions `updateStakingTracker` and `updateVoterAddress` are invoked upon approval of CnStaking admins using the existing [CnStaking multisig facility](https://github.com/klaytn/klaytn/blob/v1.9.1/contracts/cnstaking/CnStakingContract.sol#L597).
 
 ```solidity
 abstract contract CnStakingV2 {
@@ -171,13 +171,13 @@ abstract contract CnStakingV2 {
 
 ### StakingTracker
 
-StakingTracker collects voting related data of each GC member.
+StakingTracker collects voting-related data of each GC member.
 
 - Staking amounts and voting powers \
-Stored separately in `Tracker` structs. Each `Tracker` struct can be updated between `trackStart` and `trackEnd` blocks, but becomes immutable afterwards, essentially freezing the voting powers. A `Tracker` struct is first created in `createTracker()`, and updated by `refreshStake()`.
+Stored separately in `Tracker` structs. Each `Tracker` struct can be updated between `trackStart` and `trackEnd` blocks, but becomes immutable afterward, essentially freezing the voting powers. A `Tracker` struct is first created in `createTracker()`, and updated by `refreshStake()`.
 
 - Each GC’s voter accounts \
-Stored in global mappings, and can be updated any time. Voter account mappings are updated by `refreshVoter()`.
+Stored in global mappings, and can be updated at any time. Voter account mappings are updated by `refreshVoter()`.
 
 #### Contract interface
 
@@ -264,10 +264,10 @@ abstract contract StakingTracker {
 
 A voting contract can utilize StakingTracker as follows.
 
-1. When a governance proposal is submitted, the voting contract calls `createTracker()` to finalize eligible GC nodes list and evaluate voting powers.
+1. When a governance proposal is submitted, the voting contract calls `createTracker()` to finalize the eligible GC nodes list and evaluate voting powers.
 2. Before `trackEnd` block, GCs stake or unstake their KLAYs from their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshStake()` to notify the balance change.
 3. GCs may change their voter account in their CnStakingV2 contracts. The CnStakingV2 contracts will then call `refreshVoter()` to notify voter account change.
-4. After `trackEnd` block, the voting powers are frozen. The voting contract uses StakingTracker getters to process votes casted by voter accounts.
+4. After `trackEnd` block, the voting powers are frozen. The voting contract uses StakingTracker getters to process votes cast by voter accounts.
 
 #### Example implementation
 
@@ -433,20 +433,20 @@ While GCs hold their voting rights from staked KLAYs, a special secretariat acco
 
 Under the default timing settings, a typical governance proposal is handled as follows.
 
-1. When a governance proposal is submitted, it enters a 7-day preparation period where GCs can adjust their voting powers by staking or unstaking KLAYs. The list of voters (i.e., GCs) is finalized at the moment of proposal submission. However, voting powers are finalized at the end of preparation period.
+1. When a governance proposal is submitted, it enters a 7-day preparation period where GCs can adjust their voting powers by staking or unstaking KLAYs. The list of voters (i.e., GCs) is finalized at the moment of proposal submission. However, voting powers are finalized at the end of the preparation period.
 2. A 7-day voting period immediately follows after the preparation period.
 3. If there are enough Yes votes, the transactions can be queued within 7 days after voting ends.
-4. The transaction is delayed by 2 days to be executable. This delay gives the ecosystem enough time to adjust to then change and perform final review about transactions.
+4. The transaction is delayed by 2 days to be executable. This delay gives the ecosystem enough time to adjust to the change and perform a final review of transactions.
 5. After the delay, the transaction can be executed within 7 days.
 
-The proposer of a proposal can cancel it any time prior to execution. If a passed transaction is not queued or executed within the timeout, the proposal automatically expires.
+The proposer of a proposal can cancel it at any time prior to execution. If a passed transaction is not queued or executed within the timeout, the proposal automatically expires.
 
 ![voting steps](../assets/kip-81/voting_steps.png)
 
 #### Timing settings
 
-Proposal timeline is dictated by several timing settings below. The settings are expressed in
-block numbers. The number of days in below table is calculated based on 1 block/sec assumption.
+The proposal timeline is dictated by several timing settings below. The settings are expressed in
+block numbers. The number of days in the below table is calculated based on 1 block/sec assumption.
 
 | Name           | Meaning                                                      | Default Value   |
 |----------------|--------------------------------------------------------------|-----------------|
@@ -458,11 +458,11 @@ block numbers. The number of days in below table is calculated based on 1 block/
 
 #### Quorum
 
-A proposal passes when a combination of the following conditions are met.
+A proposal passes when it satisfies a combination of the following conditions.
 
-- `CountQuorum` = At least 1/3 of all eligible voters cast vote
-- `PowerQuorum` = At least 1/3 of all eligible voting powers cast vote
-- `MajorityYes` = Yes votes are more than half of casted votes
+- `CountQuorum` = At least 1/3 of all eligible voters cast votes
+- `PowerQuorum` = At least 1/3 of all eligible voting powers cast votes
+- `MajorityYes` = Yes votes are more than half of total cast votes
 - `PassCondition = (CountQuorum or PowerQuorum) and MajorityYes`
 
 #### Contract interface
@@ -616,7 +616,7 @@ interface Voting {
 
 #### Fetching votes from StakingTracker
 
-Calculating votes requires information from StakingTracker contract. The Voting contract shall utilize the getters to find voting powers of each voters as well as quorum conditions. Below is an example implementation of `castVote()` and `checkQuorum()` functions.
+Calculating votes requires information from StakingTracker contract. The Voting contract shall utilize the getters to find the voting powers of each voter as well as quorum conditions. Below is an example implementation of `castVote()` and `checkQuorum()` functions.
 
 ```solidity
 abstract contract Voting {
@@ -670,7 +670,7 @@ abstract contract Voting {
 
 #### Determining state
 
-The state of a proposal can be determined from stored variables, vote counts and current block number. Below is an example implementation of `state()` function.
+The state of a proposal can be determined from stored variables, vote counts, and current block number. Below is an example implementation of `state()` function.
 
 ```solidity
 abstract contract Voting {
@@ -720,7 +720,7 @@ abstract contract Voting {
 
 #### Executing transactions
 
-The transactions in a passed proposal are executed in a order they appear in the `propose()` function arguments.  Each transaction is sent to `targets[i]`, carrying `values[i]` of KLAYs, with `calldatas[i]` as input data. Below is an example of `execute()` function.
+The transactions in a passed proposal are executed in the order they appear in the `propose()` function arguments.  Each transaction is sent to `targets[i]`, carrying `values[i]` of KLAYs, with `calldatas[i]` as input data. Below is an example of `execute()` function.
 
 ```solidity
 abstract contract Voting {
@@ -748,24 +748,24 @@ abstract contract Voting {
 
 #### CnStakingV2 and StakingTracker instead of standard ERC20Votes
 
-It is common for DAOs to manage their governance tokens in a [ERC20Votes](https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Votes) contract. However new contracts CnStakingV2 and StakingTracker were used to manage staked KLAYs. Using the new contracts provides better compatibility with ecosystem Dapps like public staking services. It also does not break the existing block validator selection algorithm that depends on AddressBook.
+It is common for DAOs to manage their governance tokens in an [ERC20Votes](https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Votes) contract. However new contracts CnStakingV2 and StakingTracker were used to manage staked KLAYs. Using the new contracts provides better compatibility with ecosystem Dapps like public staking services. It also does not break the existing block validator selection algorithm that depends on AddressBook.
 
 #### StakingTracker refreshStake and refreshVoting has no access control
 
-Another desion options was to restrict those funtions to only CnStakingV2 contracts. But those functions are publicly open to allow GCs to gradually migrate from CnStakingContract to CnStakingV2 contracts. Old CnStakingContract does not notify StakingTracker about its balance change, in which case manually calling `refreshStake()` can notify the change.
+Another design choice was to restrict those functions to only CnStakingV2 contracts. But those functions are publicly open to allow GCs to optionally or gradually migrate from CnStakingContract to CnStakingV2 contracts. Old CnStakingContract does not notify StakingTracker about its balance change, in which case manually calling `refreshStake()` can notify the change.
 
 #### Separate voter account
 
-In security standpoint, it is safer to have separate accounts for different roles. Existing CnStakingV2 admins take financial roles - withdrawing staked KLAYs - and the voter account takes voting role only.
+In a security standpoint, it is safer to have separate accounts for different roles. Existing CnStakingV2 admins take a financial role - withdrawing staked KLAYs - and the voter account take a voting role only.
 
 #### Proposals have expired state
 
-Proposal transactions expires if they are not queued or executed within deadline. This guarantees the timeliness of the transactions. If a proposal was left unexecuted for a long time, the proposal might be irrelevant anymore and require a fresh proposal.
+Proposal transactions expire if they are not queued or executed within the deadline. This guarantees the timeliness of the transactions. If a proposal was left unexecuted for a long time, the proposal might be irrelevant anymore and require a fresh proposal.
 
 ## Expected Effect
 
 The proposed GC Voting method is expected to produce the following changes:
-- All members in Klaytn ecosystem grow together with credibility
+- All members in the Klaytn ecosystem grow together with credibility
 - Providing obligation and authority to GC motivates active participation in governance voting activities and the KLAY staking
 - Anyone can easily view the proposals and voting status through the governance portal. It encourages holders to participate and give responsibility and authority to GCs.
 - The Klaytn network can take a step closer to transparency and decentralized networks.
