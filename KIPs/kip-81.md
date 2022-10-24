@@ -772,7 +772,7 @@ The proposed GC Voting method is expected to produce the following changes:
 
 ## Backward Compatibility
 
-- GCs should deploy new CnStakingV2 contracts and move their staked KLAYs. Existing CnStaking contract balances are excluded from voting power calculation.
+- GCs should deploy new CnStakingV2 contracts and move their staked KLAYs. Existing CnStaking contract balances are excluded from voting power calculation. However, GCs can make the balance of existing CnStakingContract to be included in the staked KLAYs by calling `refreshStake` manually.
 - However, block validator selection is not affected by the change, so GCs can still participate in consensus before migrating to CnStakingV2.
 
 ## Reference
