@@ -121,28 +121,83 @@ class RewardSpec:
     Kir: int = 0      # The amount allocated to KIR
     Rewards: Dict[string, int] = {}  # Mapping from reward recipient to amounts
 
-# Distributes a given block's reward to CNs and KGF/KIR funds.
-# corresponds to Klaytn's reward.RewardDistributor.DistributeBlockReward().
+# Function hierarchy
+# - distribute_block_reward & get_actual_reward
+#   - calc_simple_reward
+#   - calc_deferred_reward
+#     - calc_deferred_fee
+#     - calc_split
+#     - calc_shares
+
+# Distributes a given block's reward at the end of block processing.
+# corresponds to Klaytn's reward.RewardDistributor.DistributeBlockReward() and MintKLAY().
 #
 # - state is the StateDB to apply the rewards.
 # - header is a Header instance.
 # - config is a RewardConfig instance.
 # - staking_info is a StakingInfo instance.
-def distribute_block_reward(state, header, config, staking_info):
-    spec = calc_deferred_reward(header, config, staking_info)
+# - proposerPolicy is the block proposer selection policy.
+#   Valid values are out of RoundRobin, Sticky, WeightedRandom.
+def distribute_block_reward(state, header, config, staking_info, proposerPolicy):
+    if proposerPolicy in [RoundRobin, Sticky]:
+        spec = calc_simple_reward(header, config)
+    else:
+        spec = calc_deferred_reward(header, config, staking_info)
 
     for addr, amount in spec.Rewards:
         state.AddBalance(addr, amount)
+
+# Returns the actual reward amounts paid in this block. Used in klay_getReward RPC
+# Returns a RewardSpec.
+def get_actual_reward(header, config, staking_info):
+    if proposerPolicy in [RoundRobin, Sticky]:
+        spec = calc_simple_reward(header, config)
+    else:
+        spec = calc_deferred_reward(header, config, staking_info)
+
+        # If not DeferredTxFee, include block gas fee because they were ignored in
+        # calc_deferred_reward.
+        if not config.DeferredTxFee:
+            if header.number >= MAGMA_BLOCK_NUMBER:
+                block_fee += header.GasUsed * header.BaseFee
+            else:
+                block_fee += header.GasUsed * config.UnitPrice
+            spec.Proposer += block_fee
+            spec.Rewards[header.RewardBase] += block_fee
+
+    return spec
+
+def calc_simple_reward(header, config):
+    minted = config.MintingAmount
+
+    if header.Number >= MAGMA_BLOCK_NUMBER:
+        total_fee = header.GasUsed * header.BaseFee
+        reward_fee = total_fee / 2
+        burnt_fee = total_fee / 2
+    else:
+        total_fee = header.GasUsed * config.UnitPrice
+        reward_fee = total_fee
+        burnt_fee = 0
+
+    proposer = minted + reward_fee
+
+    spec = RewardSpec()
+    spec.Minted = minted
+    spec.Fee = total_fee
+    spec.Burnt = burnt_fee
+    spec.Proposer = proposer
+    spec.Rewards = {header.RewardBase: proposer}
+    return spec
 
 # Calculates the deferred rewards, which are determined at the end of block processing.
 # Used in reward distribution.
 # Returns a RewardSpec.
 def calc_deferred_reward(header, config, staking_info):
     minted = config.MintingAmount
-    total_fee, reward_fee, burnt_fee = calc_fee_resource(header, config)
+    total_fee, reward_fee, burnt_fee = calc_deferred_fee(header, config)
 
-    proposer, stakers, kgf, kir, split_rem = split_reward(header, config, minted, reward_fee)
-    shares, share_rem = calc_stake_shares(config, staking_info, stakers)
+    proposer, stakers, kgf, kir, split_rem = calc_split(header, config, minted, reward_fee)
+    shares, share_rem = calc_shares(config, staking_info, stakers)
 
     kgf += split_rem
     kgf += share_rem
@@ -174,11 +229,11 @@ def calc_deferred_reward(header, config, staking_info):
     return spec
 
 # Returns (total_fee, reward_fee, burnt_fee)
-def calc_fee_resource(header, config):
+def calc_deferred_fee(header, config):
     # If not DeferredTxFee, fees are already added to the proposer during TX execution.
     # Therefore, there are no fees to distribute here at the end of block processing.
     if not config.DeferredTxFee:
-        return (0, 0)
+        return (0, 0, 0)
 
     # Start with the total block gas fee
     if header.Number >= MAGMA_BLOCK_NUMBER:
@@ -210,7 +265,7 @@ def calc_fee_resource(header, config):
     return (total, reward, burnt)
 
 # Returns (proposer, stakers, kgf, kir, remaining) amounts
-def split_reward(header, config, minted, fee):
+def calc_split(header, config, minted, fee):
     if header.number >= FORK_BLOCK_NUMBER and config.UseKIP82:
         resource = minted
 
@@ -236,7 +291,7 @@ def split_reward(header, config, minted, fee):
 # Distribute stake_reward among staked CNs
 # Returns a mapping from each reward address to their reward shares,
 # and the remaining amount.
-def calc_stake_shares(config, staking_info, stake_reward):
+def calc_shares(config, staking_info, stake_reward):
     if stake_reward == 0:
         return ({}, 0)
 
@@ -256,24 +311,6 @@ def calc_stake_shares(config, staking_info, stake_reward):
             shares[node.RewardAddr] = reward_amount
 
     return (shares, remaining)
-
-# Unlike calc_deferred_reward, this function calculates the actual reward amounts
-# paid in this block. Used in klay_getReward RPC
-# Returns a RewardSpec.
-def calc_actual_reward(header, config, staking_info):
-    spec = calc_deferred_reward(header, config, staking_info)
-
-    # If not DeferredTxFee, include block gas fee because they were ignored in
-    # calc_deferred_reward.
-    if not config.DeferredTxFee:
-        if header.number >= MAGMA_BLOCK_NUMBER:
-            block_fee += header.GasUsed * header.BaseFee
-        else:
-            block_fee += header.GasUsed * config.UnitPrice
-        spec.Proposer += block_fee
-        spec.Rewards[header.RewardBase] += block_fee
-
-    return spec
 ```
 
 The update is expected to increase the amount of per-block state changes by number of GCs. The increase should be reasonable since the amount is significantly smaller than Klaytn's transaction processing capability.
