@@ -538,7 +538,7 @@ interface Voting {
     /// Current block must be after `eta` and before `execDeadline` of this proposal
     /// If secretariat is null, any GC with at least 1 vote can execute.
     /// Otherwise only secretariat can execute.
-    function execute(uint256 proposalId) external;
+    function execute(uint256 proposalId) external payable;
 
     /// @dev Set secretariat account
     /// Must be called by address(this), i.e. via governance proposal.
@@ -732,7 +732,7 @@ abstract contract Voting {
     }
     mapping(uint256 => Proposal) proposals;
 
-    function execute(uint256 proposalId) external {
+    function execute(uint256 proposalId) external payable {
         Proposal storage p = proposals[proposalId];
 
         for (uint256 i = 0; i < p.targets.length; i++) {
