@@ -101,7 +101,7 @@ class StakingInfo:
 
 # Staking information merged under the same CN.
 # Sometimes a node would register multiple NodeAddrs
-# in which each entry has different StakingAddr and the same RewardAddr.
+# in which each entry has a different StakingAddr and the same RewardAddr.
 # We treat those entries with common RewardAddr as one node.
 # Corresponds to Klaytn's reward.ConsolidatedNode struct.
 class ConsolidatedNode:
@@ -110,7 +110,7 @@ class ConsolidatedNode:
     RewardAddr: string = "" # The common reward address of the CN
     StakingAmount: int = 0  # Total staking amount across StakingAddrs (in KLAY)
 
-# Reward disribution details.
+# Reward distribution details.
 class RewardSpec:
     Minted: int = 0   # The amount minted
     Fee: int = 0      # Total tx fee spent
@@ -235,7 +235,7 @@ def split_reward(header, config, minted, fee):
 
 # Distribute stake_reward among staked CNs
 # Returns a mapping from each reward address to their reward shares,
-# and remaining amount.
+# and the remaining amount.
 def calc_stake_shares(config, staking_info, stake_reward):
     if stake_reward == 0:
         return ({}, 0)
@@ -259,7 +259,7 @@ def calc_stake_shares(config, staking_info, stake_reward):
 
 # Unlike calc_deferred_reward, this function calculates the actual reward amounts
 # paid in this block. Used in klay_getReward RPC
-# Retruns a RewardSpec.
+# Returns a RewardSpec.
 def calc_actual_reward(header, config, staking_info):
     spec = calc_deferred_reward(header, config, staking_info)
 
@@ -283,7 +283,7 @@ The update is expected to increase the amount of per-block state changes by numb
 A new JSON-RPC method is added to provide historic reward distribution details.
 
 - Name: `klay_getRewards`
-- Description: Returns allocation details of reward distribution at specified block. If the parameter is not set, returns a breakdown of reward distribution at the lastest block.
+- Description: Returns allocation details of reward distribution at the specified block. If the parameter is not set, returns a breakdown of reward distribution at the latest block.
 - Parameters
   1. `QUANTITY | TAG` - (optional) integer or hexadecimal block number, or the string "earlist" or "latest".
 - Returns
@@ -293,11 +293,11 @@ A new JSON-RPC method is added to provide historic reward distribution details.
       - `fee`: Total tx fee spent
       - `burnt`: The amount burnt
     - `output`
-      - `proposer`: The amount block proposer receives
-      - `stakers`: Total amount stakers receive
-      - `kgf`: The amount KGF receives
-      - `kir`: The amount KIR receives
-    - `rewards`: A mapping from reward recipient address to reward amount
+      - `proposer`: The amount for the block proposer
+      - `stakers`: Total amount for stakers
+      - `kgf`: The amount for KGF
+      - `kir`: The amount for KIR
+    - `rewards`: A mapping from reward recipient addresses to reward amounts
 - Example
   ```
   // Request
@@ -341,4 +341,4 @@ Klaytn nodes must be upgraded before FORK_BLOCK_NUMBER to correctly produce or v
 n/a
 
 ## Copyright
-Copyright and related rights waived via CC0<https://creativecommons.org/publicdomain/zero/1.0/>.
+Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
