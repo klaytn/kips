@@ -367,7 +367,7 @@ A new JSON-RPC method is added to provide historic reward distribution details.
 ## Expected Effect
 The proposed GC reward mechanism is expected to produce the following changes:
 - GC members increase individual staking amount.
-- The higher number of KLAY holders receive profit from staking.
+- KLAY holders receive profit based on the staking amount of KLAY.
 - Total Value Locked (TVL) of Klaytn increases.
 - The total circulation reduces.
 
