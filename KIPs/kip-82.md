@@ -139,9 +139,9 @@ def distribute_block_reward(state, header, config, staking_info):
 # Returns a RewardSpec.
 def calc_deferred_reward(header, config, staking_info):
     minted = config.MintingAmount
-    fee, burnt = calc_fee_resource(header, config)
+    total_fee, reward_fee, burnt_fee = calc_fee_resource(header, config)
 
-    proposer, stakers, kgf, kir, split_rem = split_reward(header, config, minted, fee)
+    proposer, stakers, kgf, kir, split_rem = split_reward(header, config, minted, reward_fee)
     shares, share_rem = calc_stake_shares(config, staking_info, stakers)
 
     kgf += split_rem
@@ -149,8 +149,8 @@ def calc_deferred_reward(header, config, staking_info):
 
     spec = RewardSpec()
     spec.Minted = minted
-    spec.Fee = fee
-    spec.Burnt = burnt
+    spec.Fee = total_fee
+    spec.Burnt = burnt_fee
     spec.Proposer = proposer
     spec.Stakers = stakers
     spec.Kgf = kgf
@@ -173,25 +173,25 @@ def calc_deferred_reward(header, config, staking_info):
         spec.Rewards[reward_addr] += reward_amount
     return spec
 
-# Returns (fee, burnt_fee)
+# Returns (total_fee, reward_fee, burnt_fee)
 def calc_fee_resource(header, config):
-    # If not DeferredTxFee, fees are already added to the proposer during TX execution,
-    # therefore no fees to distribute here at the end of block processing.
+    # If not DeferredTxFee, fees are already added to the proposer during TX execution.
+    # Therefore, there are no fees to distribute here at the end of block processing.
     if not config.DeferredTxFee:
         return (0, 0)
 
-    # Start with total block gas fee
+    # Start with the total block gas fee
     if header.Number >= MAGMA_BLOCK_NUMBER:
-        fee = header.GasUsed * header.BaseFee
+        total = header.GasUsed * header.BaseFee
     else:
-        fee = header.GasUsed * config.UnitPrice
-
+        total = header.GasUsed * config.UnitPrice
+    reward = total
     burnt = 0
 
     # Since Magma, burn half of gas
     if header.number >= MAGMA_BLOCK_NUMBER:
         half_fee = fee / 2
-        fee -= half_fee
+        reward -= half_fee
         burnt += half_fee
 
     # If KIP-82 is enabled, burn fees up to BasicReward
@@ -204,10 +204,10 @@ def calc_fee_resource(header, config):
         else:
             burnt_kip82 = basic_reward
 
-        fee -= burnt_kip82
+        reward -= burnt_kip82
         burnt += burnt_kip82
 
-    return (fee, burnt)
+    return (total, reward, burnt)
 
 # Returns (proposer, stakers, kgf, kir, remaining) amounts
 def split_reward(header, config, minted, fee):
