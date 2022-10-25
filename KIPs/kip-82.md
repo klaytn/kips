@@ -245,7 +245,7 @@ def calc_deferred_fee(header, config):
 
     # Since Magma, burn half of gas
     if header.number >= MAGMA_BLOCK_NUMBER:
-        half_fee = fee / 2
+        half_fee = reward / 2
         reward -= half_fee
         burnt += half_fee
 
@@ -254,8 +254,8 @@ def calc_deferred_fee(header, config):
         minted = config.MintingAmount
         cn_minted = minted * config.CnRatio // config.TotalRatio
         basic_reward = cn_minted * config.CnMintedBasicRatio // config.CnMintedTotalRatio
-        if fee < basic_reward:
-            burnt_kip82 = fee
+        if reward < basic_reward:
+            burnt_kip82 = reward
         else:
             burnt_kip82 = basic_reward
 
