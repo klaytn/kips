@@ -57,7 +57,7 @@ Two new governance parameters fine control the new reward distribution algorithm
 | `reward.usekip82`   | bool   | Whether the new algorithm is used or not             | false         |
 | `reward.kip82ratio` | string | The relative ratio between basic and staking rewards | "20/80"       |
 
-During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: `//` is round down integer division.
+During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the proposer or KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: `//` is round down integer division.
 
 ```python
 from collections import defaultdict
@@ -199,8 +199,18 @@ def calc_deferred_reward(header, config, staking_info):
     proposer, stakers, kgf, kir, split_rem = calc_split(header, config, minted, reward_fee)
     shares, share_rem = calc_shares(config, staking_info, stakers)
 
+    # Remainder from (CN, KGF, KIR) split goes to KGF
     kgf += split_rem
-    kgf += share_rem
+    # Remainder from staker shares goes to Proposer
+    proposer += share_rem
+
+    # If KGF or KIR address is not set, proposer gets the portion.
+    if staking_info.KGFAddr is None:
+        proposer += kgf
+        kgf = 0
+    if staking_info.KIRAddr is None:
+        proposer += kir
+        kir = 0
 
     spec = RewardSpec()
     spec.Minted = minted
@@ -211,21 +221,15 @@ def calc_deferred_reward(header, config, staking_info):
     spec.Kgf = kgf
     spec.Kir = kir
 
-    spec.Rewards = defaultdict(int)
-    spec.Rewards[header.RewardBase] += proposer
-    # If KGF address is not set, proposer gets the portion.
-    if staking_info.KGFAddr is None:
-        spec.Rewards[header.RewardBase] += kgf
-    else:
-        spec.Rewards[staking_info.KGFAddr] += kgf
-    # If KIR address is not set, proposer gets the portion.
-    if staking_info.KIRAddr is None:
-        spec.Rewards[header.RewardBase] += kir
-    else:
-        spec.Rewards[staking_info.KIRAddr] += kir
-
+    spec.Rewards = {}
+    spec.Rewards[header.RewardBase] = proposer
+    if staking_info.KGFAddr is not None:
+        spec.Rewards[staking_info.KGFAddr] = kgf
+    if staking_info.KIRAddr is not None:
+        spec.Rewards[staking_info.KIRAddr] = kir
     for reward_addr, reward_amount in shares:
         spec.Rewards[reward_addr] += reward_amount
+
     return spec
 
 # Returns (total_fee, reward_fee, burnt_fee)
@@ -292,9 +296,6 @@ def calc_split(header, config, minted, fee):
 # Returns a mapping from each reward address to their reward shares,
 # and the remaining amount.
 def calc_shares(config, staking_info, stake_reward):
-    if stake_reward == 0:
-        return ({}, 0)
-
     min_stake = config.MinimumStake
     total_stakes = 0
     for node in staking_info.Nodes:
