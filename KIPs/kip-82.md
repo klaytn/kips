@@ -326,15 +326,13 @@ A new JSON-RPC method is added to provide historic reward distribution details.
   1. `QUANTITY | TAG` - (optional) integer or hexadecimal block number, or the string "earlist" or "latest".
 - Returns
   - `DATA`
-    - `source`
-      - `minted`: The amount minted
-      - `fee`: Total tx fee spent
-      - `burnt`: The amount burnt
-    - `output`
-      - `proposer`: The amount for the block proposer
-      - `stakers`: Total amount for stakers
-      - `kgf`: The amount for KGF
-      - `kir`: The amount for KIR
+    - `minted`: The amount minted
+    - `fee`: Total tx fee spent
+    - `burnt`: The amount burnt
+    - `proposer`: The amount for the block proposer
+    - `stakers`: Total amount for stakers
+    - `kgf`: The amount for KGF
+    - `kir`: The amount for KIR
     - `rewards`: A mapping from reward recipient addresses to reward amounts
 - Example
   ```
@@ -345,17 +343,13 @@ A new JSON-RPC method is added to provide historic reward distribution details.
     "jsonrpc":"2.0",
     "id":1,
     "result":{
-      "source": {
-        "minted": "9600000000000000000",
-        "fee": "4616950000000000",
-        "burnt": "2308475000000000",
-      },
-      "output": {
-        "proposer": "3264784881500000000",
-        "stakers": "0",
-        "kgf": "5185246576500000000",
-        "kir": "1152277017000000000"
-      },
+      "minted": "9600000000000000000",
+      "fee": "4616950000000000",
+      "burnt": "2308475000000000",
+      "proposer": "3264784881500000000",
+      "stakers": "0",
+      "kgf": "5185246576500000000",
+      "kir": "1152277017000000000"
       "rewards": {
         "0x99fb17d324fa0e07f23b49d09028ac0919414db6": "3264784881500000000",
         "0x2bcf9d3e4a846015e7e3152a614c684de16f37c6": "5185246576500000000",
