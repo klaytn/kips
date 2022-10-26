@@ -221,12 +221,12 @@ def calc_deferred_reward(header, config, staking_info):
     spec.Kgf = kgf
     spec.Kir = kir
 
-    spec.Rewards = {}
-    spec.Rewards[header.RewardBase] = proposer
+    spec.Rewards = defaultdict(int)
+    spec.Rewards[header.RewardBase] += proposer
     if staking_info.KGFAddr is not None:
-        spec.Rewards[staking_info.KGFAddr] = kgf
+        spec.Rewards[staking_info.KGFAddr] += kgf
     if staking_info.KIRAddr is not None:
-        spec.Rewards[staking_info.KIRAddr] = kir
+        spec.Rewards[staking_info.KIRAddr] += kir
     for reward_addr, reward_amount in shares:
         spec.Rewards[reward_addr] += reward_amount
 
