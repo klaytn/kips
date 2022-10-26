@@ -295,7 +295,7 @@ def calc_shares(config, staking_info, stake_reward):
     if stake_reward == 0:
         return ({}, 0)
 
-    min_stake = config.MinimumStake * 1e18
+    min_stake = config.MinimumStake
     total_stakes = 0
     for node in staking_info.Nodes:
         if node.StakingAmount > min_stake:
