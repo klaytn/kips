@@ -75,7 +75,8 @@ Under “avatars,” metadata keys for any metaverse platform, such as Zep.us an
 This proposal currently only includes the standard of Zep NFT avatars, but the standard of additional services can be also defined under “avatars”. 
 
 ```JSON Schema
-  "zep": {
+{
+  "zep": {  
              "image": "IMAGE URL",
              "frame_width": 48,
              "frame_height": 64,
@@ -89,8 +90,7 @@ Each property is defined as below.
 | zep | The key defined by zep.us |
 | image | A URL to the image of the avatar sprite sheet. (only PNG images are supported) |
 | frame_width | Width of a frame. The original image width must be divided by the frame_width. It must range between a minimum of 1 and a maximum of the image width. The values of frame_width and frame_height can be different. |
-| frame_height | Height of a frame. The original image height must be divided by the frame_height. It must range between a minimum of 1 and a maximum of the image height.
-This must be a multiple of an original image size, ranging between a minimum of 1 and a maximum of 256. The values of frame_width and frame_height can be different. | 
+| frame_height | Height of a frame. The original image height must be divided by the frame_height. It must range between a minimum of 1 and a maximum of the image height. This must be a multiple of an original image size, ranging between a minimum of 1 and a maximum of 256. The values of frame_width and frame_height can be different. | 
 | animations | Animation list of the avatar (idle, moving, jumping, etc…) | 
 
 The animation of the NFT avatar is defined under “animations.” The 17 motions are defined: directional movement, involving jump, attack and idle, and dancing. The following array of movements was included in the metadata. Below is an example of the definition of “animations”
@@ -211,8 +211,7 @@ The definition of each motion is as follows. We highly recommend all the animati
 Each motion is specified with an array of frames, frame_rate, and repeat. 
 | Variable | Description |
 | ----------- | ----------- |
-| frames | Frame index of the sprite sheet (zero-based)
-Each frame has (frame_width X frame_height) image fragment in the sprite sheet image. The frame index starts from 0. The maximum array length is 256. | 
+| frames | Frame index of the sprite sheet (zero-based). Each frame has (frame_width X frame_height) image fragment in the sprite sheet image. The frame index starts from 0. The maximum array length is 256. | 
 | frame_rate | frame_rate must be between a minimum of 1 and a maximum of 64. frame_rate represents the number of frames per second. | 
 | repeat | The number of repetitions of the animation. Only two values are supported: -1 and 1. If it is set to -1, it repeats endlessly. If 1, it repeats once. | 
 
