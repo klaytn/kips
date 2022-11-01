@@ -61,6 +61,7 @@ Each property, corresponding to ERC-721, is defined as below.
 | attributes | An attribute for the item, which will show up on the NFT marketplace. |
 | avatars | A metaverse platform where the item can be integrated as NFT avatars. | 
 
+
 Under “avatars,” metadata keys for any metaverse platform, such as Zep.us and Another.world, can be added. The value included in the key will define the animation of a character.  
 
 ```JSON Schema
@@ -92,6 +93,7 @@ Each property is defined as below.
 | frame_width | Width of a frame. The original image width must be divided by the frame_width. It must range between a minimum of 1 and a maximum of the image width. The values of frame_width and frame_height can be different. |
 | frame_height | Height of a frame. The original image height must be divided by the frame_height. It must range between a minimum of 1 and a maximum of the image height. This must be a multiple of an original image size, ranging between a minimum of 1 and a maximum of 256. The values of frame_width and frame_height can be different. | 
 | animations | Animation list of the avatar (idle, moving, jumping, etc…) | 
+
 
 The animation of the NFT avatar is defined under “animations.” The 17 motions are defined: directional movement, involving jump, attack and idle, and dancing. The following array of movements was included in the metadata. Below is an example of the definition of “animations”
 
@@ -207,6 +209,7 @@ The definition of each motion is as follows. We highly recommend all the animati
 | left_idle | The idle movement of the avatar to the left. |
 | right_idle | The idle movement of the avatar to the right. |
 | up_idle | The upward idle movement of the avatar. | 
+
 
 Each motion is specified with an array of frames, frame_rate, and repeat. 
 | Variable | Description |
