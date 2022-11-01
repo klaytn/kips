@@ -1,7 +1,7 @@
 ---
 kip: 87
 title: NFT Avatar Standard
-author: Yeri Lee <yeriel.lee@krustuniverse.com>, Junghyun Colin Kim <colin.klaytn@krustuniverse.com>, Wonbae Kim <kernys@supercat.co.kr>, Seokrin Sung <seokrin.sung@supercat.co.kr>
+author: Yeri Lee<yeriel.lee@krustuniverse.com>, Junghyun Colin Kim<colin.klaytn@krustuniverse.com>, Wonbae Kim<kernys@supercat.co.kr>, Seokrin Sung<seokrin.sung@supercat.co.kr>
 discussions-to:  
 status: Draft
 type: Standards Track
