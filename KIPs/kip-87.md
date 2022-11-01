@@ -2,7 +2,7 @@
 kip: 87
 title: NFT Avatar Standard
 author: Yeri Lee <yeriel.lee@krustuniverse.com>, Junghyun Colin Kim <colin.klaytn@krustuniverse.com>, Wonbae Kim <kernys@supercat.co.kr>, Seokrin Sung <seokrin.sung@supercat.co.kr>
-discussions-to:  
+discussions-to: https://forum.klaytn.foundation/t/en-kip-87-nft-avatar-standard-proposal/6161
 status: Draft
 type: Standards Track
 category: Application
