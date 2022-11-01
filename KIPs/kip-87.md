@@ -1,7 +1,7 @@
 ---
 kip: 87
 title: NFT Avatar Standard
-author: Yeri Lee<yeriel.lee@krustuniverse.com>, Junghyun Colin Kim<colin.klaytn@krustuniverse.com>, Wonbae Kim<kernys@supercat.co.kr>, Seokrin Sung<seokrin.sung@supercat.co.kr>
+author: Yeri Lee <yeriel.lee@krustuniverse.com>, Junghyun Colin Kim <colin.klaytn@krustuniverse.com>, Wonbae Kim <kernys@supercat.co.kr>, Seokrin Sung <seokrin.sung@supercat.co.kr>
 discussions-to:  
 status: Draft
 type: Standards Track
@@ -219,11 +219,11 @@ Each motion is specified with an array of frames, frame_rate, and repeat.
 This standard can be fully EIP-721, EIP-1155, KIP-17, and KIP-37 compatible by adding an extension “avatars” attribute in the metadata. This allows developers to easily adopt the standard quickly.
 
 ## Reference
-- ERC-721<https://eips.ethereum.org/EIPS/eip-721> Non-Fungible Token Standard 
-- ERC-1155<https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema> Multi-Token Standard 
-- Opensea Metadata Standards<https://docs.opensea.io/docs/metadata-standards>
+- ERC-721 <https://eips.ethereum.org/EIPS/eip-721> Non-Fungible Token Standard 
+- ERC-1155 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema> Multi-Token Standard 
+- Opensea Metadata Standards <https://docs.opensea.io/docs/metadata-standards>
 
 ## Copyright
-Copyright and related rights waived via CC0<https://creativecommons.org/publicdomain/zero/1.0/>.
+Copyright and related rights waived via CC0 <https://creativecommons.org/publicdomain/zero/1.0/>.
 
 
