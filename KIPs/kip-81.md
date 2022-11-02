@@ -363,7 +363,7 @@ abstract contract StakingTracker {
 
         // Update balance
         uint256 oldBalance = tracker.stakingBalances[staking];
-        uint256 newBalance = msg.sender.balance;
+        uint256 newBalance = address(staking).balance;
         tracker.stakingBalances[staking] = newBalance;
         tracker.nodeBalances[nodeId] -= oldBalance;
         tracker.nodeBalances[nodeId] += newBalance;
