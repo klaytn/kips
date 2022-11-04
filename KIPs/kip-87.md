@@ -7,7 +7,7 @@ status: Draft
 type: Standards Track
 category: Application
 created: 2022-11-01
-requires: ERC-721, ERC-1155, KIP-17, KIP-37
+requires: 17, 37
 ---
 
 ## Simple Summary
@@ -28,26 +28,26 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 NFT metadata structured by the official ERC721 metadata standard or the Enjin Metadata suggestions are as follows referring to OpenSea docs.
 
-```JSON Schema
+```json
 {
   "description": "Friendly OpenSea Creature that enjoys long swims in the ocean.", 
   "external_url": "https://openseacreatures.io/3", 
   "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png", 
   "name": "Dave Starbelly",
-  "attributes": { ... }, 
+  "attributes": {...}, 
 }
 ```
 
 In addition to the existing NFT metadata standard, the NFT avatar standard supplements the “avatars” section. The data required for the avatar varies by metaverse platform. In the instance of Zep, image URL and animation behavior are defined to maximize the scalability of individual NFT. This standard represents a metadata extension of ERC721.
 
-```JSON Schema
+```json
 {
   "description": "Friendly OpenSea Creature that enjoys long swims in the ocean.", 
   "external_url": "https://openseacreatures.io/3", 
   "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png", 
   "name": "Dave Starbelly",
-  "attributes": [ ... ], 
-  "avatars": { ... },
+  "attributes": {...}, 
+  "avatars": {...},
 }
 ```
 
@@ -64,7 +64,7 @@ Each property, corresponding to ERC-721, is defined as below.
 
 Under "avatars" metadata keys for any metaverse platform, such as Zep.us and Another.world, can be added. The value included in the key will define the animation of a character.  
 
-```JSON Schema
+```json
 ...
 {
    "avatars": {
@@ -75,7 +75,7 @@ Under "avatars" metadata keys for any metaverse platform, such as Zep.us and Ano
 
 This proposal currently only includes the standard of Zep NFT avatars, but the standard of additional services can be also defined under “avatars”. 
 
-```JSON Schema
+```json
 {
   "zep": {  
              "image": "IMAGE URL",
@@ -95,92 +95,92 @@ Each property is defined as below.
 | animations | Animation list of the avatar (idle, moving, jumping, etc…) | 
 
 
-The animation of the NFT avatar is defined under “animations.” The 17 motions are defined: directional movement, involving jump, attack and idle, and dancing. The following array of movements was included in the metadata. Below is an example of the definition of “animations”
+The animation of the NFT avatar is defined under “animations”. The 17 motions are defined: directional movement, involving jump, attack and idle, and dancing. The following array of movements was included in the metadata. Below is an example of the definition of “animations”.
 
 ```json
 {
      "animations": {
-	“down”: {
+	    "down": {
             frames: [1, 2, 3, 4],
             frame_rate: 8,
             repeat: -1
         },
-        “left”: {
+        "left": {
             frames: [6, 7, 8, 9],
             frame_rate: 8,
             repeat: -1
         },
-        “right”: {
+        "right": {
             frames: [11, 12, 13, 14],
             frame_rate: 8,
             repeat: -1
         },
-        “up”: {
+        "up": {
             frames: [16, 17, 18, 19],
             frame_rate: 8,
             repeat: -1
         },
-        “dance”: {
+        "dance": {
             frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
             frame_rate: 8,
             repeat: 1,
         },
-        “down_jump”: {
+        "down_jump": {
             frames: [38],
             frame_rate: 8,
             repeat: -1
         },
-        “left_jump”: {
+        "left_jump": {
             frames: [39],
             frame_rate: 8,
             repeat: -1
         },
-        “right_jump”: {
+        "right_jump": {
             frames: [40],
             frame_rate: 8,
             repeat: -1
         },
-        “up_jump”: {
+        "up_jump": {
             frames: [41],
             frame_rate: 8,
             repeat: -1
         },
-        “down_attack”: {
+        "down_attack": {
             frames: [42],
             frame_rate: 8,
             repeat: 1,
         },
-        “left_attack”: {
+        "left_attack": {
             frames: [43],
             frame_rate: 8,
             repeat: 1,
         },
-        “right_attack”: {
+        "right_attack": {
             frames: [44],
             frame_rate: 8,
             repeat: 1,
         },
-        “up_attack”: {
+        "up_attack": {
             frames: [45],
             frame_rate: 8,
             repeat: 1,
         },
-        “down_idle”: {
+        "down_idle": {
             frames: [0],
             frame_rate: 1,
             repeat: 1,
         },
-        “left_idle”: {
+        "left_idle": {
             frames: [5],
             frame_rate: 1,
             repeat: 1,
         },
-        “right_idle”: {
+        "right_idle": {
             frames: [10],
             frame_rate: 1,
             repeat: 1,
         },
-        “up_idle”: {
+        "up_idle": {
             frames: [15],
             frame_rate: 1,
             repeat: 1,
