@@ -52,9 +52,9 @@ The Klaytn node will be updated according to the new reward policy. The CN porti
 
 Two new governance parameters fine control the new reward distribution algorithm. The initial values below will be used in the Cypress mainnet when KIP-82 is first applied. The parameters can be updated by the existing governance mechanism.
 
-| Name                | Type   | Meaning                                              | Initial Value |
-|---------------------|--------|------------------------------------------------------|---------------|
-| `reward.kip82ratio` | string | The relative ratio between basic and staking rewards | "20/80"       |
+| Name                | Type   | Meaning                                                 | Initial Value |
+|---------------------|--------|---------------------------------------------------------|---------------|
+| `reward.kip82ratio` | string | The relative ratio between proposer and staking rewards | "20/80"       |
 
 During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the proposer or KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: `//` is round down integer division.
 
@@ -79,16 +79,16 @@ class RewardConfig:
     MinimumStake: int = 5000000               # "reward.minimumstake" parameter (in KLAY)
     DeferredTxFee: bool = true    # "reward.deferredtxfee" parameter
 
-    # "reward.ratio" parameter (e.g. "34/54/12")
+    # "reward.ratio" parameter (e.g. "50/40/10")
     CnRatio: int = 34
     KgfRatio: int = 54
     KirRatio: int = 12
     TotalRatio: int = CnRatio + KgfRatio + KirRatio
 
     # "reward.kip82ratio" parameter (e.g. "20/80") (new)
-    CnMintedBasicRatio: int = 20
-    CnMintedStakeRatio: int = 80
-    CnMintedTotalRatio: int = CnMintedBasicRatio + CnMintedStakeRatio
+    CnProposerRatio: int = 20
+    CnStakingRatio: int = 80
+    CnTotalRatio: int = CnProposerRatio + CnStakingRatio
 
 # CN staking status and KGF/KIR addresses.
 # Corresponds to Klaytn's reward.StakingInfo struct.
@@ -251,15 +251,15 @@ def calc_deferred_fee(header, config):
         reward -= half_fee
         burnt += half_fee
 
-    # If KIP-82 is enabled, burn fees up to BasicReward
+    # If KIP-82 is enabled, burn fees up to proposer's minted reward
     if header.number >= KORE_BLOCK_NUMBER:
         minted = config.MintingAmount
-        cn_minted = minted * config.CnRatio // config.TotalRatio
-        basic_reward = cn_minted * config.CnMintedBasicRatio // config.CnMintedTotalRatio
-        if reward < basic_reward:
-            burnt_kip82 = reward
+        minted_cn = minted * config.CnRatio // config.TotalRatio
+        minted_proposer = minted_cn * config.CnProposerRatio // config.CnTotalRatio
+        if reward >= minted_proposer:
+            burnt_kip82 = minted_proposer
         else:
-            burnt_kip82 = basic_reward
+            burnt_kip82 = reward
 
         reward -= burnt_kip82
         burnt += burnt_kip82
@@ -275,11 +275,11 @@ def calc_split(header, config, minted, fee):
         kgf = resource * config.KgfRatio // config.TotalRatio
         kir = resource * config.KirRatio // config.TotalRatio
 
-        cn_basic = cn * config.CnMintedBasicRatio // config.CnMintedTotalRatio
-        cn_stake = cn * config.CnMintedStakeRatio // config.CnMintedTotalRatio
+        proposer = cn * config.CnProposerRatio // config.CnTotalRatio
+        stakers = cn * config.CnStakingRatio // config.CnTotalRatio
 
-        remaining = resource - kgf - kir - cn_basic - cn_stake
-        return (cn_basic + fee, cn_stake, kgf, kir, remaining)
+        remaining = resource - kgf - kir - proposer - stakers
+        return (proposer + fee, stakers, kgf, kir, remaining)
     else:
         resource = minted + fee
 
