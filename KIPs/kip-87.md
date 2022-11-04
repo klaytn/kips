@@ -26,7 +26,7 @@ The NFT avatar standard will generate a positive value creation cycle between cr
 ## Specification
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY” and “OPTIONAL” in this document are to be interpreted as described in RFC 2119.
 
-NFT metadata structured by the official ERC721 metadata standard or the Enjin Metadata suggestions are as follows referring to OpenSea docs.
+[NFT metadata](https://docs.opensea.io/docs/metadata-standards) structured by the official ERC721 metadata standard or the Enjin Metadata suggestions are as follows referring to OpenSea docs.
 
 ```json
 {
