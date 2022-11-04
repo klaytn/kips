@@ -80,9 +80,9 @@ class RewardConfig:
     DeferredTxFee: bool = true    # "reward.deferredtxfee" parameter
 
     # "reward.ratio" parameter (e.g. "50/40/10")
-    CnRatio: int = 34
-    KgfRatio: int = 54
-    KirRatio: int = 12
+    CnRatio: int = 50
+    KgfRatio: int = 40
+    KirRatio: int = 10
     TotalRatio: int = CnRatio + KgfRatio + KirRatio
 
     # "reward.kip82ratio" parameter (e.g. "20/80") (new)
@@ -347,23 +347,23 @@ A new JSON-RPC method is added to provide historic reward distribution details.
 - Example
   ```
   // Request
-  curl -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0", "method":"klay_getRewards", "params":["0x5f5e100"],"id":1}' https://api.baobab.klaytn.net:8651
+  curl -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0", "method":"klay_getRewards", "params":["0x64fe7e0"],"id":1}' https://api.baobab.klaytn.net:8651
   // Response
   {
     "jsonrpc":"2.0",
     "id":1,
     "result":{
-      "minted": "9600000000000000000",
-      "totalFee": "4616950000000000",
-      "burntFee": "2308475000000000",
-      "proposer": "3264784881500000000",
+      "minted": "6400000000000000000",
+      "totalFee": "1075975000000000",
+      "burntFee": "537987500000000",
+      "proposer": "3200268993750000000",
       "stakers": "0",
-      "kgf": "5185246576500000000",
-      "kir": "1152277017000000000"
+      "kgf": "2560215195000000000",
+      "kir": "640053798750000000"
       "rewards": {
-        "0x99fb17d324fa0e07f23b49d09028ac0919414db6": "3264784881500000000",
-        "0x2bcf9d3e4a846015e7e3152a614c684de16f37c6": "5185246576500000000",
-        "0x716f89d9bc333286c79db4ebb05516897c8d208a": "1152277017000000000"
+        "0xa86fd667c6a340c53cc5d796ba84dbe1f29cb2f7": "3200268993750000000",
+        "0x2bcf9d3e4a846015e7e3152a614c684de16f37c6": "2560215195000000000",
+        "0x716f89d9bc333286c79db4ebb05516897c8d208a": "640053798750000000"
       }
     }
   }
