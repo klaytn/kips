@@ -63,7 +63,7 @@ During integer arithmetics, minuscule remaining amounts may be emitted as by-pro
 from collections import defaultdict
 
 MAGMA_BLOCK_NUMBER = 99841497
-FORK_BLOCK_NUMBER = 120000000 # TBD
+KORE_BLOCK_NUMBER = 120000000 # TBD
 
 # Block header. Only relevant fields are shown here.
 class Header:
@@ -254,7 +254,7 @@ def calc_deferred_fee(header, config):
         burnt += half_fee
 
     # If KIP-82 is enabled, burn fees up to BasicReward
-    if header.number >= FORK_BLOCK_NUMBER and config.UseKIP82:
+    if header.number >= KORE_BLOCK_NUMBER and config.UseKIP82:
         minted = config.MintingAmount
         cn_minted = minted * config.CnRatio // config.TotalRatio
         basic_reward = cn_minted * config.CnMintedBasicRatio // config.CnMintedTotalRatio
@@ -270,7 +270,7 @@ def calc_deferred_fee(header, config):
 
 # Returns (proposer, stakers, kgf, kir, remaining) amounts
 def calc_split(header, config, minted, fee):
-    if header.number >= FORK_BLOCK_NUMBER and config.UseKIP82:
+    if header.number >= KORE_BLOCK_NUMBER and config.UseKIP82:
         resource = minted
 
         cn = resource * config.CnRatio // config.TotalRatio
@@ -367,7 +367,7 @@ The proposed GC reward mechanism is expected to produce the following changes:
 - The total circulation reduces.
 
 ## Backward Compatibility
-Klaytn nodes must be upgraded before FORK_BLOCK_NUMBER to correctly produce or verify blocks.
+Klaytn nodes must be upgraded before `KORE_BLOCK_NUMBER` to correctly produce or verify blocks.
 
 ## Reference
 n/a
