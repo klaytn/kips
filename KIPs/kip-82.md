@@ -310,7 +310,7 @@ def calc_shares(config, staking_info, stake_reward):
     total_stakes = 0
     for node in staking_info.Nodes:
         if node.StakingAmount > min_stake:
-            total_stakes += (node.StakingAmount - config.MinimumStake)
+            total_stakes += (node.StakingAmount - min_stake)
 
     shares = {}
     remaining = stake_reward
