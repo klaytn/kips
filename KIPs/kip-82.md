@@ -37,14 +37,9 @@ The relative ratio of 20% and 80% is a tentative value to be used in the Cypress
 
 ![gc reward allocation](../assets/kip-82/gc_reward_allocation.png)
 
-After the Magma hard fork, Klaytn has been burning the first half of the gas fee based on [the KIP-71 proposal](https://kips.klaytn.foundation/KIPs/kip-71) while the second half is distributed. The second half is distributed into GC reward, Klaytn Improvement Reserve (KIR) and Klaytn Growth Fund (KGF).
+After the Magma hard fork, Klaytn has been burning the first half of the gas fee based on [the KIP-71 proposal](https://kips.klaytn.foundation/KIPs/kip-71) while the second half is distributed. The second half is distributed into GC reward, KGF and KIR.
 
-The renewal will include a change of gas fee distribution as follows.
-
-In addition to changing the reward structure, this renewal will include burning the gas fee that is provided as GC’s basic reward. The KGF and KIR portion will be excluded from the gas fee.
-If the amount of gas fee that is provided as a basic reward does not exceed a certain level, all of them will be burnt. The threshold amount is 20% of minting provided as a basic reward. If the gas fee exceeds this amount, 20% will be incinerated and the additional amount will be distributed to GC.
-
-To reduce the KLAY supply amount due to inflation, the gas fee will be burnt.
+In addition to changing the reward structure, this renewal will include burning the gas fee up to a threshold which is the size of block proposer reward. If the gas fee exceeds the threshold, remaining amount is rewarded to the block proposer. The KGF and KIR portion will be excluded from the gas fee.
 
 ### Klaytn node update
 
