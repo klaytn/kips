@@ -62,7 +62,7 @@ Each property, corresponding to ERC-721, is defined as below.
 | avatars | A metaverse platform where the item can be integrated as NFT avatars. | 
 
 
-Under “avatars,” metadata keys for any metaverse platform, such as Zep.us and Another.world, can be added. The value included in the key will define the animation of a character.  
+Under "avatars" metadata keys for any metaverse platform, such as Zep.us and Another.world, can be added. The value included in the key will define the animation of a character.  
 
 ```JSON Schema
 ...
