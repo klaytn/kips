@@ -48,15 +48,17 @@ To reduce the KLAY supply amount due to inflation, the gas fee will be burnt.
 
 ### Klaytn node update
 
-The Klaytn node will be updated according to the new reward policy. The CN portion is further split into basic reward and staked reward. The staked reward is then distributed among CNs proportional to their staking shares. Their shares are calculated proportionally to their stake amounts except for the minimum staking amount.
+The Klaytn node will be updated according to the new reward policy. The CN reward is further split into proposer reward and staking reward. The staking reward is distributed among CNs proportionally to their staking amounts minus the minimum staking amount.
 
-Two new governance parameters fine control the new reward distribution algorithm. The initial values below will be used in the Cypress mainnet when KIP-82 is first applied. The parameters can be updated by the existing governance mechanism.
+A new governance parameter is introduced to tune the new reward distribution algorithm. The initial value below will be used in the Cypress mainnet when KIP-82 is first applied. The parameter can be updated using the existing governance mechanism.
 
 | Name                | Type   | Meaning                                                 | Initial Value |
 |---------------------|--------|---------------------------------------------------------|---------------|
 | `reward.kip82ratio` | string | The relative ratio between proposer and staking rewards | "20/80"       |
 
-During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the proposer or KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: `//` is round down integer division.
+During integer arithmetics, minuscule remaining amounts may be emitted as by-products. The proposer gets the remainder from the staking share disribution, and KGF gets the the remainder from the distribution among proposer, stakers, KIR, KGF.
+
+Below pseudocode illustrates the new reward distribution algorithm. Note: `//` is round down integer division.
 
 ```python
 from collections import defaultdict
@@ -110,7 +112,7 @@ class ConsolidatedNode:
 
 # Reward distribution details.
 class RewardSpec:
-    Minted: int = 0   # The amount minted
+    Minted: int = 0   # The amount newly minted
     TotalFee: int = 0 # Total tx fee spent
     BurntFee: int = 0 # The amount burnt
     Proposer: int = 0 # The amount allocated to the block proposer
@@ -153,9 +155,9 @@ def get_actual_reward(header, config, staking_info):
     else:
         spec = calc_deferred_reward(header, config, staking_info)
 
-        # Compensate the difference from calc_deferred_reward() and actual payment.
+        # Compensate the difference between calc_deferred_reward() and actual payment.
         # If not DeferredTxFee, calc_deferred_reward() assumes 0 total_fee, but
-        # nonzero fee should have actually paid to the proposer.
+        # some nonzero fee is paid to the proposer.
         if not config.DeferredTxFee:
             total_fee = get_total_fee(header)
             spec.Proposer += total_fee
@@ -231,7 +233,7 @@ def calc_deferred_reward(header, config, staking_info):
 def calc_deferred_fee(header, config):
     # If not DeferredTxFee, fees are already added to the proposer during TX execution.
     # Therefore, there are no fees to distribute here at the end of block processing.
-    # However, to calcualte actual rewards paid, block gas fee must be compensated.
+    # However, the fees must be compensated to calculate actual rewards paid.
     if not config.DeferredTxFee:
         return (0, 0, 0)
 
@@ -324,11 +326,11 @@ def calc_shares(config, staking_info, stake_reward):
     return (shares, remaining)
 ```
 
-The update is expected to increase the amount of per-block state changes by number of GCs. The increase should be reasonable since the amount is significantly smaller than Klaytn's transaction processing capability.
+The updated algorithm increases the balance of every GC member's reward account at every block. The performance impact should be reasonable since the number of GC members is significantly smaller than Klaytn's transaction processing capability.
 
-### Reward RPC
+### Reward JSON-RPC API
 
-A new JSON-RPC method is added to provide historic reward distribution details.
+A new JSON-RPC method should be added to provide historic reward distribution details.
 
 - Name: `klay_getRewards`
 - Description: Returns allocation details of reward distribution at the specified block. If the parameter is not set, returns a breakdown of reward distribution at the latest block.
