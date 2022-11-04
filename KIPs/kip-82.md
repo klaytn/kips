@@ -50,11 +50,10 @@ To reduce the KLAY supply amount due to inflation, the gas fee will be burnt.
 
 The Klaytn node will be updated according to the new reward policy. The CN portion is further split into basic reward and staked reward. The staked reward is then distributed among CNs proportional to their staking shares. Their shares are calculated proportionally to their stake amounts except for the minimum staking amount.
 
-Two new governance parameters fine control the new reward distribution algorithm. The default values below will be used in the Cypress mainnet. The parameters can be updated by the existing governance mechanism.
+Two new governance parameters fine control the new reward distribution algorithm. The initial values below will be used in the Cypress mainnet when KIP-82 is first applied. The parameters can be updated by the existing governance mechanism.
 
-| Name                | Type   | Meaning                                              | Default Value |
+| Name                | Type   | Meaning                                              | Initial Value |
 |---------------------|--------|------------------------------------------------------|---------------|
-| `reward.usekip82`   | bool   | Whether the new algorithm is used or not             | false         |
 | `reward.kip82ratio` | string | The relative ratio between basic and staking rewards | "20/80"       |
 
 During integer arithmetics, minuscule remaining amounts may be emitted as by-products. Such remaining amounts will be added to the proposer or KGF portion. Below pseudocode illustrates the new reward distribution algorithm. Note: `//` is round down integer division.
@@ -79,7 +78,6 @@ class RewardConfig:
     MintingAmount: int = 9600000000000000000  # "reward.mintingamount" parameter (in peb)
     MinimumStake: int = 5000000               # "reward.minimumstake" parameter (in KLAY)
     DeferredTxFee: bool = true    # "reward.deferredtxfee" parameter
-    UseKIP82: bool = true         # "reward.usekip82" parameter (new)
 
     # "reward.ratio" parameter (e.g. "34/54/12")
     CnRatio: int = 34
@@ -254,7 +252,7 @@ def calc_deferred_fee(header, config):
         burnt += half_fee
 
     # If KIP-82 is enabled, burn fees up to BasicReward
-    if header.number >= KORE_BLOCK_NUMBER and config.UseKIP82:
+    if header.number >= KORE_BLOCK_NUMBER:
         minted = config.MintingAmount
         cn_minted = minted * config.CnRatio // config.TotalRatio
         basic_reward = cn_minted * config.CnMintedBasicRatio // config.CnMintedTotalRatio
@@ -270,7 +268,7 @@ def calc_deferred_fee(header, config):
 
 # Returns (proposer, stakers, kgf, kir, remaining) amounts
 def calc_split(header, config, minted, fee):
-    if header.number >= KORE_BLOCK_NUMBER and config.UseKIP82:
+    if header.number >= KORE_BLOCK_NUMBER:
         resource = minted
 
         cn = resource * config.CnRatio // config.TotalRatio
