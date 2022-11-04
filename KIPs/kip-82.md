@@ -111,9 +111,9 @@ class ConsolidatedNode:
 # Reward distribution details.
 class RewardSpec:
     Minted: int = 0   # The amount minted
-    Fee: int = 0      # Total tx fee spent
-    Burnt: int = 0    # The amount burnt
-    Proposer: int = 0    # The amount allocated to the block proposer
+    TotalFee: int = 0 # Total tx fee spent
+    BurntFee: int = 0 # The amount burnt
+    Proposer: int = 0 # The amount allocated to the block proposer
     Stakers: int = 0  # Total amount allocated to stakers
     Kgf: int = 0      # The amount allocated to KGF
     Kir: int = 0      # The amount allocated to KIR
@@ -145,7 +145,7 @@ def distribute_block_reward(state, header, config, staking_info, proposerPolicy)
     for addr, amount in spec.Rewards:
         state.AddBalance(addr, amount)
 
-# Returns the actual reward amounts paid in this block. Used in klay_getReward RPC
+# Returns the actual reward amounts paid in this block. Used in klay_getRewards RPC
 # Returns a RewardSpec.
 def get_actual_reward(header, config, staking_info):
     if proposerPolicy in [RoundRobin, Sticky]:
@@ -153,36 +153,33 @@ def get_actual_reward(header, config, staking_info):
     else:
         spec = calc_deferred_reward(header, config, staking_info)
 
-        # If not DeferredTxFee, include block gas fee because they were ignored in
-        # calc_deferred_reward.
+        # Compensate the difference from calc_deferred_reward() and actual payment.
+        # If not DeferredTxFee, calc_deferred_reward() assumes 0 total_fee, but
+        # nonzero fee should have actually paid to the proposer.
         if not config.DeferredTxFee:
-            if header.number >= MAGMA_BLOCK_NUMBER:
-                block_fee += header.GasUsed * header.BaseFee
-            else:
-                block_fee += header.GasUsed * config.UnitPrice
-            spec.Proposer += block_fee
-            spec.Rewards[header.RewardBase] += block_fee
+            total_fee = get_total_fee(header)
+            spec.Proposer += total_fee
+            spec.Rewards[header.RewardBase] += total_fee
 
     return spec
 
 def calc_simple_reward(header, config):
     minted = config.MintingAmount
+    total_fee = get_total_fee(header)
+    reward_fee = total_fee
+    burnt_fee = 0
 
     if header.Number >= MAGMA_BLOCK_NUMBER:
-        total_fee = header.GasUsed * header.BaseFee
-        reward_fee = total_fee / 2
-        burnt_fee = total_fee / 2
-    else:
-        total_fee = header.GasUsed * config.UnitPrice
-        reward_fee = total_fee
-        burnt_fee = 0
+        burn_amount = get_burn_amount_magma(reward_fee)
+        reward_fee -= burn_amount
+        burnt_fee += burn_amount
 
     proposer = minted + reward_fee
 
     spec = RewardSpec()
     spec.Minted = minted
-    spec.Fee = total_fee
-    spec.Burnt = burnt_fee
+    spec.TotalFee = total_fee
+    spec.BurntFee = burnt_fee
     spec.Proposer = proposer
     spec.Rewards = {header.RewardBase: proposer}
     return spec
@@ -212,8 +209,8 @@ def calc_deferred_reward(header, config, staking_info):
 
     spec = RewardSpec()
     spec.Minted = minted
-    spec.Fee = total_fee
-    spec.Burnt = burnt_fee
+    spec.TotalFee = total_fee
+    spec.BurntFee = burnt_fee
     spec.Proposer = proposer
     spec.Stakers = stakers
     spec.Kgf = kgf
@@ -234,61 +231,76 @@ def calc_deferred_reward(header, config, staking_info):
 def calc_deferred_fee(header, config):
     # If not DeferredTxFee, fees are already added to the proposer during TX execution.
     # Therefore, there are no fees to distribute here at the end of block processing.
+    # However, to calcualte actual rewards paid, block gas fee must be compensated.
     if not config.DeferredTxFee:
         return (0, 0, 0)
 
     # Start with the total block gas fee
-    if header.Number >= MAGMA_BLOCK_NUMBER:
-        total = header.GasUsed * header.BaseFee
-    else:
-        total = header.GasUsed * config.UnitPrice
-    reward = total
-    burnt = 0
+    total_fee = get_total_fee(header)
+    reward_fee = total_fee
+    burnt_fee = 0
 
     # Since Magma, burn half of gas
     if header.number >= MAGMA_BLOCK_NUMBER:
-        half_fee = reward / 2
-        reward -= half_fee
-        burnt += half_fee
+        burn_amount = get_burn_amount_magma(reward_fee)
+        reward_fee -= burn_amount
+        burnt_fee += burn_amount
 
     # If KIP-82 is enabled, burn fees up to proposer's minted reward
     if header.number >= KORE_BLOCK_NUMBER:
-        minted = config.MintingAmount
-        minted_cn = minted * config.CnRatio // config.TotalRatio
-        minted_proposer = minted_cn * config.CnProposerRatio // config.CnTotalRatio
-        if reward >= minted_proposer:
-            burnt_kip82 = minted_proposer
-        else:
-            burnt_kip82 = reward
+        burn_amount = get_burn_amount_kip82(config, reward_fee)
+        reward_fee -= burn_amount
+        burnt_fee += burn_amount
 
-        reward -= burnt_kip82
-        burnt += burnt_kip82
+    return (total_fee, reward_fee, burnt_fee)
 
-    return (total, reward, burnt)
+def get_total_fee(header):
+    if header.number >= MAGMA_BLOCK_NUMBER:
+        return header.GasUsed * header.BaseFee
+    else:
+        return header.GasUsed * config.UnitPrice
+
+def get_burn_amount_magma(fee):
+    return fee / 2
+
+def get_burn_amount_kip82(config, fee):
+    cn, _, _ = split_by_ratio(config, config.MintingAmount)
+    proposer, _ = split_by_kip82_ratio(config, cn)
+    if fee >= proposer:
+        return proposer
+    else:
+        return fee
 
 # Returns (proposer, stakers, kgf, kir, remaining) amounts
-def calc_split(header, config, minted, fee):
+# The sum of output must be equal to (minted + reward_fee).
+def calc_split(header, config, minted, reward_fee):
+    total_resource = minted + reward_fee
+
     if header.number >= KORE_BLOCK_NUMBER:
-        resource = minted
+        cn, kgf, kir = split_by_ratio(config, minted)
+        proposer, stakers = split_by_kip82_ratio(config, cn)
+        proposer += reward_fee
 
-        cn = resource * config.CnRatio // config.TotalRatio
-        kgf = resource * config.KgfRatio // config.TotalRatio
-        kir = resource * config.KirRatio // config.TotalRatio
-
-        proposer = cn * config.CnProposerRatio // config.CnTotalRatio
-        stakers = cn * config.CnStakingRatio // config.CnTotalRatio
-
-        remaining = resource - kgf - kir - proposer - stakers
-        return (proposer + fee, stakers, kgf, kir, remaining)
+        remaining = total_resource - kgf - kir - proposer - stakers
+        return (proposer, stakers, kgf, kir, remaining)
     else:
-        resource = minted + fee
+        cn, kgf, kir = split_by_ratio(config, minted + reward_fee)
 
-        cn = resource * config.CnRatio // config.TotalRatio
-        kgf = resource * config.KgfRatio // config.TotalRatio
-        kir = resource * config.KirRatio // config.TotalRatio
-
-        remaining = resource - kgf - kir - cn
+        remaining = total_resource - kgf - kir - cn
         return (cn, 0, kgf, kir, remaining)
+
+# Split by `ratio`. Ignore remaining amounts.
+def split_by_ratio(config, source):
+    cn = source * config.CnRatio // config.TotalRatio
+    kgf = source * config.KgfRatio // config.TotalRatio
+    kir = source * config.KirRatio // config.TotalRatio
+    return (cn, kgf, kir)
+
+# Split by `kip82ratio`. Ignore remaining amounts.
+def split_by_kip82_ratio(config, source):
+    proposer = source * config.CnProposerRatio // config.CnTotalRatio
+    stakers = source * config.CnStakingRatio // config.CnTotalRatio
+    return (proposer, stakers)
 
 # Distribute stake_reward among staked CNs
 # Returns a mapping from each reward address to their reward shares,
@@ -325,8 +337,8 @@ A new JSON-RPC method is added to provide historic reward distribution details.
 - Returns
   - `DATA`
     - `minted`: The amount minted
-    - `fee`: Total tx fee spent
-    - `burnt`: The amount burnt
+    - `totalFee`: Total tx fee spent
+    - `burntFee`: The amount burnt
     - `proposer`: The amount for the block proposer
     - `stakers`: Total amount for stakers
     - `kgf`: The amount for KGF
@@ -342,8 +354,8 @@ A new JSON-RPC method is added to provide historic reward distribution details.
     "id":1,
     "result":{
       "minted": "9600000000000000000",
-      "fee": "4616950000000000",
-      "burnt": "2308475000000000",
+      "totalFee": "4616950000000000",
+      "burntFee": "2308475000000000",
       "proposer": "3264784881500000000",
       "stakers": "0",
       "kgf": "5185246576500000000",
