@@ -71,10 +71,16 @@ class Header:
 # Network configurations related to reward distribution.
 # Corresponds to Klaytn's reward.rewardConfig struct.
 class RewardConfig:
+    # "istanbul.policy" parameter
+    RoundRobin = 0
+    Sticky = 1
+    WeightedRandom = 2
+    ProposerPolicy: int = WeightedRandom
+
     UnitPrice: int = 25000000000              # "governance.unitprice" parameter (in peb)
     MintingAmount: int = 9600000000000000000  # "reward.mintingamount" parameter (in peb)
     MinimumStake: int = 5000000               # "reward.minimumstake" parameter (in KLAY)
-    DeferredTxFee: bool = true    # "reward.deferredtxfee" parameter
+    DeferredTxFee: bool = True                # "reward.deferredtxfee" parameter
 
     # "reward.ratio" parameter (e.g. "50/40/10")
     CnRatio: int = 50
@@ -89,6 +95,7 @@ class RewardConfig:
 
 # CN staking status and KGF/KIR addresses.
 # Corresponds to Klaytn's reward.StakingInfo struct.
+# Can be obtained from reward.GetStakingInfo(blockNum) function.
 class StakingInfo:
     KIRAddr: string = ""
     KGFAddr: string = ""
@@ -116,39 +123,29 @@ class RewardSpec:
     Kir: int = 0      # The amount allocated to KIR
     Rewards: Dict[string, int] = {}  # Mapping from reward recipient to amounts
 
-# Function hierarchy
-# - distribute_block_reward & get_actual_reward
-#   - calc_simple_reward
-#   - calc_deferred_reward
-#     - calc_deferred_fee
-#     - calc_split
-#     - calc_shares
-
-# Distributes a given block's reward at the end of block processing.
-# corresponds to Klaytn's reward.RewardDistributor.DistributeBlockReward() and MintKLAY().
+# Perform post-transaction state modifications such as block rewards.
+# Corresponds to Klaytn's consensus/istanbul/backend.Finalize()
 #
 # - state is the StateDB to apply the rewards.
 # - header is a Header instance.
 # - config is a RewardConfig instance.
-# - staking_info is a StakingInfo instance.
-# - proposerPolicy is the block proposer selection policy.
-#   Valid values are out of RoundRobin, Sticky, WeightedRandom.
-def distribute_block_reward(state, header, config, staking_info, proposerPolicy):
-    if proposerPolicy in [RoundRobin, Sticky]:
-        spec = calc_simple_reward(header, config)
+def finalize_block(state, header, config):
+    if config.ProposerPolicy in [RoundRobin, Sticky]:
+        spec = calc_deferred_reward_simple(header, config)
     else:
-        spec = calc_deferred_reward(header, config, staking_info)
+        spec = calc_deferred_reward(header, config)
 
     for addr, amount in spec.Rewards:
         state.AddBalance(addr, amount)
+    header.Root = state.Root()
 
-# Returns the actual reward amounts paid in this block. Used in klay_getRewards RPC
+# Returns the actual reward amounts paid in this block. Used in klay_getRewards RPC API.
 # Returns a RewardSpec.
-def get_actual_reward(header, config, staking_info):
-    if proposerPolicy in [RoundRobin, Sticky]:
-        spec = calc_simple_reward(header, config)
+def get_block_reward(header, config):
+    if config.ProposerPolicy in [RoundRobin, Sticky]:
+        spec = calc_deferred_reward_simple(header, config)
     else:
-        spec = calc_deferred_reward(header, config, staking_info)
+        spec = calc_deferred_reward(header, config)
 
         # Compensate the difference between calc_deferred_reward() and actual payment.
         # If not DeferredTxFee, calc_deferred_reward() assumes 0 total_fee, but
@@ -160,7 +157,7 @@ def get_actual_reward(header, config, staking_info):
 
     return spec
 
-def calc_simple_reward(header, config):
+def calc_deferred_reward_simple(header, config):
     minted = config.MintingAmount
     total_fee = get_total_fee(header)
     reward_fee = total_fee
@@ -184,7 +181,8 @@ def calc_simple_reward(header, config):
 # Calculates the deferred rewards, which are determined at the end of block processing.
 # Used in reward distribution.
 # Returns a RewardSpec.
-def calc_deferred_reward(header, config, staking_info):
+def calc_deferred_reward(header, config):
+    staking_info = GetStakingInfo(header.Number)
     minted = config.MintingAmount
     total_fee, reward_fee, burnt_fee = calc_deferred_fee(header, config)
 
