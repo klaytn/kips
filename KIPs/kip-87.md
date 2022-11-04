@@ -99,7 +99,7 @@ The animation of the NFT avatar is defined under “animations.” The 17 motion
 
 ```json
 {
-"animations": {
+     "animations": {
 	“down”: {
             frames: [1, 2, 3, 4],
             frame_rate: 8,
