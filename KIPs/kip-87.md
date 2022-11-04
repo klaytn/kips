@@ -81,7 +81,7 @@ This proposal currently only includes the standard of Zep NFT avatars, but the s
              "image": "IMAGE URL",
              "frame_width": 48,
              "frame_height": 64,
-"animations": {...}
+             "animations": {...}
 }
 ```
 
