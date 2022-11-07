@@ -1,6 +1,6 @@
 ---
 kip: 87
-title: NFT Avatar Standard
+title: NFT Avatar in Multi-Metaverse
 author: Yeri Lee <yeriel.lee@krustuniverse.com>, Junghyun Colin Kim <colin.klaytn@krustuniverse.com>, Wonbae Kim <kernys@supercat.co.kr>, Seokrin Sung <seokrin.sung@supercat.co.kr>
 discussions-to: https://forum.klaytn.foundation/t/en-kip-87-nft-avatar-standard-proposal/6161
 status: Draft
@@ -34,7 +34,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
   "external_url": "https://openseacreatures.io/3", 
   "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png", 
   "name": "Dave Starbelly",
-  "attributes": {...}, 
+  "attributes": {}
 }
 ```
 
@@ -46,12 +46,13 @@ In addition to the existing NFT metadata standard, the NFT avatar standard suppl
   "external_url": "https://openseacreatures.io/3", 
   "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png", 
   "name": "Dave Starbelly",
-  "attributes": {...}, 
-  "avatars": {...},
+  "attributes": {}, 
+  "avatars": {}
 }
 ```
 
-Each property, corresponding to ERC-721, is defined as below. 
+Each property, corresponding to ERC-721, is defined as below.
+
 | Variable | Description |
 | ----------- | ----------- |
 | name | The name of the item. |
@@ -61,15 +62,15 @@ Each property, corresponding to ERC-721, is defined as below.
 | attributes | An attribute for the item, which will show up on the NFT marketplace. |
 | avatars | A metaverse platform where the item can be integrated as NFT avatars. | 
 
-
 Under "avatars" metadata keys for any metaverse platform, such as Zep.us and Another.world, can be added. The value included in the key will define the animation of a character.  
 
 ```json
 ...
 {
    "avatars": {
-         "zep": {...},
-         "another.world": {...},
+         "zep": {},
+         "another.world": {}
+   }
 }
 ```
 
@@ -81,11 +82,13 @@ This proposal currently only includes the standard of Zep NFT avatars, but the s
              "image": "IMAGE URL",
              "frame_width": 48,
              "frame_height": 64,
-             "animations": {...}
+             "animations": {}
+  }
 }
 ```
 
-Each property is defined as below. 
+Each property is defined as below.
+
 | Variable | Description |
 | ----------- | ----------- |
 | zep | The key defined by zep.us |
@@ -93,7 +96,6 @@ Each property is defined as below.
 | frame_width | Width of a frame. The original image width must be divided by the frame_width. It must range between a minimum of 1 and a maximum of the image width. The values of frame_width and frame_height can be different. |
 | frame_height | Height of a frame. The original image height must be divided by the frame_height. It must range between a minimum of 1 and a maximum of the image height. This must be a multiple of an original image size, ranging between a minimum of 1 and a maximum of 256. The values of frame_width and frame_height can be different. | 
 | animations | Animation list of the avatar (idle, moving, jumping, etc…) | 
-
 
 The animation of the NFT avatar is defined under “animations”. The 17 motions are defined: directional movement, involving jump, attack and idle, and dancing. The following array of movements was included in the metadata. Below is an example of the definition of “animations”.
 
@@ -123,7 +125,7 @@ The animation of the NFT avatar is defined under “animations”. The 17 motion
         "dance": {
             "frames": [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
             "frame_rate": 8,
-            "repeat": 1,
+            "repeat": 1
         },
         "down_jump": {
             "frames": [38],
@@ -148,48 +150,49 @@ The animation of the NFT avatar is defined under “animations”. The 17 motion
         "down_attack": {
             "frames": [42],
             "frame_rate": 8,
-            "repeat": 1,
+            "repeat": 1
         },
         "left_attack": {
             "frames": [43],
             "frame_rate": 8,
-            "repeat": 1,
+            "repeat": 1
         },
         "right_attack": {
             "frames": [44],
             "frame_rate": 8,
-            "repeat": 1,
+            "repeat": 1
         },
         "up_attack": {
             "frames": [45],
             "frame_rate": 8,
-            "repeat": 1,
+            "repeat": 1
         },
         "down_idle": {
             "frames": [0],
             "frame_rate": 1,
-            "repeat": 1,
+            "repeat": 1
         },
         "left_idle": {
             "frames": [5],
             "frame_rate": 1,
-            "repeat": 1,
+            "repeat": 1
         },
         "right_idle": {
             "frames": [10],
             "frame_rate": 1,
-            "repeat": 1,
+            "repeat": 1
         },
         "up_idle": {
             "frames": [15],
             "frame_rate": 1,
-            "repeat": 1,
-        },
+            "repeat": 1
+        }
      }
  }
 ```
 
 The definition of each motion is as follows. We highly recommend all the animations should be defined. Please note that if the animation is not defined, it can cause undefined behavior (e.g., previous animation can be played).
+
 | Variable | Description |
 | ----------- | ----------- |
 | down | The downward movement of the avatar. | 
@@ -210,8 +213,8 @@ The definition of each motion is as follows. We highly recommend all the animati
 | right_idle | The idle movement of the avatar to the right. |
 | up_idle | The upward idle movement of the avatar. | 
 
-
 Each motion is specified with an array of frames, frame_rate, and repeat. 
+
 | Variable | Description |
 | ----------- | ----------- |
 | frames | Frame index of the sprite sheet (zero-based). Each frame has (frame_width X frame_height) image fragment in the sprite sheet image. The frame index starts from 0. The maximum array length is 256. | 
