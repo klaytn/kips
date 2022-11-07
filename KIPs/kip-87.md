@@ -101,89 +101,89 @@ The animation of the NFT avatar is defined under “animations”. The 17 motion
 {
      "animations": {
 	    "down": {
-            frames: [1, 2, 3, 4],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [1, 2, 3, 4],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "left": {
-            frames: [6, 7, 8, 9],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [6, 7, 8, 9],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "right": {
-            frames: [11, 12, 13, 14],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [11, 12, 13, 14],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "up": {
-            frames: [16, 17, 18, 19],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [16, 17, 18, 19],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "dance": {
-            frames: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
-            frame_rate: 8,
-            repeat: 1,
+            "frames": [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+            "frame_rate": 8,
+            "repeat": 1,
         },
         "down_jump": {
-            frames: [38],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [38],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "left_jump": {
-            frames: [39],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [39],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "right_jump": {
-            frames: [40],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [40],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "up_jump": {
-            frames: [41],
-            frame_rate: 8,
-            repeat: -1
+            "frames": [41],
+            "frame_rate": 8,
+            "repeat": -1
         },
         "down_attack": {
-            frames: [42],
-            frame_rate: 8,
-            repeat: 1,
+            "frames": [42],
+            "frame_rate": 8,
+            "repeat": 1,
         },
         "left_attack": {
-            frames: [43],
-            frame_rate: 8,
-            repeat: 1,
+            "frames": [43],
+            "frame_rate": 8,
+            "repeat": 1,
         },
         "right_attack": {
-            frames: [44],
-            frame_rate: 8,
-            repeat: 1,
+            "frames": [44],
+            "frame_rate": 8,
+            "repeat": 1,
         },
         "up_attack": {
-            frames: [45],
-            frame_rate: 8,
-            repeat: 1,
+            "frames": [45],
+            "frame_rate": 8,
+            "repeat": 1,
         },
         "down_idle": {
-            frames: [0],
-            frame_rate: 1,
-            repeat: 1,
+            "frames": [0],
+            "frame_rate": 1,
+            "repeat": 1,
         },
         "left_idle": {
-            frames: [5],
-            frame_rate: 1,
-            repeat: 1,
+            "frames": [5],
+            "frame_rate": 1,
+            "repeat": 1,
         },
         "right_idle": {
-            frames: [10],
-            frame_rate: 1,
-            repeat: 1,
+            "frames": [10],
+            "frame_rate": 1,
+            "repeat": 1,
         },
         "up_idle": {
-            frames: [15],
-            frame_rate: 1,
-            repeat: 1,
+            "frames": [15],
+            "frame_rate": 1,
+            "repeat": 1,
         },
      }
  }
@@ -228,5 +228,3 @@ This standard can be fully EIP-721, EIP-1155, KIP-17, and KIP-37 compatible by a
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
-
-
