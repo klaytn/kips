@@ -159,7 +159,10 @@ def get_block_reward(header, config):
 
 def calc_deferred_reward_simple(header, config):
     minted = config.MintingAmount
+
     total_fee = get_total_fee(header)
+    if header.Number >= MAGMA_BLOCK_NUMBER and not config.DeferredTxFee:
+        total_fee = 0
     reward_fee = total_fee
     burnt_fee = 0
 
