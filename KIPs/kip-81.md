@@ -24,7 +24,7 @@ Klaytn Governance Forum is to freely propose and discuss Klaytn governance items
 
 Klaytn Square includes the following functions:
 - Ability to vote on a governance agenda and view the voting process
-- Information about Governance Councils: description, contract address, notice, and staking status, staking and reward history
+- Information about Governance Councils: description, contract address, notice, staking status, staking and reward history, etc.
 - View the history of governance agenda and Governance Councils
 
 ![voting process diagram](../assets/kip-81/voting_process_diagram.png)
@@ -37,22 +37,22 @@ The Klaytn governance voting system is designed based on the following fundament
 - The governance system should be able to manage the situations in which a particular entity makes an arbitrary decision. This is because the entity may weaken the sustainability of the entire network.
 - The act of voting and the gain of voting power is different.
 
-Recognizing a tendency that the member with more KLAY makes a decision that benefits the Klaytn ecosystem in the long run, we are granting a higher voting power to members with more KLAY. Yet, to prevent a particular subject from making an arbitrary decision, we are placing a cap on the voting power one can receive. Therefore, A GC member will receive 1 vote per a certain amount of staked KLAY (initial configuration: 5 million KLAY). The maximum number of votes a member can own is one less than the total number of GC members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. This cap structure prevents potential monopolies.
+Recognizing a tendency that the member with more KLAY makes a decision that benefits the Klaytn ecosystem in the long run, we are granting a higher voting power to members with more KLAY. Yet, to prevent a particular subject from making an arbitrary decision, we are placing a cap on the voting power one can receive at the maximum. Therefore, a GC member will receive 1 vote per a certain amount of staked KLAY (initial configuration: 5 million KLAY). The maximum number of votes a member can own is one less than the total number of GC members. In other words, [Maximum Voting Power =  Total number of GC members - 1]. For example, if there are 35 GC members, one can own a maximum of 34 voting power. This cap structure prevents potential monopolies.
 
 ### Smart Contracts Overview
 
 The Klaytn on-chain governance voting will be conducted on smart contracts. Several contracts and accounts interact together in the process. The below diagram shows the relationship between contracts and accounts.
 
 - Contracts
-  - **AddressBook**: An existing contract that stores the list of GC nodes, their staking contracts, and their reward recipient addresses.
-  - **CnStakingV2**: An updated version of the existing CnStakingContract. GCs stake their KLAYs to earn rights to validate blocks and cast on-chain votes.
-  - **StakingTracker**: A new contract that tracks voting-related data from AddressBook and CnStakingV2 contracts.
-  - **Voting**: A new contract that processes the on-chain voting. It stores governance proposals, counts votes, and sends approved transactions.
+  - **AddressBook**: an existing contract that stores the list of GC nodes, their staking contracts, and their reward recipient addresses.
+  - **CnStakingV2**: an updated version of the existing CnStakingContract. GCs stake their KLAYs to earn rights to validate blocks and cast on-chain votes.
+  - **StakingTracker**: a new contract that tracks voting-related data from AddressBook and CnStakingV2 contracts.
+  - **Voting**: a new contract that processes the on-chain voting. It stores governance proposals, counts votes, and sends approved transactions.
 - Accounts
-  - **AddressBook admins**: A set of accounts controlled by the Foundation which can manage the list of GCs in the AddressBook. AddressBook admin is managed in the AddressBook contract.
-  - **CnStaking admins**: A set of accounts controlled by each GC that can manage the staked KLAYs and its voter account. CnStaking admins are managed in the respective CnStakingV2 contracts. Note that every CnStakingV2 contract has a different set of admins.
-  - **Voter account**: An account controlled by each GC that can cast on-chain votes. But this account cannot withdraw KLAYs from CnStakingV2 contracts. Voter account is appointed at CnStakingV2 contracts of the respective GC member.
-  - **Secretariat account**: An account controlled by the Foundation which can propose and execute on-chain governance proposals. The secretariat account is managed in the Voting contract.
+  - **AddressBook admins**: a set of accounts controlled by the Foundation which can manage the list of GCs in the AddressBook. AddressBook admins are managed in the AddressBook contract.
+  - **CnStaking admins**: a set of accounts controlled by each GC that can manage the staked KLAYs and its voter account. CnStaking admins are managed in the respective CnStakingV2 contracts. Note that every CnStakingV2 contract has a different set of admins.
+  - **Voter account**: an account controlled by each GC member that can cast on-chain votes. But this account cannot withdraw KLAYs from CnStakingV2 contracts. A Voter account is appointed at CnStakingV2 contracts of the respective GC member.
+  - **Secretariat account**: an account controlled by the Foundation which can propose and execute on-chain governance proposals. The secretariat account is managed in the Voting contract.
 
 ![contracts and accounts](../assets/kip-81/smart_contract_relation.png)
 
@@ -119,7 +119,7 @@ abstract contract CnStakingV2 {
 
 #### Notifying changes to StakingTracker
 
-To notify balance and voter account changes to StakingTracker contract, CnStakingV2 contract shall call the StakingTracker whenever after every change. For example,
+To notify balance and voter account changes to the StakingTracker contract, the CnStakingV2 contract shall call the StakingTracker whenever after every change. For example,
 
 ```solidity
 abstract contract CnStakingV2 {
