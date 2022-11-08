@@ -65,7 +65,6 @@ Each property, corresponding to ERC-721, is defined as below.
 Under "avatars" metadata keys for any metaverse platform, such as Zep.us and Another.world, can be added. The value included in the key will define the animation of a character.  
 
 ```json
-...
 {
    "avatars": {
          "zep": {},
