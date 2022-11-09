@@ -9,7 +9,6 @@ category: Core
 created: 2022-09-21
 ---
 
-
 ## Simple Summary
 A renewal of the Governance Council(GC) reward structure due to abolition of the Gini coefficient.
 
