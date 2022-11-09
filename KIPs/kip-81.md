@@ -9,7 +9,6 @@ category: Core
 created: 2022-09-19
 ---
 
-
 ## Simple Summary
 Introducing a new governance voting method based on the staking amount and implementation of the Klaytn Square, a governance portal
 
