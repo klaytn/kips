@@ -139,24 +139,6 @@ def finalize_block(state, header, config):
         state.AddBalance(addr, amount)
     header.Root = state.Root()
 
-# Returns the actual reward amounts paid in this block. Used in klay_getRewards RPC API.
-# Returns a RewardSpec.
-def get_block_reward(header, config):
-    if config.ProposerPolicy in [RoundRobin, Sticky]:
-        spec = calc_deferred_reward_simple(header, config)
-    else:
-        spec = calc_deferred_reward(header, config)
-
-        # Compensate the difference between calc_deferred_reward() and actual payment.
-        # If not DeferredTxFee, calc_deferred_reward() assumes 0 total_fee, but
-        # some nonzero fee is paid to the proposer.
-        if not config.DeferredTxFee:
-            total_fee = get_total_fee(header)
-            spec.Proposer += total_fee
-            spec.Rewards[header.RewardBase] += total_fee
-
-    return spec
-
 def calc_deferred_reward_simple(header, config):
     minted = config.MintingAmount
 
