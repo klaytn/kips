@@ -14,14 +14,14 @@ requires: 17, 37
 Creating an NFT avatar standard to provide an interchangeable visualization of NFT across multiple metaverses  
 
 ## Abstract
-Although fungible tokens (FTs) are easily exchangeable across different platforms through DEX, non-fungible tokens (NFTs) do not easily migrate from one metaverse to another. The exchange of NFTs across platforms often does not promise the equivalent asset value, including quality and style. We aim to define an NFT as a single character with different visualization for multi-metaverse. An NFT character with the standard definition and predefined motion images can create an adequate visualization when entering metaverses as an NFT avatar. The NFT avatar standard will increase the utility of NFT, invigorate the metaverse industry and strengthen interoperability. 
+Although fungible tokens (FTs) are easily exchangeable across different platforms through DEX, non-fungible tokens (NFTs) do not easily migrate from one metaverse to another. The exchange of NFTs across platforms often does not promise the equivalent asset value, including quality and style. We aim to define an NFT as a single character with different visualization for multi-metaverse. An NFT character with the standard definition and predefined motion images can create an adequate visualization when entering metaverses as an NFT avatar. The NFT avatar standard will increase the utility of NFT, invigorate the metaverse industry and strengthen interoperability.
 
 ## Motivation
-NFT has different utilities. Some are used as an asset in the gaming industry while some are used as a parcel of virtual land in the metaverse. The usage of NFTs has often been limited to PFP (profile picture) until today. Yet, an NFT character should be interchanged into several forms of avatars corresponding to the metaverse platform it enters. This standard distinguishes the usage between NFT characters as absolute graphical assets and NFT avatars as motion-added chameleon-ed NFT characters. 
+NFT has different utilities. Some are used as an asset in the gaming industry while some are used as a parcel of virtual land in the metaverse. The usage of NFTs has often been limited to PFP (profile picture) until today. Yet, an NFT character should be interchanged into several forms of avatars corresponding to the metaverse platform it enters. This standard distinguishes the usage between NFT characters as absolute graphical assets and NFT avatars as motion-added chameleon-ed NFT characters.
 
-With the NFT avatar standard, NFT characters will transfer into avatars enabling use cases within multiple metaverses. The character purchased in the NFT marketplace can enter as a 2D avatar in Zep.us while it enters Another.world as a 3D avatar. In addition, user-created 3D avatars, like VR Chat, can also compatibly enter multi-metaverse as NFT avatars. 
+With the NFT avatar standard, NFT characters will transfer into avatars enabling use cases within multiple metaverses. The character purchased in the NFT marketplace can enter as a 2D avatar in Zep.us while it enters Another.world as a 3D avatar. In addition, user-created 3D avatars, like VR Chat, can also compatibly enter multi-metaverse as NFT avatars.
 
-The NFT avatar standard will generate a positive value creation cycle between creators, the NFT marketplace, and the metaverse. Each individual entity will have a common standard to share, maximizing the utility and interoperability of NFTs. With the standard, the value of an item minted by creators will be increased with heightened practicality and utilization. This will boost the activity within NFT marketplaces while the usage of NFT within metaverses also increases. The versatile utility of NFT characters will increase the public desire to purchase and incentivize creators to generate, ultimately vitalizing the creator economy. Likewise, such dynamics will unleash NFT characters in the multi-metaverse. 
+The NFT avatar standard will generate a positive value creation cycle between creators, the NFT marketplace, and the metaverse. Each individual entity will have a common standard to share, maximizing the utility and interoperability of NFTs. With the standard, the value of an item minted by creators will be increased with heightened practicality and utilization. This will boost the activity within NFT marketplaces while the usage of NFT within metaverses also increases. The versatile utility of NFT characters will increase the public desire to purchase and incentivize creators to generate, ultimately vitalizing the creator economy. Likewise, such dynamics will unleash NFT characters in the multi-metaverse.
 
 ## Specification
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY” and “OPTIONAL” in this document are to be interpreted as described in RFC 2119.
@@ -194,11 +194,11 @@ The definition of each motion is as follows. We highly recommend all the animati
 
 | Variable | Description |
 | ----------- | ----------- |
-| down | The downward movement of the avatar. | 
-| left | The movement of the avatar to the left. | 
-| right | The movement of the avatar to the right. | 
-| up | The upward movement of the avatar. | 
-| dance | The dance movement of the avatar. | 
+| down | The downward movement of the avatar. |
+| left | The movement of the avatar to the left. |
+| right | The movement of the avatar to the right. |
+| up | The upward movement of the avatar. |
+| dance | The dance movement of the avatar. |
 | down_jump | The downward jump movement of the avatar. |
 | left_jump | The jumping movement of the avatar to the left. |
 | right_jump | The jumping movement of the avatar to the right. |
@@ -210,22 +210,24 @@ The definition of each motion is as follows. We highly recommend all the animati
 | down_idle | The downward idle movement of the avatar. |
 | left_idle | The idle movement of the avatar to the left. |
 | right_idle | The idle movement of the avatar to the right. |
-| up_idle | The upward idle movement of the avatar. | 
+| up_idle | The upward idle movement of the avatar. |
 
-Each motion is specified with an array of frames, frame_rate, and repeat. 
+Each motion is specified with an array of frames, frame_rate, and repeat.
 
 | Variable | Description |
 | ----------- | ----------- |
-| frames | Frame index of the sprite sheet (zero-based). Each frame has (frame_width X frame_height) image fragment in the sprite sheet image. The frame index starts from 0. The maximum array length is 256. | 
-| frame_rate | frame_rate must be between a minimum of 1 and a maximum of 64. frame_rate represents the number of frames per second. | 
-| repeat | The number of repetitions of the animation. Only two values are supported: -1 and 1. If it is set to -1, it repeats endlessly. If 1, it repeats once. | 
+| frames | Frame index of the sprite sheet (zero-based). Each frame has (frame_width X frame_height) image fragment in the sprite sheet image. The frame index starts from 0. The maximum array length is 256. |
+| frame_rate | frame_rate must be between a minimum of 1 and a maximum of 64. frame_rate represents the number of frames per second. |
+| repeat | The number of repetitions of the animation. Only two values are supported: -1 and 1. If it is set to -1, it repeats endlessly. If 1, it repeats once. |
 
 ## Backward Compatibility 
-This standard can be fully EIP-721, EIP-1155, KIP-17, and KIP-37 compatible by adding an extension “avatars” attribute in the metadata. This allows developers to easily adopt the standard quickly.
+This standard can be fully [ERC-721](https://eips.ethereum.org/EIPS/eip-721), [ERC-1155](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema), [KIP-17](https://kips.klaytn.foundation/KIPs/kip-17), and [KIP-37](https://kips.klaytn.foundation/KIPs/kip-37) compatible by adding an extension “avatars” attribute in the metadata. This allows developers to easily adopt the standard quickly.
 
 ## Reference
-- [ERC-721](https://eips.ethereum.org/EIPS/eip-721) Non-Fungible Token Standard 
+- [ERC-721](https://eips.ethereum.org/EIPS/eip-721) Non-Fungible Token Standard
 - [ERC-1155](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema) Multi-Token Standard 
+- [KIP-17](https://kips.klaytn.foundation/KIPs/kip-17)
+- [KIP-37](https://kips.klaytn.foundation/KIPs/kip-37)
 - [Opensea Metadata Standards](https://docs.opensea.io/docs/metadata-standards)
 
 ## Copyright
