@@ -26,28 +26,30 @@ The NFT avatar standard will generate a positive value creation cycle between cr
 ## Specification
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY” and “OPTIONAL” in this document are to be interpreted as described in RFC 2119.
 
-[NFT metadata](https://docs.opensea.io/docs/metadata-standards) structured by the official ERC721 metadata standard or the Enjin Metadata suggestions are as follows referring to OpenSea docs.
+NFT metadata structured by the official ERC721 metadata standard, the Enjin Metadata suggestions or EIP-4955 are as follows.
 
 ```json
 {
-  "description": "Friendly OpenSea Creature that enjoys long swims in the ocean.", 
-  "external_url": "https://openseacreatures.io/3", 
-  "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png", 
-  "name": "Dave Starbelly",
-  "attributes": {}
+    "name": "Klaytn Worm",
+    "description": "Klaytn Story NFTs - Worm",
+    "image": "https://klaytn-story-bucket.s3.ap-northeast-2.amazonaws.com/worm-profile.png",
+    "namespaces": {}
 }
 ```
 
-In addition to the existing NFT metadata standard, the NFT avatar standard supplements the “avatars” section. The data required for the avatar varies by metaverse platform. In the instance of Zep, image URL and animation behavior are defined to maximize the scalability of individual NFT. This standard represents a metadata extension of ERC721.
+In addition to the existing NFT metadata standard, the NFT avatar standard supplements the "zep" section under "namespaces". The data required for the avatar varies by metaverse platform. In the instance of Zep, type of asset and properties of image are defined to maximize the scalability of individual NFT. This standard represents a metadata extension of ERC721 and EIP-4955.
 
 ```json
 {
-  "description": "Friendly OpenSea Creature that enjoys long swims in the ocean.", 
-  "external_url": "https://openseacreatures.io/3", 
-  "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png", 
-  "name": "Dave Starbelly",
-  "attributes": {}, 
-  "avatars": {}
+  "name": "Klaytn Worm",
+  "description": "Klaytn Story NFTs - Worm",
+  "image": "https://klaytn-story-bucket.s3.ap-northeast-2.amazonaws.com/worm-profile.png",
+  "namespaces": {
+    "zep": {
+        "type": "avatar",
+        "properties": {}
+    }
+  }
 }
 ```
 
@@ -57,32 +59,37 @@ Each property, corresponding to ERC-721, is defined as below.
 | ----------- | ----------- |
 | name | The name of the item. |
 | description | A description of the item. |
-| external_url | An external URL that will appear below the asset's image. |
 | image | An URL to the image of the item. This can be any type of image, including SVG, PNG, IPFS URL, or paths. The recommended size of an image is a width between 320 and 1080 pixels and an aspect ratio between 1.91:1 and 4:5 inclusive. |
-| attributes | An attribute for the item, which will show up on the NFT marketplace. |
-| avatars | A metaverse platform where the item can be integrated as NFT avatars. | 
+| namespaces | A metaverse platform where the item can be integrated as NFT. |
+| zep | The key defined by zep.us. |
+| type | Type of asset that an item will perform within the metaverse. |
+| properties | An attribute for the item that define the size and animation. |
 
-Under "avatars" metadata keys for any metaverse platform, such as Zep.us and Another.world, can be added. The value included in the key will define the animation of a character.  
+Under "namespaces" metadata keys for any metaverse platform, such as Zep.us, Decentraland and Another.world, can be added. The value included in the key will define the properties and animation of a type.  
 
 ```json
 {
-   "avatars": {
+   "namespaces": {
          "zep": {},
+         "decentraland": {},
          "another.world": {}
    }
 }
 ```
 
-This proposal currently only includes the standard of Zep NFT avatars, but the standard of additional services can be also defined under “avatars”. 
+This proposal currently only includes the standard of Zep NFT avatars, but the standard of additional services can be also defined under “namespaces”. 
 
 ```json
 {
-  "zep": {  
-             "image": "IMAGE URL",
-             "frame_width": 48,
-             "frame_height": 64,
-             "animations": {}
-  }
+ "zep": {
+        "type": "avatar",
+        "properties": {
+            "image": "https://klaytn-story-bucket.s3.ap-northeast-2.amazonaws.com/worm-sheet.png",
+            "frame_width": 48,
+            "frame_height": 64,
+            "animations": {}
+        }
+ }
 }
 ```
 
@@ -90,7 +97,6 @@ Each property is defined as below.
 
 | Variable | Description |
 | ----------- | ----------- |
-| zep | The key defined by zep.us |
 | image | A URL to the image of the avatar sprite sheet. (only PNG images are supported) |
 | frame_width | Width of a frame. The original image width must be divided by the frame_width. It must range between a minimum of 1 and a maximum of the image width. The values of frame_width and frame_height can be different. |
 | frame_height | Height of a frame. The original image height must be divided by the frame_height. It must range between a minimum of 1 and a maximum of the image height. This must be a multiple of an original image size, ranging between a minimum of 1 and a maximum of 256. The values of frame_width and frame_height can be different. | 
@@ -221,14 +227,14 @@ Each motion is specified with an array of frames, frame_rate, and repeat.
 | repeat | The number of repetitions of the animation. Only two values are supported: -1 and 1. If it is set to -1, it repeats endlessly. If 1, it repeats once. |
 
 ## Backward Compatibility 
-This standard can be fully [ERC-721](https://eips.ethereum.org/EIPS/eip-721), [ERC-1155](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema), [KIP-17](https://kips.klaytn.foundation/KIPs/kip-17), and [KIP-37](https://kips.klaytn.foundation/KIPs/kip-37) compatible by adding an extension “avatars” attribute in the metadata. This allows developers to easily adopt the standard quickly.
+This standard can be fully [ERC-721](https://eips.ethereum.org/EIPS/eip-721), [ERC-1155](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema), [EIP-4955](https://eips.ethereum.org/EIPS/eip-4955), [KIP-17](https://kips.klaytn.foundation/KIPs/kip-17), and [KIP-37](https://kips.klaytn.foundation/KIPs/kip-37) compatible by adding an extension “avatars” attribute in the metadata. This allows developers to easily adopt the standard quickly.
 
 ## Reference
 - [ERC-721](https://eips.ethereum.org/EIPS/eip-721) Non-Fungible Token Standard
 - [ERC-1155](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1155.md#erc-1155-metadata-uri-json-schema) Multi-Token Standard 
+- [EIP-4955](https://eips.ethereum.org/EIPS/eip-4955)
 - [KIP-17](https://kips.klaytn.foundation/KIPs/kip-17)
 - [KIP-37](https://kips.klaytn.foundation/KIPs/kip-37)
-- [Opensea Metadata Standards](https://docs.opensea.io/docs/metadata-standards)
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
