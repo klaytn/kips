@@ -65,7 +65,7 @@ Each property, corresponding to ERC-721, is defined as below.
 | type | Type of asset that an item will perform within the metaverse. |
 | properties | An attribute for the item that define the size and animation. |
 
-Under "namespaces" metadata keys for any metaverse platform, such as Zep.us, Decentraland and Another.world, can be added. The value included in the key will define the properties and animation of a type.  
+Under "namespaces" metadata keys for any metaverse platform, such as Zep.us, Decentraland and Another.world, can be added. This proposal currently only includes the standard of Zep NFT avatars, but the standard of additional services can be also defined under “namespaces”.
 
 ```json
 {
@@ -77,7 +77,7 @@ Under "namespaces" metadata keys for any metaverse platform, such as Zep.us, Dec
 }
 ```
 
-This proposal currently only includes the standard of Zep NFT avatars, but the standard of additional services can be also defined under “namespaces”. 
+Under "namespaces", each metaverse platform includes "type" and "properties" of an animation that is being defined. Since an NFT that is being added to the platform can be an avatar character, accessory and another wearable, "type" defines how an NFT will be represented and utilized within the specific metaverse for adequate 3D representations.  
 
 ```json
 {
