@@ -1,7 +1,7 @@
 ---
 kip: 87
 title: NFT Avatar in Multi-Metaverse
-author: Yeri Lee <yeriel.lee@krustuniverse.com>, Junghyun Colin Kim <colin.klaytn@krustuniverse.com>, Wonbae Kim <kernys@supercat.co.kr>, Seokrin Sung <seokrin.sung@supercat.co.kr>
+author: Yeri Lee (@yeri-lee), Junghyun Colin Kim (@kjhman21), Wonbae Kim (@kernys), Seokrin Sung (@taronsung)
 discussions-to: https://forum.klaytn.foundation/t/en-kip-87-nft-avatar-standard-proposal/6161
 status: Draft
 type: Standards Track
