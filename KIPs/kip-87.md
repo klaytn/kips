@@ -11,7 +11,7 @@ requires: 17, 37
 ---
 
 ## Simple Summary
-Creating an NFT avatar standard to provide an interchangeable visualization of NFT across multiple metaverses  
+Creating an NFT avatar standard to provide an interchangeable visualization of NFT across multiple metaverses.
 
 ## Abstract
 Although fungible tokens (FTs) are easily exchangeable across different platforms through DEX, non-fungible tokens (NFTs) do not easily migrate from one metaverse to another. The exchange of NFTs across platforms often does not promise the equivalent asset value, including quality and style. We aim to define an NFT as a single character with different visualization for multi-metaverse. An NFT character with the standard definition and predefined motion images can create an adequate visualization when entering metaverses as an NFT avatar. The NFT avatar standard will increase the utility of NFT, invigorate the metaverse industry and strengthen interoperability.
@@ -26,7 +26,7 @@ The NFT avatar standard will generate a positive value creation cycle between cr
 ## Specification
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY” and “OPTIONAL” in this document are to be interpreted as described in RFC 2119.
 
-NFT metadata structured by the official ERC721 metadata standard, the Enjin Metadata suggestions or EIP-4955 are as follows.
+NFT metadata structured by the official ERC-721 metadata standard, the Enjin Metadata suggestions or EIP-4955 are as follows.
 
 ```json
 {
@@ -77,7 +77,7 @@ Under "namespaces" metadata keys for any metaverse platform, such as Zep.us, Dec
 }
 ```
 
-Under "namespaces", each metaverse platform includes "type" and "properties" of an animation that is being defined. Since an NFT that is being added to the platform can be an avatar character, accessory and another wearable, "type" defines how an NFT will be represented and utilized within the specific metaverse for adequate 3D representations.  
+Under "namespaces", each metaverse platform includes "type" and "properties" of an animation that is being defined. Since an NFT that is being added to the platform can be an avatar character, accessory and another wearable, "type" defines how an NFT will be represented and utilized within the specific metaverse for adequate 3D representations.
 
 ```json
 {
@@ -99,8 +99,8 @@ Each property is defined as below.
 | ----------- | ----------- |
 | image | A URL to the image of the avatar sprite sheet. (only PNG images are supported) |
 | frame_width | Width of a frame. The original image width must be divided by the frame_width. It must range between a minimum of 1 and a maximum of the image width. The values of frame_width and frame_height can be different. |
-| frame_height | Height of a frame. The original image height must be divided by the frame_height. It must range between a minimum of 1 and a maximum of the image height. This must be a multiple of an original image size, ranging between a minimum of 1 and a maximum of 256. The values of frame_width and frame_height can be different. | 
-| animations | Animation list of the avatar (idle, moving, jumping, etc.) | 
+| frame_height | Height of a frame. The original image height must be divided by the frame_height. It must range between a minimum of 1 and a maximum of the image height. This must be a multiple of an original image size, ranging between a minimum of 1 and a maximum of 256. The values of frame_width and frame_height can be different. |
+| animations | Animation list of the avatar (idle, moving, jumping, etc.) |
 
 The animation of the NFT avatar is defined under “animations”. The 17 motions are defined: directional movement, involving jump, attack and idle, and dancing. The following array of movements was included in the metadata. Below is an example of the definition of “animations”.
 
@@ -235,6 +235,7 @@ This standard can be fully [ERC-721](https://eips.ethereum.org/EIPS/eip-721), [E
 - [EIP-4955](https://eips.ethereum.org/EIPS/eip-4955)
 - [KIP-17](https://kips.klaytn.foundation/KIPs/kip-17)
 - [KIP-37](https://kips.klaytn.foundation/KIPs/kip-37)
+- [Decentraland Docs](https://docs.decentraland.org/creator/wearables/linked-wearables/)
 
 ## Copyright
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
