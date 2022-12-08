@@ -26,18 +26,7 @@ The NFT avatar standard will generate a positive value creation cycle between cr
 ## Specification
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY” and “OPTIONAL” in this document are to be interpreted as described in RFC 2119.
 
-NFT metadata structured by the official ERC-721 metadata standard, the Enjin Metadata suggestions or EIP-4955 are as follows.
-
-```json
-{
-    "name": "Klaytn Worm",
-    "description": "Klaytn Story NFTs - Worm",
-    "image": "https://klaytn-story-bucket.s3.ap-northeast-2.amazonaws.com/worm-profile.png",
-    "namespaces": {}
-}
-```
-
-In addition to the existing NFT metadata standard, the NFT avatar standard supplements the "zep" section under "namespaces". The data required for the avatar varies by metaverse platform. In the instance of Zep, type of asset and properties of image are defined to maximize the scalability of individual NFT. This standard represents a metadata extension of ERC721 and EIP-4955.
+As an a metadata extension of ERC721 and EIP-4955, the NFT avatar standard supplements the "zep" section under "namespaces". The data required for the avatar varies by metaverse platform. In the instance of Zep, type of asset and properties of image are defined to maximize the scalability of individual NFT.
 
 ```json
 {
