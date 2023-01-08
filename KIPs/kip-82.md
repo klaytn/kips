@@ -30,7 +30,7 @@ In the new method, the reward for node operation is required since the staking a
 
 Node operators will also be compensated with the staking for enhancing network stability from an economic standpoint. The opportunity cost incurred from staking is rewarded based on inflation. In this system, inflation provides a tax-like common effect. Public users can also participate and receive rewards through the GC-run public staking program.
 
-As of September 21st, 2022, of the 300 million KLAY that is minted annually, only 100 million KLAY goes to GC. The renewal separates GC reward into two components: block proposer reward and staking reward. The block proposer reward is compensating for node operation by providing 20% of the GC reward and 100% of gas fee resources from transactions. The staing reward is from 80% of the GC reward and is distributed based on GC staking amounts.
+As of September 21st, 2022, of the 300 million KLAY that is minted annually, only 100 million KLAY goes to GC. The renewal separates GC reward into two components: block proposer reward and staking reward. The block proposer reward is compensating for node operation by providing 20% of the GC reward and 100% of gas fee resources from transactions. The staking reward is from 80% of the GC reward and is distributed based on GC staking amounts.
 
 The relative ratio of 20% and 80% is a tentative value to be used in the Cypress mainnet. However, this ratio is defined as a governance paramter, so GC members can change the ratio through the governance process.
 
