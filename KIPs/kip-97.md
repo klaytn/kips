@@ -5,7 +5,7 @@ author: TaeRim Lee <95decode@gmail.com>
 discussions-to: https://forum.klaytn.foundation/t/kip/6359
 status: Draft
 type: Standards Track
-category (*only required for Standard Track): Interface
+category : Interface
 created: 2023-01-10
 ---
 
