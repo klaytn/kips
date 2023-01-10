@@ -19,7 +19,7 @@ This standard proposes a specification about how to handle signed data in Klaytn
 
 ## Motivation
 <!--The motivation is critical for KIPs that want to change the Klaytn protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the KIP solves. KIP submissions without sufficient motivation may be rejected outright.-->
-Several multisignature wallet implementations have been created which accepts `presigned` transactions. A `presigned` transaction is a chunk of binary `signed_data`, along with signature (`r`, `s` and `v`). The interpretation of the `signed_data` has not been specified and ethereum solved this by EIP-191 standard. Additionally, the signature result is different in using metamask and kaikas because Klaytn does not have a standard.
+Several multisignature wallet implementations have been created which accepts `presigned` transactions. A `presigned` transaction is a chunk of binary `signed_data`, along with signature (`r`, `s` and `v`). The interpretation of the `signed_data` has not been specified in Klaytn and Ethereum solved this by [EIP-191](https://eips.ethereum.org/EIPS/eip-191) standard. Additionally, the signatures are different when using Metamask and Kaikas because they have the different preamble.
 
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
