@@ -2,7 +2,7 @@
 kip: 97
 title: Signed Data Standard
 author: TaeRim Lee <95decode@gmail.com>
-discussions-to: <URL>
+discussions-to: https://forum.klaytn.foundation/t/kip/6359
 status: Draft
 type: Standards Track
 category (*only required for Standard Track): Interface
@@ -11,7 +11,7 @@ created: 2023-01-10
 
 ## Simple Summary
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the KIP.-->
-This standard proposes a specification about how to handle signed data in Klaytn.
+This is to standardize message signing methods different from those of Ethereum.
 
 ## Abstract
 <!--A short (~200 word) description of the technical issue being addressed.-->
