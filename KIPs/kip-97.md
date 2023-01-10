@@ -25,7 +25,7 @@ Several multisignature wallet implementations have been created which accepts `p
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
 This document is heavily derived from [EIP-191](https://eips.ethereum.org/EIPS/eip-191) written by Martin Holst Swende and Nick Johnson.
 
-We propose the following format for `signed_data`
+We propose the following format for `signed_data`:
 
 ```
 0x19 <1 byte version> <version specific data> <data to sign>.
