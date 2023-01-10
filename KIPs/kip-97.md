@@ -40,7 +40,7 @@ That means that any `signed_data` cannot be one RLP-structure, but a 1-byte `RLP
 The following format is prepended before hashing in personal_sign:
 
 ```
-"\x19Klaytn Signed Message:\n" + len(message).
+"\x19Klaytn Signed Message:\n" + len(message)
 ```
 
 Using `0x19` thus makes it possible to extend the scheme by defining a version `0x4b` (`K`) to handle these kinds of signatures.
