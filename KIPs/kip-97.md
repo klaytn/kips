@@ -28,7 +28,7 @@ This document is heavily derived from [EIP-191](https://eips.ethereum.org/EIPS/e
 We propose the following format for `signed_data`:
 
 ```
-0x19 <1 byte version> <version specific data> <data to sign>.
+0x19 <1 byte version> <version specific data> <data to sign>
 ```
 
 The initial `0x19` byte is intended to ensure that the `signed_data` is not valid RLP.
