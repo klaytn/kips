@@ -74,7 +74,7 @@ struct TokenPair {
 
 #### ServiceBridge
 
-`ServiceBridge` is a smart contract that provides an interface including the structs explained above. This contract must be deployed on the main chain, and the addBridgePair function has to be called with the parameter of bridge information whenever a ServiceChain is connected. Then the token information is automatically updated in the addBridgePair function. A unique identifier is needed to register and retrieve each bridgePair, so a member variable called name is useded as unique identifier. 
+`ServiceBridge` is a smart contract that provides an interface including the structs explained above. This contract must be deployed on the main chain, and the addBridgePair function has to be called with the parameter of bridge information whenever a ServiceChain is connected. Then the token information is automatically updated in the addBridgePair function. A unique identifier is needed to register and retrieve each bridgePair, so a member variable called name is used as unique identifier. 
 
 ```
 interface ServiceBridge 
