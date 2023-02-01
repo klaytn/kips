@@ -33,7 +33,7 @@ BridgeRegistry manages the network, bridge, and token information. BridgeRegistr
 
 #### Network
 
-`Network` includes network information such as network name, rpcUrl, chainID, and nativeTokenSymbol, and managementnetwork information such as `verified`.
+`Network` includes network information such as network name, rpcUrl, chainID, and nativeTokenSymbol, and management network information such as `verified`.
 `verified` is a member variable for managing ServiceChain in services such as wallets, and multiple ServiceChain statuses can be displayed by querying BridgeRegistry in the wallet. For example, when a ServiceChain is newly registered in the BridgeRegistry, the administrator checks whether the ServiceChain has no problem and changes the `verified` variable to true. This proposal only mentions the need for network management information such as `verified`, and if there are variables necessary for the service, it is recommended to add them at the implementation level.
 
 ```
