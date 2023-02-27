@@ -15,15 +15,15 @@ This proposal suggests the creation of a smart contract that records the rebalan
 
 ## Abstract
 <!--A short (~200 word) description of the technical issue being addressed.-->
-Organizations need to manage treasury funds in a transparent and accountable manner. The proposed standard aims to make the management of treasury funds more transparent by recording the rebalance of treasury funds. The smart contract will keep records of the addresses which hold the treasury funds before and after rebalancing. It also facilates approval and redistributing to new addresses.
+Organizations need to manage treasury funds in a transparent and accountable manner. The proposed standard aims to make the management of treasury funds more transparent by recording the rebalance of treasury funds. The smart contract will keep records of the addresses which hold the treasury funds before and after rebalancing. It also facilates approval before execution.
  
 ## Motivation
 <!--The motivation is critical for KIPs that want to change the Klaytn protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the KIP solves. KIP submissions without sufficient motivation may be rejected outright.-->
-Transparency is the one of most important aspect of blockchain. It is important to ensure that treasury funds are allocated and managed in a transparent and verifiable manner. The proposed smart contract aims to disclose the management of treasury funds in a transparent manner through smart contracts reducing the risk of errors and mismanagement.
+Transparency is the one of most important aspect of blockchain. It is important to ensure that treasury funds are allocated and managed in a transparent and verifiable manner. The proposed smart contract aims to disclose the management of treasury funds in a transparent manner through smart contracts reducing the risk of errors and mismanagement. By providing transparency and accountability in the allocation and management of funds, the smart contract can help to build trust and confidence among stakeholders.
 
 ## Specification
 <!--The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Klaytn platforms (klaytn). -->
-The proposed smart contract will be implemented in Solidity and will be compatible with the Ethereum Virtual Machine (EVM). The smart contract will use the @klaytn/contracts Ownable contract to restrict access to certain functions to the owner of the contract.
+The proposed smart contract will be implemented in Solidity and will be compatible with the Ethereum Virtual Machine (EVM). The smart contract will use the `@klaytn/contracts` Ownable contract to restrict access to certain functions to the owner of the contract.
 
 The smart contract will have the following features:
 - Add/Remove fund addresses
@@ -107,7 +107,7 @@ The smart contract is mainly for recording the details, and the Core will execut
 
 ### Design decision
 #### KLAY transfer is not allowed via smart contracts 
-As the balance of treasury funds keeps increasing for every block with the block reward its hard to keep track of the balances and rebalance token allocation. So smart contract will record the rebalanced allocation and the core will execute the allocation reading from the contract. 
+As the balance of treasury funds keeps increasing for every block with the block reward its hard to keep track of the balances and rebalance token allocation. So smart contract will only record the rebalanced allocation and the core will execute the allocation reading from the contract. 
 
 #### Approval of senderAddress
 To record the addresses in a verifiable manner the addresses are verified in the contract by calling approve method. The senderAddress can be a Contract address or a Externally Owned Account. If the sender address is a
@@ -124,7 +124,7 @@ Once the re-distribution a.k.a rebalance is executed by the Core, the status of 
 ## Backwards Compatibility
 <!-- All KIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The KIP must explain how the author proposes to deal with these incompatibilities. KIP submissions without a sufficient backwards compatibility treatise may be rejected outright. The authors should answer the question: "Does this KIP require a hard fork?" -->
 - The foundation should deploy new TreasuryRebalance contract to record the token redistribution. 
-- To rebalance the funds and redistribute in a consistent manner the foundation should burn the designated funds before allocation. 
+- To rebalance the funds and redistribute in a consistent manner the foundation should burn the designated funds before re-distribution. 
 - This does not affect the backward compatibility as this a newly dpeloyed contract
 
 ## Test Cases
