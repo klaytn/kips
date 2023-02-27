@@ -104,17 +104,26 @@ The smart contract will have a fallback function to revert any payments. Since i
 
 ## Rationale
 <!--The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages. The rationale may also provide evidence of consensus within the community, and should discuss important objections or concerns raised during discussion.-->
- 
+The smart contract is mainly for recording the details, and the Core will execute the fund re-distributions. 
+
 ### Design decision
+#### KLAY transfer is not allowed via smart contracts 
+As the balance of treasury funds keeps increasing for every block with the block reward its hard to keep track of the balances and rebalance token allocation. So smart contract will record the rebalanced allocation and the core will execute the allocation reading from the contract. 
+
+#### Approval of senderAddress
+To record the addresses in a verifiable manner the addresses are verified in the contract by calling approve method. The senderAddress can be a Contract address or a Externally Owned Account. If the sender address is a
+- EOA : EOA address can be verified when the account holder directly calls the approve function. `msg.sender == senderAddress`
+- Contract : Contract address can be verified when one of the admins of the contract call approve function. The smart contract uses the getState() function implemented in the senderAddress contract to get the admin details.
+`msg.sender == admin`
+
 #### No Withdrawal
 Smart contract is not allowed to receive KLAY due to securiry reasons. So any funds send the contract will be reverted and withdraw function is not implemented. 
 
-#### KLAY transfer is not through smart contracts 
-As the balance of treasury funds keeps increasing for every block with the block reward its hard to keep track of the balances and rebalance token allocation. So smart contract will record the rebalanced allocation and the core will execute the allocation reading from the contract. 
+#### Finalize Contract
+Once the re-distribution a.k.a rebalance is executed by the Core, the status of the smart contract will be finalized and any modifications to the storage data will be restricted.
 
 ## Backwards Compatibility
 <!-- All KIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The KIP must explain how the author proposes to deal with these incompatibilities. KIP submissions without a sufficient backwards compatibility treatise may be rejected outright. The authors should answer the question: "Does this KIP require a hard fork?" -->
-
 - The foundation should deploy new TreasuryRebalance contract to record the token redistribution. 
 - To rebalance the funds and redistribute in a consistent manner the foundation should burn the designated funds before allocation. 
 - This does not affect the backward compatibility as this a newly dpeloyed contract
