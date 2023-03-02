@@ -13,7 +13,7 @@ created: 2023-02-24
 
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the KIP.-->
 
-This proposal suggests the creation of a smart contract that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the sender and receiver details.
+This proposal suggests a smart contract interface standard that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the sender and receiver details.
 
 ## Abstract
 
