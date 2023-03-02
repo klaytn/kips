@@ -115,6 +115,7 @@ The smart contract will have the following state changing functions:
 The smart contract will have a fallback function to revert any payments. Since its a treasury contract it should not accept any payments nor it should allow any withdrawal.
 
 ### Core Logic Overview
+
 TBU - describe how to read contract data and execute rebalancing in Klaytn node
 
 ## Rationale
@@ -134,8 +135,9 @@ As the balance of treasury funds keeps increasing for every block with the block
 To record the addresses in a verifiable manner the addresses are verified in the contract by calling approve method. The senderAddress can be a Contract address or a Externally Owned Account. If the sender address is a
 
 - EOA : EOA address can be verified when the account holder directly calls the approve function. `msg.sender == senderAddress`
-- Contract : Contract address can be verified when the admin of the contract calls approve function. The smart contract calls the `getState()` function implemented in the senderAddress contract to get the admin details. Min required admins should approve the senderAddress contract.
-  `msg.sender == admin`
+- Contract : Contract address can be verified when the admin of the contract calls approve function. The smart contract calls the `getState()` function implemented in the senderAddress contract to get the admin details. `msg.sender == admin`
+  - `getState()` funtion is implemented in Klaytn treasury contracts. It returns the adminList and quorom (min required admins to approve).
+  - Condition: Min required admins should approve the senderAddress contract.
 
 #### No Withdrawal
 
