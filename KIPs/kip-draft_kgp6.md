@@ -633,6 +633,8 @@ contract TreasuryRebalance is Ownable {
 
 <!--Test cases for an implementation are mandatory for KIPs that are affecting consensus changes. Other KIPs can choose to include links to test cases if applicable.-->
 
+https://github.com/Krustuniverse-Klaytn-Group/treasury-rebalance/blob/dev/test/TreasuryRebalance.js
+
 ## Reference
 
 n/a
