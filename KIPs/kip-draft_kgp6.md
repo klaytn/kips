@@ -1,7 +1,7 @@
 ---
 kip: 103
 title: Treasury Fund Rebalancing
-author: Aidan<aidan.kwon@krustuniverse.com>, Toniya<toniya.sun@krustuniverse.com>
+author: Aidan<aidan.kwon@klaytn.foundation>, Toniya<toniya.sun@klaytn.foundation>
 discussions-to: https://govforum.klaytn.foundation/t/kgp-6-proposal-to-establish-a-sustainable-and-verifiable-klay-token-economy/157
 status: Draft
 type: Standards Track
@@ -136,7 +136,7 @@ To record the addresses in a verifiable manner the addresses are verified in the
 
 #### No Withdrawal
 
-Smart contract is not allowed to receive KLAY due to securiry reasons. So any funds send the contract will be reverted and withdraw function is not implemented.
+Smart contract is not allowed to receive KLAY due to security reasons. So any funds send the contract will be reverted and withdraw function is not implemented.
 
 #### Finalize Contract
 
@@ -586,7 +586,7 @@ contract TreasuryRebalance is Ownable {
 
     /**
      * @dev to calculate the sum of receiver funds
-     * @return treasuryAmount the sum of balances of senders
+     * @return treasuryAmount the sum of receiver funds
      */
     function getTreasuryAmount() public view returns (uint256 treasuryAmount) {
         for (uint8 i = 0; i < receivers.length; i++) {
