@@ -131,7 +131,7 @@ As the balance of treasury funds keeps increasing for every block with the block
 To record the addresses in a verifiable manner the addresses are verified in the contract by calling approve method. The senderAddress can be a Contract address or a Externally Owned Account. If the sender address is a
 
 - EOA : EOA address can be verified when the account holder directly calls the approve function. `msg.sender == senderAddress`
-- Contract : Contract address can be verified when the admin of the contract calls approve function. The smart contract uses the getState() function implemented in the senderAddress contract to get the admin details. Min required admins should approve the senderAddress contract.
+- Contract : Contract address can be verified when the admin of the contract calls approve function. The smart contract calls the `getState()` function implemented in the senderAddress contract to get the admin details. Min required admins should approve the senderAddress contract.
   `msg.sender == admin`
 
 #### No Withdrawal
