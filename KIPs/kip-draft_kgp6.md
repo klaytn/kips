@@ -1,7 +1,7 @@
 ---
 kip: 103
 title: Treasury Fund Rebalancing
-author: Aidan<aidan.kwon@klaytn.foundation>, Toniya<toniya.sun@klaytn.foundation>
+author: Aidan (@aidan-kwon), Toniya (@toniya-klaytn)
 discussions-to: https://govforum.klaytn.foundation/t/kgp-6-proposal-to-establish-a-sustainable-and-verifiable-klay-token-economy/157
 status: Draft
 type: Standards Track
