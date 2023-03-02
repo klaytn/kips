@@ -46,16 +46,23 @@ The smart contract will have the following features:
 
 The smart contract will have the following enum to track the status of the contract:
 
-- `Initialized`: The initial state of the contract.
-- `Registered`: Senders and receivers registered.
-- `isApproved`: Senders approved.
-- `Finalized`: Rebalance executed and finalized.
+- `Initialized - 0`: The initial state of the contract.
+- `Registered - 1`: Senders and receivers registered.
+- `isApproved - 2`: Senders approved.
+- `Finalized - 3`: Rebalance executed and finalized.
 
 #### Life Cycle
 
 The contract status should follow the ENUM order above during status change. The only way to go to previous state is by calling Reset() function.
 
 ![](../assets/kip-103/lifecycle.png)
+
+Status transition
+
+- Initialized → Registered → Approved → Finalized ✅
+- Initialized → Registered → Finalized ❌
+- Initialized → Approved ❌
+- Initialized → Finalized ❌
 
 #### Structs
 
@@ -94,20 +101,16 @@ The smart contract will have the following state changing functions:
 - `removeSender`: to remove sender details from the array.
 - `registerReceiver`: to register receiver address and its fund distribution.
 - `removeReceiver`: to remove receiver details from the array.
+- `finalizeRegistration`: sets the status to Registered only executed by owner. After this stage, registrations will be restricted.
 - `approve`: to approve a senderAddress by the admin.
-- `setStatus`: to set the current status of the contract only by owner.
+- `finalizeApproval`: sets the status to Approved. After this stage, approvals will be restricted.
   </br>
   **Conditions**
-  - every sender is approved
+  - every sender must be approved
   - min required admin’s approval is done for sender contract address.
   - sum of sender’s balance is greater than treasury amount
     </br>
-    ENUM order should be followed to setStatus
-  - Initialized → Registered → Approved → Finalized ✅
-  - Initialized → Registered → Finalized ❌
-  - Initialized → Approved ❌
-  - Initialized → Finalized ❌
-- `reset`: resets all storage values to empty objects except rebalanceBlockNumber.
+- `reset`: resets all storage values to empty objects except rebalanceBlockNumber. It can only be called during Initialization, Registration and Approved status.
 - `finalizeContract`: to record the execution result of the rebalance and finalize the contract. The storage data cannot be modified after this stage.
 
 #### Fallback Function
@@ -164,15 +167,15 @@ Once the re-distribution a.k.a rebalance is executed by the Core, the status of 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.0;
 
-import "@klaytn/contracts/access/Ownable.sol";
-import "hardhat/console.sol";
+import "./Ownable.sol";
 
 /**
  * @title Smart contract to record the rebalance of treasury funds.
  * This contract is to mainly record the addresses which holds the treasury funds
  * before and after rebalancing. It facilates approval and redistributing to new addresses.
+ * Core will execute the re-distribution reading from this contract.
  */
 contract TreasuryRebalance is Ownable {
     /**
@@ -208,7 +211,7 @@ contract TreasuryRebalance is Ownable {
     Receiver[] public receivers; //array of receiver structs
     Status public status; //current status of the contract
     uint256 public rebalanceBlockNumber; //Block number of the execution of rebalancing
-    string public memo; //result of the treasury fund rebalnce
+    string public memo; //result of the treasury fund rebalance
 
     /**
      * Events logs
@@ -224,7 +227,7 @@ contract TreasuryRebalance is Ownable {
     event RemoveReceiver(address receiver, uint256 receiverCount);
     event GetState(bool success, bytes result);
     event Approve(address sender, address approver, uint256 approversCount);
-    event SetStatus(Status currentStatus, Status upcomingStatus);
+    event SetStatus(Status status);
     event Finalized(string memo, Status status);
 
     /**
@@ -250,9 +253,11 @@ contract TreasuryRebalance is Ownable {
      * @dev registers sender details
      * @param _senderAddress is the address of the sender
      */
-    function registerSender(
-        address _senderAddress
-    ) public onlyOwner atStatus(Status.Initialized) {
+    function registerSender(address _senderAddress)
+        public
+        onlyOwner
+        atStatus(Status.Initialized)
+    {
         require(!senderExists(_senderAddress), "Sender is already registered");
         Sender storage sender = senders.push();
         sender.sender = _senderAddress;
@@ -263,10 +268,12 @@ contract TreasuryRebalance is Ownable {
      * @dev remove the sender details from the array
      * @param _senderAddress is the address of the sender
      */
-    function removeSender(
-        address _senderAddress
-    ) public onlyOwner atStatus(Status.Initialized) {
-        uint senderIndex = getSenderIndex(_senderAddress);
+    function removeSender(address _senderAddress)
+        public
+        onlyOwner
+        atStatus(Status.Initialized)
+    {
+        uint256 senderIndex = getSenderIndex(_senderAddress);
         senders[senderIndex] = senders[senders.length - 1];
         senders.pop();
 
@@ -278,10 +285,11 @@ contract TreasuryRebalance is Ownable {
      * @param _receiverAddress is the address of the receiver
      * @param _amount is the fund to be allocated to the receiver
      */
-    function registerReceiver(
-        address _receiverAddress,
-        uint256 _amount
-    ) public onlyOwner atStatus(Status.Initialized) {
+    function registerReceiver(address _receiverAddress, uint256 _amount)
+        public
+        onlyOwner
+        atStatus(Status.Initialized)
+    {
         require(
             !receiverExists(_receiverAddress),
             "Receiver is already registered"
@@ -296,12 +304,14 @@ contract TreasuryRebalance is Ownable {
 
     /**
      * @dev remove the receiver details from the array
-     * @param _receiverAddress is the address of the sender
+     * @param _receiverAddress is the address of the receiver
      */
-    function removeReceiver(
-        address _receiverAddress
-    ) public onlyOwner atStatus(Status.Initialized) {
-        uint receiverIndex = getReceiverIndex(_receiverAddress);
+    function removeReceiver(address _receiverAddress)
+        public
+        onlyOwner
+        atStatus(Status.Initialized)
+    {
+        uint256 receiverIndex = getReceiverIndex(_receiverAddress);
         receivers[receiverIndex] = receivers[receivers.length - 1];
         receivers.pop();
 
@@ -315,9 +325,10 @@ contract TreasuryRebalance is Ownable {
      *      It uses the getState() function in the senderAddress contract to get the admin details.
      * @param _senderAddress is the address of the sender
      */
-    function approve(
-        address _senderAddress
-    ) public atStatus(Status.Registered) {
+    function approve(address _senderAddress)
+        public
+        atStatus(Status.Registered)
+    {
         require(
             senderExists(_senderAddress),
             "sender needs to be registered before approval"
@@ -346,12 +357,12 @@ contract TreasuryRebalance is Ownable {
      * @dev validate if the msg.sender is admin if the senderAddress is a contract
      * @param _senderAddress is the address of the contract
      * @param _approver is the msg.sender
-     * @return isAdmin true is the msg.sender is one of the admin
+     * @return isAdmin is true if the msg.sender is one of the admin
      */
-    function _validateAdmin(
-        address _senderAddress,
-        address _approver
-    ) private returns (bool isAdmin) {
+    function _validateAdmin(address _senderAddress, address _approver)
+        private
+        returns (bool isAdmin)
+    {
         (address[] memory adminList, ) = _getState(_senderAddress);
         require(adminList.length != 0, "admin list cannot be empty");
         for (uint8 i = 0; i < adminList.length; i++) {
@@ -367,9 +378,10 @@ contract TreasuryRebalance is Ownable {
      * @return adminList list of the senderAddress contract admins
      * @return req min required number of approvals
      */
-    function _getState(
-        address _senderAddress
-    ) private returns (address[] memory adminList, uint256 req) {
+    function _getState(address _senderAddress)
+        private
+        returns (address[] memory adminList, uint256 req)
+    {
         //call getState() function in senderAddress contract to get the adminList
         bytes memory payload = abi.encodeWithSignature("getState()");
         (bool success, bytes memory result) = _senderAddress.staticcall(
@@ -386,13 +398,12 @@ contract TreasuryRebalance is Ownable {
      * _senderAddress is the address of the sender
      * _approver is the admin of the senderAddress
      */
-    function _updateApprover(
-        address _senderAddress,
-        address _approver
-    ) private {
-        uint index = getSenderIndex(_senderAddress);
+    function _updateApprover(address _senderAddress, address _approver)
+        private
+    {
+        uint256 index = getSenderIndex(_senderAddress);
         address[] memory approvers = senders[index].approvers;
-        for (uint i = 0; i < approvers.length; i++) {
+        for (uint256 i = 0; i < approvers.length; i++) {
             require(
                 approvers[i] != _approver,
                 "Duplicate approvers cannot be allowed"
@@ -407,46 +418,44 @@ contract TreasuryRebalance is Ownable {
     }
 
     /**
-     * @dev Sets the status of the contract. Functions will be restricted
-     * based on the current status
-     * @param _status is the status of the contract to be set
+     * @dev finalizeRegistration sets the status to Registered,
+     *      After this stage, registrations will be restricted.
      */
-    function setStatus(Status _status) public onlyOwner {
-        Status currentStatus = status;
+    function finalizeRegistration()
+        public
+        onlyOwner
+        atStatus(Status.Initialized)
+    {
+        status = Status.Registered;
+        emit SetStatus(status);
+    }
 
-        if (
-            (currentStatus == Status.Initialized) &&
-            (_status == Status.Registered)
-        ) {
-            status = _status;
-        } else if (
-            (currentStatus == Status.Registered) && (_status == Status.Approved)
-        ) {
-            _isSendersApproved();
-            uint256 treasuryAmount = getTreasuryAmount();
-            require(
-                treasuryAmount < sumOfSenderBalance(),
-                "treasury amount should be less than the sum of all sender address balances"
-            );
-            status = _status;
-        } else {
-            revert("Invalid input status");
-        }
-        emit SetStatus(currentStatus, _status);
+    /**
+     * @dev finalizeApproval sets the status to Approved,
+     *      After this stage, approvals will be restricted.
+     */
+    function finalizeApproval() public onlyOwner atStatus(Status.Registered) {
+        require(
+            getTreasuryAmount() < sumOfSenderBalance(),
+            "treasury amount should be less than the sum of all sender address balances"
+        );
+        _isSendersApproved();
+        status = Status.Approved;
+        emit SetStatus(status);
     }
 
     /**
      * @dev verify if quorom reached for the sender approvals
      */
     function _isSendersApproved() private {
-        for (uint i = 0; i < senders.length; i++) {
+        for (uint256 i = 0; i < senders.length; i++) {
             Sender memory sender = senders[i];
             (, uint256 req) = _getState(sender.sender);
             if (sender.approvers.length >= req) {
                 //if min quorom reached, make sure all approvers are still valid
                 address[] memory approvers = sender.approvers;
-                uint minApprovals = 0;
-                for (uint j = 0; j < approvers.length; j++) {
+                uint256 minApprovals = 0;
+                for (uint256 j = 0; j < approvers.length; j++) {
                     _validateAdmin(senders[i].sender, approvers[j]);
                     minApprovals++;
                 }
@@ -465,9 +474,11 @@ contract TreasuryRebalance is Ownable {
      * of the contract cannot be modified
      * @param _memo is the result of the rebalance after executing successfully in the core.
      */
-    function finalizeContract(
-        string memory _memo
-    ) public onlyOwner atStatus(Status.Approved) {
+    function finalizeContract(string memory _memo)
+        public
+        onlyOwner
+        atStatus(Status.Approved)
+    {
         memo = _memo;
         status = Status.Finalized;
         emit Finalized(memo, status);
@@ -496,11 +507,13 @@ contract TreasuryRebalance is Ownable {
      * @dev to get sender details by senderAddress
      * @param _senderAddress is the address of the sender
      */
-    function getSender(
-        address _senderAddress
-    ) public view returns (address, address[] memory) {
+    function getSender(address _senderAddress)
+        public
+        view
+        returns (address, address[] memory)
+    {
         require(senderExists(_senderAddress), "Sender does not exist");
-        uint index = getSenderIndex(_senderAddress);
+        uint256 index = getSenderIndex(_senderAddress);
         Sender memory sender = senders[index];
         return (sender.sender, sender.approvers);
     }
@@ -522,8 +535,12 @@ contract TreasuryRebalance is Ownable {
      * @dev get index of the sender in the senders array
      * @param _senderAddress is the address of the sender
      */
-    function getSenderIndex(address _senderAddress) public view returns (uint) {
-        for (uint i = 0; i < senders.length; i++) {
+    function getSenderIndex(address _senderAddress)
+        public
+        view
+        returns (uint256)
+    {
+        for (uint256 i = 0; i < senders.length; i++) {
             if (senders[i].sender == _senderAddress) {
                 return i;
             }
@@ -550,11 +567,13 @@ contract TreasuryRebalance is Ownable {
      * @return amount is the fund allocated to the receiver
 
      */
-    function getReceiver(
-        address _receiverAddress
-    ) public view returns (address, uint256) {
+    function getReceiver(address _receiverAddress)
+        public
+        view
+        returns (address, uint256)
+    {
         require(receiverExists(_receiverAddress), "Receiver does not exist");
-        uint index = getReceiverIndex(_receiverAddress);
+        uint256 index = getReceiverIndex(_receiverAddress);
         Receiver memory receiver = receivers[index];
         return (receiver.receiver, receiver.amount);
     }
@@ -563,9 +582,11 @@ contract TreasuryRebalance is Ownable {
      * @dev check whether _receiverAddress is registered
      * @param _receiverAddress is the address of the receiver
      */
-    function receiverExists(
-        address _receiverAddress
-    ) public view returns (bool) {
+    function receiverExists(address _receiverAddress)
+        public
+        view
+        returns (bool)
+    {
         require(_receiverAddress != address(0), "Invalid address");
         for (uint8 i = 0; i < receivers.length; i++) {
             if (receivers[i].receiver == _receiverAddress) {
@@ -578,10 +599,12 @@ contract TreasuryRebalance is Ownable {
      * @dev get index of the receiver in the receivers array
      * @param _receiverAddress is the address of the receiver
      */
-    function getReceiverIndex(
-        address _receiverAddress
-    ) public view returns (uint) {
-        for (uint i = 0; i < receivers.length; i++) {
+    function getReceiverIndex(address _receiverAddress)
+        public
+        view
+        returns (uint256)
+    {
+        for (uint256 i = 0; i < receivers.length; i++) {
             if (receivers[i].receiver == _receiverAddress) {
                 return i;
             }
@@ -591,7 +614,7 @@ contract TreasuryRebalance is Ownable {
 
     /**
      * @dev to calculate the sum of receiver funds
-     * @return treasuryAmount the sum of receiver funds
+     * @return treasuryAmount the sum of funds allocated to receivers
      */
     function getTreasuryAmount() public view returns (uint256 treasuryAmount) {
         for (uint8 i = 0; i < receivers.length; i++) {
