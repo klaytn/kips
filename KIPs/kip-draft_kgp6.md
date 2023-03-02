@@ -94,7 +94,7 @@ The smart contract will have the following state changing functions:
 - `removeSender`: to remove sender details from the array.
 - `registerReceiver`: to register receiver address and its fund distribution.
 - `removeReceiver`: to remove receiver details from the array.
-- `approve`: to save the approvers of a sender address.
+- `approve`: to approve a senderAddress by the admin.
 - `setStatus`: to set the current status of the contract only by owner.
   </br>
   **Conditions**
