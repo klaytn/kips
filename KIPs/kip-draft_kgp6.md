@@ -48,7 +48,7 @@ The smart contract will have the following enum to track the status of the contr
 
 - `Initialized - 0`: The initial state of the contract.
 - `Registered - 1`: Senders and receivers registered.
-- `isApproved - 2`: Senders approved.
+- `Approved - 2`: Senders approved.
 - `Finalized - 3`: Rebalance executed and finalized.
 
 #### Life Cycle
