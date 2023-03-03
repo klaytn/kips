@@ -13,7 +13,7 @@ created: 2023-02-24
 
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the KIP.-->
 
-This proposal suggests a smart contract interface standard that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the sender and receiver details.
+This proposal suggests a smart contract interface standard that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the Retired and Newbie details.
 
 ## Abstract
 
@@ -35,7 +35,7 @@ The proposed smart contract will be implemented in Solidity and will be compatib
 
 The smart contract will have the following features:
 
-- Add/Remove fund addresses
+- Register/Remove fund addresses
 - Approve fund addresses and fund allocation
 - Reset the storage values at any unforeseen circumstances before Finalized
 - Finalize the smart contract after execution
@@ -47,13 +47,13 @@ The smart contract will have the following features:
 The smart contract will have the following enum to track the status of the contract:
 
 - `Initialized - 0`: The initial state of the contract.
-- `Registered - 1`: Senders and receivers registered.
-- `Approved - 2`: Senders approved.
+- `Registered - 1`: Retirees and Newbies are registered.
+- `Approved - 2`: All retirees approved by msg.sender
 - `Finalized - 3`: Rebalance executed and finalized.
 
 #### Life Cycle
 
-The contract status should follow the ENUM order above during status change. The only way to go to previous state is by calling Reset() function.
+The contract status should follow the ENUM order above during status transition. The only way to go to previous state is by calling Reset() function.
 
 ![](../assets/kip-103/lifecycle.png)
 
@@ -69,29 +69,29 @@ Status transition
 The smart contract will have the following structs:
 
 - `Retired`: to represent the details of retired and approver addresses.
-- `Newbie`: to represent newbies and their amount.
+- `Newbie`: to represent newbies and their fund allocation.
 
 #### Storage
 
 The smart contract will have the following storage variables:
 
-- `retirees`: array of retirees structs.
-- `newbie`: array of newbies structs.
+- `retirees`: array of `Retired` struct.
+- `newbies`: array of `Newbie` struct.
 - `status`: current status of the contract.
-- `rebalanceBlockNumber`: Block number of the execution of rebalancing.
-- `memo`: result of the treasury fund rebalance.
+- `rebalanceBlockNumber`: the target block number of the execution of rebalancing.
+- `memo`: result of the treasury fund rebalance. eg : `Treasury Rebalanced Successfully`
 
 #### Modifiers
 
 The smart contract will have the following modifier:
 
-- `atStatus`: to restrict access to certain functions based on the current status of the contract.
+- `onlyAtStatus`: to restrict access to certain functions based on the current status of the contract. If the status is not the same with the given status, it reverts.
 
 #### Constructor
 
 The smart contract will have the following constructor:
 
-- `constructor`: to initialize the contract with the block number of the execution of re balance.
+- `constructor`: to initialize the contract with the target block number of the execution of rebalance.
 
 #### State Changing Functions
 
@@ -175,7 +175,7 @@ import "./Ownable.sol";
  * @title Smart contract to record the rebalance of treasury funds.
  * This contract is to mainly record the addresses which holds the treasury funds
  * before and after rebalancing. It facilates approval and redistributing to new addresses.
- * Core will execute the re-distribution reading from this contract.
+ * Core will execute the re-distribution by reading this contract.
  */
 contract TreasuryRebalance is Ownable {
     /**
@@ -189,7 +189,7 @@ contract TreasuryRebalance is Ownable {
     }
 
     /**
-     * Retired struct to store the details of retired and approver addresses
+     * Retired struct to store retired addresses and their approver addresses
      */
     struct Retired {
         address retired;
@@ -197,7 +197,7 @@ contract TreasuryRebalance is Ownable {
     }
 
     /**
-     * Newbie struct to store reciever and amount
+     * Newbie struct to newbie receiver address and their fund allocation
      */
     struct Newbie {
         address newbie;
@@ -207,45 +207,45 @@ contract TreasuryRebalance is Ownable {
     /**
      * Storage
      */
-    Retired[] public retirees; //array of retired structs
-    Newbie[] public newbies; //array of newbie structs
-    Status public status; //current status of the contract
-    uint256 public rebalanceBlockNumber; //Block number of the execution of rebalancing
-    string public memo; //result of the treasury fund rebalance
+    Retired[] public retirees; // array of the Retired struct
+    Newbie[] public newbies; // array of Newbie struct
+    Status public status; // current status of the contract
+    uint256 public rebalanceBlockNumber; // the target block number of the execution of rebalancing.
+    string public memo; // result of the treasury fund rebalance. eg : `Treasury Rebalanced Successfully`
 
     /**
      * Events logs
      */
-    event DeployContract(
+    event ContractDeployed(
         Status status,
         uint256 rebalanceBlockNumber,
         uint256 deployedBlockNumber
     );
-    event RegisterRetired(address retired, address[] approvers);
-    event RemoveRetired(address retired, uint256 retiredCount);
-    event RegisterNewbie(address newbie, uint256 fundAllocation);
-    event RemoveNewbie(address newbie, uint256 newbieCount);
+    event RetiredRegistered(address retired, address[] approvers);
+    event RetiredRemoved(address retired, uint256 retiredCount);
+    event NewbieRegistered(address newbie, uint256 fundAllocation);
+    event NewbieRemoved(address newbie, uint256 newbieCount);
     event GetState(bool success, bytes result);
-    event Approve(address retired, address approver, uint256 approversCount);
+    event Approved(address retired, address approver, uint256 approversCount);
     event SetStatus(Status status);
     event Finalized(string memo, Status status);
 
     /**
      * Modifiers
      */
-    modifier atStatus(Status _status) {
+    modifier onlyAtStatus(Status _status) {
         require(status == _status, "function not allowed at this stage");
         _;
     }
 
     /**
      *  Constructor
-     * @param _rebalanceBlockNumber is the target block number to execute the redistribution in Core
+     * @param _rebalanceBlockNumber is the target block number of the execution the rebalance in Core
      */
     constructor(uint256 _rebalanceBlockNumber) {
         rebalanceBlockNumber = _rebalanceBlockNumber;
         status = Status.Initialized;
-        emit DeployContract(status, _rebalanceBlockNumber, block.timestamp);
+        emit ContractDeployed(status, _rebalanceBlockNumber, block.timestamp);
     }
 
     //State changing Functions
@@ -255,11 +255,11 @@ contract TreasuryRebalance is Ownable {
      */
     function registerRetired(
         address _retiredAddress
-    ) public onlyOwner atStatus(Status.Initialized) {
+    ) public onlyOwner onlyAtStatus(Status.Initialized) {
         require(!retiredExists(_retiredAddress), "Retired address is already registered");
         Retired storage retired = retirees.push();
         retired.retired = _retiredAddress;
-        emit RegisterRetired(retired.retired, retired.approvers);
+        emit RetiredRegistered(retired.retired, retired.approvers);
     }
 
     /**
@@ -268,12 +268,12 @@ contract TreasuryRebalance is Ownable {
      */
     function removeRetired(
         address _retiredAddress
-    ) public onlyOwner atStatus(Status.Initialized) {
+    ) public onlyOwner onlyAtStatus(Status.Initialized) {
         uint256 retiredIndex = getRetiredIndex(_retiredAddress);
         retirees[retiredIndex] = retirees[retirees.length - 1];
         retirees.pop();
 
-        emit RemoveRetired(_retiredAddress, retirees.length);
+        emit RetiredRemoved(_retiredAddress, retirees.length);
     }
 
     /**
@@ -284,7 +284,7 @@ contract TreasuryRebalance is Ownable {
     function registerNewbie(
         address _newbieAddress,
         uint256 _amount
-    ) public onlyOwner atStatus(Status.Initialized) {
+    ) public onlyOwner onlyAtStatus(Status.Initialized) {
         require(
             !newbieExists(_newbieAddress),
             "Newbie address is already registered"
@@ -294,7 +294,7 @@ contract TreasuryRebalance is Ownable {
         Newbie memory newbie = Newbie(_newbieAddress, _amount);
         newbies.push(newbie);
 
-        emit RegisterNewbie(_newbieAddress, _amount);
+        emit NewbieRegistered(_newbieAddress, _amount);
     }
 
     /**
@@ -303,12 +303,12 @@ contract TreasuryRebalance is Ownable {
      */
     function removeNewbie(
         address _newbieAddress
-    ) public onlyOwner atStatus(Status.Initialized) {
+    ) public onlyOwner onlyAtStatus(Status.Initialized) {
         uint256 newbieIndex = getNewbieIndex(_newbieAddress);
         newbies[newbieIndex] = newbies[newbies.length - 1];
         newbies.pop();
 
-        emit RemoveNewbie(_newbieAddress, newbies.length);
+        emit NewbieRemoved(_newbieAddress, newbies.length);
     }
 
     /**
@@ -320,7 +320,7 @@ contract TreasuryRebalance is Ownable {
      */
     function approve(
         address _retiredAddress
-    ) public atStatus(Status.Registered) {
+    ) public onlyAtStatus(Status.Registered) {
         require(
             retiredExists(_retiredAddress),
             "retired needs to be registered before approval"
@@ -398,11 +398,11 @@ contract TreasuryRebalance is Ownable {
         for (uint256 i = 0; i < approvers.length; i++) {
             require(
                 approvers[i] != _approver,
-                "Duplicate approvers cannot be allowed"
+                "Already approved"
             );
         }
         retirees[index].approvers.push(_approver);
-        emit Approve(
+        emit Approved(
             _retiredAddress,
             _approver,
             retirees[index].approvers.length
@@ -416,7 +416,7 @@ contract TreasuryRebalance is Ownable {
     function finalizeRegistration()
         public
         onlyOwner
-        atStatus(Status.Initialized)
+        onlyAtStatus(Status.Initialized)
     {
         status = Status.Registered;
         emit SetStatus(status);
@@ -426,7 +426,7 @@ contract TreasuryRebalance is Ownable {
      * @dev finalizeApproval sets the status to Approved,
      *      After this stage, approvals will be restricted.
      */
-    function finalizeApproval() public onlyOwner atStatus(Status.Registered) {
+    function finalizeApproval() public onlyOwner onlyAtStatus(Status.Registered) {
         require(
             getTreasuryAmount() < sumOfRetiredBalance(),
             "treasury amount should be less than the sum of all retired address balances"
@@ -468,7 +468,7 @@ contract TreasuryRebalance is Ownable {
      */
     function finalizeContract(
         string memory _memo
-    ) public onlyOwner atStatus(Status.Approved) {
+    ) public onlyOwner onlyAtStatus(Status.Approved) {
         memo = _memo;
         status = Status.Finalized;
         emit Finalized(memo, status);
