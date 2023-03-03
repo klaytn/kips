@@ -66,7 +66,7 @@ Status transition
 
 #### Structs
 
-The smart contract will have the following structs :
+The smart contract will have the following structs:
 
 - `Retired`: to represent the details of retired and approver addresses.
 - `Newbie`: to store newbie and amount.
