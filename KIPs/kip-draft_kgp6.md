@@ -69,7 +69,7 @@ Status transition
 The smart contract will have the following structs:
 
 - `Retired`: to represent the details of retired and approver addresses.
-- `Newbie`: to store newbie and amount.
+- `Newbie`: to represent newbies and their amount.
 
 #### Storage
 
