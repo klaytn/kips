@@ -1,7 +1,7 @@
 ---
 kip: 103
 title: Treasury Fund Rebalancing
-author: Aidan <aidan-kwon>, Toniya <toniya-klaytn>
+author: Aidan (@aidan-kwon), Toniya (@toniya-klaytn)
 discussions-to: https://govforum.klaytn.foundation/t/kgp-6-proposal-to-establish-a-sustainable-and-verifiable-klay-token-economy/157
 status: Draft
 type: Standards Track
@@ -13,7 +13,7 @@ created: 2023-02-24
 
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the KIP.-->
 
-This proposal suggests a smart contract interface standard that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the addresses.
+This proposal suggests a smart contract interface standard that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the sender and receiver details.
 
 ## Abstract
 
@@ -47,8 +47,8 @@ The smart contract will have the following features:
 The smart contract will have the following enum to track the status of the contract:
 
 - `Initialized - 0`: The initial state of the contract.
-- `Registered - 1`: retirees and newbies registered.
-- `Approved - 2`: Retirees approved.
+- `Registered - 1`: Senders and receivers registered.
+- `Approved - 2`: Senders approved.
 - `Finalized - 3`: Rebalance executed and finalized.
 
 #### Life Cycle
