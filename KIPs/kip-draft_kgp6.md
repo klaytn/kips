@@ -60,6 +60,7 @@ The contract status should follow the ENUM order above during status transition.
 Status transition
 
 - Initialized → Registered → Approved → Finalized ✅
+- Initialized, Registered, Approved → Initialized, when `reset()` is called.
 - Registered, Approved → Initialized, when `reset()` is called.
 
 All other status transitions are not possible.
