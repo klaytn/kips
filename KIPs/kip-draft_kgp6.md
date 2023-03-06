@@ -144,7 +144,7 @@ To record the addresses in a verifiable manner, the addresses are verified in th
 
 #### No Withdrawal
 
-Smart contract is not allowed to receive KLAY due to security reasons. So any funds send the contract will be reverted and withdraw function is not implemented.
+Smart contract is not allowed to receive KLAY due to security reasons. So any transaction sending KLAY to the contract will be reverted and withdraw function is not implemented.
 
 #### Finalize Contract
 
