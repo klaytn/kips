@@ -176,6 +176,7 @@ interface ITreasuryRebalance {
     event NewbieRegistered(address newbie, uint256 fundAllocation);
     event NewbieRemoved(address newbie, uint256 newbieCount);
     event Approved(address retired, address approver, uint256 approversCount);
+    event StatusChanged(Status status);
     event Finalized(string memo);
 
     // Enums
@@ -209,7 +210,7 @@ interface ITreasuryRebalance {
     function approve(address retiredAddress) external;
     function finalizeRegistration(Status newStatus) external;
     function finalizeApproval(Status newStatus) external;
-    function finalizeContract(string memory memo) external;
+    function finalizeContract(string memory memo) external view returns(address[] memory retirees, uint256 totalRetireesBalance, address[] memory newbies, uint256 totalNewbiesFund);
     function reset() external;
 }
 ```
@@ -222,6 +223,16 @@ interface ITreasuryRebalance {
 pragma solidity ^0.8.0;
 
 import "./Ownable.sol";
+
+/**
+ * @title Interface to get adminlist and quorom
+ */
+interface IRetiredContract {
+    function getState()
+        external
+        view
+        returns (address[] memory adminList, uint256 quorom);
+}
 
 /**
  * @title Smart contract to record the rebalance of treasury funds.
@@ -277,7 +288,6 @@ contract TreasuryRebalance is Ownable {
     event RetiredRemoved(address retired, uint256 retiredCount);
     event NewbieRegistered(address newbie, uint256 fundAllocation);
     event NewbieRemoved(address newbie, uint256 newbieCount);
-    event RetiredAddrAdminStatus(bool success, bytes result);
     event Approved(address retired, address approver, uint256 approversCount);
     event StatusChanged(Status status);
     event Finalized(string memo, Status status);
@@ -325,6 +335,7 @@ contract TreasuryRebalance is Ownable {
         address _retiredAddress
     ) public onlyOwner onlyAtStatus(Status.Initialized) {
         uint256 retiredIndex = getRetiredIndex(_retiredAddress);
+        require(retiredIndex != type(uint256).max, "Retired not registered");
         retirees[retiredIndex] = retirees[retirees.length - 1];
         retirees.pop();
 
@@ -360,6 +371,7 @@ contract TreasuryRebalance is Ownable {
         address _newbieAddress
     ) public onlyOwner onlyAtStatus(Status.Initialized) {
         uint256 newbieIndex = getNewbieIndex(_newbieAddress);
+        require(newbieIndex != type(uint256).max, "Newbie not registered");
         newbies[newbieIndex] = newbies[newbies.length - 1];
         newbies.pop();
 
@@ -411,7 +423,7 @@ contract TreasuryRebalance is Ownable {
     function _validateAdmin(
         address _approver,
         address[] memory adminList
-    ) private returns (bool isAdmin) {
+    ) private pure returns (bool isAdmin) {
         for (uint256 i = 0; i < adminList.length; i++) {
             if (_approver == adminList[i]) {
                 isAdmin = true;
@@ -427,16 +439,9 @@ contract TreasuryRebalance is Ownable {
      */
     function _getState(
         address _retiredAddress
-    ) private returns (address[] memory adminList, uint256 req) {
-        //call getState() function in retiredAddress contract to get the adminList
-        bytes memory payload = abi.encodeWithSignature("getState()");
-        (bool success, bytes memory result) = _retiredAddress.staticcall(
-            payload
-        );
-        emit RetiredAddrAdminStatus(success, result);
-        require(success, "call failed");
-
-        (adminList, req) = abi.decode(result, (address[], uint256));
+    ) private view returns (address[] memory adminList, uint256 req) {
+        IRetiredContract retiredContract = IRetiredContract(_retiredAddress);
+        (adminList, req) = retiredContract.getState();
     }
 
     /**
@@ -449,6 +454,7 @@ contract TreasuryRebalance is Ownable {
         address _approver
     ) private {
         uint256 index = getRetiredIndex(_retiredAddress);
+        require(index != type(uint256).max, "Retired not registered");
         address[] memory approvers = retirees[index].approvers;
         for (uint256 i = 0; i < approvers.length; i++) {
             require(approvers[i] != _approver, "Already approved");
@@ -495,7 +501,7 @@ contract TreasuryRebalance is Ownable {
     /**
      * @dev verify if quorom reached for the retired approvals
      */
-    function _isRetiredsApproved() private {
+    function _isRetiredsApproved() private view {
         for (uint256 i = 0; i < retirees.length; i++) {
             Retired memory retired = retirees[i];
             (address[] memory adminList, uint256 req) = _getState(
@@ -523,6 +529,10 @@ contract TreasuryRebalance is Ownable {
      * @dev sets the status of the contract to Finalize. Once finalized the storage data
      * of the contract cannot be modified
      * @param _memo is the result of the rebalance after executing successfully in the core.
+     * @return retirees is an array of retired address
+     * @return totalRetireesBalance is the sum of all retired balances
+     * @return newbies is an array of newbie address
+     * @return totalNewbiesFund is the sum of funds allocated to
      */
     function finalizeContract(
         string memory _memo
@@ -530,12 +540,19 @@ contract TreasuryRebalance is Ownable {
         public
         onlyOwner
         onlyAtStatus(Status.Approved)
-        returns (address[] memory retirees, address[] memory newbies)
+        returns (
+            address[] memory retirees,
+            uint256 totalRetireesBalance,
+            address[] memory newbies,
+            uint256 totalNewbiesFund
+        )
     {
         memo = _memo;
         status = Status.Finalized;
         emit Finalized(memo, status);
-        return (retirees, newbies);
+        totalRetireesBalance = sumOfRetiredBalance();
+        totalNewbiesFund = getTreasuryAmount();
+        return (retirees, totalRetireesBalance, newbies, totalNewbiesFund);
     }
 
     /**
@@ -565,6 +582,7 @@ contract TreasuryRebalance is Ownable {
         address _retiredAddress
     ) public view returns (address, address[] memory) {
         uint256 index = getRetiredIndex(_retiredAddress);
+        require(index != type(uint256).max, "Retired not registered");
         Retired memory retired = retirees[index];
         return (retired.retired, retired.approvers);
     }
@@ -622,6 +640,7 @@ contract TreasuryRebalance is Ownable {
         address _newbieAddress
     ) public view returns (address, uint256) {
         uint256 index = getNewbieIndex(_newbieAddress);
+        require(index != type(uint256).max, "Newbie not registered");
         Newbie memory newbie = newbies[index];
         return (newbie.newbie, newbie.amount);
     }
