@@ -60,7 +60,9 @@ The contract status should follow the ENUM order above during status transition.
 Status transition
 
 - Initialized → Registered → Approved → Finalized ✅
-  All other status transitions are not possible.
+- Registered, Approved → Initialized, when `reset()` is called.
+
+All other status transitions are not possible.
 
 #### Structs
 
@@ -106,14 +108,14 @@ The smart contract will have the following state changing functions:
   **Conditions**
   - every retiredAddress must be approved
   - min required admin’s approval is done for retired contract address.
-  - sum of retired’s balance is greater than treasury amount
+  - sum of retired’s balance is greater than sum of the newbies' amount
     </br>
 - `reset`: resets all storage values to empty objects except rebalanceBlockNumber. It can only be called during Initialization, Registration and Approved status.
 - `finalizeContract`: to record the execution result of the rebalance and finalize the contract. The storage data cannot be modified after this stage.
 
 #### Fallback Function
 
-The smart contract will have a fallback function to revert any payments. Since its a treasury contract it should not accept any payments nor it should allow any withdrawal.
+The smart contract will have a fallback function to revert any payments. Since its a treasury contract, it should not accept any payments nor it should allow any withdrawal.
 
 ### Core Logic Overview
 
@@ -129,16 +131,16 @@ The smart contract is mainly for recording the details, and the Core will execut
 
 #### KLAY transfer is not allowed via smart contracts
 
-As the balance of treasury funds keeps increasing for every block with the block reward its hard to keep track of the balances and rebalance token allocation. So smart contract will only record the rebalanced allocation and the core will execute the allocation reading from the contract.
+As the balance of treasury funds keeps increasing for every block with the block reward its hard to keep track of the balances and rebalance token allocation. So smart contract will only record the rebalanced allocation and the core will execute the allocation by reading from the contract.
 
 #### Approval of retiredAddress
 
-To record the addresses in a verifiable manner the addresses are verified in the contract by calling approve method. The retiredAddress can be a Contract address or a Externally Owned Account. If the retired address is a
+To record the addresses in a verifiable manner, the addresses are verified in the contract by calling approve method. The retiredAddress can either be a Contract address or an Externally Owned Account(EOA).
 
-- EOA : EOA address can be verified when the account holder directly calls the approve function. `msg.sender == retiredAddress`
-- Contract : Contract address can be verified when the admin of the contract calls approve function. The smart contract calls the `getState()` function implemented in the retiredAddress contract to get the admin details. `msg.sender == admin`
+- In case of an EOA, verification occurs when the account holder directly calls the approve function. `msg.sender == retiredAddress`
+- In case of a Contract, verification occurs when the admin of the contract calls approve function. The smart contract calls the `getState()` function implemented in the retiredAddress contract to get the admin details. `msg.sender == admin`
   - `getState()` funtion is implemented in Klaytn treasury contracts. It returns the adminList and quorom (min required admins to approve).
-  - Condition: Min required admins should approve the senderAddress contract.
+  - Condition: Min required admins should approve the retiredAddress contract.
 
 #### No Withdrawal
 
