@@ -60,9 +60,7 @@ The contract status should follow the ENUM order above during status transition.
 Status transition
 
 - Initialized → Registered → Approved → Finalized ✅
-- Initialized → Registered → Finalized ❌
-- Initialized → Approved ❌
-- Initialized → Finalized ❌
+  All other status transitions are not possible.
 
 #### Structs
 
@@ -98,15 +96,15 @@ The smart contract will have the following constructor:
 The smart contract will have the following state changing functions:
 
 - `registerRetired`: to register retired details. Retired stores the retired address and approvers
-- `removeNewbie`: to remove retired details from the array.
-- `registerRetired`: to register newbie address and its fund distribution.
+- `removeRetired`: to remove retired details from the array.
+- `registerNewbie`: to register newbie address and its fund distribution.
 - `removeNewbie`: to remove newbie details from the array.
 - `finalizeRegistration`: sets the status to Registered only executed by owner. After this stage, registrations will be restricted.
 - `approve`: to approve a retiredAddress by the admin.
 - `finalizeApproval`: sets the status to Approved. After this stage, approvals will be restricted.
   </br>
   **Conditions**
-  - every retired must be approved
+  - every retiredAddress must be approved
   - min required admin’s approval is done for retired contract address.
   - sum of retired’s balance is greater than treasury amount
     </br>
@@ -163,6 +161,58 @@ Once the re-distribution a.k.a rebalance is executed by the Core, the status of 
 <!--The implementations must be completed before any KIP is given status "Final", but it need not be completed before the KIP is accepted. While there is merit to the approach of reaching consensus on the specification and rationale before writing code, the principle of "rough consensus and running code" is still useful when it comes to resolving many discussions of API details.-->
 
 #### Example implementation
+
+```solidity
+interface ITreasuryRebalance {
+    // Events
+    event ContractDeployed(
+        uint256 rebalanceBlockNumber,
+        uint256 deployedBlockNumber
+    );
+    event RetiredRegistered(address retired, address[] approvers);
+    event RetiredRemoved(address retired, uint256 retiredCount);
+    event NewbieRegistered(address newbie, uint256 fundAllocation);
+    event NewbieRemoved(address newbie, uint256 newbieCount);
+    event Approved(address retired, address approver, uint256 approversCount);
+    event Finalized(string memo);
+
+    // Enums
+    enum Status {
+        Initialized,
+        Registered,
+        Approved,
+        Finalized
+    }
+
+    struct Retired {
+        address retired;
+        address[] approvers;
+    }
+
+    struct Newbie {
+        address newbie;
+        uint256 amount;
+    }
+
+    // State variables
+    function status() external view returns (Status);
+    function rebalanceBlockNumber() external view returns (uint256);
+    function memo() external view returns (string memory);
+
+    // State changing functions
+    function registerRetired(address retiredAddress) external;
+    function removeRetired(address retiredAddress) external;
+    function registerNewbie(address newbieAddress, uint256 _amount) external;
+    function removeNewbie(address newbieAddress) external;
+    function approve(address retiredAddress) external;
+    function finalizeRegistration(Status newStatus) external;
+    function finalizeApproval(Status newStatus) external;
+    function finalizeContract(string memory memo) external;
+    function reset() external;
+}
+```
+
+//TODO Below section will be replaced by the link to the implementation
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0
@@ -225,16 +275,16 @@ contract TreasuryRebalance is Ownable {
     event RetiredRemoved(address retired, uint256 retiredCount);
     event NewbieRegistered(address newbie, uint256 fundAllocation);
     event NewbieRemoved(address newbie, uint256 newbieCount);
-    event GetState(bool success, bytes result);
+    event RetiredAddrAdminStatus(bool success, bytes result);
     event Approved(address retired, address approver, uint256 approversCount);
-    event SetStatus(Status status);
+    event StatusChanged(Status status);
     event Finalized(string memo, Status status);
 
     /**
      * Modifiers
      */
     modifier onlyAtStatus(Status _status) {
-        require(status == _status, "function not allowed at this stage");
+        require(status == _status, "Not in the designated status");
         _;
     }
 
@@ -256,7 +306,10 @@ contract TreasuryRebalance is Ownable {
     function registerRetired(
         address _retiredAddress
     ) public onlyOwner onlyAtStatus(Status.Initialized) {
-        require(!retiredExists(_retiredAddress), "Retired address is already registered");
+        require(
+            !retiredExists(_retiredAddress),
+            "Retired address is already registered"
+        );
         Retired storage retired = retirees.push();
         retired.retired = _retiredAddress;
         emit RetiredRegistered(retired.retired, retired.approvers);
@@ -336,9 +389,12 @@ contract TreasuryRebalance is Ownable {
             );
             _updateApprover(_retiredAddress, msg.sender);
         } else {
+            (address[] memory adminList, ) = _getState(_retiredAddress);
+            require(adminList.length != 0, "admin list cannot be empty");
+
             //check if the msg.sender is one of the admin of the retiredAddress contract
             require(
-                _validateAdmin(_retiredAddress, msg.sender),
+                _validateAdmin(msg.sender, adminList),
                 "msg.sender is not the admin"
             );
             _updateApprover(_retiredAddress, msg.sender);
@@ -347,17 +403,14 @@ contract TreasuryRebalance is Ownable {
 
     /**
      * @dev validate if the msg.sender is admin if the retiredAddress is a contract
-     * @param _retiredAddress is the address of the contract
      * @param _approver is the msg.sender
      * @return isAdmin is true if the msg.sender is one of the admin
      */
     function _validateAdmin(
-        address _retiredAddress,
-        address _approver
+        address _approver,
+        address[] memory adminList
     ) private returns (bool isAdmin) {
-        (address[] memory adminList, ) = _getState(_retiredAddress);
-        require(adminList.length != 0, "admin list cannot be empty");
-        for (uint8 i = 0; i < adminList.length; i++) {
+        for (uint256 i = 0; i < adminList.length; i++) {
             if (_approver == adminList[i]) {
                 isAdmin = true;
             }
@@ -378,7 +431,7 @@ contract TreasuryRebalance is Ownable {
         (bool success, bytes memory result) = _retiredAddress.staticcall(
             payload
         );
-        emit GetState(success, result);
+        emit RetiredAddrAdminStatus(success, result);
         require(success, "call failed");
 
         (adminList, req) = abi.decode(result, (address[], uint256));
@@ -396,10 +449,7 @@ contract TreasuryRebalance is Ownable {
         uint256 index = getRetiredIndex(_retiredAddress);
         address[] memory approvers = retirees[index].approvers;
         for (uint256 i = 0; i < approvers.length; i++) {
-            require(
-                approvers[i] != _approver,
-                "Already approved"
-            );
+            require(approvers[i] != _approver, "Already approved");
         }
         retirees[index].approvers.push(_approver);
         emit Approved(
@@ -419,21 +469,25 @@ contract TreasuryRebalance is Ownable {
         onlyAtStatus(Status.Initialized)
     {
         status = Status.Registered;
-        emit SetStatus(status);
+        emit StatusChanged(status);
     }
 
     /**
      * @dev finalizeApproval sets the status to Approved,
      *      After this stage, approvals will be restricted.
      */
-    function finalizeApproval() public onlyOwner onlyAtStatus(Status.Registered) {
+    function finalizeApproval()
+        public
+        onlyOwner
+        onlyAtStatus(Status.Registered)
+    {
         require(
             getTreasuryAmount() < sumOfRetiredBalance(),
             "treasury amount should be less than the sum of all retired address balances"
         );
         _isRetiredsApproved();
         status = Status.Approved;
-        emit SetStatus(status);
+        emit StatusChanged(status);
     }
 
     /**
@@ -442,13 +496,15 @@ contract TreasuryRebalance is Ownable {
     function _isRetiredsApproved() private {
         for (uint256 i = 0; i < retirees.length; i++) {
             Retired memory retired = retirees[i];
-            (, uint256 req) = _getState(retired.retired);
+            (address[] memory adminList, uint256 req) = _getState(
+                retired.retired
+            );
             if (retired.approvers.length >= req) {
                 //if min quorom reached, make sure all approvers are still valid
                 address[] memory approvers = retired.approvers;
                 uint256 minApprovals = 0;
                 for (uint256 j = 0; j < approvers.length; j++) {
-                    _validateAdmin(retirees[i].retired, approvers[j]);
+                    _validateAdmin(approvers[j], adminList);
                     minApprovals++;
                 }
                 require(
@@ -468,10 +524,16 @@ contract TreasuryRebalance is Ownable {
      */
     function finalizeContract(
         string memory _memo
-    ) public onlyOwner onlyAtStatus(Status.Approved) {
+    )
+        public
+        onlyOwner
+        onlyAtStatus(Status.Approved)
+        returns (address[] memory retirees, address[] memory newbies)
+    {
         memo = _memo;
         status = Status.Finalized;
         emit Finalized(memo, status);
+        return (retirees, newbies);
     }
 
     /**
@@ -500,7 +562,6 @@ contract TreasuryRebalance is Ownable {
     function getRetired(
         address _retiredAddress
     ) public view returns (address, address[] memory) {
-        require(retiredExists(_retiredAddress), "Retired does not exist");
         uint256 index = getRetiredIndex(_retiredAddress);
         Retired memory retired = retirees[index];
         return (retired.retired, retired.approvers);
@@ -512,7 +573,7 @@ contract TreasuryRebalance is Ownable {
      */
     function retiredExists(address _retiredAddress) public view returns (bool) {
         require(_retiredAddress != address(0), "Invalid address");
-        for (uint8 i = 0; i < retirees.length; i++) {
+        for (uint256 i = 0; i < retirees.length; i++) {
             if (retirees[i].retired == _retiredAddress) {
                 return true;
             }
@@ -531,17 +592,20 @@ contract TreasuryRebalance is Ownable {
                 return i;
             }
         }
-        revert("Retired does not exist");
+        return type(uint256).max;
     }
 
     /**
      * @dev to calculate the sum of retirees balances
      * @return retireesBalance the sum of balances of retireds
      */
-    function sumOfRetiredBalance() public view returns (uint256 retireesBalance) {
-        for (uint8 i = 0; i < retirees.length; i++) {
-            address retiredAddress = retirees[i].retired;
-            retireesBalance += retiredAddress.balance;
+    function sumOfRetiredBalance()
+        public
+        view
+        returns (uint256 retireesBalance)
+    {
+        for (uint256 i = 0; i < retirees.length; i++) {
+            retireesBalance += retirees[i].retired.balance;
         }
         return retireesBalance;
     }
@@ -551,12 +615,10 @@ contract TreasuryRebalance is Ownable {
      * @param _newbieAddress is the address of the newbie
      * @return newbie is the address of the newbie
      * @return amount is the fund allocated to the newbie
-
      */
     function getNewbie(
         address _newbieAddress
     ) public view returns (address, uint256) {
-        require(newbieExists(_newbieAddress), "Newbie does not exist");
         uint256 index = getNewbieIndex(_newbieAddress);
         Newbie memory newbie = newbies[index];
         return (newbie.newbie, newbie.amount);
@@ -566,11 +628,9 @@ contract TreasuryRebalance is Ownable {
      * @dev check whether _newbieAddress is registered
      * @param _newbieAddress is the address of the newbie
      */
-    function newbieExists(
-        address _newbieAddress
-    ) public view returns (bool) {
+    function newbieExists(address _newbieAddress) public view returns (bool) {
         require(_newbieAddress != address(0), "Invalid address");
-        for (uint8 i = 0; i < newbies.length; i++) {
+        for (uint256 i = 0; i < newbies.length; i++) {
             if (newbies[i].newbie == _newbieAddress) {
                 return true;
             }
@@ -589,7 +649,7 @@ contract TreasuryRebalance is Ownable {
                 return i;
             }
         }
-        revert("Newbie does not exist");
+        return type(uint256).max;
     }
 
     /**
@@ -597,7 +657,7 @@ contract TreasuryRebalance is Ownable {
      * @return treasuryAmount the sum of funds allocated to newbies
      */
     function getTreasuryAmount() public view returns (uint256 treasuryAmount) {
-        for (uint8 i = 0; i < newbies.length; i++) {
+        for (uint256 i = 0; i < newbies.length; i++) {
             treasuryAmount += newbies[i].amount;
         }
         return treasuryAmount;
