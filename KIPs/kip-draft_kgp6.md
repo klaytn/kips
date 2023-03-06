@@ -208,8 +208,8 @@ interface ITreasuryRebalance {
     function registerNewbie(address newbieAddress, uint256 _amount) external;
     function removeNewbie(address newbieAddress) external;
     function approve(address retiredAddress) external;
-    function finalizeRegistration(Status newStatus) external;
-    function finalizeApproval(Status newStatus) external;
+    function finalizeRegistration() external;
+    function finalizeApproval() external;
     function finalizeContract(string memory memo) external view returns(address[] memory retirees, uint256 totalRetireesBalance, address[] memory newbies, uint256 totalNewbiesFund);
     function reset() external;
 }
