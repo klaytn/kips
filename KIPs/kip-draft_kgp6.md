@@ -141,7 +141,7 @@ As the balance of treasury funds keeps increasing for every block with the block
 
 #### Approval of retiredAddress
 
-To record the addresses in a verifiable manner, the addresses are verified in the contract by calling approve method. The retiredAddress can either be a Contract address or an Externally Owned Account(EOA).
+To record the addresses in a verifiable manner, the addresses are verified in the contract by calling approve method. The retiredAddress can either be a Contract Account (CA) or an Externally Owned Account(EOA).
 
 - In case of an EOA, verification occurs when the account holder directly calls the approve function. `msg.sender == retiredAddress`
 - In case of a Contract, verification occurs when the admin of the contract calls approve function. The smart contract calls the `getState()` function implemented in the retiredAddress contract to get the admin details. `msg.sender == admin`
