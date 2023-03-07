@@ -13,7 +13,7 @@ created: 2023-02-24
 
 <!--"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the KIP.-->
 
-This proposal suggests a smart contract interface standard that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the Retired and Newbie details.
+This proposal suggests a smart contract interface standard that records the rebalance of treasury funds. The main objective is to facilitate the approval and redistribution of treasury funds to new addresses while keeping record of the the previous fund addresses.
 
 ## Abstract
 
@@ -36,7 +36,9 @@ The proposed smart contract will be implemented in Solidity and will be compatib
 The smart contract will have the following features:
 
 - Register/Remove fund addresses
-- Approve fund addresses and fund allocation
+  - Previous fund addresses(Retired): Retired fund represents the previous fund addresses such as KGF or KIR
+  - New fund addresses(Newbie): Newbie fund represents the 'rebalanced fund' such as KCF or KFF
+- Approve fund addresses and fund allocation. Receive approval for asset transfer from the admins/owners of the funds
 - Reset the storage values at any unforeseen circumstances before Finalized
 - Finalize the smart contract after execution
 
@@ -70,7 +72,10 @@ All other status transitions are not possible.
 The smart contract will have the following structs:
 
 - `Retired`: to represent the details of retired and approver addresses.
+  - Retired represents the previous fund addresses such as KGF or KIR
+  - Approver represents the admin of the retired address. Approver addresses are stored to track the approvals received for asset transfer
 - `Newbie`: to represent newbies and their fund allocation.
+  - Newbie represents the 'rebalanced fund' such as KCF or KFF
 
 #### Storage
 
@@ -172,7 +177,7 @@ interface ITreasuryRebalance {
         uint256 rebalanceBlockNumber,
         uint256 deployedBlockNumber
     );
-    event RetiredRegistered(address retired, address[] approvers);
+    event RetiredRegistered(address retired);
     event RetiredRemoved(address retired, uint256 retiredCount);
     event NewbieRegistered(address newbie, uint256 fundAllocation);
     event NewbieRemoved(address newbie, uint256 newbieCount);
