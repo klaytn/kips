@@ -193,7 +193,7 @@ interface ITreasuryRebalance {
     /**
      * @dev Emitted when a Retired is removed
      */
-    event RetiredRemoved(address retired, uint256 retiredCount);
+    event RetiredRemoved(address retired);
 
     /**
      * @dev Emitted when a Newbie is registered
@@ -203,7 +203,7 @@ interface ITreasuryRebalance {
     /**
      * @dev Emitted when a Newbie is removed
      */
-    event NewbieRemoved(address newbie, uint256 newbieCount);
+    event NewbieRemoved(address newbie);
 
     /**
      * @dev Emitted when a admin approves the retired address.
