@@ -42,7 +42,7 @@ Recognizing a tendency that the member with more KLAY makes a decision that bene
 
 The Klaytn on-chain governance voting will be conducted on smart contracts. Several contracts and accounts interact together in the process. The below diagram shows the relationship between contracts and accounts.
 
-Find an example implementation at [here](https://github.com/klaytn/governance-contracts-audit).
+Find an example implementation [here](https://github.com/klaytn/governance-contracts-audit).
 
 - Contracts
   - **AddressBook**: an existing contract that stores the list of GC nodes, their staking contracts, and their reward recipient addresses.
@@ -201,13 +201,13 @@ abstract contract StakingTracker {
         uint256 trackStart;
         uint256 trackEnd;
 
-        // Determined at crateTracker() and does not change.
+        // Determined at createTracker() and does not change.
         uint256[] gcIds;
         mapping(uint256 => bool) gcExists;
         mapping(address => uint256) stakingToGCId;
 
         // Balances and voting powers.
-        // First collected at crateTracker() and updated at refreshStake() until trackEnd.
+        // First collected at createTracker() and updated at refreshStake() until trackEnd.
         mapping(address => uint256) stakingBalances; // staking address balances
         mapping(uint256 => uint256) gcBalances; // consolidated GC balances
         mapping(uint256 => uint256) gcVotes; // GC voting powers
