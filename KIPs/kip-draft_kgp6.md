@@ -304,11 +304,11 @@ interface ITreasuryRebalance {
         external
         view
         returns (
-            Retired[] memory,
+            Retired[] memory retirees,
+            Newbie[] memory newbies,
             uint256 totalRetireesBalance,
-            Newbie[] memory,
             uint256 totalNewbiesFund,
-            Status
+            Status status
     );
 
     // State changing functions
