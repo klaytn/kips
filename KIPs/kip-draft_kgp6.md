@@ -171,7 +171,7 @@ The execution result of treasury fund rebalancing will be printed as an INFO-lev
     {"retired": "0xRetiredAddress2", "balance": "removed balance in PEB"}],
   "newbies": [{"newbie": "0xNewbieAddress1", "fundAllocated": "new allocated balance in PEB"},
     {"newbie": "0xNewbieAddress2","fundAllocated": "new allocated balance in PEB"}],
-  "burnt": "bunt amount in PEB",
+  "burnt": "burnt amount in PEB",
   "success": true
 }
 ```
