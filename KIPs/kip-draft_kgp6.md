@@ -125,7 +125,68 @@ The smart contract will have a fallback function to revert any payments. Since i
 
 ### Core Logic Overview
 
-TBU - describe how to read contract data and execute rebalancing in Klaytn node
+To enable treasury fund rebalancing, a Klaytn node should specify a deployed smart contract address and a target block number on the node configuration like hardfork items. At the configured block number, a Klaytn node reads registered information from the smart contract and executes treasury fund rebalancing.
+
+#### Chain Configuration
+
+ChainConfig introduces the following fields for treasury fund rebalancing. The configurations are used to trigger rebalancing and find the contract storing rebalancing information. All nodes in the network should update `genesis.json` configuration with the same value as if updating a hardfork block number. The configuration values for Baobab and Cypress networks can be hard coded on the client source code.
+
+- `kip103CompatibleBlock`: Treasury fund rebalance executing block which is the same as `rebalanceBlockNumber` of the smart contract
+- `kip103ContractAddress`: The address of the treasury fund rebalancing contract
+
+#### Validation
+
+Before executing rebalancing, registered values on the smart contract are validated to confirm whether the owners of the retired account agree on the rebalancing and whether the rebalancing doesn't cause inflation of KLAY. The following should be confirmed before the execution.
+
+- `Kip103CompatibleBlock` == `contract.rebalanceBlockNumber`: Ensure the owner of the retired accounts agree on this timing
+- `contract.status` == `Approved`: Confirm the status of the contract is ready to rebalance
+- `contract.checkRetiredsApproved()`: Double-check the agreement of the retired accounts' owners at the execution time since the ownership is replaceable
+- `totalRetiredAmount >= totalNewbieAmount`: Ensure the rebalancing doesn't issue any KLAY
+
+#### Execution
+
+The rebalancing is executed at the end of the block processing process. In other words, it is executed after processing all transactions of the block and distributing block rewards. If a retired account is one of the receiver of the block reward, the amount also will be used for rebalancing. All KLAY in newbies account before rebalancing will be burnt as well. After rebalancing, the remaining KLAY of retired accounts will be burnt. Below is the new fund allocation logic including burn.
+
+```
+for addr := range Retireds {
+	state.SetBalance(addr, 0)
+}
+
+for addr, balance := Newbie {
+	// if newbie has KLAY before the allocation, it will be burnt
+	currentBalance := state.GetBalance(addr)
+	Burnt = Burnt + currentBalance
+
+	state.SetBalance(addr, balance)
+}
+```
+
+#### Result
+
+The execution result of treasury fund rebalancing will be printed as an INFO-level log on each node. The owner of the treasury rebalancing contract is supposed to update the log on the smart contract as `memo` finalizing the status of the contract. Anyone can read and verify the rebalancing result by interacting with the smart contract. The data type of `memo` is byte array containing marshaled json data. Refer to the following format and example if you want to parse it.
+
+```Format
+{
+  "retirees": [{"retired": "0xRetiredAddress1", "balance": "removed balance in PEB"},
+    {"retired": "0xRetiredAddress2", "balance": "removed balance in PEB"}],
+  "newbies": [{"newbie": "0xNewbieAddress1", "fundAllocated": "new allocated balance in PEB"},
+    {"newbie": "0xNewbieAddress2","fundAllocated": "new allocated balance in PEB"}],
+  "burnt": "bunt amount in PEB",
+  "success": true
+}
+```
+
+```Example
+memo="
+{
+  "retirees": [{"retired": "0x38138d89c321b3b5f421e9452b69cf29e4380bae", "balance": "20000000000000000000"},
+    {"retired": "0x0a33a1b99bd67a7189573dd74de80293afdf969a", "balance": "20000000000000000000"}],
+  "newbies": [{"newbie": "0x28138d89c321b3b5f421e9452b69cf29e4380ba4", "fundAllocated": "10000000000000000000"},
+    {"newbie": "0x34138d89c321b3b5f421e9452b69cf29e4380bae","fundAllocated": "10000000000000000000"}],
+  "burnt": "70000000000000000000",
+  "success": true
+}"
+```
 
 ## Rationale
 
