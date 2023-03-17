@@ -176,7 +176,11 @@ The execution result of treasury fund rebalancing will be printed as an INFO-lev
 }
 ```
 
-```Example
+Note: 10^18 Peb is equal to 1 KLAY
+
+**Example**
+
+```
 memo="
 {
   "retirees": [{"retired": "0x38138d89c321b3b5f421e9452b69cf29e4380bae", "balance": "20000000000000000000"},
