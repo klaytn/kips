@@ -165,14 +165,14 @@ for addr, balance := Newbie {
 
 The execution result of treasury fund rebalancing will be printed as an INFO-level log on each node. The owner of the treasury rebalancing contract is supposed to update the log on the smart contract as `memo` finalizing the status of the contract. Anyone can read and verify the rebalancing result by interacting with the smart contract. The data type of `memo` is byte array containing marshaled json data. Refer to the following format and example if you want to parse it.
 
-```Format
+**Format**
+
+```
 {
-  "retirees": [{"retired": "0xRetiredAddress1", "balance": "removed balance in PEB"},
-    {"retired": "0xRetiredAddress2", "balance": "removed balance in PEB"}],
-  "newbies": [{"newbie": "0xNewbieAddress1", "fundAllocated": "new allocated balance in PEB"},
-    {"newbie": "0xNewbieAddress2","fundAllocated": "new allocated balance in PEB"}],
-  "burnt": "burnt amount in PEB",
-  "success": true
+  "retired": {"0xRetiredAddress1":[removed balance in Peb], "0xRetiredAddress2":[removed balance in Peb], ... },
+  "newbie" {"0xNewbieAddress1":[new allocated balance in Peb], "0xNewbieAddress2":[new allocated balance in Peb], ... },,
+  "burnt":[bunt amount in Peb],
+  "success":true
 }
 ```
 
@@ -181,14 +181,11 @@ Note: 10^18 Peb is equal to 1 KLAY
 **Example**
 
 ```
-memo="
-{
-  "retirees": [{"retired": "0x38138d89c321b3b5f421e9452b69cf29e4380bae", "balance": "20000000000000000000"},
-    {"retired": "0x0a33a1b99bd67a7189573dd74de80293afdf969a", "balance": "20000000000000000000"}],
-  "newbies": [{"newbie": "0x28138d89c321b3b5f421e9452b69cf29e4380ba4", "fundAllocated": "10000000000000000000"},
-    {"newbie": "0x34138d89c321b3b5f421e9452b69cf29e4380bae","fundAllocated": "10000000000000000000"}],
-  "burnt": "70000000000000000000",
-  "success": true
+memo="{
+  "retired": {"0x38138d89c321b3b5f421e9452b69cf29e4380bae":117000000000000000000000000000000000000, "0x30208f32c70e8b53a67ea171c8720cbfe32888ff":117000000000000000000000000000000000000},
+  "newbie" {"0x0a33a1b99bd67a7189573dd74de80293afdf969a":22500000000000000000000000000000000000, "0xd9de2697000c3665e9c5a71e1bf52aaa44507cc0":22500000000000000000000000000000000000},
+  "burnt":72000000000000000000000000000000000000,
+  "success":true
 }"
 ```
 
@@ -219,7 +216,22 @@ Smart contract is not allowed to receive KLAY due to security reasons. So any tr
 
 #### Finalize Contract
 
-Once the re-distribution a.k.a rebalance is executed by the Core, the status of the smart contract will be finalized and any modifications to the storage data will be restricted.
+Once the re-distribution a.k.a rebalance is executed by the Core, the status of the smart contract will be finalized by adding a memo. Any modifications to the storage data will be restricted after finalization.
+
+Once Finalized anyone can read and verify the rebalancing result by querying the memo in the smart contract.
+
+Query Result:
+
+```js
+memo= "{
+  "retirees": [{"retired": "0xRetiredAddress1", "balance": "0xamount"},
+    {"retired": "0xRetiredAddress2", "balance": "0xamount"}],
+  "newbies": [{"newbie": "0xNewbieAddress1", "fundAllocated": "0xamount"},
+    {"newbie": "0xNewbieAddress2","fundAllocated": "0xamount"}],
+  "burnt": "0xamount",
+  "success": true
+}"
+```
 
 ## Backwards Compatibility
 
