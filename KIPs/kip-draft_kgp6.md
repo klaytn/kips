@@ -176,7 +176,7 @@ The execution result of treasury fund rebalancing will be printed as an INFO-lev
 }
 ```
 
-Note: 10^18 Peb is equal to 1 KLAY
+Note: 10^18 [Peb](https://docs.klaytn.foundation/content/klaytn/design/klaytn-native-coin-klay) is equal to 1 KLAY
 
 **Example**
 
