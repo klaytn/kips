@@ -1,7 +1,7 @@
 ---
 kip: 81
 title: Implementing the on-chain governance voting method
-author: Yeri<yeriel.lee@klaytn.foundation>, Daniel<daniel.cc@klaytn.foundation>, Aidan<aidan.kwon@klaytn.foundation>, Ollie<ollie.j@klaytn.foundation>, Eddie<eddie.kim0@klaytn.foundation>
+author: Yeri (@yeri-lee), Daniel (@dcground), Aidan (@aidan-kwon), Ollie (@blukat29), Eddie<eddie.kim0@klaytn.foundation>
 discussion-to: https://govforum.klaytn.foundation/t/kgp-1-implementing-the-on-chain-governance-voting-method/18
 status: Final
 type: Standards Track
