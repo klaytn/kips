@@ -11,7 +11,7 @@ requires:
 ---
 
 ## Simple Summary
-An update of treasury fund rebalancing.
+An enhancement to Data Integrity verification in Block Validation Process
 
 ## Abstract
 This Klaytn Improvement Proposal (KIP) suggests enhancing Klaytn's block validation process by introducing additional mechanisms to verify data inclusion and accuracy within propagated blocks. While the current validation process ensures trustworthiness and integrity through cryptographic proofs, committee approval, and consensus mechanisms, it does not explicitly address data inclusion and accuracy verification. This proposal aims to introduce a dedicated data validation step, consistency checks, transaction signature verification, integration of Merkle trees, and continuous monitoring and auditing to bolster the security and reliability of the Klaytn network.
