@@ -1,6 +1,6 @@
 ---
 kip: 
-title: Enhanced Data Integrity Verification in Block Validation Process
+title: Enhancing Data Integrity Verification in Block Validation Process
 author: Paul Elisha (@paulelisha)
 discussions-to: <https://github.com/klaytn/kips/issues/165>
 status: Draft
