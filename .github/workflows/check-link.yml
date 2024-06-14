@@ -1,7 +1,9 @@
 name: "Check Links in docs"
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   linkChecker:
